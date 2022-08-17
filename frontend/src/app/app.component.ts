@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { AlertService } from './modules/alert/resources/services/alert.service';
 import { AppState } from './store';
 import { loginPage } from './store/actions/auth.actions';
 
@@ -15,5 +16,6 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(loginPage( { username: 'test', password: 'test' }))
+    
   }
 }

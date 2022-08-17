@@ -20,6 +20,7 @@ import { AuthEffects } from './store/effects/auth.effects';
 import { SharedModule } from './shared/shared.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { MyEntityModule } from './modules/my-entity/my-entity.module';
+import { AlertModule } from './modules/alert/alert.module';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { MyEntityModule } from './modules/my-entity/my-entity.module';
     SharedModule,
     FormsModule,
     AuthModule,
+    AlertModule,
     MyEntityModule,
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
     StoreRouterConnectingModule.forRoot(),
