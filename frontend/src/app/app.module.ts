@@ -1,6 +1,5 @@
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { StoreModule } from '@ngrx/store';
@@ -10,7 +9,7 @@ import { environment } from '../environments/environment';
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { EffectsModule } from '@ngrx/effects';
 import { RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { metaReducers, reducers } from './store';
 import { SpinnerEffects } from './store/effects/spinner.effects';
 import { AlertEffects } from './store/effects/alert.effects';
@@ -20,12 +19,18 @@ import { AuthEffects } from './store/effects/auth.effects';
 import { SharedModule } from './shared/shared.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { MyEntityModule } from './modules/my-entity/my-entity.module';
+import { CreateCompany } from './modules/administration/createCompany/createCompany.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatRippleModule } from '@angular/material/core';
 import { AlertModule } from './modules/alert/alert.module';
 import { NgxSpinnerModule } from 'ngx-spinner';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    CreateCompany
   ],
   imports: [
     BrowserModule,
@@ -45,6 +50,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     RouterModule,
     SharedModule,
     FormsModule,
+    ReactiveFormsModule,
     AuthModule,
     AlertModule,
     MyEntityModule,
@@ -56,6 +62,11 @@ import { NgxSpinnerModule } from 'ngx-spinner';
       RouteEffects,
       ModalEffects
     ]),
+
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatRippleModule,
     NgxSpinnerModule.forRoot({ type: 'ball-scale-multiple' })
   ],
   providers: [],

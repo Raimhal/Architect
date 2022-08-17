@@ -6,18 +6,21 @@ import {
   import { environment } from '../../environments/environment';
   import * as fromAuth from './reducers/auth.reducer';
   import * as fromRouter from '@ngrx/router-store';
-  import * as fromMyEntity from '../modules/my-entity/state/my-entity.reducer';
-  
+import * as fromMyEntity from '../modules/my-entity/state/my-entity.reducer';
+import * as fromAdministration from '../modules/administration/state/administration.reducer';
+
   export interface AppState {
     router: fromRouter.RouterReducerState;
     [fromAuth.authFeatureKey]: fromAuth.State;
     [fromMyEntity.myEntityFeatureKey]: fromMyEntity.State;
+    [fromAdministration.administrationFeatureKey]: fromAdministration.State
   }
   
   export const reducers: ActionReducerMap<AppState> = {
     router: fromRouter.routerReducer,
     [fromAuth.authFeatureKey]: fromAuth.reducer,
-    [fromMyEntity.myEntityFeatureKey]: fromMyEntity.reducer
+    [fromMyEntity.myEntityFeatureKey]: fromMyEntity.reducer,
+    [fromAdministration.administrationFeatureKey]: fromAdministration.reducer
   };
   
   export const metaReducers: MetaReducer<AppState>[] = !environment.production

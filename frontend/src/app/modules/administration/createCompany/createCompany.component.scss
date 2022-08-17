@@ -1,0 +1,85 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap');
+
+#content {
+  width: 1080px;
+  height: 768px;
+  border: 1px solid black;
+  display: flex;
+  background: #F3F4F8;
+}
+
+#leftPart {
+  position: relative;
+  width: 50%;
+  height: 100%;
+  border: 1px solid black;
+  background-image: url('../../../../assets/images/iltun-huseynli-OH7GkUqiuZk-unsplash.jpg');
+  background-size: auto 100%;
+}
+
+#rightPart {
+    position: relative;
+    width: 36%;
+    left: 8%;
+    height: 100%;
+}
+
+#CancelButton {
+  background: none;
+  border: none;
+  padding: 0px;
+  font-size: 14px;
+  margin-top: 24px;
+  font-family: "Poppins";
+}
+
+#componentlable {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 900;
+  margin-top: 28px;
+  font-size: 40px;
+  line-height: 48px;
+}
+
+#CompanyIdDiv {
+  width: 100%;
+  display: flex;
+  background: #E3E5ED;
+  height: 56px;
+  vertical-align: central;
+  justify-content: space-between;
+  margin-top: 45px;
+  margin-bottom: 45px;
+}
+
+#CompanyIdDiv div {
+  height: 100%;
+  margin-top: 16px;
+  margin-left: 12px;
+  margin-right: 12px;
+  vertical-align: central;
+}
+
+.full-width {
+  width: 100%;
+}
+
+
+#SubmitButton {
+  width: 100%;
+  text-align: center;
+  padding-top: 16px;
+  background: #2658D7;
+  padding-bottom: 16px;
+  color: white;
+  font-family: 'Poppins';
+  font-size: 16px;
+}
+
+#SubmitButton:hover {
+  background: #2E5ED7;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  color: snow;
+  cursor: pointer;
+}
