@@ -28,16 +28,18 @@ public class GetMyEntitiesQueryHandler : IRequestHandler<GetMyEntitiesQuery, MyE
         _logger = logger;
     }
 
-    public Task<MyEntityDto> Handle(GetMyEntitiesQuery request, CancellationToken cancellationToken)
+    public async Task<MyEntityDto> Handle(GetMyEntitiesQuery request, CancellationToken cancellationToken)
     {
+        var entities = await _context.EntityRepository.GetAll();
         _logger.LogInformation("In query");
-        return Task.FromResult(new MyEntityDto
+        return new MyEntityDto
         {
             Name = "Outer text",
             Detail = new MyEntityDetailDto
             {
                 Detail = "Inner Text"
             }
-        });
+        };
+
     }
-} 
+}

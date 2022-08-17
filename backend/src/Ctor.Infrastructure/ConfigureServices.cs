@@ -1,6 +1,9 @@
 using System.Text;
 using Ctor.Application.Common.Interfaces;
+using Ctor.Domain.Repositories;
+using Ctor.Infrastructure.Core;
 using Ctor.Infrastructure.Persistence;
+using Ctor.Infrastructure.Persistence.Repositories;
 using Ctor.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -26,6 +29,10 @@ public static class ConfigureServices
                     builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
         }
 
+        services.AddScoped<IRepositoryFactory, RepositoryFactory>();
+        services.AddScoped<IEntityRepository, EntityRepository>();
+        services.AddTransient(typeof(Lazy<>), typeof(LazyInstance<>));
+        services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
         services.AddScoped<ApplicationDbContextInitialiser>();
         services.AddTransient<IDateTime, DateTimeService>();
