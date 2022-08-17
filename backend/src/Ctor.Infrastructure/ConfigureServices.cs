@@ -1,5 +1,6 @@
 using System.Text;
 using Ctor.Application.Common.Interfaces;
+using Ctor.Application.Common.Models;
 using Ctor.Domain.Repositories;
 using Ctor.Infrastructure.Core;
 using Ctor.Infrastructure.Persistence;
@@ -28,6 +29,13 @@ public static class ConfigureServices
                 options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"),
                     builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
         }
+    
+        services.Configure<MailSetting>((mailSetting) => {
+            mailSetting.ApiSecret = Environment.GetEnvironmentVariable("ApiSecret");
+            mailSetting.ApiKey = Environment.GetEnvironmentVariable("ApiKey");
+            mailSetting.FromEmail = Environment.GetEnvironmentVariable("FromEmail");
+            mailSetting.DiplayName = Environment.GetEnvironmentVariable("DiplayName");
+        });
 
         services.AddScoped<IRepositoryFactory, RepositoryFactory>();
         services.AddScoped<IEntityRepository, EntityRepository>();
@@ -36,6 +44,7 @@ public static class ConfigureServices
         services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
         services.AddScoped<ApplicationDbContextInitialiser>();
         services.AddTransient<IDateTime, DateTimeService>();
+        services.AddScoped<IEmailService, Emai²Service>();
 
         services.AddAuthentication(opt => {
             opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

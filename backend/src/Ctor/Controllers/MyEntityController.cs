@@ -2,6 +2,8 @@ using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Ctor.Application.Common.Interfaces;
+using Ctor.Application.DTOs.EmailDTos;
 using Ctor.Application.MyEntity.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,11 +13,30 @@ namespace Ctor.Controllers;
 
 public class MyEntityController : ApiControllerBase
 {
+    private readonly IEmailService _emailService;
+    public MyEntityController(IEmailService emailService)
+    {
+        _emailService = emailService;
+    }
     [HttpGet]
     [Route("{id}")]
     public async Task<ActionResult<MyEntityDto>> Get(int id)
     {
+       
         return await Mediator.Send(new GetMyEntitiesQuery(id));
+    }
+    [HttpGet]
+    [Route("sendMail")]
+    public async Task<ActionResult<MyEntityDto>> SendMail(int id)
+    {
+        var emailDTOs = new List<EmailDTO>() {
+            new EmailDTO(){
+                Email="vitalikkravez1@gmail.com",
+                Name="Vitalik"
+            }
+        };
+        await _emailService.SendAsync(emailDTOs, "Test", "Text", "<h2>Hello may brither</h2>");
+        return Ok();
     }
 
     [HttpPost("getToken")]
