@@ -112,6 +112,6 @@
     "schematicCollections": [
       "@ngrx/schematics"
     ],
-    "analytics": "836f81c7-f4a2-4c1a-bf98-99bd1cec3951"
+    "analytics": false
   }
 }

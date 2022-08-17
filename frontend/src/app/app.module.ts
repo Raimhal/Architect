@@ -19,6 +19,7 @@ import { AuthEffects } from './store/effects/auth.effects';
 import { SharedModule } from './shared/shared.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { MyEntityModule } from './modules/my-entity/my-entity.module';
+import {AdministrationModule} from "./modules/administration/administration.module";
 import { CreateCompany } from './modules/administration/createCompany/createCompany.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -52,9 +53,9 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     FormsModule,
     ReactiveFormsModule,
     AuthModule,
-    AlertModule,
     MyEntityModule,
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
+    AlertModule,
+    StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production}),
     StoreRouterConnectingModule.forRoot(),
     EffectsModule.forRoot([
       SpinnerEffects,
@@ -62,7 +63,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
       RouteEffects,
       ModalEffects
     ]),
-
+    AdministrationModule,
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,

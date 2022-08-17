@@ -4,7 +4,7 @@ import { AlertComponent } from '../../alert.component';
 import { AlertType } from '../types/alert-type';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: AlertService
 })
 export class AlertService {
 
