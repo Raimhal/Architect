@@ -1,0 +1,38 @@
+.image-column {
+  float: left;
+  width: 50%;
+}
+
+.content-column {
+  float: right;
+  width: 50%;
+
+  .content-padding {
+    padding: 118px;
+  }
+
+}
+
+.btn-back {
+  width: 90px;
+  height: 44px;
+  top: -100px;
+}
+
+@media screen and (max-width: 1024px) {
+  .image-column {
+    visibility: hidden;
+    display: none;
+    width: 0;
+  }
+
+  .content-column {
+    width: 100%;
+    max-width: 100%;
+
+    .content-padding {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+  }
+}

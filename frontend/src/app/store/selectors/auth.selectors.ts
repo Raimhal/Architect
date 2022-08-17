@@ -6,19 +6,24 @@ export const selectAuthState = createFeatureSelector<fromAuth.State>(
 );
 
 export interface AuthViewModal {
-  isLoggedin: boolean;
+  isLoggedIn: boolean;
 }
 
-export const selectIsLoggedIn = createSelector(
+export const selectUser = createSelector(
   selectAuthState,
-  (state: fromAuth.State): boolean => state.user != null
+  (state: fromAuth.State): fromAuth.User | null => state.user
+);
+
+export const selectIsLoggedIn = createSelector(
+  selectUser,
+  (user: fromAuth.User | null): boolean => user != null
 );
 
 export const selectAuthViewModel = createSelector(
   selectIsLoggedIn,
   (isLoggedIn: boolean): AuthViewModal => {
     return {
-      isLoggedin: isLoggedIn,
+      isLoggedIn: isLoggedIn,
     };
   }
 );

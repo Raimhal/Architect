@@ -9,7 +9,7 @@ export class SpinnerEffects {
     () =>
       this.actions$.pipe(
         ofType(
-          fromAuthActions.loginPage,
+          fromAuthActions.login,
         ),
         tap(() =>  {
           // show spinner

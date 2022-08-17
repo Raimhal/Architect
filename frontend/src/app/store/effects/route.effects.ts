@@ -15,5 +15,20 @@ export class RouteEffects {
     { dispatch: false }
   );
 
+  askToChangePassword$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(fromAuthActions.loginSuccess),
+        tap((state) => {
+          if (state.askToChangePassword) {
+            return this.route.navigate(['/login/change-default-password'])
+          }
+
+          return this.route.navigate(['/home'])
+        })
+      ),
+    { dispatch: false }
+  );
+
   constructor(private actions$: Actions, private route: Router) {}
 }

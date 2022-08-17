@@ -3,18 +3,21 @@ import * as fromAuthActions from '../actions/auth.actions';
 
 export const authFeatureKey = 'auth';
 
+export interface User {
+  id: number,
+  email: string,
+  //isAdmin: boolean,
+}
+
 export interface State {
-  user: any;
+  user: User | null;
+  askToChangePassword: boolean;
   error: any;
 }
 
 export const initialState: State = {
-  user: {
-    id: null,
-    username: null,
-    email: null,
-    isadmin: null,
-  },
+  user: null,
+  askToChangePassword: false,
   error: null,
 };
 
@@ -25,6 +28,7 @@ export const reducer = createReducer(
     return {
       ...state,
       user: action.user,
+      askToChangePassword: action.askToChangePassword,
       error: null,
     };
   }),

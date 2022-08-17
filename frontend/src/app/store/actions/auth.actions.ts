@@ -1,18 +1,33 @@
 import { createAction, props } from "@ngrx/store";
 
-export const loginPage = createAction(
-  '[Login Component] Login User',
-  props<{ username: string; password: string }>()
+export const login = createAction(
+  '[Auth] Login User',
+  props<{ email: string; password: string }>()
 );
 
 export const loginSuccess = createAction(
-  '[Auth Effect] Login User Success',
-  props<{ user: any }>()
+  '[Auth] Login User Success',
+  props<{ user: any, askToChangePassword: boolean }>()
 );
 
 export const loginFailure = createAction(
-  '[Auth Effect] Login User Failure',
+  '[Auth] Login User Failure',
   props<{ error: any }>()
 );
 
-export const logout = createAction('[Header Component] Logout User');
+export const logout = createAction('[Auth Component] Logout User');
+
+export const changePassword = createAction(
+  '[Auth] Change Password',
+  props<{ password: string; confirmPassword: string }>()
+);
+
+export const changePasswordSuccess = createAction(
+  '[Auth] Change Password Success',
+  props<{ user: any }>()
+);
+
+export const changePasswordFailure = createAction(
+  '[Auth] Change Password Failure',
+  props<{ error: any }>()
+);

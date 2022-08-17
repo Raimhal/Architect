@@ -5,12 +5,13 @@ import { tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { AlertService } from 'src/app/modules/alert/resources/services/alert.service';
 
+
 @Injectable()
 export class AlertEffects {
   login$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(fromAuthActions.loginPage),
+        ofType(fromAuthActions.login),
         tap(() => {
             this._alertService.showAlert("login success", "OK", "success")
           }
