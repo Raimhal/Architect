@@ -24,11 +24,23 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     }
 
     public DbSet<MyEntity> TodoLists => Set<MyEntity>();
+    public DbSet<Building> Buildings => Set<Building>();
+    public DbSet<BuildingBlock> BuildingBlocks => Set<BuildingBlock>();
+    public DbSet<Company> Companies => Set<Company>();
+    public DbSet<Document> Documents => Set<Document>();
+    public DbSet<Material> Materials => Set<Material>();
+    public DbSet<Phase> Phases => Set<Phase>();
+    public DbSet<Project> Projects => Set<Project>();
+    public DbSet<ProjectDocument> ProjectDocument => Set<ProjectDocument>();
+    public DbSet<ProjectNote> ProjectNotes => Set<ProjectNote>();
+    public DbSet<Role> Roles => Set<Role>();
+    public DbSet<User> Users => Set<User>();
+    public DbSet<Vendor> Vendors => Set<Vendor>();
+
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-
         base.OnModelCreating(builder);
     }
 
