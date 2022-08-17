@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -21,6 +21,7 @@ import { SharedModule } from './shared/shared.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { MyEntityModule } from './modules/my-entity/my-entity.module';
 import { AlertModule } from './modules/alert/alert.module';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 @NgModule({
   declarations: [
@@ -54,9 +55,11 @@ import { AlertModule } from './modules/alert/alert.module';
       AlertEffects,
       RouteEffects,
       ModalEffects
-    ])
+    ]),
+    NgxSpinnerModule.forRoot({ type: 'ball-scale-multiple' })
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppModule { }

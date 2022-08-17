@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import * as fromAuthActions from '../actions/auth.actions';
 import { tap } from 'rxjs/operators';
+import {NgxSpinnerService} from "ngx-spinner";
 
 @Injectable()
 export class SpinnerEffects {
@@ -12,7 +13,7 @@ export class SpinnerEffects {
           fromAuthActions.login,
         ),
         tap(() =>  {
-          // show spinner
+          this.spinner.show();
         })
       ),
     { dispatch: false }
@@ -27,12 +28,13 @@ export class SpinnerEffects {
         ),
         tap(() => {
           setTimeout(() => {
-            // hide spinner
+            this.spinner.hide();
           }, 1000);
         })
       ),
     { dispatch: false }
   );
 
-  constructor(private actions$: Actions) {}
+  constructor(private actions$: Actions, private spinner : NgxSpinnerService) {}
+
 }
