@@ -19,19 +19,20 @@
   <div class="fullname-wrapper">
     <mat-form-field  appearance="fill">
       <mat-label>First Name</mat-label>
-      <input [(ngModel)]="newMember.firstName" matInput required>
+      <input [(ngModel)]="newMember.firstName" matInput required placeholder="David">
       <mat-error *ngIf="!newMember.firstName">First name is required</mat-error>
     </mat-form-field>
     <mat-form-field  appearance="fill">
       <mat-label>Last Name</mat-label>
-      <input [(ngModel)]="newMember.lastName" matInput required>
+      <input [(ngModel)]="newMember.lastName" matInput required placeholder="Robinson">
       <mat-error *ngIf="!newMember.lastName">Last name is required</mat-error>
     </mat-form-field>
   </div>
   <mat-form-field  appearance="fill">
     <mat-label>E-mail</mat-label>
-    <input [(ngModel)]="newMember.email" matInput required>
+    <input [(ngModel)]="newMember.email" matInput placeholder="Ex. lastname@example.com" required>
     <mat-error *ngIf="!newMember.email">Email is required</mat-error>
+    <mat-error *ngIf="!newMember.email.includes('@')">Email has wrong format</mat-error>
   </mat-form-field>
   <button (click)="onSubmit()" mat-raised-button color="primary">Generate Password and Send</button>
 </mat-dialog-content>
