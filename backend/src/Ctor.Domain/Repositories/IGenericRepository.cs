@@ -26,4 +26,8 @@ public interface IGenericRepository<T> where T : BaseEntity
     void Update(T obj);
     void Delete(T obj);
     Task<bool> DeleteById(long id);
+    bool Any();
+    Task AddRangeAsync(IEnumerable<T> values);
+    Task AddRangeAsync(params T[]value);
+
 }

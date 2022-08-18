@@ -23,7 +23,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     }
     public Task<List<T>> Get(Expression<Func<T, bool>> filter)
     {
-        IQueryable<T> query = table;     
+        IQueryable<T> query = table;
 
         query = query.Where(filter);
         return query.ToListAsync();
@@ -35,7 +35,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     public Task<T> GetById(long id)
     {
         return table.FindAsync(id).AsTask();
-    } 
+    }
     public Task Insert(T obj)
     {
         return table.AddAsync(obj).AsTask();
@@ -49,6 +49,19 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     {
         table.Remove(obj);
     }
+    public bool Any()
+    {
+        return table.Any();
+    }
+    public Task AddRangeAsync(IEnumerable<T> values)
+    {
+        return table.AddRangeAsync(values);
+    }
+    public Task AddRangeAsync(params T[] value)
+    {
+        return table.AddRangeAsync(value);
+    }
+
     public async Task<bool> DeleteById(long id)
     {
         var obj = await table.FindAsync(id);
@@ -62,7 +75,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     public Task<List<T>> GetOrdered(Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
         Expression<Func<T, bool>> filter = null)
     {
-        IQueryable<T> query = _context.Set<T>();        
+        IQueryable<T> query = _context.Set<T>();
 
         if (filter != null)
         {
@@ -81,7 +94,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
         Expression<Func<T, bool>> filter = null)
     {
-        IQueryable<T> query = _context.Set<T>();      
+        IQueryable<T> query = _context.Set<T>();
 
         if (filter != null)
         {
@@ -107,7 +120,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         int page = 0, int count = 0,
          Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
          Expression<Func<T, bool>> filter = null)
-    {      
+    {
 
         if (filter != null)
         {

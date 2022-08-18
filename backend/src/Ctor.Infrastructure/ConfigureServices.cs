@@ -39,6 +39,12 @@ public static class ConfigureServices
 
         services.AddScoped<IRepositoryFactory, RepositoryFactory>();
         services.AddScoped<IEntityRepository, EntityRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IBuildingRepository, BuildingRepository>();
+        services.AddScoped<ICompanyRepository, CompanyRepository>();
+        services.AddScoped<IProjectRepository, ProjectRepository>();
+        services.AddScoped<IPhaseRepository, PhaseRepository>();
+        services.AddScoped<IRoleRepository, RoleRepository>();
         services.AddTransient(typeof(Lazy<>), typeof(LazyInstance<>));
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());

@@ -9,34 +9,32 @@ namespace Ctor.Infrastructure.Persistence;
 public class ApplicationDbContext : DbContext, IApplicationDbContext
 {
     private readonly Lazy<IEntityRepository> _entityRepositoryLazy;
-    public IEntityRepository EntityRepository
-    {
-        get
-        {
-            return _entityRepositoryLazy.Value;
-        }
-    }
+    private readonly Lazy<IUserRepository> _userRepositoryLazy;
+    private readonly Lazy<ICompanyRepository> _companyRepositoryLazy;
+    private readonly Lazy<IBuildingRepository> _buildingRepositoryLazy;
+    private readonly Lazy<IProjectRepository> _projectRepositoryLazy;
+    private readonly Lazy<IPhaseRepository> _phaseRepositoryLazy;
+    private readonly Lazy<IRoleRepository> _roleRepositoryLazy;
+
+    public IEntityRepository Entities => _entityRepositoryLazy.Value;
+    public IUserRepository Users => _userRepositoryLazy.Value;
+    public IRoleRepository Roles => _roleRepositoryLazy.Value;
+    public ICompanyRepository Companies => _companyRepositoryLazy.Value;
+    public IBuildingRepository Buildings => _buildingRepositoryLazy.Value;
+    public IProjectRepository Projects => _projectRepositoryLazy.Value;
+    public IPhaseRepository Phases=> _phaseRepositoryLazy.Value;
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IRepositoryFactory repositoryFactory)
         : base(options)
     {
-        _entityRepositoryLazy = repositoryFactory.GetInstanse<Lazy<IEntityRepository>>();       
+        _entityRepositoryLazy = repositoryFactory.GetInstanse<Lazy<IEntityRepository>>();
+        _userRepositoryLazy = repositoryFactory.GetInstanse<Lazy<IUserRepository>>();
+        _roleRepositoryLazy = repositoryFactory.GetInstanse<Lazy<IRoleRepository>>();
+        _companyRepositoryLazy = repositoryFactory.GetInstanse<Lazy<ICompanyRepository>>();
+        _buildingRepositoryLazy = repositoryFactory.GetInstanse<Lazy<IBuildingRepository>>();
+        _projectRepositoryLazy = repositoryFactory.GetInstanse<Lazy<IProjectRepository>>();
+        _phaseRepositoryLazy = repositoryFactory.GetInstanse<Lazy<IPhaseRepository>>();
     }
-
-    public DbSet<MyEntity> TodoLists => Set<MyEntity>();
-    public DbSet<Building> Buildings => Set<Building>();
-    public DbSet<BuildingBlock> BuildingBlocks => Set<BuildingBlock>();
-    public DbSet<Company> Companies => Set<Company>();
-    public DbSet<Document> Documents => Set<Document>();
-    public DbSet<Material> Materials => Set<Material>();
-    public DbSet<Phase> Phases => Set<Phase>();
-    public DbSet<Project> Projects => Set<Project>();
-    public DbSet<ProjectDocument> ProjectDocument => Set<ProjectDocument>();
-    public DbSet<ProjectNote> ProjectNotes => Set<ProjectNote>();
-    public DbSet<Role> Roles => Set<Role>();
-    public DbSet<User> Users => Set<User>();
-    public DbSet<Vendor> Vendors => Set<Vendor>();
-
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
