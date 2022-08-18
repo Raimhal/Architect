@@ -1,0 +1,93 @@
+<ng-container *ngIf="companyDetailed$ | async as company">
+  <div class="container">
+    <div class="header">
+      <div class="header-top">
+        <button mat-icon-button aria-label="arrow_left">
+          <mat-icon svgIcon="arrow_left"></mat-icon>
+        </button>
+        <h1>{{ company.companyName | uppercase }}</h1>
+        <p class="id">{{ company.id }}</p>
+      </div>
+
+      <div class="logo">
+        <img
+          class="logo-img"
+          src="{{ company.image }}"
+          (click)="selectImage.click()"
+        />
+        <input
+          class="logo-input"
+          type="file"
+          accept="image/png, image/jpeg"
+          (change)="uploadImage(company.id, $event)"
+          #selectImage
+        />
+      </div>
+
+      <div class="description">
+        <p>Description</p>
+      </div>
+    </div>
+    <div class="content">
+      <mat-card class="card-1">
+        <mat-card-title-group>
+          <mat-card-title>
+            <span>Information</span>
+          </mat-card-title>
+          <mat-card-actions>
+            <button mat-icon-button aria-label="Pencil">
+              <mat-icon svgIcon="pencil"></mat-icon>
+            </button>
+          </mat-card-actions>
+        </mat-card-title-group>
+
+        <mat-card-content>
+          <div class="card-content">
+            <span>Join Date:</span>
+            <p>
+              {{ company.joinDate | date: 'dd.MM.yyyy' }}
+            </p>
+            <span>Address:</span>
+            <p>{{ company.address }}</p>
+            <span>Email:</span>
+            <p>{{ company.email }}</p>
+          </div>
+        </mat-card-content>
+      </mat-card>
+      <mat-card class="card-2">
+        <mat-card-title-group>
+          <mat-card-title>
+            <span>Team</span>
+          </mat-card-title>
+          <mat-card-actions>
+            <button mat-icon-button aria-label="Load a file">
+              <mat-icon svgIcon="file_plus"></mat-icon>
+            </button>
+            <button mat-icon-button aria-label="Add member">
+              <mat-icon svgIcon="plus"></mat-icon>
+            </button>
+          </mat-card-actions>
+        </mat-card-title-group>
+        <mat-card-content>
+          <cdk-virtual-scroll-viewport
+            appendOnly
+            itemSize="{{ company.members.length }}"
+            class="members-viewport"
+          >
+            <div
+              *cdkVirtualFor="let member of company.members"
+              class="members-item"
+            >
+              {{ member.firstName }} {{ member.lastName }},
+              {{ member.position }}, {{ member.email }}
+            </div>
+          </cdk-virtual-scroll-viewport>
+        </mat-card-content>
+      </mat-card>
+      <mat-card class="card-3">
+        <mat-card-title>Projects</mat-card-title>
+        <mat-card-content></mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</ng-container>
