@@ -5,6 +5,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../../../store';
 import { INewCompanyDto } from '../resources/DTOmodels/new-company-dto.model';
 import * as AdminActions from '../state/administration.actions';
+import {MatDialogRef} from "@angular/material/dialog";
 
 @Component({
   selector: 'create-company',
@@ -21,7 +22,8 @@ export class CreateCompany implements OnInit {
   nameFormControl = new FormControl('', [Validators.required]);
   emailFormControl = new FormControl('', [Validators.required, Validators.email]);
   matcher = new CreateCompanyErrorStateMatcher();
-  constructor(private state: Store<AppState>) {
+  constructor(private state: Store<AppState>,
+              public dialogRef: MatDialogRef<CreateCompany>) {
     this.company = {
       id: this.NewCompanyId,
       address: '',
@@ -33,7 +35,7 @@ export class CreateCompany implements OnInit {
   }
 
   ngOnInit(): void {
-    
+
   }
 
   Submit(): void {
@@ -62,6 +64,10 @@ export class CreateCompany implements OnInit {
     this.state.dispatch(AdminActions.CreateCompany({ date: this.company }));
   }
 
+
+  close() {
+    this.dialogRef.close()
+  }
 }
 
 export class CreateCompanyErrorStateMatcher implements ErrorStateMatcher {

@@ -32,7 +32,6 @@
     <mat-label>E-mail</mat-label>
     <input [(ngModel)]="newMember.email" matInput placeholder="Ex. lastname@example.com" required>
     <mat-error *ngIf="!newMember.email">Email is required</mat-error>
-    <mat-error *ngIf="!newMember.email.includes('@')">Email has wrong format</mat-error>
   </mat-form-field>
   <button (click)="onSubmit()" mat-raised-button color="primary">Generate Password and Send</button>
 </mat-dialog-content>

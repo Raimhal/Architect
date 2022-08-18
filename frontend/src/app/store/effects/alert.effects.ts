@@ -43,5 +43,16 @@ export class AlertEffects {
     { dispatch: false }
   );
 
+
+  companiesListLoadingFailed = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(fromAdministrationActions.getAllCompaniesWithParamsFailure),
+      tap(() => {
+        this._alertService.showAlert("Failed load companies from server", "OK", "error")
+      })
+    )
+  },
+    {dispatch: false});
+
   constructor(private actions$: Actions, private _alertService: AlertService) {}
 }

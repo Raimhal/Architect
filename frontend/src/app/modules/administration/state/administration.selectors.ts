@@ -10,3 +10,8 @@ export const selectOpenCompany = createSelector(
   selectAdministrationState,
   (state) => state.currentlyOpenCompany
 );
+
+export const selectCompanies = createSelector(
+  selectAdministrationState,
+  (state) => state.companies
+)

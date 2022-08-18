@@ -1,0 +1,33 @@
+<mat-sidenav-container class="nav-container" autosize>
+  <mat-sidenav mode="side" opened class="nav-side">
+    <ng-container *ngIf="opened">
+      <h1 class="nav-header" (click)="toggleOpened()">Ctor</h1>
+      <div class="nav-list">
+        <a class="nav-item main-text"
+              [class.selected-text1]="selectedContent == 'Companies'"
+              [class.selected]="selectedContent == 'Companies'"
+        >Companies</a>
+        <a class="nav-item"
+              [class.selected-text1]="selectedContent == 'Notification'"
+              [class.selected]="selectedContent == 'Notification'"
+        >Notification</a>
+        <a class="nav-item"
+              [class.selected-text1]="selectedContent == 'Logout'"
+              [class.selected]="selectedContent == 'Logout'"
+        >Logout</a>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="!opened">
+      <div class="nav-hide">
+        <a (click)="toggleOpened()">
+          <mat-icon svgIcon="caret-left-grey"></mat-icon>
+        </a>
+      </div>
+    </ng-container>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <ng-container *ngIf="selectedContent == 'Companies'">
+      <router-outlet></router-outlet>
+    </ng-container>
+  </mat-sidenav-content>
+</mat-sidenav-container>

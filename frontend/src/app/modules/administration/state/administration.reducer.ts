@@ -1,9 +1,9 @@
 import { Action, createReducer, on } from '@ngrx/store';
 import * as AdministrationActions from './administration.actions';
-import { IMember } from '../resources/models/member.model';
-import { state } from '@angular/animations';
-import { ICompanyOverview } from '../resources/models/company-overview.model';
-import { ICompanyDetailed } from '../resources/models/company-detailed.model';
+import {ICompanyOverview} from "../resources/models/company-overview.model";
+import {IMember} from "../resources/models/member.model";
+import {state} from "@angular/animations";
+import {ICompanyDetailed} from "../resources/models/company-detailed.model";
 
 export const administrationFeatureKey = 'administration';
 
@@ -38,11 +38,28 @@ export const reducer = createReducer(
       ...state,
       currentlyOpenCompany: {
         ...state.currentlyOpenCompany,
-        members: [...state.currentlyOpenCompany.members, action.data],
-      },
-    };
+        members: [
+          ...state.currentlyOpenCompany.members,
+          action.data
+        ]
+      }
+    }
   }),
   on(AdministrationActions.addNewMemberFailure, (state) => state),
+  on(AdministrationActions.getAllCompaniesWithParamsSuccess, (state, action) => {
+    return {
+      ...state,
+      companies: action.data,
+      error: null
+    }
+  }),
+  on(AdministrationActions.getAllCompaniesWithParamsFailure, (state, action) => {
+    return {
+      ...state,
+      companies: null,
+      error: action.error
+    }
+  }),
   on(AdministrationActions.loadDetailedCompanySuccess, (_state, action) => ({
     ..._state,
     currentlyOpenCompany: action.result,

@@ -1,0 +1,6 @@
+<div *ngIf="company" class="box" (click)="onClicked(company.id)">
+  <img>
+  <span class="date">{{company.joinDate}}</span>
+  <span class="name">{{company.companyName}}</span>
+  <span class="address">{{company.address}}, {{company.city}}, {{company.country}}</span>
+</div>

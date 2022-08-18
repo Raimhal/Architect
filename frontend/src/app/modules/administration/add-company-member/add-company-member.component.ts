@@ -34,7 +34,6 @@ export class AddCompanyMemberComponent implements OnInit {
     && this.newMember.firstName!=null
     && this.newMember.lastName!=null){
       this.store.dispatch(addNewMember({data:this.newMember}));
-      this.dialogRef.close();
     }
   }
 

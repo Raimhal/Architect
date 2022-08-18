@@ -2,7 +2,7 @@
   <div class="container">
     <div class="header">
       <div class="header-top">
-        <button mat-icon-button aria-label="arrow_left">
+        <button mat-icon-button aria-label="arrow_left" routerLink="..">
           <mat-icon svgIcon="arrow_left"></mat-icon>
         </button>
         <h1>{{ company.companyName | uppercase }}</h1>
@@ -63,7 +63,7 @@
             <button mat-icon-button aria-label="Load a file">
               <mat-icon svgIcon="file_plus"></mat-icon>
             </button>
-            <button mat-icon-button aria-label="Add member">
+            <button mat-icon-button aria-label="Add member" (click)="openModal(company.id)">
               <mat-icon svgIcon="plus"></mat-icon>
             </button>
           </mat-card-actions>

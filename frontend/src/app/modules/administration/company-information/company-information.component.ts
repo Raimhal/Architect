@@ -7,6 +7,8 @@ import * as AdministrationSelectors from '../state/administration.selectors';
 import * as fromAdministrationActions from '../state/administration.actions';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
+import {MatDialog} from "@angular/material/dialog";
+import {AddCompanyMemberComponent} from "../add-company-member/add-company-member.component";
 @Component({
   selector: 'app-company-information',
   templateUrl: './company-information.component.html',
@@ -17,16 +19,13 @@ export class CompanyInformationComponent implements OnInit {
   constructor(
     private store: Store<AppState>,
     private matIconRegistry: MatIconRegistry,
-    private domSanitizer: DomSanitizer
+    private domSanitizer: DomSanitizer,
+    private dialog : MatDialog
   ) {}
 
   ngOnInit(): void {
     this.companyDetailed$ = this.store.pipe(
       select(AdministrationSelectors.selectOpenCompany)
-    );
-
-    this.store.dispatch(
-      fromAdministrationActions.loadDetailedCompany({ id: 1 })
     );
 
     this.addSvgIcons();
@@ -68,5 +67,11 @@ export class CompanyInformationComponent implements OnInit {
       'plus',
       this.domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/plus.svg')
     );
+  }
+
+  openModal(companyId : number) {
+    this.dialog.open(AddCompanyMemberComponent, {
+      data: companyId
+    });
   }
 }
