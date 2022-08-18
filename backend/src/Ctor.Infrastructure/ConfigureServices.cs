@@ -50,7 +50,7 @@ public static class ConfigureServices
         services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
         services.AddScoped<ApplicationDbContextInitialiser>();
         services.AddTransient<IDateTime, DateTimeService>();
-        services.AddScoped<IEmailService, Emai²Service>();
+        services.AddScoped<IEmailService, EmailService>();
 
         services.AddAuthentication(opt => {
             opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

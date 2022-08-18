@@ -1,22 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Ctor.Application.Common.Interfaces;
+﻿using Ctor.Application.Common.Interfaces;
 using Ctor.Application.Common.Models;
 using Ctor.Application.DTOs.EmailDTos;
 using Mailjet.Client;
 using Mailjet.Client.Resources;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 
 namespace Ctor.Infrastructure.Services;
-public class EmaiІService : IEmailService
+
+public class EmailService : IEmailService
 {
     private readonly MailSetting _mailSetting;
-    public EmaiІService(IOptions<MailSetting> mailSetting)
+    public EmailService(IOptions<MailSetting> mailSetting)
     {
         _mailSetting = mailSetting.Value;
     }
