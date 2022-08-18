@@ -27,3 +27,14 @@ export const selectAuthViewModel = createSelector(
     };
   }
 );
+
+export const selectUserRole = createSelector(
+  selectAuthState,
+  selectUser,
+  (state : fromAuth.State) => {
+    if (state.user != null){
+      return state.user.role;
+    }
+    return "";
+  }
+)

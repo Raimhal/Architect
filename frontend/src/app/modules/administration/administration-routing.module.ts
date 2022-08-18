@@ -5,6 +5,7 @@ import {AdministrationComponent} from "./administration.component";
 import {CompanyListComponent} from "./company-list/company-list.component";
 import {CreateCompany} from "./createCompany/createCompany.component";
 import {CompanyInformationComponent} from "./company-information/company-information.component";
+import {HasRoleGuard} from "../../shared/has-role.guard";
 
 const routes: Routes = [
   { path: 'administration',
@@ -13,9 +14,19 @@ const routes: Routes = [
       { path: '', redirectTo: 'company-list', pathMatch: "full"},
       { path: 'company-list', component: CompanyListComponent},
       { path: 'company-information', component: CompanyInformationComponent}
-    ]
+    ],
+    canActivate: [HasRoleGuard],
+    data: {
+      role : "Admin"
+    }
   },
-  { path: 'new-company', component: CreateCompany },
+  { path: 'new-company',
+    component: CreateCompany,
+    canActivate: [HasRoleGuard],
+    data: {
+      role: "Admin"
+    }
+  },
 
 ];
 
