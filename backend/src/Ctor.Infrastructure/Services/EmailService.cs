@@ -1,4 +1,5 @@
-﻿using Ctor.Application.Common.Interfaces;
+﻿using Ctor.Application.Common.Exceptions;
+using Ctor.Application.Common.Interfaces;
 using Ctor.Application.Common.Models;
 using Ctor.Application.DTOs.EmailDTos;
 using Mailjet.Client;
@@ -15,12 +16,13 @@ public class EmailService : IEmailService
     {
         _mailSetting = mailSetting.Value;
     }
+
+
     public async Task SendAsync(IEnumerable<EmailDTO> emails, string subject, string text, string html)
     {
         if (_mailSetting == null)
-        {
-            return;
-        }
+            throw new EmailException("Email settings not found");
+        
 
         MailjetClient client = new MailjetClient(
             _mailSetting.ApiKey,
@@ -31,18 +33,8 @@ public class EmailService : IEmailService
 
         MailjetResponse response = await client.PostAsync(request);
 
-        if (response.IsSuccessStatusCode)
-        {
-            Console.WriteLine(string.Format("Total: {0}, Count: {1}\n", response.GetTotal(), response.GetCount()));
-            Console.WriteLine(response.GetData());
-        }
-        else
-        {
-            Console.WriteLine(string.Format("StatusCode: {0}\n", response.StatusCode));
-            Console.WriteLine(string.Format("ErrorInfo: {0}\n", response.GetErrorInfo()));
-            Console.WriteLine(response.GetData());
-            Console.WriteLine(string.Format("ErrorMessage: {0}\n", response.GetErrorMessage()));
-        }
+        if (!response.IsSuccessStatusCode)
+            throw new EmailException("Message couldn't be sent");
     }
     private MailjetRequest GetMailjetRequest(IEnumerable<EmailDTO> emails, string subject, string text, string html)
     {

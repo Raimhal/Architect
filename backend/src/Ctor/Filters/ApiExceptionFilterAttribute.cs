@@ -14,9 +14,10 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
             {
                 { typeof(ValidationException), HandleValidationException },
                 { typeof(NotFoundException), HandleNotFoundException },
-                { typeof(AlreadyExistsException), HandleAlreadyExistsExceptoin },
+                { typeof(AlreadyExistsException), HandleAlreadyExistsException },
                 { typeof(UnauthorizedAccessException), HandleUnauthorizedAccessException },
                 { typeof(ForbiddenAccessException), HandleForbiddenAccessException },
+                { typeof(EmailException), HandleEmailException },
             };
     }
 
@@ -119,7 +120,7 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
         context.ExceptionHandled = true;
     }
 
-    private void HandleAlreadyExistsExceptoin(ExceptionContext context)
+    private void HandleAlreadyExistsException(ExceptionContext context)
     {
         var exception = (AlreadyExistsException)context.Exception;
 
@@ -134,6 +135,26 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
         context.Result = new ObjectResult(details)
         {
             StatusCode = StatusCodes.Status409Conflict
+        };
+
+        context.ExceptionHandled = true;
+    }
+
+    private void HandleEmailException(ExceptionContext context)
+    {
+        var exception = (EmailException)context.Exception;
+
+        var details = new ProblemDetails
+        {
+            Status = StatusCodes.Status503ServiceUnavailable,
+            Title = "Email Service Unavailable",
+            Type = "https://tools.ietf.org/html/rfc7231#section-6.6.4",
+            Detail = exception.Message
+        };
+
+        context.Result = new ObjectResult(details)
+        {
+            StatusCode = StatusCodes.Status503ServiceUnavailable
         };
 
         context.ExceptionHandled = true;

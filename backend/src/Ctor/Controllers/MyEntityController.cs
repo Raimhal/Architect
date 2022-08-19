@@ -27,7 +27,7 @@ public class MyEntityController : ApiControllerBase
     }
     [HttpGet]
     [Route("sendMail")]
-    public async Task<ActionResult<MyEntityDto>> SendMail(int id)
+    public async Task<IActionResult> SendMail()
     {
         var emailDTOs = new List<EmailDTO>() {
             new EmailDTO(){
@@ -36,7 +36,7 @@ public class MyEntityController : ApiControllerBase
             }
         };
         await _emailService.SendAsync(emailDTOs, "Test", "Text", "<h2>Hello may brither</h2>");
-        return Ok();
+        return NoContent();
     }
 
     [HttpPost("getToken")]
