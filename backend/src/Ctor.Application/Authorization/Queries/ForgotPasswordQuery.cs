@@ -11,7 +11,7 @@ using MediatR;
 using Microsoft.Extensions.Logging;
 
 namespace Ctor.Application.Authorization.Queries;
-public class ForgotPasswordQuery : IRequest<Task>
+public class ForgotPasswordQuery : IRequest<Unit>
 {
     public ForgotPasswordQuery(ForgotPasswordDTO passwordDTO)
     {
@@ -20,7 +20,7 @@ public class ForgotPasswordQuery : IRequest<Task>
     public string Email { get; }
 }
 
-public class ForgotPasswordQueryHandler : IRequestHandler<ForgotPasswordQuery,Task>
+public class ForgotPasswordQueryHandler : IRequestHandler<ForgotPasswordQuery, Unit>
 {
     private readonly IApplicationDbContext _context;
     private readonly IEmailService _emailService;
@@ -39,10 +39,10 @@ public class ForgotPasswordQueryHandler : IRequestHandler<ForgotPasswordQuery,Ta
         _securityService = securityService;
     }
 
-    public async Task<Task> Handle(ForgotPasswordQuery request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(ForgotPasswordQuery request, CancellationToken cancellationToken)
     {
         var user = await _context.Users.SingleOrDefault(x => x.UserEmail == request.Email);
-        if (user==null)
+        if (user == null)
         {
             throw new NotFoundException("Email not found");
         }
@@ -59,7 +59,7 @@ public class ForgotPasswordQueryHandler : IRequestHandler<ForgotPasswordQuery,Ta
         };
         
         var html = $"<h2>Forgot Password</h2> <p>{password}</p>";
-        return _emailService.SendAsync(emails, "Forgor Password", "Forgot Password", html);     
-
+        await _emailService.SendAsync(emails, "Forgor Password", "Forgot Password", html);
+        return Unit.Value;
     }
 }

@@ -12,11 +12,7 @@ public class AuthorizationController : ApiControllerBase
     [HttpPost("forgotPassword")]
     public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDTO passwordDTO)
     {
-        var isSuccess = await Mediator.Send(new ForgotPasswordQuery(passwordDTO));
-        if (isSuccess)
-        {
-            return Ok();
-        }
+        return Ok(await Mediator.Send(new ForgotPasswordQuery(passwordDTO)));
 
         return BadRequest();
     }
