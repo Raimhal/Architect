@@ -26,12 +26,18 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRippleModule } from '@angular/material/core';
 import { AlertModule } from './modules/alert/alert.module';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { MenuComponent } from './core/shell/menu/menu.component';
+import {MatIconModule} from "@angular/material/icon";
+import {MatSidenavModule} from "@angular/material/sidenav";
+import { LandingPageComponent } from './core/shell/landing-page/landing-page.component';
 import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    CreateCompany
+    CreateCompany,
+    MenuComponent,
+    LandingPageComponent
   ],
   imports: [
     BrowserModule,
@@ -68,7 +74,9 @@ import { SharedModule } from './shared/shared.module';
     MatFormFieldModule,
     MatInputModule,
     MatRippleModule,
-    NgxSpinnerModule.forRoot({ type: 'ball-scale-multiple' })
+    NgxSpinnerModule.forRoot({type: 'ball-scale-multiple'}),
+    MatIconModule,
+    MatSidenavModule
   ],
   providers: [],
   bootstrap: [AppComponent],

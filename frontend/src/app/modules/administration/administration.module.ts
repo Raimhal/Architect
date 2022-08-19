@@ -1,6 +1,5 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {AdministrationComponent} from './administration.component';
 import {MatSidenavModule} from "@angular/material/sidenav";
 import {MatListModule} from "@angular/material/list";
 import {AddCompanyMemberComponent} from './add-company-member/add-company-member.component';
@@ -27,14 +26,12 @@ import {MatCardModule} from '@angular/material/card';
 
 @NgModule({
   declarations: [
-    AdministrationComponent,
     CompanyListComponent,
     CompanyOverviewComponent,
     AddCompanyMemberComponent,
     CompanyInformationComponent
   ],
   exports: [
-    AdministrationComponent,
     CompanyInformationComponent
   ],
   imports: [

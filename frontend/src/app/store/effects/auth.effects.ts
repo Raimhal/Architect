@@ -13,7 +13,7 @@ export class AuthEffects {
       ofType(AuthActions.login),
       concatMap((action) =>
         // do login
-        of(AuthActions.loginSuccess({ user: {id: 1, email: action.email }, askToChangePassword: true }))
+        of(AuthActions.loginSuccess({ user: {id: 1, email: action.email, role: "Admin" }, askToChangePassword: false }))
       )
     );
   });

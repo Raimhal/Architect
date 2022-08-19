@@ -23,8 +23,10 @@ export class RouteEffects {
           if (state.askToChangePassword) {
             return this.route.navigate(['/login/change-default-password'])
           }
-
-          return this.route.navigate(['/home'])
+          if (state.user.role == "Admin"){
+            return this.route.navigate(['/administration'])
+          }
+          return this.route.navigate(['/projects'])
         })
       ),
     { dispatch: false }

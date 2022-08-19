@@ -40,6 +40,8 @@ import { MatButtonModule } from "@angular/material/button";
     MatIconModule,
     MatButtonModule,
   ],
-  exports: [],
+    exports: [
+        AuthPageLayoutComponent
+    ],
 })
 export class AuthModule {}

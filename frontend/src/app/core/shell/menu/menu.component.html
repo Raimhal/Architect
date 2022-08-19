@@ -1,0 +1,37 @@
+<mat-sidenav-container class="nav-container" autosize>
+  <mat-sidenav mode="side" opened class="nav-side">
+    <ng-container *ngIf="opened">
+      <ng-container *ngIf="isAdmin$ | async">
+        <h1 class="nav-header" (click)="toggleOpened()">Ctor</h1>
+          <div class="nav-list">
+            <a class="nav-item main-text"
+               *ngFor="let route of adminRoutes"
+               [class.selected]="selectedRoute == route.path"
+               routerLink="{{route.path}}"
+               (click)="onSelect(route.path)">{{route.name}}</a>
+          </div>
+      </ng-container>
+      <ng-container *ngIf="!(isAdmin$ | async)">
+        <h1 class="secondary-nav-header" (click)="toggleOpened()">Ctor</h1>
+        <img src="" alt="Logo">
+        <div class="nav-list">
+          <a class="nav-item main-text"
+             *ngFor="let route of otherRoutes"
+             [class.selected]="selectedRoute == route.path"
+             routerLink="{{route.path}}"
+             (click)="onSelect(route.path)">{{route.name}}</a>
+        </div>
+      </ng-container>
+    </ng-container>
+    <ng-container *ngIf="!opened">
+      <div class="nav-hide">
+        <a (click)="toggleOpened()">
+          <mat-icon svgIcon="caret-left-grey"></mat-icon>
+        </a>
+      </div>
+    </ng-container>
+  </mat-sidenav>
+  <mat-sidenav-content>
+      <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

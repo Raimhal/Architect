@@ -1,2 +1,4 @@
 <ngx-spinner></ngx-spinner>
-<router-outlet></router-outlet>
+<!-- if user is unauthorised <landing-page></landing-page> -->
+<router-outlet *ngIf="!(userIsLoggedIn$ | async)"></router-outlet>
+<app-menu *ngIf="userIsLoggedIn$ | async"></app-menu>

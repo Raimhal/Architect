@@ -38,3 +38,10 @@ export const selectUserRole = createSelector(
     return "";
   }
 )
+
+export const selectUserIsAdmin = createSelector(
+  selectAuthState,
+  selectUser,
+  selectUserRole,
+  (state : fromAuth.State) =>  state.user?.role == "Admin"
+)
