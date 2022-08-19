@@ -246,7 +246,7 @@ public class ApplicationDbContextInitialiser
             await _context.Companies.AddRangeAsync(
                 new Company
                 {
-                    Id = 1,
+                    CompanyId = 9743953,
                     CompanyName = "EloECorporation",
                     Country = "Poland",
                     City = "Krakow",
@@ -256,7 +256,7 @@ public class ApplicationDbContextInitialiser
                 },
                 new Company
                 {
-                    Id = 2,
+                    CompanyId = 6437326, 
                     CompanyName = "SigCop",
                     Country = "Ukraine",
                     City = "Lviv",
@@ -266,7 +266,7 @@ public class ApplicationDbContextInitialiser
                 },
                 new Company
                 {
-                    Id = 3,
+                    CompanyId = 4264658,
                     CompanyName = "Pegas",
                     Country = "UK",
                     City = "London",
@@ -276,7 +276,7 @@ public class ApplicationDbContextInitialiser
                 },
                 new Company
                 {
-                    Id = 4,
+                    CompanyId = 1436347,
                     CompanyName = "LeadOf",
                     Country = "US",
                     City = "New York",
@@ -286,7 +286,7 @@ public class ApplicationDbContextInitialiser
                 },
                 new Company
                 {
-                    Id = 5,
+                    CompanyId = 9234198,
                     CompanyName = "CastelCas",
                     Country = "US",
                     City = "Seattle",

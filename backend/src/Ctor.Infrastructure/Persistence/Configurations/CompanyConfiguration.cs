@@ -9,6 +9,7 @@ public class CompanyConfiguration : IEntityTypeConfiguration<Company>
     {
         builder.ToTable("Company").HasKey(x => x.Id);
         builder.HasIndex(x => x.Id).IsUnique();
+        builder.Property(x => x.CompanyId).IsRequired();
         builder.Property(x => x.CompanyName).IsRequired();
         builder.Property(x => x.Country).IsRequired();
         builder.Property(x => x.City).IsRequired();

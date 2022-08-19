@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Ctor.Application.Companies.Queries;
+using Ctor.Application.Companies.Commands;
 
 namespace Ctor.Controllers;
 
@@ -11,5 +12,16 @@ public class CompanyController : ApiControllerBase
                                                                                    [FromQuery(Name = "sort")] string sort)
     {
         return await Mediator.Send(new GetCompaniesOverviewQuery(filter, sort));
+    }
+
+    [HttpPost]
+    [Route("create")]
+    public async Task<IActionResult> CreateCompany(NewCompanyDto model)
+    {
+        if (!ModelState.IsValid) return BadRequest("Model is not valid");
+        var createdCompany = Mediator.Send(new CreateCompanyCommand(model));
+        if (createdCompany.Result == 409) return Conflict("Already exist");
+        if (createdCompany.Result == 500) return BadRequest("Error creating a new company.");
+        return StatusCode(201);
     }
 }

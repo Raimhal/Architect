@@ -3,6 +3,7 @@
 namespace Ctor.Domain.Entities;
 public class Company : BaseEntity
 {
+    public long CompanyId { get; set; }
     public string CompanyName { get; set; }
     public string Country { get; set; }
     public string City { get; set; }
