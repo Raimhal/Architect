@@ -248,7 +248,7 @@ public class ApplicationDbContextInitialiser
                 {
                     Id = 1,
                     CompanyName = "EloECorporation",
-                    County = "Poland",
+                    Country = "Poland",
                     City = "Krakow",
                     Address = "Street 1/32",
                     Email = "1a@Eloe.com",
@@ -258,7 +258,7 @@ public class ApplicationDbContextInitialiser
                 {
                     Id = 2,
                     CompanyName = "SigCop",
-                    County = "Ukraine",
+                    Country = "Ukraine",
                     City = "Lviv",
                     Address = "Street 13/5B",
                     Email = "2a@SigCop.com",
@@ -268,7 +268,7 @@ public class ApplicationDbContextInitialiser
                 {
                     Id = 3,
                     CompanyName = "Pegas",
-                    County = "UK",
+                    Country = "UK",
                     City = "London",
                     Address = "Street 221",
                     Email = "3a@Eloe.com",
@@ -278,7 +278,7 @@ public class ApplicationDbContextInitialiser
                 {
                     Id = 4,
                     CompanyName = "LeadOf",
-                    County = "US",
+                    Country = "US",
                     City = "New York",
                     Address = "Street 1",
                     Email = "4a@Eloe.com",
@@ -288,7 +288,7 @@ public class ApplicationDbContextInitialiser
                 {
                     Id = 5,
                     CompanyName = "CastelCas",
-                    County = "US",
+                    Country = "US",
                     City = "Seattle",
                     Address = "Street 3",
                     Email = "5a@Eloe.com",
