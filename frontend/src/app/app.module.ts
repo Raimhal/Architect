@@ -16,7 +16,6 @@ import { AlertEffects } from './store/effects/alert.effects';
 import { RouteEffects } from './store/effects/route.effects';
 import { ModalEffects } from './store/effects/modal.effects';
 import { AuthEffects } from './store/effects/auth.effects';
-import { SharedModule } from './shared/shared.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { MyEntityModule } from './modules/my-entity/my-entity.module';
 import {AdministrationModule} from "./modules/administration/administration.module";
@@ -27,6 +26,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRippleModule } from '@angular/material/core';
 import { AlertModule } from './modules/alert/alert.module';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
