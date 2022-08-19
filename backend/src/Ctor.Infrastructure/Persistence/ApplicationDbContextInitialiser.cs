@@ -251,7 +251,8 @@ public class ApplicationDbContextInitialiser
                     County = "Poland",
                     City = "Krakow",
                     Address = "Street 1/32",
-                    Email = "1a@Eloe.com"
+                    Email = "1a@Eloe.com",
+                    JoinDate = DateTime.UtcNow
                 },
                 new Company
                 {
@@ -260,7 +261,8 @@ public class ApplicationDbContextInitialiser
                     County = "Ukraine",
                     City = "Lviv",
                     Address = "Street 13/5B",
-                    Email = "2a@SigCop.com"
+                    Email = "2a@SigCop.com",
+                    JoinDate = DateTime.UtcNow
                 },
                 new Company
                 {
@@ -269,7 +271,8 @@ public class ApplicationDbContextInitialiser
                     County = "UK",
                     City = "London",
                     Address = "Street 221",
-                    Email = "3a@Eloe.com"
+                    Email = "3a@Eloe.com",
+                    JoinDate = DateTime.UtcNow
                 },
                 new Company
                 {
@@ -278,7 +281,8 @@ public class ApplicationDbContextInitialiser
                     County = "US",
                     City = "New York",
                     Address = "Street 1",
-                    Email = "4a@Eloe.com"
+                    Email = "4a@Eloe.com",
+                    JoinDate = DateTime.UtcNow
                 },
                 new Company
                 {
@@ -287,7 +291,8 @@ public class ApplicationDbContextInitialiser
                     County = "US",
                     City = "Seattle",
                     Address = "Street 3",
-                    Email = "5a@Eloe.com"
+                    Email = "5a@Eloe.com",
+                    JoinDate = DateTime.UtcNow
                 });
         }
         if (!_context.Projects.Any())

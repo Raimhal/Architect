@@ -14,6 +14,7 @@ public class CompanyConfiguration : IEntityTypeConfiguration<Company>
         builder.Property(x => x.City).IsRequired();
         builder.Property(x => x.Address).IsRequired();
         builder.Property(x => x.Email).IsRequired();
+        builder.Property(x => x.JoinDate).IsRequired();
         builder.HasMany(x => x.Materials)
             .WithOne(x => x.Company)
             .OnDelete(DeleteBehavior.Cascade);
