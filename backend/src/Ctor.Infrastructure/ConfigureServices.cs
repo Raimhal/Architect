@@ -49,8 +49,11 @@ public static class ConfigureServices
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
         services.AddScoped<ApplicationDbContextInitialiser>();
+    
         services.AddTransient<IDateTime, DateTimeService>();
         services.AddScoped<IEmailService, EmailService>();
+        services.AddScoped<ISecurityService, SecurityService>();
+        services.AddScoped<IPasswordService, PasswordService>();
 
         services.AddAuthentication(opt => {
             opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

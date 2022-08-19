@@ -13,6 +13,10 @@ export const selectUser = createSelector(
   selectAuthState,
   (state: fromAuth.State): fromAuth.User | null => state.user
 );
+export const selectUserId = createSelector(
+  selectAuthState,
+  (state: fromAuth.State): number|undefined => state.user?.id
+);
 
 export const selectIsLoggedIn = createSelector(
   selectUser,

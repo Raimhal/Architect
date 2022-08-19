@@ -1,5 +1,8 @@
+import { Location } from '@angular/common';
 import { Component } from '@angular/core';
-import { Router } from "@angular/router";
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/store';
+import { goBack } from 'src/app/store/actions/route.actions';
 
 @Component({
   selector: 'app-auth-page-layout',
@@ -8,10 +11,10 @@ import { Router } from "@angular/router";
 })
 export class AuthPageLayoutComponent {
 
-  constructor(private router: Router) {
+  constructor(private store: Store<AppState>) {
   }
 
   goBack() {
-    return this.router.navigate(['..']);
+    this.store.dispatch(goBack())
   }
 }

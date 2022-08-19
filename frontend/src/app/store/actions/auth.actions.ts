@@ -1,4 +1,5 @@
 import { createAction, props } from "@ngrx/store";
+import { HttError } from "src/app/modules/error/resources/models/httpError";
 
 export const login = createAction(
   '[Auth] Login User',
@@ -30,4 +31,16 @@ export const changePasswordSuccess = createAction(
 export const changePasswordFailure = createAction(
   '[Auth] Change Password Failure',
   props<{ error: any }>()
+);
+
+export const forgotPassword = createAction(
+  '[Auth] Forgot Password',
+  props<{ email: string}>()
+);
+export const forgotPasswordSuccess = createAction(
+  '[Auth] Forgot Password Success'
+);
+export const forgotPasswordFailure = createAction(
+  '[Auth] Forgot Password Failure',
+  props<{ error: HttError}>()
 );

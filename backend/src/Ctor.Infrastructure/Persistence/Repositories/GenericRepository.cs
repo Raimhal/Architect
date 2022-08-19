@@ -141,4 +141,12 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
 
         return (await query.ToListAsync(), countEntities);
     }
+
+    public Task<T> SingleOrDefault(Expression<Func<T, bool>> filter)
+    {
+        IQueryable<T> query = table;
+
+        query = query.Where(filter);
+        return query.SingleOrDefaultAsync();
+    }
 }

@@ -9,6 +9,7 @@ using Ctor.Domain.Common;
 namespace Ctor.Domain.Repositories;
 public interface IGenericRepository<T> where T : BaseEntity
 {
+    Task<T> SingleOrDefault(Expression<Func<T, bool>> filter);
     Task<List<T>> Get(Expression<Func<T, bool>> filter);
     Task<List<T>> GetOrdered(Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
         Expression<Func<T, bool>> filter = null);

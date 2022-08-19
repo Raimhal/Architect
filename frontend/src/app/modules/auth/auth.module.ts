@@ -17,6 +17,8 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatIconModule } from "@angular/material/icon";
 import { MatButtonModule } from "@angular/material/button";
+import { ForgotPasswordComponent } from './auth-forgot-password/auth-forgot-password';
+import { AuthService } from './resources/services/auth.service';
 
 @NgModule({
   declarations: [
@@ -24,6 +26,7 @@ import { MatButtonModule } from "@angular/material/button";
     AuthLoginFormComponent,
     AuthChangeDefaultPasswordFormComponent,
     AuthChangePasswordFormComponent,
+    ForgotPasswordComponent
   ],
   imports: [
     CommonModule,
@@ -43,5 +46,9 @@ import { MatButtonModule } from "@angular/material/button";
     exports: [
         AuthPageLayoutComponent
     ],
+
+  providers: [
+    AuthService
+  ]
 })
 export class AuthModule {}

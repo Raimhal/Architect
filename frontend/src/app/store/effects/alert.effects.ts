@@ -5,6 +5,8 @@ import * as fromAdministrationActions from '../../modules/administration/state/a
 import { tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { AlertService } from 'src/app/modules/alert/resources/services/alert.service';
+import { HttError } from 'src/app/modules/error/resources/models/httpError';
+import { ErrorService } from 'src/app/modules/error/resources/services/error.services';
 
 
 @Injectable()
@@ -14,8 +16,8 @@ export class AlertEffects {
       this.actions$.pipe(
         ofType(fromAuthActions.login),
         tap(() => {
-            this._alertService.showAlert("login success", "OK", "success")
-          }
+          this._alertService.showAlert("login success", "OK", "success")
+        }
         )
       ),
     { dispatch: false }
@@ -25,8 +27,8 @@ export class AlertEffects {
       this.actions$.pipe(
         ofType(fromAdministrationActions.addNewMemberSuccess),
         tap(() => {
-            this._alertService.showAlert("Member was added successfully", "OK", "success")
-          }
+          this._alertService.showAlert("Member was added successfully", "OK", "success")
+        }
         )
       ),
     { dispatch: false }
@@ -36,8 +38,31 @@ export class AlertEffects {
       this.actions$.pipe(
         ofType(fromAdministrationActions.addNewMemberFailure),
         tap(() => {
-            this._alertService.showAlert("Failed to add member", "OK", "error")
-          }
+          this._alertService.showAlert("Failed to add member", "OK", "error")
+        }
+        )
+      ),
+    { dispatch: false }
+  );
+
+  resetPasswordError$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(fromAuthActions.forgotPasswordFailure),
+        tap((action) => {
+          this._alertService.showAlert(this.errorService.getErrorMessage(action.error,"Forgot Password") , "OK", "error")
+        }
+        )
+      ),
+    { dispatch: false }
+  );
+  resetPasswordSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(fromAuthActions.forgotPasswordSuccess),
+        tap(() => {
+          this._alertService.showAlert("Reset password success", "OK", "success")
+        }
         )
       ),
     { dispatch: false }
@@ -52,7 +77,7 @@ export class AlertEffects {
       })
     )
   },
-    {dispatch: false});
+    { dispatch: false });
 
-  constructor(private actions$: Actions, private _alertService: AlertService) {}
+  constructor(private actions$: Actions, private _alertService: AlertService,private errorService:ErrorService) { }
 }

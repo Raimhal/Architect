@@ -33,7 +33,7 @@ else
 app.UseHealthChecks("/health");
 app.UseHttpsRedirection();
 
-app.UseCors(builder => builder.AllowAnyOrigin());
+app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyHeader());
 
 app.UseAuthentication();
 app.UseAuthorization();
