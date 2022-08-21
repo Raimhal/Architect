@@ -23,6 +23,7 @@ import {FormsModule} from "@angular/forms";
 import {CompanyInformationComponent} from './company-information/company-information.component';
 import {ScrollingModule} from '@angular/cdk/scrolling';
 import {MatCardModule} from '@angular/material/card';
+import { NgrxFormsModule } from 'ngrx-forms';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import {MatCardModule} from '@angular/material/card';
     MatIconModule,
     ScrollingModule,
     MatCardModule,
+    NgrxFormsModule
   ],
   providers: [
     AdministrationApiService

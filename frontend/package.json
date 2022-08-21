@@ -24,6 +24,7 @@
     "@ngrx/router-store": "^14.1.0",
     "@ngrx/store": "^14.1.0",
     "@ngrx/store-devtools": "^14.1.0",
+    "ngrx-forms": "^7.0.0",
     "ngx-spinner": "^14.0.0",
     "rxjs": "~7.5.0",
     "serialize-error": "^11.0.0",

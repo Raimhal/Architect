@@ -12,6 +12,7 @@
       <div class="logo">
         <img
           class="logo-img"
+          alt="Logo"
           src="{{ company.image }}"
           (click)="selectImage.click()"
         />
@@ -28,32 +29,83 @@
         <p>Description</p>
       </div>
     </div>
+
     <div class="content">
       <mat-card class="card-1">
-        <mat-card-title-group>
-          <mat-card-title>
-            <span>Information</span>
-          </mat-card-title>
-          <mat-card-actions>
-            <button mat-icon-button aria-label="Pencil">
-              <mat-icon svgIcon="pencil"></mat-icon>
-            </button>
-          </mat-card-actions>
-        </mat-card-title-group>
+        <ng-container *ngIf="companyInformationForm$ | async as companyForm">
+          <mat-card-title-group>
+            <mat-card-title>
+              <span>Information</span>
+            </mat-card-title>
+            <mat-card-actions>
+              <button
+                *ngIf="!isEditEnabled"
+                mat-icon-button
+                aria-label="Pencil"
+                (click)="onFormEdit()"
+              >
+                <mat-icon svgIcon="pencil"></mat-icon>
+              </button>
+              <button
+                *ngIf="isEditEnabled"
+                disabled="{{ !companyForm.isValid }}"
+                mat-icon-button
+                aria-label="Save"
+                (click)="
+                  onSave(companyForm.value.address, companyForm.value.email)
+                "
+              >
+                <mat-icon>save</mat-icon>
+              </button>
+              <button
+                *ngIf="isEditEnabled"
+                mat-icon-button
+                aria-label="Pencil"
+                (click)="onCancel()"
+              >
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </mat-card-actions>
+          </mat-card-title-group>
 
-        <mat-card-content>
-          <div class="card-content">
-            <span>Join Date:</span>
-            <p>
-              {{ company.joinDate | date: 'dd.MM.yyyy' }}
+          <mat-card-content>
+            <form novalidate [ngrxFormState]="companyForm"></form>
+            <div class="card-content">
+              <label>Join Date:</label>
+              <p class="date">{{ company.joinDate | date: 'dd.MM.yyyy' }}</p>
+
+              <label for="addres">Address:</label>
+              <input
+                id="address"
+                class="company-information-input"
+                type="text"
+                [ngrxFormControlState]="companyForm.controls.address"
+              />
+
+              <label for="email">Email:</label>
+
+              <input
+                class="input"
+                matInput
+                id="email"
+                class="company-information-input"
+                type="email"
+                [ngrxFormControlState]="companyForm.controls.email"
+              />
+            </div>
+            <p class="warning" *ngIf="companyForm.errors['_address']?.required">
+              Address is required
             </p>
-            <span>Address:</span>
-            <p>{{ company.address }}</p>
-            <span>Email:</span>
-            <p>{{ company.email }}</p>
-          </div>
-        </mat-card-content>
+            <p class="warning" *ngIf="companyForm.errors['_email']?.required">
+              Email is required
+            </p>
+            <p class="warning" *ngIf="companyForm.errors['_email']?.email">
+              Please, enter valid email address
+            </p>
+          </mat-card-content>
+        </ng-container>
       </mat-card>
+
       <mat-card class="card-2">
         <mat-card-title-group>
           <mat-card-title>
@@ -68,6 +120,7 @@
             </button>
           </mat-card-actions>
         </mat-card-title-group>
+
         <mat-card-content>
           <cdk-virtual-scroll-viewport
             appendOnly
@@ -84,6 +137,7 @@
           </cdk-virtual-scroll-viewport>
         </mat-card-content>
       </mat-card>
+
       <mat-card class="card-3">
         <mat-card-title>Projects</mat-card-title>
         <mat-card-content></mat-card-content>

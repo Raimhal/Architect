@@ -6,7 +6,7 @@ export const selectAdministrationState =
     fromAdministration.administrationFeatureKey
   );
 
-export const selectOpenCompany = createSelector(
+export const selectCurrentlyOpenCompany = createSelector(
   selectAdministrationState,
   (state) => state.currentlyOpenCompany
 );
@@ -19,4 +19,9 @@ export const selectCompanies = createSelector(
 export const selectRoles = createSelector(
   selectAdministrationState,
   (state) => state.roles
+);
+
+export const selectCompanyInformationForm = createSelector(
+  selectAdministrationState,
+  (state) => state.companyInformationForm
 );

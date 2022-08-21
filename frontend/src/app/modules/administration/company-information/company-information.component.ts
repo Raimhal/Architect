@@ -7,8 +7,10 @@ import * as AdministrationSelectors from '../state/administration.selectors';
 import * as fromAdministrationActions from '../state/administration.actions';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
-import {MatDialog} from "@angular/material/dialog";
-import {AddCompanyMemberComponent} from "../add-company-member/add-company-member.component";
+import { MatDialog } from '@angular/material/dialog';
+import { AddCompanyMemberComponent } from '../add-company-member/add-company-member.component';
+import { FormGroupState } from 'ngrx-forms';
+import * as fromCompanyInformationForm from '../resources/forms/company-information-form';
 @Component({
   selector: 'app-company-information',
   templateUrl: './company-information.component.html',
@@ -16,21 +18,52 @@ import {AddCompanyMemberComponent} from "../add-company-member/add-company-membe
 })
 export class CompanyInformationComponent implements OnInit {
   companyDetailed$?: Observable<ICompanyDetailed | null>;
+  companyInformationForm$?: Observable<
+    FormGroupState<fromCompanyInformationForm.CompanyInformationFormValue>
+  >;
+  isEditEnabled: boolean = false;
   constructor(
     private store: Store<AppState>,
     private matIconRegistry: MatIconRegistry,
     private domSanitizer: DomSanitizer,
-    public dialog: MatDialog
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
     this.companyDetailed$ = this.store.pipe(
-      select(AdministrationSelectors.selectOpenCompany)
+      select(AdministrationSelectors.selectCurrentlyOpenCompany)
     );
 
+    this.companyInformationForm$ = this.store.pipe(
+      select(AdministrationSelectors.selectCompanyInformationForm)
+    );
+    this.store.dispatch(
+      fromAdministrationActions.loadDetailedCompany({ id: 1 })
+    );
     this.addSvgIcons();
   }
 
+  onFormEdit() {
+    this.isEditEnabled = true;
+    this.store.dispatch(fromAdministrationActions.editCompanyInformationForm());
+  }
+
+  onSave(address: string, email: string) {
+    this.isEditEnabled = false;
+    this.store.dispatch(
+      fromAdministrationActions.submitCompanyInformationForm({
+        address: address,
+        email: email,
+      })
+    );
+  }
+
+  onCancel() {
+    this.isEditEnabled = false;
+    this.store.dispatch(
+      fromAdministrationActions.cancelEditCompanyInformationForm()
+    );
+  }
   uploadImage(id: number, event: Event) {
     // const target = event.target as HTMLInputElement;
     // if (target.files !== null) {
@@ -69,9 +102,9 @@ export class CompanyInformationComponent implements OnInit {
     );
   }
 
-  openModal(companyId : number) {
+  openModal(companyId: number) {
     this.dialog.open(AddCompanyMemberComponent, {
-      data: companyId
+      data: companyId,
     });
   }
 }

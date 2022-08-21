@@ -2,12 +2,15 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Observable, EMPTY, of } from 'rxjs';
 import * as AdministrationActions from './administration.actions';
-import {catchError, map, concatMap, mergeMap} from 'rxjs/operators';
+import {catchError, map, concatMap, mergeMap, withLatestFrom, switchMap} from 'rxjs/operators';
 import {serializeError} from "serialize-error";
 
 
 import { AdministrationApiService } from '../resources/services/administration-api.service';
-
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/store';
+import * as AdministrationSelectors from './administration.selectors';
+import { ICompanyUpdate } from '../resources/models/company-update.model';
 @Injectable()
 export class AdministrationEffects {
 
@@ -97,28 +100,58 @@ export class AdministrationEffects {
             AdministrationActions.UploadCompanyImageSuccess({ path: path })
           ),
           catchError((error) =>
-            of(AdministrationActions.UploadCompanyImageFailur(error))
+            of(AdministrationActions.UploadCompanyImageFailure(error))
           )
         )
       )
     );
   });
-
-  loadRoles$ = createEffect(()=>{
+  updateCompanyInformationFormState = createEffect(() => {
     return this.actions$.pipe(
-      ofType(AdministrationActions.loadRoles),
-      mergeMap((action)=>
-        this.service.getAllRoles().pipe(
-          map((data)=>
-            AdministrationActions.loadRolesSuccess({roles: data})
-          ),
-          catchError((error)=>
-            of(AdministrationActions.loadRolesFailure({error:serializeError(error)}))
-          )
-        )
-      )
+      ofType(AdministrationActions.loadDetailedCompanySuccess),
+      map(() => AdministrationActions.loadDisabledCompanyInformationForm())
+    );
+  });
+  cancelCompanyInformationFormState = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(AdministrationActions.cancelEditCompanyInformationForm),
+      map(() => AdministrationActions.loadDisabledCompanyInformationForm())
+    );
+  });
+  submitCompanyInformationFormState = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(AdministrationActions.submitCompanyInformationForm),
+      withLatestFrom(
+        this.store.select(AdministrationSelectors.selectCurrentlyOpenCompany)
+      ),
+      switchMap(([action, company]) => {
+        return this.service
+          .putDetailedCompany({
+            id: company.id,
+            country: company.country,
+            city: company.city,
+            companyName: company.companyName,
+            email: action.email,
+            address: action.address,
+          } as ICompanyUpdate)
+          .pipe(
+            map((resultId) =>
+              AdministrationActions.loadDetailedCompany({ id: resultId })
+            ),
+            catchError((error) =>
+              of(
+                AdministrationActions.submitCompanyInformationFormFailure(serializeError(error))
+              )
+            )
+          );
+      })
     );
   })
-  constructor(private actions$: Actions, private service: AdministrationApiService) {}
-
+  submitCompanyInformationFormFailureEffects = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(AdministrationActions.submitCompanyInformationFormFailure),
+      map(() => AdministrationActions.loadDisabledCompanyInformationForm())
+    );
+  });
+  constructor(private actions$: Actions, private service: AdministrationApiService,  private store: Store<AppState>) {}
 }

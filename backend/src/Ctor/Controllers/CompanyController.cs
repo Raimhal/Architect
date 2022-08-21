@@ -24,4 +24,10 @@ public class CompanyController : ApiControllerBase
         if (createdCompany.Result == 500) return BadRequest("Error creating a new company.");
         return StatusCode(201);
     }
+
+    [HttpPut]
+    public async Task<ActionResult<CompanyIdResponseDto>> PutCompany([FromBody]CompanyDetailedRequestDto data)
+    {
+        return await Mediator.Send(new PutCompanyDetailedCommand(data));
+    }
 }

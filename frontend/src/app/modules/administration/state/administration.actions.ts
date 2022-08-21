@@ -86,7 +86,7 @@ export const UploadCompanyImageSuccess = createAction(
   props<{ path: string }>()
 );
 
-export const UploadCompanyImageFailur = createAction(
+export const UploadCompanyImageFailure = createAction(
   '[Company-information Component]  Upload Company Image Failure',
   props<{ error: any }>()
 );
@@ -101,4 +101,27 @@ export const loadRolesSuccess = createAction(
 export const loadRolesFailure = createAction(
   '[Add new member component] Failed to load roles',
   props<{error:any}>()
+);
+
+export const loadDisabledCompanyInformationForm = createAction(
+  '[Company-information Component] Load Company Information Form'
+);
+export const editCompanyInformationForm = createAction(
+  '[Company-information Component] Edit Company Information Form'
+);
+
+export const submitCompanyInformationForm = createAction(
+  '[Company-information Component] Submit Company Information Form',
+  props<{ email: string; address: string }>()
+);
+export const submitCompanyInformationFormSuccess = createAction(
+  '[Company-information Component] Submit Company Information Form Success',
+  props<{ result: ICompanyDetailed }>()
+);
+export const submitCompanyInformationFormFailure = createAction(
+  '[Company-information Component] Submit Company Information Form Failure',
+  props<{ error: any }>()
+);
+export const cancelEditCompanyInformationForm = createAction(
+  '[Company-information Component] Cancel Company Information Form'
 );
