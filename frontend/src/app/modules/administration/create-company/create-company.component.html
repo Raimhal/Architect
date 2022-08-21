@@ -11,7 +11,7 @@
 
     <mat-form-field class="full-width" appearance="fill">
       <mat-label class="label">Company name</mat-label>
-      <input [(ngModel)]="company.name" matInput
+      <input [(ngModel)]="company.companyname" matInput
              [formControl]="nameFormControl" [errorStateMatcher]="matcher">
       <mat-error *ngIf="nameFormControl.hasError('required')">
         Name is required

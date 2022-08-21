@@ -21,8 +21,9 @@ export class AdministrationApiService extends ApiService {
   postMember(data: IMember): Observable<number> {
     return this.post<number>(`/addMember`, data);
   }
+
   createCompany(date: INewCompanyDto): Observable<any> {
-    return this.http.put(this.ApiPath, date, {observe: 'response'});
+    return this.http.post(this.ApiPath + "/api/companies/create", date, {observe: 'response'});
   }
 
   getAllCompaniesWithParameters(filter : string, sort : string) : Observable<ICompanyOverview[]>{

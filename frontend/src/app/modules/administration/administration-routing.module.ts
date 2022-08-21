@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {RouterModule, Routes} from "@angular/router";
 import {CompanyListComponent} from "./company-list/company-list.component";
-import {CreateCompany} from "./createCompany/createCompany.component";
+import {CreateCompany} from "./create-company/create-company.component";
 import {CompanyInformationComponent} from "./company-information/company-information.component";
 import {HasRoleGuard} from "../../shared/has-role.guard";
 

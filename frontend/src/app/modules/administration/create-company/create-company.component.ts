@@ -9,8 +9,8 @@ import {MatDialogRef} from "@angular/material/dialog";
 
 @Component({
   selector: 'create-company',
-  templateUrl: './createCompany.component.html',
-  styleUrls: ['./createCompany.component.scss']
+  templateUrl: './create-company.component.html',
+  styleUrls: ['./create-company.component.scss']
 })
 export class CreateCompany implements OnInit {
   @Input() NewCompanyId: number = 0;
@@ -25,12 +25,12 @@ export class CreateCompany implements OnInit {
   constructor(private state: Store<AppState>,
               public dialogRef: MatDialogRef<CreateCompany>) {
     this.company = {
-      id: this.NewCompanyId,
+      companyid: this.NewCompanyId,
       address: '',
       city: '',
       country: '',
       email: '',
-      name: ''
+      companyname: ''
     }
   }
 

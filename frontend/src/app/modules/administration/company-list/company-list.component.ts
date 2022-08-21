@@ -11,7 +11,7 @@ import {ICompanyOverview} from "../resources/models/company-overview.model";
 import {FormControl} from "@angular/forms";
 import {map, tap} from "rxjs/operators";
 import {MatDialog} from "@angular/material/dialog";
-import {CreateCompany} from "../createCompany/createCompany.component";
+import {CreateCompany} from "../create-company/create-company.component";
 
 @Component({
   selector: 'app-company-list',

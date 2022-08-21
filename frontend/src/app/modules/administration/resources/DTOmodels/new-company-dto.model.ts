@@ -1,6 +1,6 @@
 export interface INewCompanyDto {
-  id: number;
-  name: string;
+  companyid: number;
+  companyname: string;
   email: string;
   country: string;
   city: string;
