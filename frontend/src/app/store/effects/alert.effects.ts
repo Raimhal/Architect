@@ -5,7 +5,6 @@ import * as fromAdministrationActions from '../../modules/administration/state/a
 import { tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { AlertService } from 'src/app/modules/alert/resources/services/alert.service';
-import { HttError } from 'src/app/modules/error/resources/models/httpError';
 import { ErrorService } from 'src/app/modules/error/resources/services/error.services';
 
 
