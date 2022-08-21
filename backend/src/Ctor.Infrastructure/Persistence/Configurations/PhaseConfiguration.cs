@@ -7,6 +7,10 @@ public class PhaseConfiguration : IEntityTypeConfiguration<Phase>
 {
     public void Configure(EntityTypeBuilder<Phase> builder)
     {
+        builder.Property(x => x.Id)
+            .UseIdentityByDefaultColumn()
+            .HasIdentityOptions(startValue: 100);
+
         builder.ToTable("Phase").HasKey(x => x.Id);
         builder.HasIndex(x => x.Id).IsUnique();
         builder.Property(x => x.PhaseName).IsRequired();

@@ -3,6 +3,7 @@ import {ICompanyOverview} from "../resources/models/company-overview.model";
 import {IMember} from "../resources/models/member.model";
 import { INewCompanyDto } from '../resources/DTOmodels/new-company-dto.model';
 import { ICompanyDetailed } from '../resources/models/company-detailed.model';
+import {IRole} from "../resources/models/role.model";
 
 export const loadAdministrations = createAction(
   '[Administration] Load Administrations'
@@ -88,4 +89,16 @@ export const UploadCompanyImageSuccess = createAction(
 export const UploadCompanyImageFailur = createAction(
   '[Company-information Component]  Upload Company Image Failure',
   props<{ error: any }>()
+);
+
+export const loadRoles = createAction(
+  '[Add new member component] Loads roles from backend'
+);
+export const loadRolesSuccess = createAction(
+  '[Add new member component] Roles loaded successfully',
+  props<{roles:IRole[]}>()
+);
+export const loadRolesFailure = createAction(
+  '[Add new member component] Failed to load roles',
+  props<{error:any}>()
 );

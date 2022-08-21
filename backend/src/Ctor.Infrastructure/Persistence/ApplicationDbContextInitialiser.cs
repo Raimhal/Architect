@@ -20,7 +20,7 @@ public class ApplicationDbContextInitialiser
     {
         try
         {
-            if (_context.Database.IsSqlServer())
+            if (_context.Database.IsNpgsql())
             {
                 await _context.Database.MigrateAsync();
             }
@@ -53,18 +53,29 @@ public class ApplicationDbContextInitialiser
                  new Role()
                  {
                      Id = 3,
-                     RoleName = "User"
+                     RoleName = "Project manager"
                  },
                  new Role()
                  {
                      Id = 2,
-                     RoleName = "Moderator"
+                     RoleName = "Operational manager"
                  },
                  new Role()
                  {
                      Id = 1,
                      RoleName = "Admin"
+                 },
+                 new Role()
+                 {
+                     Id = 4,
+                     RoleName = "Main engineer"
+                 },
+                 new Role()
+                 {
+                     Id = 5,
+                     RoleName = "Foreman"
                  });
+
 
         }
         if (!_context.Users.Any())
@@ -246,6 +257,7 @@ public class ApplicationDbContextInitialiser
             await _context.Companies.AddRangeAsync(
                 new Company
                 {
+                    Id=1,
                     CompanyId = 9743953,
                     CompanyName = "EloECorporation",
                     Country = "Poland",
@@ -256,6 +268,7 @@ public class ApplicationDbContextInitialiser
                 },
                 new Company
                 {
+                    Id=2,
                     CompanyId = 6437326, 
                     CompanyName = "SigCop",
                     Country = "Ukraine",
@@ -266,6 +279,7 @@ public class ApplicationDbContextInitialiser
                 },
                 new Company
                 {
+                    Id=3,
                     CompanyId = 4264658,
                     CompanyName = "Pegas",
                     Country = "UK",
@@ -276,6 +290,7 @@ public class ApplicationDbContextInitialiser
                 },
                 new Company
                 {
+                    Id=4,
                     CompanyId = 1436347,
                     CompanyName = "LeadOf",
                     Country = "US",
@@ -286,6 +301,7 @@ public class ApplicationDbContextInitialiser
                 },
                 new Company
                 {
+                    Id=5,
                     CompanyId = 9234198,
                     CompanyName = "CastelCas",
                     Country = "US",

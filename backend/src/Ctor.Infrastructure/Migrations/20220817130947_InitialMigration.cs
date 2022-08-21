@@ -16,7 +16,6 @@ namespace Ctor.Infrastructure.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    CompanyId = table.Column<long>(type: "bigint", nullable: false),
                     CompanyName = table.Column<string>(type: "text", nullable: false),
                     County = table.Column<string>(type: "text", nullable: false),
                     City = table.Column<string>(type: "text", nullable: false),

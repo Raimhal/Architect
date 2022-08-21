@@ -7,6 +7,7 @@ import {DomSanitizer} from "@angular/platform-browser";
 import {IMember} from "../models/member.model";
 import { INewCompanyDto } from '../DTOmodels/new-company-dto.model';
 import { ICompanyDetailed } from '../models/company-detailed.model';
+import {IRole} from "../models/role.model";
 
 @Injectable({
   providedIn: AdministrationApiService,
@@ -19,7 +20,7 @@ export class AdministrationApiService extends ApiService {
   }
 
   postMember(data: IMember): Observable<number> {
-    return this.post<number>(`/addMember`, data);
+    return this.post<number>(`/users`, data);
   }
 
   createCompany(date: INewCompanyDto): Observable<any> {
@@ -43,5 +44,9 @@ export class AdministrationApiService extends ApiService {
 
   postCompanyImage(id: Number, image: File): Observable<string> {
     return this.post<string>(`${this.ApiPath}\\postCompanyImage\\${id}`, image);
+  }
+
+  getAllRoles():Observable<IRole[]>{
+    return this.get<IRole[]>('/users/roles');
   }
 }

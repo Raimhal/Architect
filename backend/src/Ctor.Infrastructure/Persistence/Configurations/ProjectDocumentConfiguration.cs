@@ -7,6 +7,10 @@ public class ProjectDocumentConfiguration : IEntityTypeConfiguration<ProjectDocu
 {
     public void Configure(EntityTypeBuilder<ProjectDocument> builder)
     {
+        builder.Property(x => x.Id)
+            .UseIdentityByDefaultColumn()
+            .HasIdentityOptions(startValue: 100);
+
         builder.ToTable("ProjectDocument").HasKey(x => x.Id);
         builder.HasIndex(x => x.Id).IsUnique();
         builder.HasOne(x => x.Project)

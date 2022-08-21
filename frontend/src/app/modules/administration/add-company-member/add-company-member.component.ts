@@ -1,10 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {IMember} from "../resources/models/member.model";
-import {addNewMember} from "../state/administration.actions";
-import {Store} from "@ngrx/store";
+import {addNewMember, loadRoles} from "../state/administration.actions";
+import {select, Store} from "@ngrx/store";
 import {MatIconRegistry} from "@angular/material/icon";
 import {DomSanitizer} from "@angular/platform-browser";
-import {MatDialogRef} from "@angular/material/dialog";
+import {MatDialogRef, MatDialog, MAT_DIALOG_DATA} from "@angular/material/dialog";
+import {FormBuilder, Validators} from "@angular/forms";
+import {loginSuccess} from "../../../store/actions/auth.actions";
+import {IRole} from "../resources/models/role.model";
+import {selectRoles} from "../state/administration.selectors";
+import {Observable} from "rxjs";
+
 
 @Component({
   selector: 'app-add-company-member',
@@ -13,28 +19,40 @@ import {MatDialogRef} from "@angular/material/dialog";
 })
 export class AddCompanyMemberComponent implements OnInit {
 
-  newMember: IMember
+  roles$: Observable<IRole[]|null>
+
+  companyId: number
+  form = this.fb.group({
+    firstName: [''],
+    lastName:[''],
+    userEmail:['', Validators.email],
+    roleName:['']
+  })
 
   constructor(private store:Store,
               private matIconRegistry: MatIconRegistry,
               private domSanitizer: DomSanitizer,
-              private dialogRef: MatDialogRef<AddCompanyMemberComponent>) {
-    this.newMember = {} as IMember;
+              private dialogRef: MatDialogRef<AddCompanyMemberComponent>,
+              @Inject(MAT_DIALOG_DATA) public data: number,
+              private fb: FormBuilder) {
     this.matIconRegistry.addSvgIcon(
       'cross',
       this.domSanitizer.bypassSecurityTrustResourceUrl("assets/icons/Cross.svg")
     );
+    this.store.dispatch(loadRoles());
+    this.roles$=this.store.pipe(select(selectRoles));
+    this.companyId = this.data;
   }
 
   ngOnInit(): void {
+
   }
   onSubmit() {
-    if(this.newMember.position!=null
-    && this.newMember.email!=null
-    && this.newMember.firstName!=null
-    && this.newMember.lastName!=null){
-      this.store.dispatch(addNewMember({data:this.newMember}));
-    }
+      this.store.dispatch(addNewMember({data:{
+        ...this.form.value,
+          companyId: this.companyId
+        } as IMember
+      }));
   }
 
 }

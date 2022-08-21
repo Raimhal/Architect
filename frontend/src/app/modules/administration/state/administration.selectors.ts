@@ -14,4 +14,9 @@ export const selectOpenCompany = createSelector(
 export const selectCompanies = createSelector(
   selectAdministrationState,
   (state) => state.companies
-)
+);
+
+export const selectRoles = createSelector(
+  selectAdministrationState,
+  (state) => state.roles
+);

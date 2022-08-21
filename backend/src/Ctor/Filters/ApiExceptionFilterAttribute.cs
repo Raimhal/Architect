@@ -14,7 +14,7 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
             {
                 { typeof(ValidationException), HandleValidationException },
                 { typeof(NotFoundException), HandleNotFoundException },
-                { typeof(AlreadyExistsException), HandleAlreadyExistsException },
+                { typeof(AlreadyExistsException), HandleAlreadyExistsExceptoin },
                 { typeof(UnauthorizedAccessException), HandleUnauthorizedAccessException },
                 { typeof(ForbiddenAccessException), HandleForbiddenAccessException },
                 { typeof(EmailException), HandleEmailException },
@@ -120,7 +120,7 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
         context.ExceptionHandled = true;
     }
 
-    private void HandleAlreadyExistsException(ExceptionContext context)
+    private void HandleAlreadyExistsExceptoin(ExceptionContext context)
     {
         var exception = (AlreadyExistsException)context.Exception;
 

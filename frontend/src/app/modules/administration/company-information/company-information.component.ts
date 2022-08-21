@@ -20,7 +20,7 @@ export class CompanyInformationComponent implements OnInit {
     private store: Store<AppState>,
     private matIconRegistry: MatIconRegistry,
     private domSanitizer: DomSanitizer,
-    private dialog : MatDialog
+    public dialog: MatDialog
   ) {}
 
   ngOnInit(): void {

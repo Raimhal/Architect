@@ -45,8 +45,7 @@ export class AdministrationEffects {
             .pipe(
               map((result)=>
                 AdministrationActions.addNewMemberSuccess({data: {
-                  ...action.data,
-                    id: result
+                  ...action.data
                   }})),
               catchError(error=>of(AdministrationActions.addNewMemberFailure({
                 error: serializeError(error)
@@ -104,6 +103,22 @@ export class AdministrationEffects {
       )
     );
   });
+
+  loadRoles$ = createEffect(()=>{
+    return this.actions$.pipe(
+      ofType(AdministrationActions.loadRoles),
+      mergeMap((action)=>
+        this.service.getAllRoles().pipe(
+          map((data)=>
+            AdministrationActions.loadRolesSuccess({roles: data})
+          ),
+          catchError((error)=>
+            of(AdministrationActions.loadRolesFailure({error:serializeError(error)}))
+          )
+        )
+      )
+    );
+  })
   constructor(private actions$: Actions, private service: AdministrationApiService) {}
 
 }

@@ -8,6 +8,10 @@ public class MyEntityConfiguration : IEntityTypeConfiguration<MyEntity>
 {
     public void Configure(EntityTypeBuilder<MyEntity> builder)
     {
+        builder.Property(x => x.Id)
+            .UseIdentityByDefaultColumn()
+            .HasIdentityOptions(startValue: 100);
+
         builder.Property(t => t.Prop)
             .HasMaxLength(200)
             .IsRequired();

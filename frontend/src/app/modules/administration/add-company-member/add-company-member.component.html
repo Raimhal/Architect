@@ -1,4 +1,4 @@
-<mat-dialog-content class="wrapper">
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="wrapper">
   <div class="header-wrapper">
     <h2>Add a new Company Member</h2>
     <a mat-dialog-close class="header-button">
@@ -7,31 +7,24 @@
   </div>
   <mat-form-field appearance="fill">
     <mat-label>Position</mat-label>
-    <mat-select [(ngModel)]="newMember.position" required>
-      <mat-option value="Admin">Admin</mat-option>
-      <mat-option value="Operational manager">Operational manager</mat-option>
-      <mat-option value="Project manager">Project manager</mat-option>
-      <mat-option value="Main engineer">Main engineer</mat-option>
-      <mat-option value="Foreman">Foreman</mat-option>
+    <mat-select formControlName="roleName" required>
+      <mat-option *ngFor="let role of (roles$ | async)" value="{{role.roleName}}">{{role.roleName}}</mat-option>
     </mat-select>
-    <mat-error *ngIf="!newMember.position">Position is required</mat-error>
   </mat-form-field>
   <div class="fullname-wrapper">
     <mat-form-field  appearance="fill">
       <mat-label>First Name</mat-label>
-      <input [(ngModel)]="newMember.firstName" matInput required placeholder="David">
-      <mat-error *ngIf="!newMember.firstName">First name is required</mat-error>
+      <input formControlName="firstName" matInput required placeholder="David">
     </mat-form-field>
     <mat-form-field  appearance="fill">
       <mat-label>Last Name</mat-label>
-      <input [(ngModel)]="newMember.lastName" matInput required placeholder="Robinson">
-      <mat-error *ngIf="!newMember.lastName">Last name is required</mat-error>
+      <input formControlName="lastName" matInput required placeholder="Robinson">
     </mat-form-field>
   </div>
   <mat-form-field  appearance="fill">
     <mat-label>E-mail</mat-label>
-    <input [(ngModel)]="newMember.email" matInput placeholder="Ex. lastname@example.com" required>
-    <mat-error *ngIf="!newMember.email">Email is required</mat-error>
+    <input formControlName="userEmail" matInput placeholder="Ex. lastname@example.com" required type="email">
+    <mat-error *ngIf="form.get('userEmail')?.invalid">Email is not valid</mat-error>
   </mat-form-field>
-  <button (click)="onSubmit()" mat-raised-button color="primary">Generate Password and Send</button>
-</mat-dialog-content>
+  <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">Generate Password and Send</button>
+</form>

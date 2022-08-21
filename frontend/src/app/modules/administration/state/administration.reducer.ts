@@ -4,6 +4,7 @@ import {ICompanyOverview} from "../resources/models/company-overview.model";
 import {IMember} from "../resources/models/member.model";
 import {state} from "@angular/animations";
 import {ICompanyDetailed} from "../resources/models/company-detailed.model";
+import {IRole} from "../resources/models/role.model";
 
 export const administrationFeatureKey = 'administration';
 
@@ -11,6 +12,7 @@ export interface State {
   companies: ICompanyOverview[] | null;
   currentlyOpenCompany: ICompanyDetailed;
   error: any;
+  roles: IRole[]|null;
 }
 
 export const initialState: State = {
@@ -19,6 +21,7 @@ export const initialState: State = {
     members: [] as IMember[],
   } as ICompanyDetailed,
   error: null,
+  roles: null
 };
 
 export const reducer = createReducer(
@@ -45,7 +48,10 @@ export const reducer = createReducer(
       }
     }
   }),
-  on(AdministrationActions.addNewMemberFailure, (state) => state),
+  on(AdministrationActions.addNewMemberFailure, (state,action)=>({
+    ...state,
+    error: action.error
+  })),
   on(AdministrationActions.getAllCompaniesWithParamsSuccess, (state, action) => {
     return {
       ...state,
@@ -79,5 +85,13 @@ export const reducer = createReducer(
   on(AdministrationActions.UploadCompanyImageFailur, (state, action) => ({
     ...state,
     error: action.error,
+  })),
+  on(AdministrationActions.loadRolesSuccess, (state, action)=>({
+    ...state,
+    roles: action.roles
+  })),
+  on(AdministrationActions.loadRolesFailure, (state,action)=>({
+    ...state,
+    error: action.error
   }))
 );

@@ -22,7 +22,7 @@ public class EmailService : IEmailService
     {
         if (_mailSetting == null)
             throw new EmailException("Email settings not found");
-        
+
 
         MailjetClient client = new MailjetClient(
             _mailSetting.ApiKey,

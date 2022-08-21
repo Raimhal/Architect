@@ -7,6 +7,10 @@ public class MaterialConfiguration : IEntityTypeConfiguration<Material>
 {
     public void Configure(EntityTypeBuilder<Material> builder)
     {
+        builder.Property(x => x.Id)
+            .UseIdentityByDefaultColumn()
+            .HasIdentityOptions(startValue: 100);
+
         builder.ToTable("Material").HasKey(x => x.Id);
         builder.HasIndex(x => x.Id).IsUnique();
         builder.Property(x => x.RecourceName).IsRequired();

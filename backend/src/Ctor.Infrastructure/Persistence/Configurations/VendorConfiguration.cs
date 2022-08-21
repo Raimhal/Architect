@@ -7,6 +7,10 @@ public class VendorConfiguration : IEntityTypeConfiguration<Vendor>
 {
     public void Configure(EntityTypeBuilder<Vendor> builder)
     {
+        builder.Property(x => x.Id)
+            .UseIdentityByDefaultColumn()
+            .HasIdentityOptions(startValue: 100);
+
         builder.ToTable("Vendor").HasKey(x => x.Id);
         builder.HasIndex(x => x.Id).IsUnique();
         builder.Property(x => x.EntityName).IsRequired();

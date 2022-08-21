@@ -24,7 +24,7 @@ export class CompanyOverviewComponent implements OnInit {
     this.store.dispatch(
       fromAdministrationActions.loadDetailedCompany({ id: id })
     );
-    return this.route.navigate(['administration/company-information']);
+    return this.route.navigate(['company-information']);
   }
 
 

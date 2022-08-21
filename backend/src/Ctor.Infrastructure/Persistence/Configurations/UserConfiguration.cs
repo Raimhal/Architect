@@ -7,6 +7,10 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)
     {
+        builder.Property(x => x.Id)
+            .UseIdentityByDefaultColumn()
+            .HasIdentityOptions(startValue: 100);
+
         builder.ToTable("User").HasKey(x => x.Id);
         builder.HasIndex(x=>x.Id).IsUnique();
         builder.Property(x => x.FirstName).IsRequired();
@@ -14,8 +18,8 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(x=>x.UserEmail).IsRequired();
         builder.Property(x => x.Password).IsRequired();
         builder.HasOne(x => x.Role)
-            .WithOne(x => x.Users)
-            .HasForeignKey<Role>(x => x.UserId)
+            .WithMany(x => x.Users)
+            .HasForeignKey(x => x.RoleId)
             .OnDelete(DeleteBehavior.NoAction);
         builder.HasOne(x => x.Project)
             .WithOne(x => x.User)

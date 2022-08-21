@@ -3,6 +3,7 @@ using System;
 using Ctor.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Ctor.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220818171017_RoleOneToMany")]
+    partial class RoleOneToMany
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,7 +31,6 @@ namespace Ctor.Infrastructure.Migrations
                         .HasColumnType("bigint");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-                    NpgsqlPropertyBuilderExtensions.HasIdentityOptions(b.Property<long>("Id"), 100L, null, null, null, null, null);
 
                     b.Property<int>("BlockType")
                         .HasColumnType("integer");
@@ -58,7 +59,6 @@ namespace Ctor.Infrastructure.Migrations
                         .HasColumnType("bigint");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-                    NpgsqlPropertyBuilderExtensions.HasIdentityOptions(b.Property<long>("Id"), 100L, null, null, null, null, null);
 
                     b.Property<string>("BuildingBlockName")
                         .IsRequired()
@@ -89,7 +89,6 @@ namespace Ctor.Infrastructure.Migrations
                         .HasColumnType("bigint");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-                    NpgsqlPropertyBuilderExtensions.HasIdentityOptions(b.Property<long>("Id"), 100L, null, null, null, null, null);
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -99,14 +98,11 @@ namespace Ctor.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<long>("CompanyId")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("CompanyName")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Country")
+                    b.Property<string>("County")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -132,7 +128,6 @@ namespace Ctor.Infrastructure.Migrations
                         .HasColumnType("bigint");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-                    NpgsqlPropertyBuilderExtensions.HasIdentityOptions(b.Property<long>("Id"), 100L, null, null, null, null, null);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -157,7 +152,6 @@ namespace Ctor.Infrastructure.Migrations
                         .HasColumnType("bigint");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-                    NpgsqlPropertyBuilderExtensions.HasIdentityOptions(b.Property<long>("Id"), 100L, null, null, null, null, null);
 
                     b.Property<int>("Amount")
                         .HasColumnType("integer");
@@ -192,7 +186,6 @@ namespace Ctor.Infrastructure.Migrations
                         .HasColumnType("bigint");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-                    NpgsqlPropertyBuilderExtensions.HasIdentityOptions(b.Property<long>("Id"), 100L, null, null, null, null, null);
 
                     b.Property<string>("Prop")
                         .IsRequired()
@@ -211,7 +204,6 @@ namespace Ctor.Infrastructure.Migrations
                         .HasColumnType("bigint");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-                    NpgsqlPropertyBuilderExtensions.HasIdentityOptions(b.Property<long>("Id"), 100L, null, null, null, null, null);
 
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("timestamp with time zone");
@@ -247,7 +239,6 @@ namespace Ctor.Infrastructure.Migrations
                         .HasColumnType("bigint");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-                    NpgsqlPropertyBuilderExtensions.HasIdentityOptions(b.Property<long>("Id"), 100L, null, null, null, null, null);
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -308,7 +299,6 @@ namespace Ctor.Infrastructure.Migrations
                         .HasColumnType("bigint");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-                    NpgsqlPropertyBuilderExtensions.HasIdentityOptions(b.Property<long>("Id"), 100L, null, null, null, null, null);
 
                     b.Property<long?>("DocumentId")
                         .IsRequired()
@@ -337,7 +327,6 @@ namespace Ctor.Infrastructure.Migrations
                         .HasColumnType("bigint");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-                    NpgsqlPropertyBuilderExtensions.HasIdentityOptions(b.Property<long>("Id"), 100L, null, null, null, null, null);
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("timestamp with time zone");
@@ -373,7 +362,6 @@ namespace Ctor.Infrastructure.Migrations
                         .HasColumnType("bigint");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-                    NpgsqlPropertyBuilderExtensions.HasIdentityOptions(b.Property<long>("Id"), 100L, null, null, null, null, null);
 
                     b.Property<string>("RoleName")
                         .IsRequired()
@@ -394,7 +382,6 @@ namespace Ctor.Infrastructure.Migrations
                         .HasColumnType("bigint");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-                    NpgsqlPropertyBuilderExtensions.HasIdentityOptions(b.Property<long>("Id"), 100L, null, null, null, null, null);
 
                     b.Property<long?>("CompanyId")
                         .IsRequired()
@@ -442,7 +429,6 @@ namespace Ctor.Infrastructure.Migrations
                         .HasColumnType("bigint");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-                    NpgsqlPropertyBuilderExtensions.HasIdentityOptions(b.Property<long>("Id"), 100L, null, null, null, null, null);
 
                     b.Property<long?>("CompanyId")
                         .IsRequired()

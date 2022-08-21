@@ -39,7 +39,7 @@ public class CreateCompanyCommandHandler : IRequestHandler<CreateCompanyCommand,
                 Address = request.Model.Address,
                 City = request.Model.City,
                 CompanyName = request.Model.CompanyName,
-                County = request.Model.Country,
+                Country = request.Model.Country,
                 JoinDate = DateTime.UtcNow
             };
             if (companies.Any(el => el.CompanyId == newCompany.CompanyId)) return 409;

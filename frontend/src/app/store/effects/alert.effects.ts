@@ -36,8 +36,8 @@ export class AlertEffects {
     () =>
       this.actions$.pipe(
         ofType(fromAdministrationActions.addNewMemberFailure),
-        tap(() => {
-          this._alertService.showAlert("Failed to add member", "OK", "error")
+        tap((action) => {
+          this._alertService.showAlert(`Failed to add member. ${action.error.error.detail}`, "OK", "error")
         }
         )
       ),

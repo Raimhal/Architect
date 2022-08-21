@@ -7,6 +7,10 @@ internal class BuildingBlockConfiguration : IEntityTypeConfiguration<BuildingBlo
 {
     public void Configure(EntityTypeBuilder<BuildingBlock> builder)
     {
+        builder.Property(x => x.Id)
+            .UseIdentityByDefaultColumn()
+            .HasIdentityOptions(startValue: 100);
+
         builder.ToTable("BuildingBlock").HasKey(x => x.Id);
         builder.HasIndex(x => x.Id).IsUnique();
         builder.Property(x => x.BuildingBlockName).IsRequired();

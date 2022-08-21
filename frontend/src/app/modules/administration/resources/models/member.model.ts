@@ -1,8 +1,7 @@
 export interface IMember {
-  id: number;
-  position: string;
+  roleName: string;
   firstName: string;
   lastName: string;
-  email: string;
+  userEmail: string;
   companyId: number;
 }

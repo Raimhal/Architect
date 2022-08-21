@@ -7,6 +7,10 @@ public class ProjectConfiguration : IEntityTypeConfiguration<Project>
 {
     public void Configure(EntityTypeBuilder<Project> builder)
     {
+        builder.Property(x => x.Id)
+            .UseIdentityByDefaultColumn()
+            .HasIdentityOptions(startValue: 100);
+
         builder.ToTable("Project").HasKey(x => x.Id);
         builder.HasIndex(x => x.Id).IsUnique();
         builder.Property(x => x.ProjectName).IsRequired();
