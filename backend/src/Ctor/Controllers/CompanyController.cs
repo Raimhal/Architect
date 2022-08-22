@@ -5,6 +5,7 @@ using Ctor.Application.Companies.Commands;
 namespace Ctor.Controllers;
 
 [Route("api/companies")]
+[ApiExceptionFilter]
 public class CompanyController : ApiControllerBase
 {
     [HttpGet]
@@ -19,9 +20,7 @@ public class CompanyController : ApiControllerBase
     public async Task<IActionResult> CreateCompany(NewCompanyDto model)
     {
         if (!ModelState.IsValid) return BadRequest("Model is not valid");
-        var createdCompany = Mediator.Send(new CreateCompanyCommand(model));
-        if (createdCompany.Result == 409) return Conflict("Already exist");
-        if (createdCompany.Result == 500) return BadRequest("Error creating a new company.");
+        await Mediator.Send(new CreateCompanyCommand(model));
         return StatusCode(201);
     }
 

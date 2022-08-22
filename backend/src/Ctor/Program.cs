@@ -2,6 +2,7 @@ using Ctor.Application;
 using Ctor.Infrastructure;
 using Ctor.Infrastructure.Persistence;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -34,6 +35,7 @@ app.UseHealthChecks("/health");
 app.UseHttpsRedirection();
 
 app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+
 
 app.UseAuthentication();
 app.UseAuthorization();

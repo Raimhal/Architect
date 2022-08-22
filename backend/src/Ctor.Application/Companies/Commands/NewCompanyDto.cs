@@ -20,5 +20,6 @@ public class NewCompanyDto
     [Required]
     public string Address { get; set; }
     [Required]
+    [EmailAddress(ErrorMessage = "Invalid email address")]
     public string Email { get; set; }
 }
