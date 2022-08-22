@@ -46,7 +46,7 @@ import { SharedModule } from './shared/shared.module';
       metaReducers,
       runtimeChecks: {
         strictStateImmutability: true,
-        strictActionImmutability: true,
+        strictActionImmutability: false, //dont
         strictStateSerializability: true,
         strictActionSerializability: true,
         strictActionWithinNgZone: true,

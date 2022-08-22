@@ -1,0 +1,13 @@
+<div class="content">
+  <div class="mat-dialog-header">
+    <h3 class = "mat-dialog-title">{{title}}</h3>
+    <button mat-icon-button (click)="hideDialog()">
+      <mat-icon svgIcon="Cross"></mat-icon>
+    </button>
+  </div>
+  <body>
+  <ng-content class="mat-dialog-content">
+
+  </ng-content>
+  </body>
+</div>
