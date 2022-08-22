@@ -2,7 +2,7 @@
   <div class="container">
     <div class="header">
       <div class="header-top">
-        <button mat-icon-button aria-label="arrow_left" routerLink="..">
+        <button mat-icon-button aria-label="arrow_left" routerLink="/company-list">
           <mat-icon svgIcon="arrow_left"></mat-icon>
         </button>
         <h1>{{ company.companyName | uppercase }}</h1>
@@ -72,7 +72,7 @@
             <form novalidate [ngrxFormState]="companyForm"></form>
             <div class="card-content">
               <label>Join Date:</label>
-              <p class="date">{{ company.joinDate | date: 'dd.MM.yyyy' }}</p>
+              <p class="date">{{ company.joinDate }}</p>
 
               <label for="addres">Address:</label>
               <input

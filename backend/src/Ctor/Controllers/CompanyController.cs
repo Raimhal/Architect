@@ -30,4 +30,10 @@ public class CompanyController : ApiControllerBase
     {
         return await Mediator.Send(new PutCompanyDetailedCommand(data));
     }
+
+    [HttpGet("{id:long}")]
+    public async Task<ActionResult<CompanyDetailedResponseDto>> GetCompanyById(long id)
+    {
+        return await Mediator.Send(new GetCompanyByIdQuery(id));
+    }
 }

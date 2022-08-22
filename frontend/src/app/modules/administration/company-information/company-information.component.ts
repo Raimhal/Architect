@@ -37,9 +37,7 @@ export class CompanyInformationComponent implements OnInit {
     this.companyInformationForm$ = this.store.pipe(
       select(AdministrationSelectors.selectCompanyInformationForm)
     );
-    this.store.dispatch(
-      fromAdministrationActions.loadDetailedCompany({ id: 1 })
-    );
+    
     this.addSvgIcons();
   }
 

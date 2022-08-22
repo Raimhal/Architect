@@ -14,7 +14,7 @@ import {
   onNgrxFormsAction,
   SetValueAction,
 } from 'ngrx-forms';
-import {IRole} from "../resources/models/role.model";
+import { IRole } from '../resources/models/role.model';
 
 export const administrationFeatureKey = 'administration';
 
@@ -23,7 +23,7 @@ export interface State {
   currentlyOpenCompany: ICompanyDetailed;
   companyInformationForm: FormGroupState<fromCompanyInformationForm.CompanyInformationFormValue>;
   error: any;
-  roles: IRole[]|null;
+  roles: IRole[] | null;
 }
 
 export const initialState: State = {
@@ -33,7 +33,7 @@ export const initialState: State = {
   } as ICompanyDetailed,
   companyInformationForm: fromCompanyInformationForm.initialFormState,
   error: null,
-  roles: null
+  roles: null,
 };
 
 export const reducer = createReducer(
@@ -57,16 +57,19 @@ export const reducer = createReducer(
       },
     };
   }),
-  on(AdministrationActions.addNewMemberFailure, (state,action)=>({
+  on(AdministrationActions.addNewMemberFailure, (state, action) => ({
     ...state,
-    error: action.error
+    error: action.error,
   })),
-  on(AdministrationActions.getAllCompaniesWithParamsSuccess, (state, action) => {
-    return {
-      ...state,
-      companies: action.data,
-      error: null
-    }}
+  on(
+    AdministrationActions.getAllCompaniesWithParamsSuccess,
+    (state, action) => {
+      return {
+        ...state,
+        companies: action.data,
+        error: null,
+      };
+    }
   ),
   on(
     AdministrationActions.getAllCompaniesWithParamsFailure,
@@ -146,5 +149,26 @@ export const reducer = createReducer(
         error: action.error,
       };
     }
+  ),
+  on(
+    AdministrationActions.loadMembersToOpenCompanySuccess,
+    (state, action) => ({
+      ...state,
+      currentlyOpenCompany: {
+        ...state.currentlyOpenCompany,
+        members: action.result,
+      },
+    })
+  ),
+  on(
+    AdministrationActions.loadMembersToOpenCompanySuccessFailure,
+    (state, action) => ({
+      ...state,
+      currentlyOpenCompany: {
+        ...state.currentlyOpenCompany,
+        members: [],
+      },
+      error: action.error,
+    })
   )
 );

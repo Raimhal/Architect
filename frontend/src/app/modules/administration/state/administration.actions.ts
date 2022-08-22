@@ -1,9 +1,9 @@
 import { createAction, props } from '@ngrx/store';
-import {ICompanyOverview} from "../resources/models/company-overview.model";
-import {IMember} from "../resources/models/member.model";
+import { ICompanyOverview } from '../resources/models/company-overview.model';
+import { IMember } from '../resources/models/member.model';
 import { INewCompanyDto } from '../resources/DTOmodels/new-company-dto.model';
 import { ICompanyDetailed } from '../resources/models/company-detailed.model';
-import {IRole} from "../resources/models/role.model";
+import { IRole } from '../resources/models/role.model';
 
 export const loadAdministrations = createAction(
   '[Administration] Load Administrations'
@@ -19,21 +19,20 @@ export const loadAdministrationsFailure = createAction(
   props<{ error: any }>()
 );
 
-
 export const getAllCompaniesWithParams = createAction(
   '[Company List Component] Get All Companies With Parameters',
-  props<{ filter: string, sort: string }>()
+  props<{ filter: string; sort: string }>()
 );
 
 export const getAllCompaniesWithParamsSuccess = createAction(
   '[Company List Component] Get All Companies With Parameters Success',
-  props<{data : ICompanyOverview[]}>()
-)
+  props<{ data: ICompanyOverview[] }>()
+);
 
 export const getAllCompaniesWithParamsFailure = createAction(
   '[Company List Component] Get All Companies With Parameters Failure',
-  props<{error : any}>()
-)
+  props<{ error: any }>()
+);
 export const addNewMember = createAction(
   '[Add Company Member Component] Add new member',
   props<{ data: IMember }>()
@@ -58,7 +57,7 @@ export const CreateCompanySuccess = createAction(
 
 export const CreateCompanyFailure = createAction(
   '[Create Compamy Conponent] Create New Company Failure',
-  props<{error : any}>()
+  props<{ error: any }>()
 );
 
 export const loadDetailedCompany = createAction(
@@ -96,11 +95,11 @@ export const loadRoles = createAction(
 );
 export const loadRolesSuccess = createAction(
   '[Add new member component] Roles loaded successfully',
-  props<{roles:IRole[]}>()
+  props<{ roles: IRole[] }>()
 );
 export const loadRolesFailure = createAction(
   '[Add new member component] Failed to load roles',
-  props<{error:any}>()
+  props<{ error: any }>()
 );
 
 export const loadDisabledCompanyInformationForm = createAction(
@@ -124,4 +123,16 @@ export const submitCompanyInformationFormFailure = createAction(
 );
 export const cancelEditCompanyInformationForm = createAction(
   '[Company-information Component] Cancel Company Information Form'
+);
+export const loadMembersToOpenCompany = createAction(
+  '[Company-information Component] Load Members To Currently Open Company',
+  props<{ companyId: number }>()
+);
+export const loadMembersToOpenCompanySuccess = createAction(
+  '[Company-information Component] Load Members To Currently Open Company Success',
+  props<{ result: IMember[] }>()
+);
+export const loadMembersToOpenCompanySuccessFailure = createAction(
+  '[Company-information Component] Load Members To Currently Open Company Failure',
+  props<{ error: any }>()
 );

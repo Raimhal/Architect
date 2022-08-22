@@ -7,7 +7,8 @@ import { IMember } from '../models/member.model';
 import { INewCompanyDto } from '../DTOmodels/new-company-dto.model';
 import { ICompanyDetailed } from '../models/company-detailed.model';
 import { ICompanyUpdate } from '../models/company-update.model';
-import {IRole} from "../models/role.model";
+import { IRole } from "../models/role.model";
+import { IResultId } from '../models/result-id.model';
 
 @Injectable({
   providedIn: AdministrationApiService,
@@ -40,7 +41,7 @@ export class AdministrationApiService extends ApiService {
 
   getDetailedCompany(id: number): Observable<ICompanyDetailed> {
     return this.get<ICompanyDetailed>(
-      `${this.ApiPath}\\getCompanyDetailed\\${id}`
+      `/companies/${id}`
     );
   }
 
@@ -52,7 +53,11 @@ export class AdministrationApiService extends ApiService {
     return this.get<IRole[]>('/users/roles');
   }
 
-  putDetailedCompany(company: ICompanyUpdate): Observable<number> {
-    return this.put<number>('/companies/', company);
+  putDetailedCompany(company: ICompanyUpdate): Observable<IResultId> {
+    return this.put<IResultId>('/companies/', company);
+  }
+
+  getMembersByCompanyId(companyId: number):Observable<IMember[]>{
+    return this.get<IMember[]>(`/users/byCompanyId/${companyId}`);
   }
 }
