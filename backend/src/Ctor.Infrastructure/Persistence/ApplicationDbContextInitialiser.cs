@@ -506,7 +506,7 @@ public class ApplicationDbContextInitialiser
                     ProjectId = 4
                 });
         }
-        if (_context.Phases.Any())
+        if (!_context.Phases.Any())
         {
             await _context.Phases.AddRangeAsync(
                 new Phase
