@@ -5,20 +5,18 @@ export const authFeatureKey = 'auth';
 
 export interface User {
   id: number,
-  email: string,
-  role : string
-  //isAdmin: boolean,
+  role: string
 }
 
 export interface State {
   user: User | null;
-  askToChangePassword: boolean;
+  askToChangeDefaultPassword: boolean;
   error: any;
 }
 
 export const initialState: State = {
   user: null,
-  askToChangePassword: false,
+  askToChangeDefaultPassword: false,
   error: null,
 };
 
@@ -29,7 +27,7 @@ export const reducer = createReducer(
     return {
       ...state,
       user: action.user,
-      askToChangePassword: action.askToChangePassword,
+      askToChangeDefaultPassword: action.askToChangeDefaultPassword,
       error: null,
     };
   }),
@@ -46,5 +44,12 @@ export const reducer = createReducer(
       user: null,
       error: null,
     };
-  })
+  }),
+  on(fromAuthActions.refreshAccessTokenSuccess, (state, action) => {
+    return {
+      ...state,
+      user: action.user,
+      error: null,
+    };
+  }),
 );

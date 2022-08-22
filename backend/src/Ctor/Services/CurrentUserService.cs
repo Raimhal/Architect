@@ -12,5 +12,18 @@ public class CurrentUserService : ICurrentUserService
         _httpContextAccessor = httpContextAccessor;
     }
 
-    public string? Name => _httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier);
+    public long? Id
+    {
+        get
+        {
+            var claim = _httpContextAccessor.HttpContext?.User?.FindFirstValue("id");
+
+            if (long.TryParse(claim, out long id))
+            {
+                return id;
+            }
+
+            return null;
+        }
+    }
 }

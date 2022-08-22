@@ -1,4 +1,5 @@
 using System.Text;
+using Ctor.Application.Auth.Interfaces;
 using Ctor.Application.Common.Interfaces;
 using Ctor.Application.Common.Models;
 using Ctor.Domain.Repositories;
@@ -16,7 +17,9 @@ namespace Ctor.Infrastructure;
 
 public static class ConfigureServices
 {
-    public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddInfrastructureServices(
+        this IServiceCollection services,
+        IConfiguration configuration)
     {
         if (configuration.GetValue<bool>("UseInMemoryDatabase"))
         {
@@ -45,32 +48,36 @@ public static class ConfigureServices
         services.AddScoped<IProjectRepository, ProjectRepository>();
         services.AddScoped<IPhaseRepository, PhaseRepository>();
         services.AddScoped<IRoleRepository, RoleRepository>();
-        services.AddTransient(typeof(Lazy<>), typeof(LazyInstance<>));
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
-        services.AddScoped<ApplicationDbContextInitialiser>();
+        services.AddScoped<ApplicationDbContextInitializer>();
 
+        services.AddTransient(typeof(Lazy<>), typeof(LazyInstance<>));
         services.AddTransient<IDateTime, DateTimeService>();
         services.AddScoped<IEmailService, EmailService>();
         services.AddTransient<IPasswordService,PasswordService>();
         services.AddTransient<ISecurityService, SecurityService>();
+        services.AddScoped<ITokenProvider, TokenProvider>();
+        services.AddScoped<IUserManager, UserManager>();
 
-        services.AddAuthentication(opt => {
+        services.AddAuthentication(opt =>
+        {
             opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
             opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
         }).AddJwtBearer(options =>
+        {
+            var secret = configuration["Jwt:Secret"];
+            options.TokenValidationParameters = new TokenValidationParameters
             {
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    ValidIssuer = "https://localhost:7271", // TODO: Move to config
-                    ValidAudience = "https://localhost:7271",
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345")) // TODO: Move to config
-                };
-            });
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = configuration["Jwt:Issuer"],
+                ValidAudience = configuration["Jwt:Audience"],
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret))
+            };
+        });
 
         return services;
     }

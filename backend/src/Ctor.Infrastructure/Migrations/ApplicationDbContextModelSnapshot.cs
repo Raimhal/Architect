@@ -396,6 +396,9 @@ namespace Ctor.Infrastructure.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
                     NpgsqlPropertyBuilderExtensions.HasIdentityOptions(b.Property<long>("Id"), 100L, null, null, null, null, null);
 
+                    b.Property<bool>("AskToChangeDefaultPassword")
+                        .HasColumnType("boolean");
+
                     b.Property<long?>("CompanyId")
                         .IsRequired()
                         .HasColumnType("bigint");
@@ -415,8 +418,13 @@ namespace Ctor.Infrastructure.Migrations
                     b.Property<long?>("ProjectId")
                         .HasColumnType("bigint");
 
-                    b.Property<long?>("RoleId")
-                        .IsRequired()
+                    b.Property<string>("RefreshToken")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("RefreshTokenExpiresAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long>("RoleId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("UserEmail")

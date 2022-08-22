@@ -5,12 +5,12 @@ using Microsoft.Extensions.Logging;
 
 namespace Ctor.Infrastructure.Persistence;
 
-public class ApplicationDbContextInitialiser
+public class ApplicationDbContextInitializer
 {
-    private readonly ILogger<ApplicationDbContextInitialiser> _logger;
+    private readonly ILogger<ApplicationDbContextInitializer> _logger;
     private readonly ApplicationDbContext _context;
 
-    public ApplicationDbContextInitialiser(ILogger<ApplicationDbContextInitialiser> logger, ApplicationDbContext context)
+    public ApplicationDbContextInitializer(ILogger<ApplicationDbContextInitializer> logger, ApplicationDbContext context)
     {
         _logger = logger;
         _context = context;
@@ -27,7 +27,7 @@ public class ApplicationDbContextInitialiser
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "An error occurred while initialising the database.");
+            _logger.LogError(ex, "An error occurred while initialising the database");
             throw;
         }
     }
@@ -40,43 +40,22 @@ public class ApplicationDbContextInitialiser
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "An error occurred while seeding the database.");
+            _logger.LogError(ex, "An error occurred while seeding the database");
             throw;
         }
     }
 
     public async Task TrySeedAsync()
     {
+        var roleId = 0;
+
+        var adminRole = new Role { Id = ++roleId, RoleName = "Admin" };
+        var moderatorRole = new Role { Id = ++roleId, RoleName = "Moderator" };
+        var userRole = new Role { Id = ++roleId, RoleName = "User" };
+        
         if (!_context.Roles.Any())
         {
-            await _context.Roles.AddRangeAsync(
-                 new Role()
-                 {
-                     Id = 3,
-                     RoleName = "Project manager"
-                 },
-                 new Role()
-                 {
-                     Id = 2,
-                     RoleName = "Operational manager"
-                 },
-                 new Role()
-                 {
-                     Id = 1,
-                     RoleName = "Admin"
-                 },
-                 new Role()
-                 {
-                     Id = 4,
-                     RoleName = "Main engineer"
-                 },
-                 new Role()
-                 {
-                     Id = 5,
-                     RoleName = "Foreman"
-                 });
-
-
+            await _context.Roles.AddRangeAsync(adminRole, moderatorRole, userRole);
         }
         if (!_context.Users.Any())
         {
@@ -88,7 +67,7 @@ public class ApplicationDbContextInitialiser
                      LastName = "admin",
                      UserEmail = "admin@radency.com",
                      Password = "admin",
-                     RoleId = 1,
+                     Role = adminRole,
                      CompanyId = 1
                  },
                  new User()
@@ -98,7 +77,7 @@ public class ApplicationDbContextInitialiser
                      LastName = "moderator",
                      UserEmail = "moderator@radency.com",
                      Password = "123123",
-                     RoleId = 2,
+                     Role = moderatorRole,
                      CompanyId = 1
                  },
                  new User()
@@ -108,17 +87,17 @@ public class ApplicationDbContextInitialiser
                      LastName = "Kravets",
                      UserEmail = "1a@radency.com",
                      Password = "123qweasd",
-                     RoleId = 3,
+                     Role = userRole,
                      CompanyId = 2
                  },
                  new User()
                  {
                      Id = 4,
-                     FirstName = "Adreii",
+                     FirstName = "Andrii",
                      LastName = "Vitiv",
                      UserEmail = "2a@radency.com",
                      Password = "123qweasd",
-                     RoleId = 3,
+                     Role = userRole,
                      CompanyId = 2
                  },
                  new User()
@@ -128,17 +107,17 @@ public class ApplicationDbContextInitialiser
                      LastName = "Fedushin",
                      UserEmail = "3a@radency.com",
                      Password = "123qweasd",
-                     RoleId = 3,
+                     Role = userRole,
                      CompanyId = 3
                  },
                  new User()
                  {
                      Id = 6,
-                     FirstName = "Adreii",
+                     FirstName = "Andrii",
                      LastName = "Vitiv",
                      UserEmail = "4a@radency.com",
                      Password = "123qweasd",
-                     RoleId = 3,
+                     Role = userRole,
                      CompanyId = 3
                  },
                  new User()
@@ -148,7 +127,7 @@ public class ApplicationDbContextInitialiser
                      LastName = "Kryluk",
                      UserEmail = "5a@radency.com",
                      Password = "123qweasd",
-                     RoleId = 3,
+                     Role = userRole,
                      CompanyId = 4
                  },
                  new User()
@@ -158,7 +137,7 @@ public class ApplicationDbContextInitialiser
                      LastName = "Gavriluk",
                      UserEmail = "6a@radency.com",
                      Password = "123qweasd",
-                     RoleId = 3,
+                     Role = userRole,
                      CompanyId = 4
                  },
                  new User()
@@ -168,7 +147,7 @@ public class ApplicationDbContextInitialiser
                      LastName = "Svereda",
                      UserEmail = "7a@radency.com",
                      Password = "123qweasd",
-                     RoleId = 3,
+                     Role = userRole,
                      CompanyId = 5
                  },
                  new User()
@@ -178,7 +157,7 @@ public class ApplicationDbContextInitialiser
                      LastName = "Boyko",
                      UserEmail = "8a@radency.com",
                      Password = "123qweasd",
-                     RoleId = 3,
+                     Role = userRole,
                      CompanyId = 5
                  },
                  new User()
@@ -188,7 +167,7 @@ public class ApplicationDbContextInitialiser
                      LastName = "Lis",
                      UserEmail = "9a@radency.com",
                      Password = "123qweasd",
-                     RoleId = 3,
+                     Role = userRole,
                      CompanyId = 1
                  },
                  new User()
@@ -198,7 +177,7 @@ public class ApplicationDbContextInitialiser
                      LastName = "Piven",
                      UserEmail = "10a@radency.com",
                      Password = "123qweasd",
-                     RoleId = 3,
+                     Role = userRole,
                      CompanyId = 1
                  }, new User()
                  {
@@ -207,7 +186,7 @@ public class ApplicationDbContextInitialiser
                      LastName = "Sergienko",
                      UserEmail = "11a@radency.com",
                      Password = "123qweasd",
-                     RoleId = 3,
+                     Role = userRole,
                      CompanyId = 2
                  },
                  new User()
@@ -217,7 +196,7 @@ public class ApplicationDbContextInitialiser
                      LastName = "Goretska",
                      UserEmail = "12a@radency.com",
                      Password = "123qweasd",
-                     RoleId = 3,
+                     Role = userRole,
                      CompanyId = 2
 
                  },
@@ -228,7 +207,7 @@ public class ApplicationDbContextInitialiser
                      LastName = "Parush",
                      UserEmail = "13a@radency.com",
                      Password = "123qweasd",
-                     RoleId = 3,
+                     Role = userRole,
                      CompanyId = 3
                  },
                  new User()
@@ -238,7 +217,7 @@ public class ApplicationDbContextInitialiser
                      LastName = "Pavlishina",
                      UserEmail = "14a@radency.com",
                      Password = "123qweasd",
-                     RoleId = 3,
+                     Role = userRole,
                      CompanyId = 3
                  },
                  new User()
@@ -248,7 +227,7 @@ public class ApplicationDbContextInitialiser
                      LastName = "Rak",
                      UserEmail = "15a@radency.com",
                      Password = "123qweasd",
-                     RoleId = 3,
+                     Role = userRole,
                      CompanyId = 4
                  });
         }

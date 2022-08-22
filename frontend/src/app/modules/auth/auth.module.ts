@@ -6,7 +6,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StoreModule } from '@ngrx/store';
 import * as fromAuth from '../../store/reducers/auth.reducer';
 import { EffectsModule } from '@ngrx/effects';
+import { JwtModule } from "@auth0/angular-jwt";
 import { AuthEffects } from '../../store/effects/auth.effects';
+import { AuthService } from "./resources/services/auth.service";
 import { AuthPageLayoutComponent } from './auth-page-layout/auth-page-layout.component';
 import { AuthLoginFormComponent } from './auth-login-form/auth-login-form.component';
 import {
@@ -18,7 +20,9 @@ import { MatInputModule } from "@angular/material/input";
 import { MatIconModule } from "@angular/material/icon";
 import { MatButtonModule } from "@angular/material/button";
 import { ForgotPasswordComponent } from './auth-forgot-password/auth-forgot-password';
-import { AuthService } from './resources/services/auth.service';
+import { environment } from "../../../environments/environment";
+import { RefreshTokenInterceptor } from "./resources/interceptors/refresh-token.interceptor";
+import { HTTP_INTERCEPTORS } from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -38,17 +42,30 @@ import { AuthService } from './resources/services/auth.service';
       fromAuth.reducer
     ),
     EffectsModule.forFeature([AuthEffects]),
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: () => localStorage.getItem('access_token'),
+        headerName: 'Authorization',
+        authScheme: 'Bearer ',
+        allowedDomains: [environment.apiHost],
+      }
+    }),
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
     MatButtonModule,
   ],
-    exports: [
-        AuthPageLayoutComponent
-    ],
-
+  exports: [
+    AuthPageLayoutComponent,
+  ],
   providers: [
-    AuthService
-  ]
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: RefreshTokenInterceptor,
+      multi: true
+    },
+    AuthService,
+  ],
 })
-export class AuthModule {}
+export class AuthModule {
+}

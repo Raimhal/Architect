@@ -1,46 +1,131 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, concatMap, map, mergeMap } from 'rxjs/operators';
+import { catchError, map, mergeMap } from 'rxjs/operators';
 import { of } from 'rxjs';
-
 import * as AuthActions from '../actions/auth.actions';
-import { login } from "../actions/auth.actions";
 import { AuthService } from 'src/app/modules/auth/resources/services/auth.service';
-import { AppState } from '..';
-import { select, Store } from '@ngrx/store';
-import { selectUserId } from '../selectors/auth.selectors';
-import ForgotPasswordDTO from 'src/app/modules/auth/resources/models/resetPasswordDTO';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ErrorService } from 'src/app/modules/error/resources/services/error.services';
+import * as fromAuthActions from '../actions/auth.actions';
+import { TokenService } from "../../modules/auth/resources/services/token.service";
 
 @Injectable()
 export class AuthEffects {
+
   login$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(AuthActions.login),
-      concatMap((action) =>
-        // do login
-        of(AuthActions.loginSuccess({ user: {id: 1, email: action.email, role: "Admin" }, askToChangePassword: false }))
+      ofType(fromAuthActions.login),
+      mergeMap((action) =>
+
+        this.authService.login(action.email, action.password).pipe(
+          map(response => {
+
+            this.tokenService.setTokens(
+              response!.accessToken.token,
+              response!.refreshToken.token,
+              new Date(response!.refreshToken.expires)
+            );
+
+            const tokenData = this.tokenService.getAccessTokenData();
+
+            return fromAuthActions.loginSuccess({
+              user: {
+                ...response!.user,
+                role: tokenData.role,
+              },
+              askToChangeDefaultPassword: response?.askToChangePassword ?? false,
+            })
+          }),
+          catchError((error: any) => of(fromAuthActions.loginFailure(error)))
+        )
       )
     );
   });
+
   resetPassword$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(AuthActions.forgotPassword),
-      map((action): ForgotPasswordDTO => ({
-        email: action.email
-      })),
-      mergeMap((resetPasswordDTO) =>
-        this.authService.resetPassword(resetPasswordDTO).pipe(
+      mergeMap((action) =>
+        this.authService.forgotPassword(action.email).pipe(
           map(() => AuthActions.forgotPasswordSuccess()),
-          catchError((error: HttpErrorResponse) => of(AuthActions.forgotPasswordFailure({ error:  error.error})))
+          catchError((error: HttpErrorResponse) => of(AuthActions.forgotPasswordFailure({ error: error.error })))
         )
       )
     )
   });
 
-  constructor(private actions$: Actions,
-    private store$: Store<AppState>,
-    private authService: AuthService
-    ) { }
+  logout$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(fromAuthActions.logout),
+      mergeMap((action) => {
+
+        return this.authService.logout().pipe(
+          map(response => {
+            this.tokenService.removeTokens();
+            return fromAuthActions.logoutSuccess();
+          }),
+          catchError((error: any) => {
+            this.tokenService.removeTokens();
+            return of(fromAuthActions.logoutFailure(error));
+          }),
+        );
+      }),
+      catchError((error: any) => of(fromAuthActions.logoutFailure(error)))
+    );
+  });
+
+  refreshAccessToken$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(fromAuthActions.refreshAccessToken),
+      mergeMap((action) =>
+
+        this.authService.refreshToken(this.tokenService.getAccessToken(), this.tokenService.getRefreshToken()!.token).pipe(
+          map(response => {
+
+            this.tokenService.setAccessToken(response!.token);
+            const tokenData = this.tokenService.getAccessTokenData();
+            const expires = response!.expires.toString();
+
+            return fromAuthActions.refreshAccessTokenSuccess({
+              token: response!.token,
+              user: {
+                id: tokenData.id,
+                role: tokenData.role,
+              },
+            })
+
+          }),
+          catchError((error: any) => of(fromAuthActions.refreshAccessTokenFailure(error))),
+        )),
+
+      catchError((error: any) => of(fromAuthActions.refreshAccessTokenFailure(error))),
+    );
+  });
+
+  changeDefaultPassword$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(fromAuthActions.changeDefaultPassword),
+      mergeMap((action) =>
+
+        this.authService.changeDefaultPassword(action.newPassword).pipe(
+          map(response => fromAuthActions.changeDefaultPasswordSuccess()),
+          catchError((error: any) => of(fromAuthActions.changeDefaultPasswordFailure(error))))
+      )
+    );
+  });
+
+  keepDefaultPassword$ = createEffect(() => {
+      return this.actions$.pipe(
+        ofType(fromAuthActions.keepDefaultPassword),
+        mergeMap((action) =>
+          this.authService.keepDefaultPassword())
+      )
+    }, { dispatch: false }
+  );
+
+  constructor(
+    private actions$: Actions,
+    private authService: AuthService,
+    private tokenService: TokenService,
+  ) {
+  }
 }

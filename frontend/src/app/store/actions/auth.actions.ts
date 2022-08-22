@@ -1,5 +1,6 @@
 import { createAction, props } from "@ngrx/store";
 import { HttError } from "src/app/modules/error/resources/models/httpError";
+import { User } from "../reducers/auth.reducer";
 
 export const login = createAction(
   '[Auth] Login User',
@@ -8,7 +9,7 @@ export const login = createAction(
 
 export const loginSuccess = createAction(
   '[Auth] Login User Success',
-  props<{ user: any, askToChangePassword: boolean }>()
+  props<{ user: User, askToChangeDefaultPassword: boolean }>()
 );
 
 export const loginFailure = createAction(
@@ -16,31 +17,52 @@ export const loginFailure = createAction(
   props<{ error: any }>()
 );
 
-export const logout = createAction('[Auth Component] Logout User');
+export const logout = createAction('[Auth] Logout User');
 
-export const changePassword = createAction(
-  '[Auth] Change Password',
-  props<{ password: string; confirmPassword: string }>()
+export const logoutSuccess = createAction('[Auth] Logout User Success');
+
+export const logoutFailure = createAction(
+  '[Auth] Logout User Failure',
+  props<{ error: any }>()
 );
 
-export const changePasswordSuccess = createAction(
-  '[Auth] Change Password Success',
-  props<{ user: any }>()
+export const refreshAccessToken = createAction('[Auth] Refresh Access Token');
+
+export const refreshAccessTokenSuccess = createAction(
+  '[Auth] Refresh Access Token Success',
+  props<{ token: string, user: User }>()
 );
 
-export const changePasswordFailure = createAction(
-  '[Auth] Change Password Failure',
+export const refreshAccessTokenFailure = createAction(
+  '[Auth] Refresh Access Token Failure',
+  props<{ error: any }>()
+);
+
+export const changeDefaultPassword = createAction(
+  '[Auth] Change Default Password',
+  props<{ newPassword: string }>()
+);
+
+export const changeDefaultPasswordSuccess = createAction(
+  '[Auth] Change Default Password Success',
+);
+
+export const changeDefaultPasswordFailure = createAction(
+  '[Auth] Change Default Password Failure',
   props<{ error: any }>()
 );
 
 export const forgotPassword = createAction(
   '[Auth] Forgot Password',
-  props<{ email: string}>()
+  props<{ email: string }>()
 );
 export const forgotPasswordSuccess = createAction(
   '[Auth] Forgot Password Success'
 );
 export const forgotPasswordFailure = createAction(
   '[Auth] Forgot Password Failure',
-  props<{ error: HttError}>()
+  props<{ error: HttError }>()
 );
+
+export const keepDefaultPassword = createAction('[Auth] Keep Default Password');
+

@@ -11,7 +11,7 @@ import { login } from "../../../store/actions/auth.actions";
 })
 export class AuthLoginFormComponent {
   email = new FormControl<string>('', [Validators.required, Validators.email]);
-  password = new FormControl<string>('', [Validators.required, Validators.minLength(6)]);
+  password = new FormControl<string>('', [Validators.required, Validators.minLength(5)]);
 
   form = new FormGroup({
     email: this.email,

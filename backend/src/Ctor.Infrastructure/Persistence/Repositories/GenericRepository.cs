@@ -1,81 +1,100 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using Ctor.Application.Common.Interfaces;
+﻿using System.Linq.Expressions;
+using Ctor.Application.Common.Exceptions;
 using Ctor.Domain.Common;
-using Ctor.Domain.Entities;
 using Ctor.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
 
 namespace Ctor.Infrastructure.Persistence.Repositories;
+
 public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
 {
-    protected ApplicationDbContext _context { get; set; }
-    private DbSet<T> table = null;
-    public GenericRepository(ApplicationDbContext _context)
+    protected ApplicationDbContext Context { get; }
+
+    protected DbSet<T> Table { get; }
+
+    public GenericRepository(ApplicationDbContext context)
     {
-        this._context = _context;
-        table = _context.Set<T>();
+        Context = context;
+        Table = context.Set<T>();
     }
+
     public Task<List<T>> Get(Expression<Func<T, bool>> filter)
     {
-        IQueryable<T> query = table;
+        IQueryable<T> query = Table;
 
         query = query.Where(filter);
         return query.ToListAsync();
     }
+
     public Task<List<T>> GetAll()
     {
-        return table.ToListAsync();
+        return Table.ToListAsync();
     }
-    public Task<T> GetById(long id)
+
+    public async Task<T> GetById(long id, CancellationToken ct)
     {
-        return table.FindAsync(id).AsTask();
+        var entity = await FindById(id, ct);
+
+        if (entity == null)
+        {
+            throw new NotFoundException(typeof(T).Name, id);
+        }
+
+        return entity;
     }
+
+    public Task<T?> FindById(long id, CancellationToken ct)
+    {
+        return Table.FirstOrDefaultAsync(e => e.Id == id, ct);
+    }
+
     public Task Insert(T obj)
     {
-        return table.AddAsync(obj).AsTask();
+        return Table.AddAsync(obj).AsTask();
     }
+
     public void Update(T obj)
     {
-        table.Attach(obj);
-        _context.Entry(obj).State = EntityState.Modified;
+        Table.Attach(obj);
+        Context.Entry(obj).State = EntityState.Modified;
     }
+
     public void Delete(T obj)
     {
-        table.Remove(obj);
+        Table.Remove(obj);
     }
+
     public bool Any()
     {
-        return table.Any();
+        return Table.Any();
     }
+
     public Task AddRangeAsync(IEnumerable<T> values)
     {
-        return table.AddRangeAsync(values);
+        return Table.AddRangeAsync(values);
     }
+
     public Task AddRangeAsync(params T[] value)
     {
-        return table.AddRangeAsync(value);
+        return Table.AddRangeAsync(value);
     }
 
     public async Task<bool> DeleteById(long id)
     {
-        var obj = await table.FindAsync(id);
+        var obj = await Table.FindAsync(id);
         if (obj == null)
         {
             return false;
         }
-        table.Remove(obj);
+
+        Table.Remove(obj);
         return true;
     }
-    public Task<List<T>> GetOrdered(Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
-        Expression<Func<T, bool>> filter = null)
+
+    public Task<List<T>> GetOrdered(Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
+        Expression<Func<T, bool>>? filter = null)
     {
-        IQueryable<T> query = _context.Set<T>();
+        IQueryable<T> query = Context.Set<T>();
 
         if (filter != null)
         {
@@ -91,10 +110,10 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     }
 
     public async Task<(List<T> entities, int total)> GetFilteredWithTotalSum(int page = 0, int count = 0,
-        Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
-        Expression<Func<T, bool>> filter = null)
+        Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
+        Expression<Func<T, bool>>? filter = null)
     {
-        IQueryable<T> query = _context.Set<T>();
+        IQueryable<T> query = Context.Set<T>();
 
         if (filter != null)
         {
@@ -118,10 +137,9 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
 
     public async Task<(List<T> entities, int total)> GetFilteredWithTotalSumWithQuery(IQueryable<T> query,
         int page = 0, int count = 0,
-         Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
-         Expression<Func<T, bool>> filter = null)
+        Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
+        Expression<Func<T, bool>>? filter = null)
     {
-
         if (filter != null)
         {
             query = query.Where(filter);
@@ -142,9 +160,9 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         return (await query.ToListAsync(), countEntities);
     }
 
-    public Task<T> SingleOrDefault(Expression<Func<T, bool>> filter)
+    public Task<T?> SingleOrDefault(Expression<Func<T, bool>> filter)
     {
-        IQueryable<T> query = table;
+        IQueryable<T> query = Table;
 
         query = query.Where(filter);
         return query.SingleOrDefaultAsync();

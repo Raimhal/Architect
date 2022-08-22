@@ -1,6 +1,5 @@
 using Ctor.Application.Common.Interfaces;
 using MediatR;
-using MediatR.Pipeline;
 using Microsoft.Extensions.Logging;
 
 namespace Ctor.Application.Common.Behaviours;
@@ -21,12 +20,8 @@ public class LoggingBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest,
 
     public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
     {
-        var requestName = typeof(TRequest).Name;
-        var name = _currentUserService.Name ?? string.Empty;
-        string userName = string.Empty;
-
-        _logger.LogInformation("Ctor Request: {@Name} {@Request} at {@DateTime}",
-            name, request, dateTime.Now);
+        _logger.LogInformation("Ctor Request: {@UserId} {@Request} at {@DateTime}",
+            _currentUserService.Id, request, dateTime.Now);
 
         return await next();
     }

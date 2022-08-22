@@ -5,10 +5,6 @@ export const selectAuthState = createFeatureSelector<fromAuth.State>(
   fromAuth.authFeatureKey
 );
 
-export interface AuthViewModal {
-  isLoggedIn: boolean;
-}
-
 export const selectUser = createSelector(
   selectAuthState,
   (state: fromAuth.State): fromAuth.User | null => state.user
@@ -23,29 +19,20 @@ export const selectIsLoggedIn = createSelector(
   (user: fromAuth.User | null): boolean => user != null
 );
 
-export const selectAuthViewModel = createSelector(
-  selectIsLoggedIn,
-  (isLoggedIn: boolean): AuthViewModal => {
-    return {
-      isLoggedIn: isLoggedIn,
-    };
-  }
+export const selectAskToChangeDefaultPassword = createSelector(
+  selectAuthState,
+  (state: fromAuth.State): boolean => state.askToChangeDefaultPassword
 );
 
 export const selectUserRole = createSelector(
   selectAuthState,
   selectUser,
-  (state : fromAuth.State) => {
-    if (state.user != null){
-      return state.user.role;
-    }
-    return "";
+  (state: fromAuth.State) => {
+    return state.user?.role ?? null;
   }
 )
 
 export const selectUserIsAdmin = createSelector(
-  selectAuthState,
-  selectUser,
   selectUserRole,
-  (state : fromAuth.State) =>  state.user?.role == "Admin"
+  (role: string | null) => role == 'Admin'
 )

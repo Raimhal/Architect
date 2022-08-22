@@ -1,10 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Router } from '@angular/router';
+import * as fromAuthSelectors from '../selectors/auth.selectors';
 import * as fromAuthActions from '../actions/auth.actions';
 import * as RoutActions from '../actions/route.actions';
-import { tap } from 'rxjs/operators';
-import { Location } from '@angular/common';
+import { switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import { Store } from "@ngrx/store";
+import { AppState } from "../index";
+import { of } from "rxjs";
+import { Location } from "@angular/common";
 
 @Injectable()
 export class RouteEffects {
@@ -17,17 +21,19 @@ export class RouteEffects {
     { dispatch: false }
   );
 
-  askToChangePassword$ = createEffect(
+  loginSuccess$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(fromAuthActions.loginSuccess),
         tap((state) => {
-          if (state.askToChangePassword) {
-            return this.route.navigate(['/login/change-default-password'])
+          if (state.askToChangeDefaultPassword) {
+            return this.route.navigate(['/change-default-password'])
           }
-          if (state.user.role == "Admin"){
+
+          if (state.user.role == "Admin") {
             return this.route.navigate(['/administration'])
           }
+
           return this.route.navigate(['/projects'])
         })
       ),
@@ -42,5 +48,41 @@ export class RouteEffects {
       ),
     { dispatch: false }
   );
-  constructor(private actions$: Actions, private route: Router, private location: Location) { }
+
+  changeDefaultPasswordSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(fromAuthActions.changeDefaultPasswordSuccess),
+        withLatestFrom(this.store.select(fromAuthSelectors.selectUserRole)),
+        switchMap(([_, role]) => of(role)),
+        tap((role) => this.postLoginNavigate(role))
+      ), { dispatch: false }
+  );
+
+  keepDefaultPassword$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(fromAuthActions.keepDefaultPassword),
+        withLatestFrom(this.store.select(fromAuthSelectors.selectUserRole)),
+        switchMap(([_, role]) => of(role)),
+        tap((role) => this.postLoginNavigate(role))
+      ), { dispatch: false }
+  );
+
+  constructor(
+    private actions$: Actions,
+    private route: Router,
+    private store: Store<AppState>,
+    private location: Location,
+  ) {
+  }
+
+  postLoginNavigate(role: string | null) {
+    if (role === 'Admin') {
+      return this.route.navigate(['/administration'])
+    }
+
+    return this.route.navigate(['/projects'])
+  }
+
 }

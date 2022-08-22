@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Store } from "@ngrx/store";
 import { AppState } from "../../../store";
-import { changePassword } from "../../../store/actions/auth.actions";
+import * as fromAuthActions from "../../../store/actions/auth.actions";
 
 @Component({
   selector: 'auth-change-password-form',
@@ -15,8 +15,8 @@ export class AuthChangePasswordFormComponent {
     return this.password?.value === this.confirmPassword?.value ? null : { notMatched: true };
   };
 
-  password = new FormControl<string>('', [Validators.required, Validators.minLength(6)]);
-  confirmPassword = new FormControl<string>('', [Validators.required, Validators.minLength(6)]);
+  password = new FormControl<string>('', [Validators.required, Validators.minLength(5)]);
+  confirmPassword = new FormControl<string>('', [Validators.required, Validators.minLength(5)]);
 
   form = new FormGroup({
     password: this.password,
@@ -36,9 +36,8 @@ export class AuthChangePasswordFormComponent {
       return;
     }
 
-    this.store.dispatch(changePassword({
-      password: this.password.value!,
-      confirmPassword: this.confirmPassword.value!
+    this.store.dispatch(fromAuthActions.changeDefaultPassword({
+      newPassword: this.password.value!,
     }));
   }
 
