@@ -11,6 +11,7 @@ import {ICompanyOverview} from "../resources/models/company-overview.model";
 import {FormControl} from "@angular/forms";
 import {map, tap} from "rxjs/operators";
 import {MatDialog} from "@angular/material/dialog";
+import {CardInformation} from "../../../shared/components/card/card.component";
 import {CreateCompany} from "../create-company/create-company.component";
 
 @Component({
@@ -47,16 +48,9 @@ export class CompanyListComponent implements OnInit {
   ngOnInit(): void {
     this.updateList();
     this.companies$ = this.store.pipe(select(selectCompanies));
-    this.filter$ = this.filterInput.valueChanges.pipe(
-      debounceTime(500),
-      map(v => v as string),
-      tap(filter => this.store.dispatch(fromAdministraionActions.getAllCompaniesWithParams({filter: filter, sort: this.sort})))
-    );
   }
 
-  toggleSearchInput() {
-    this.searchInputDisabled = !this.searchInputDisabled
-  }
+
 
   toggleSort(value : string) {
     this.sort = value;
@@ -71,4 +65,16 @@ export class CompanyListComponent implements OnInit {
     this.dialog.open(CreateCompany);
   }
 
+  getCardInformation(company : ICompanyOverview) : CardInformation {
+    return {
+      title: company.companyName,
+      subtitle: `${company.country}, ${company.city}, ${company.address}`,
+      image: company.image,
+      date: company.joinDate,
+    } as CardInformation;
+  }
+
+  onSearchQuery($event: string) {
+    this.store.dispatch(fromAdministraionActions.getAllCompaniesWithParams({filter: $event, sort: this.sort}))
+  }
 }

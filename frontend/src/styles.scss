@@ -36,6 +36,8 @@ $frontend-theme: mat.define-light-theme((
 @include mat.all-component-themes($frontend-theme);
 
 @import 'assets/scss/modules/_fonts.scss';
+
+@import 'src/app/shared/components/inputs/datepicker/global-datepicker-styles';
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }
@@ -48,18 +50,21 @@ html, body { height: 100%; }
 body { margin: 0; font-family: 'Poppins'; font-style: normal }
 
 h1 {
+  font-family: 'Poppins';
   font-weight: 600;
   font-size: 40px;
   line-height: 48px;
 }
 
 h2 {
+  font-family: 'Poppins';
   font-weight: 600;
   font-size: 32px;
   line-height: 44px;
 }
 
 h3 {
+  font-family: 'Poppins';
   font-weight: 500;
   font-size: 20px;
   line-height: 28px;
@@ -68,30 +73,35 @@ h3 {
 
 
 .main-text{
+  font-family: 'Poppins';
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
 }
 
 .small-text {
+  font-family: 'Poppins';
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
 }
 
 .secondary {
+  font-family: 'Poppins';
   font-weight: 400;
   font-size: 12px;
   line-height: 14px;
 }
 
 .selected-text1 {
+  font-family: 'Poppins';
   font-weight: 600;
   font-size: 16px;
   line-height: 24px;
 }
 
 .selected-text2 {
+  font-family: 'Poppins';
   font-weight: 600;
   font-size: 14px;
   line-height: 20px;
@@ -108,5 +118,24 @@ a:hover { text-decoration: none; }
 
 a:active { text-decoration: none; }
 
+/* width */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
 
+/* Track */
+::-webkit-scrollbar-track {
+  background: #FFFFFF;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #E3E5ED;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #B3B5BD;
+}
 

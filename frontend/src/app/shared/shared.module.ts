@@ -18,7 +18,21 @@ import {MatInputModule} from '@angular/material/input';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatIconModule} from '@angular/material/icon';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
+import {DatepickerComponent, MY_FORMATS} from './components/inputs/datepicker/datepicker.component';
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from "@angular/material/core";
+import {MatMomentDateModule, MomentDateAdapter} from "@angular/material-moment-adapter";
+import {DatepickerHeaderComponent} from './components/inputs/datepicker/datepicker-header/datepicker-header.component';
+import {AutocompleteComponent} from './components/inputs/autocomplete/autocomplete.component';
+import {MatAutocompleteModule} from "@angular/material/autocomplete";
+import {MatChipsModule} from "@angular/material/chips";
+import {DropdownComponent} from './components/inputs/dropdown/dropdown.component';
+import {MatSelectModule} from "@angular/material/select";
+import {TabsComponent} from './components/inputs/tabs/tabs.component';
+import {MatTabsModule} from "@angular/material/tabs";
+import {CardComponent} from './components/card/card.component';
 import {ModalDialogComponent} from './modal-dialog/modal-dialog.component';
+import {FilterInputComponent} from './components/inputs/filter-input/filter-input.component';
 
 
 @NgModule({
@@ -32,7 +46,15 @@ import {ModalDialogComponent} from './modal-dialog/modal-dialog.component';
     MiniButtonComponent,
     ForgotPasswordButtonComponent,
     FilterComponent,
-    ModalDialogComponent],
+    DatepickerComponent,
+    DatepickerHeaderComponent,
+    ModalDialogComponent,
+    AutocompleteComponent,
+    DropdownComponent,
+    TabsComponent,
+    CardComponent,
+    FilterInputComponent,
+  ],
   imports: [
     CommonModule,
     RouterModule,
@@ -41,7 +63,13 @@ import {ModalDialogComponent} from './modal-dialog/modal-dialog.component';
     MatInputModule,
     ReactiveFormsModule,
     MatIconModule,
-    HttpClientModule
+    HttpClientModule,
+    MatDatepickerModule,
+    MatMomentDateModule,
+    MatAutocompleteModule,
+    MatChipsModule,
+    MatSelectModule,
+    MatTabsModule
   ],
   exports: [
     CloseButtonComponent,
@@ -53,7 +81,19 @@ import {ModalDialogComponent} from './modal-dialog/modal-dialog.component';
     MiniButtonComponent,
     ForgotPasswordButtonComponent,
     FilterComponent,
+    DatepickerComponent,
+    MatMomentDateModule,
+    AutocompleteComponent,
+    DropdownComponent,
+    TabsComponent,
+    CardComponent,
+    FilterInputComponent
   ],
+  providers: [
+    {provide: MAT_DATE_LOCALE, useValue: 'en-GB'},
+    {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
+    {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS}
+  ]
 })
 export class SharedModule {
 }

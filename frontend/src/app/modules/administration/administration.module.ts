@@ -16,19 +16,18 @@ import {MatIconModule} from "@angular/material/icon";
 import {CompanyListComponent} from './company-list/company-list.component';
 import {AdministrationApiService} from "./resources/services/administration-api.service";
 import {MatMenuModule} from "@angular/material/menu";
-import {CompanyOverviewComponent} from './company-overview/company-overview.component';
 import {ReactiveFormsModule} from "@angular/forms";
 import {AdministrationRoutingModule} from './administration-routing.module';
 import {FormsModule} from "@angular/forms";
 import {CompanyInformationComponent} from './company-information/company-information.component';
 import {ScrollingModule} from '@angular/cdk/scrolling';
 import {MatCardModule} from '@angular/material/card';
-import { NgrxFormsModule } from 'ngrx-forms';
+import {SharedModule} from "../../shared/shared.module";
+import {NgrxFormsModule} from 'ngrx-forms';
 
 @NgModule({
   declarations: [
     CompanyListComponent,
-    CompanyOverviewComponent,
     AddCompanyMemberComponent,
     CompanyInformationComponent
   ],
@@ -54,7 +53,8 @@ import { NgrxFormsModule } from 'ngrx-forms';
     MatIconModule,
     ScrollingModule,
     MatCardModule,
-    NgrxFormsModule
+    SharedModule,
+    NgrxFormsModule,
   ],
   providers: [
     AdministrationApiService
