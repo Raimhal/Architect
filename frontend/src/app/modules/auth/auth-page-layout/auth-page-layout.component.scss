@@ -1,14 +1,23 @@
 .image-column {
   float: left;
   width: 50%;
+  height: 100vh;
+  background-image: url('../../../../assets/images/iltun-huseynli-OH7GkUqiuZk-unsplash.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .content-column {
   float: right;
   width: 50%;
+  height: 100vh;
+  display: flex;
+  background: #F3F4F8;
 
   .content-padding {
     padding: 118px;
+    overflow: scroll;
   }
 
 }

@@ -1,38 +1,54 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap');
 
-#content {
-  width: 1080px;
-  height: 768px;
+.image-column {
+  float: left;
+  width: 50%;
+  height: 100vh;
+  background-image: url('../../../../assets/images/iltun-huseynli-OH7GkUqiuZk-unsplash.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.content-column {
+  float: right;
+  width: 50%;
+  height: 100vh;
   display: flex;
   background: #F3F4F8;
+
+  .content-padding {
+    padding: 118px;
+    overflow: scroll;
+  }
+
 }
 
-#leftPart {
-  position: relative;
-  width: 50%;
-  height: 100%;
-  border: 1px solid black;
-  background-image: url('../../../../assets/images/iltun-huseynli-OH7GkUqiuZk-unsplash.jpg');
-  background-size: auto 100%;
+.btn-back {
+  width: 90px;
+  height: 44px;
+  top: -100px;
 }
 
-#rightPart {
-    position: relative;
-    width: 36%;
-    left: 8%;
-    height: 100%;
+@media screen and (max-width: 1024px) {
+  .image-column {
+    visibility: hidden;
+    display: none;
+    width: 0;
+  }
+
+  .content-column {
+    width: 100%;
+    max-width: 100%;
+
+    .content-padding {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+  }
 }
 
-#CancelButton {
-  background: none;
-  border: none;
-  padding: 0px;
-  font-size: 14px;
-  margin-top: 24px;
-  font-family: "Poppins";
-}
-
-#componentlable {
+#componentLabel {
   font-family: 'Poppins';
   font-style: normal;
   font-weight: 900;
@@ -59,11 +75,6 @@
   margin-right: 12px;
   vertical-align: central;
 }
-
-.full-width {
-  width: 100%;
-}
-
 
 #SubmitButton {
   width: 100%;

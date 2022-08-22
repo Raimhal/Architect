@@ -62,7 +62,13 @@ export class CompanyListComponent implements OnInit {
   }
 
   openModal() {
-    this.dialog.open(CreateCompany);
+    this.dialog.open(CreateCompany, {
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      height: '100%',
+      width: '100%',
+      panelClass: 'full-screen-modal',
+    });
   }
 
   getCardInformation(company : ICompanyOverview) : CardInformation {

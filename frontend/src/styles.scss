@@ -42,12 +42,10 @@ $frontend-theme: mat.define-light-theme((
 
 html, body { height: 100%; }
 body { margin: 0; font-family: 'Poppins'; font-style: normal }
+
 .w-100 {
   width: 100%;
 }
-
-html, body { height: 100%; }
-body { margin: 0; font-family: 'Poppins'; font-style: normal }
 
 h1 {
   font-family: 'Poppins';
@@ -69,7 +67,6 @@ h3 {
   font-size: 20px;
   line-height: 28px;
 }
-
 
 
 .main-text{
@@ -139,3 +136,9 @@ a:active { text-decoration: none; }
   background: #B3B5BD;
 }
 
+
+.full-screen-modal .mat-dialog-container {
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+}
