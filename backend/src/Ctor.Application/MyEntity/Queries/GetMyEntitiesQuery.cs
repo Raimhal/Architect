@@ -30,7 +30,7 @@ public class GetMyEntitiesQueryHandler : IRequestHandler<GetMyEntitiesQuery, MyE
 
     public async Task<MyEntityDto> Handle(GetMyEntitiesQuery request, CancellationToken cancellationToken)
     {
-        var entities = await _context.Entities.GetAll();
+        
         _logger.LogInformation("In query");
         return new MyEntityDto
         {

@@ -4,7 +4,6 @@ namespace Ctor.Application.Common.Interfaces;
 
 public interface IApplicationDbContext
 {
-    IEntityRepository Entities { get; }
     IUserRepository Users { get; }
     IRoleRepository Roles { get; }
     ICompanyRepository Companies { get; }

@@ -185,25 +185,6 @@ namespace Ctor.Infrastructure.Migrations
                     b.ToTable("Material", (string)null);
                 });
 
-            modelBuilder.Entity("Ctor.Domain.Entities.MyEntity", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-                    NpgsqlPropertyBuilderExtensions.HasIdentityOptions(b.Property<long>("Id"), 100L, null, null, null, null, null);
-
-                    b.Property<string>("Prop")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("MyEntity");
-                });
-
             modelBuilder.Entity("Ctor.Domain.Entities.Phase", b =>
                 {
                     b.Property<long>("Id")

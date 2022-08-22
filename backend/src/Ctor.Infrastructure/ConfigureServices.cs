@@ -41,7 +41,6 @@ public static class ConfigureServices
         });
 
         services.AddScoped<IRepositoryFactory, RepositoryFactory>();
-        services.AddScoped<IEntityRepository, EntityRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IBuildingRepository, BuildingRepository>();
         services.AddScoped<ICompanyRepository, CompanyRepository>();

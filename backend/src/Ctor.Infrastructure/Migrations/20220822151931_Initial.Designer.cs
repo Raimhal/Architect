@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Ctor.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220820192655_AddCompanyId")]
-    partial class AddCompanyId
+    [Migration("20220822151931_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -185,25 +185,6 @@ namespace Ctor.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Material", (string)null);
-                });
-
-            modelBuilder.Entity("Ctor.Domain.Entities.MyEntity", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-                    NpgsqlPropertyBuilderExtensions.HasIdentityOptions(b.Property<long>("Id"), 100L, null, null, null, null, null);
-
-                    b.Property<string>("Prop")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("MyEntity");
                 });
 
             modelBuilder.Entity("Ctor.Domain.Entities.Phase", b =>

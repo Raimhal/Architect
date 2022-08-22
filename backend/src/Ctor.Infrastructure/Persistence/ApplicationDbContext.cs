@@ -8,7 +8,6 @@ namespace Ctor.Infrastructure.Persistence;
 
 public class ApplicationDbContext : DbContext, IApplicationDbContext
 {
-    private readonly Lazy<IEntityRepository> _entityRepositoryLazy;
     private readonly Lazy<IUserRepository> _userRepositoryLazy;
     private readonly Lazy<ICompanyRepository> _companyRepositoryLazy;
     private readonly Lazy<IBuildingRepository> _buildingRepositoryLazy;
@@ -16,7 +15,6 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     private readonly Lazy<IPhaseRepository> _phaseRepositoryLazy;
     private readonly Lazy<IRoleRepository> _roleRepositoryLazy;
 
-    public IEntityRepository Entities => _entityRepositoryLazy.Value;
     public IUserRepository Users => _userRepositoryLazy.Value;
     public IRoleRepository Roles => _roleRepositoryLazy.Value;
     public ICompanyRepository Companies => _companyRepositoryLazy.Value;
@@ -27,7 +25,6 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IRepositoryFactory repositoryFactory)
         : base(options)
     {
-        _entityRepositoryLazy = repositoryFactory.GetInstanse<Lazy<IEntityRepository>>();
         _userRepositoryLazy = repositoryFactory.GetInstanse<Lazy<IUserRepository>>();
         _roleRepositoryLazy = repositoryFactory.GetInstanse<Lazy<IRoleRepository>>();
         _companyRepositoryLazy = repositoryFactory.GetInstanse<Lazy<ICompanyRepository>>();
