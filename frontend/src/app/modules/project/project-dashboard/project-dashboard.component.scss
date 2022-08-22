@@ -1,0 +1,44 @@
+@use '../../../shared/components/colors' as colors;
+
+.header {
+  margin: 24px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+}
+
+.header > mat-icon {
+  order: 0;
+}
+
+.header > h2 {
+  order: 1;
+  margin: 0;
+}
+
+.header > .project-status {
+  order: 2;
+  background-color: colors.$primary1;
+  padding: 8px 12px;
+  align-content: center;
+  justify-content: center;
+}
+
+
+:host::ng-deep {
+  .mat-ink-bar {
+    display: none;
+  }
+
+  .mat-tab-nav-bar, .mat-tab-header {
+    border-bottom: 0;
+  }
+
+  .mat-tab-label-active > .mat-tab-label-content {
+    color: colors.$primary4;
+    font-weight: 600;
+    border-bottom: 2px solid colors.$primary4;
+  }
+
+}

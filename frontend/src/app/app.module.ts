@@ -34,6 +34,7 @@ import {SharedModule} from './shared/shared.module';
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatMomentDateModule} from "@angular/material-moment-adapter";
 import {MatTabsModule} from "@angular/material/tabs";
+import {ProjectModule} from "./modules/project/project.module";
 
 @NgModule({
   declarations: [
@@ -82,7 +83,8 @@ import {MatTabsModule} from "@angular/material/tabs";
     MatSidenavModule,
     MatDatepickerModule,
     MatMomentDateModule,
-    MatTabsModule
+    MatTabsModule,
+    ProjectModule
   ],
   providers: [],
   bootstrap: [AppComponent],

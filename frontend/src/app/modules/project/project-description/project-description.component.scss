@@ -1,0 +1,102 @@
+@use '../../../shared/components/colors' as colors;
+
+.container{
+  margin: 36px;
+  display: flex;
+  flex-direction: column;
+}
+
+.arrow-bar {
+  position: relative;
+  width: 95%;
+  height: 40px;
+  background: colors.$orange2;
+}
+
+.arrow-bar:after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-top: 20px solid transparent;
+  border-bottom: 20px solid transparent;
+  border-left: 25px solid colors.$orange2;
+  right: -25px;
+}
+
+.cards-container {
+  margin-top: 32px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 32px;
+}
+
+.cards-container-column {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+
+  width: 45%;
+  min-width: 580px;
+}
+
+
+
+.info-card {
+  background: colors.$primary1;
+}
+
+.card-header, card-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 4px 8px 4px 16px;
+}
+
+.card-header > span {
+  margin-right: auto;
+}
+
+.info-card-content {
+  display: flex;
+  flex-direction: row;
+}
+
+.info-card-content-labels, .info-card-content-inputs {
+  margin: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.info-card-content-labels {
+  color: colors.$gray6;
+}
+
+.photos-card {
+  display: flex;
+  flex-direction: column;
+  background: colors.$gray2;
+}
+
+.photos-card > img {
+  margin: 0 16px 16px 16px;
+}
+
+.photos-card > img {
+  width: inherit - 32px;
+
+  //temp
+  height: 300px;
+  border: 1px solid;
+  //temp end
+}
+
+.buildings-card {
+  background: colors.$orange1;
+}
+
+.team-card {
+  background: colors.$green1;
+}
