@@ -33,7 +33,7 @@ import { MatSelectModule } from "@angular/material/select";
 import { TabsComponent } from './components/inputs/tabs/tabs.component';
 import { MatTabsModule } from "@angular/material/tabs";
 import { CardComponent } from './components/card/card.component';
-import { ModalDialogComponent } from './modal-dialog/modal-dialog.component';
+import { ModalDialogComponent } from './components/modal-dialog/modal-dialog.component';
 import { FilterInputComponent } from './components/inputs/filter-input/filter-input.component';
 import { NotLoggedInComponent } from "./components/guards/not-logged-in/not-logged-in.component";
 import { LoggedInComponent } from "./components/guards/logged-in/logged-in.component";
@@ -99,6 +99,7 @@ import { HasRoleComponent } from "./components/guards/has-role/has-role.componen
     LoggedInComponent,
     NotLoggedInComponent,
     HasRoleComponent,
+    ModalDialogComponent,
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },

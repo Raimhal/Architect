@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { Observable, EMPTY, of } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {Actions, createEffect, ofType} from '@ngrx/effects';
+import {Observable, EMPTY, of} from 'rxjs';
 import * as AdministrationActions from './administration.actions';
 import {
   catchError,
@@ -10,13 +10,14 @@ import {
   withLatestFrom,
   switchMap,
 } from 'rxjs/operators';
-import { serializeError } from 'serialize-error';
+import {serializeError} from 'serialize-error';
 
-import { AdministrationApiService } from '../resources/services/administration-api.service';
-import { Store } from '@ngrx/store';
-import { AppState } from 'src/app/store';
+import {AdministrationApiService} from '../resources/services/administration-api.service';
+import {Store} from '@ngrx/store';
+import {AppState} from 'src/app/store';
 import * as AdministrationSelectors from './administration.selectors';
-import { ICompanyUpdate } from '../resources/models/company-update.model';
+import {ICompanyUpdate} from '../resources/models/company-update.model';
+
 @Injectable()
 export class AdministrationEffects {
   getAllCompaniesWithParams$ = createEffect(() => {
@@ -43,6 +44,22 @@ export class AdministrationEffects {
     );
   });
 
+  loadRoles$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(AdministrationActions.loadRoles),
+      mergeMap((action) =>
+        this.service.getAllRoles().pipe(
+          map((data) =>
+            AdministrationActions.loadRolesSuccess({roles: data})
+          ),
+          catchError((error) =>
+            of(AdministrationActions.loadRolesFailure({error: serializeError(error)}))
+          )
+        )
+      )
+    )
+  });
+
   loadAdministrations$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(AdministrationActions.loadAdministrations),
@@ -50,10 +67,10 @@ export class AdministrationEffects {
         /** An EMPTY observable only emits completion. Replace with your own observable API request */
         EMPTY.pipe(
           map((data) =>
-            AdministrationActions.loadAdministrationsSuccess({ data })
+            AdministrationActions.loadAdministrationsSuccess({data})
           ),
           catchError((error) =>
-            of(AdministrationActions.loadAdministrationsFailure({ error }))
+            of(AdministrationActions.loadAdministrationsFailure({error}))
           )
         )
       )
@@ -109,7 +126,7 @@ export class AdministrationEffects {
         this.service.getDetailedCompany(action.id).pipe(
           map((data) =>
             AdministrationActions.loadDetailedCompanySuccess({
-              result: { ...data, members: [] },
+              result: {...data, members: []},
             })
           ),
           catchError((error) =>
@@ -130,7 +147,7 @@ export class AdministrationEffects {
       mergeMap((action) =>
         this.service.postCompanyImage(action.id, action.image).pipe(
           map((path) =>
-            AdministrationActions.UploadCompanyImageSuccess({ path: path })
+            AdministrationActions.UploadCompanyImageSuccess({path: path})
           ),
           catchError((error) =>
             of(AdministrationActions.UploadCompanyImageFailure(error))
@@ -174,7 +191,7 @@ export class AdministrationEffects {
           } as ICompanyUpdate)
           .pipe(
             map((result) =>
-              AdministrationActions.loadDetailedCompany({ id: result.id })
+              AdministrationActions.loadDetailedCompany({id: result.id})
             ),
             catchError((error) =>
               of(
@@ -214,9 +231,11 @@ export class AdministrationEffects {
       )
     );
   });
+
   constructor(
     private actions$: Actions,
     private service: AdministrationApiService,
     private store: Store<AppState>
-  ) {}
+  ) {
+  }
 }

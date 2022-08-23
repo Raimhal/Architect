@@ -71,6 +71,14 @@ export const reducer = createReducer(
       };
     }
   ),
+  on(AdministrationActions.loadRolesSuccess, (state, action)=>({
+    ...state,
+    roles: action.roles
+  })),
+  on(AdministrationActions.loadRolesFailure, (state,action)=>({
+    ...state,
+    error: action.error
+  })),
   on(
     AdministrationActions.getAllCompaniesWithParamsFailure,
     (state, action) => {

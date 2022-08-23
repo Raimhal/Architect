@@ -11,6 +11,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddCompanyMemberComponent } from '../add-company-member/add-company-member.component';
 import { FormGroupState } from 'ngrx-forms';
 import * as fromCompanyInformationForm from '../resources/forms/company-information-form';
+import {openModalDialog} from "../../../store/actions/modal-dialog.action";
 @Component({
   selector: 'app-company-information',
   templateUrl: './company-information.component.html',
@@ -37,7 +38,7 @@ export class CompanyInformationComponent implements OnInit {
     this.companyInformationForm$ = this.store.pipe(
       select(AdministrationSelectors.selectCompanyInformationForm)
     );
-    
+
     this.addSvgIcons();
   }
 
@@ -101,8 +102,10 @@ export class CompanyInformationComponent implements OnInit {
   }
 
   openModal(companyId: number) {
-    this.dialog.open(AddCompanyMemberComponent, {
-      data: companyId,
-    });
+    this.store.dispatch(openModalDialog({
+      component: AddCompanyMemberComponent, config: {
+        data: companyId
+      }
+    }))
   }
 }

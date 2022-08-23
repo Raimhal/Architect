@@ -35,6 +35,7 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatMomentDateModule} from "@angular/material-moment-adapter";
 import {MatTabsModule} from "@angular/material/tabs";
 import {ProjectModule} from "./modules/project/project.module";
+import {MatDialogModule} from "@angular/material/dialog";
 
 @NgModule({
   declarations: [
@@ -50,7 +51,7 @@ import {ProjectModule} from "./modules/project/project.module";
       metaReducers,
       runtimeChecks: {
         strictStateImmutability: true,
-        strictActionImmutability: true,
+        strictActionImmutability: false,
         strictStateSerializability: true,
         strictActionSerializability: true,
         strictActionWithinNgZone: true,
@@ -77,6 +78,7 @@ import {ProjectModule} from "./modules/project/project.module";
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
+    MatDialogModule,
     MatRippleModule,
     NgxSpinnerModule.forRoot({type: 'ball-scale-multiple'}),
     MatIconModule,

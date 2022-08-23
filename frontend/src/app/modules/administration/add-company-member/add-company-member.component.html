@@ -1,30 +1,26 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()" class="wrapper">
-  <div class="header-wrapper">
-    <h2>Add a new Company Member</h2>
-    <a mat-dialog-close class="header-button">
-      <mat-icon svgIcon="cross"></mat-icon>
-    </a>
-  </div>
-  <mat-form-field appearance="fill">
-    <mat-label>Position</mat-label>
-    <mat-select formControlName="roleName" required>
-      <mat-option *ngFor="let role of (roles$ | async)" value="{{role.roleName}}">{{role.roleName}}</mat-option>
-    </mat-select>
-  </mat-form-field>
-  <div class="fullname-wrapper">
-    <mat-form-field  appearance="fill">
-      <mat-label>First Name</mat-label>
-      <input formControlName="firstName" matInput required placeholder="David">
+<app-modal-dialog title="Add a new Company Member">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="wrapper">
+    <mat-form-field appearance="fill">
+      <mat-label>Position</mat-label>
+      <mat-select formControlName="roleName" required>
+        <mat-option *ngFor="let role of (roles$ | async)" value="{{role.roleName}}">{{role.roleName}}</mat-option>
+      </mat-select>
     </mat-form-field>
-    <mat-form-field  appearance="fill">
-      <mat-label>Last Name</mat-label>
-      <input formControlName="lastName" matInput required placeholder="Robinson">
+    <div class="fullname-wrapper">
+      <mat-form-field appearance="fill">
+        <mat-label>First Name</mat-label>
+        <input formControlName="firstName" matInput required placeholder="David">
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Last Name</mat-label>
+        <input formControlName="lastName" matInput required placeholder="Robinson">
+      </mat-form-field>
+    </div>
+    <mat-form-field appearance="fill">
+      <mat-label>E-mail</mat-label>
+      <input formControlName="userEmail" matInput placeholder="Ex. lastname@example.com" required type="email">
+      <mat-error *ngIf="form.get('userEmail')?.invalid">Email is not valid</mat-error>
     </mat-form-field>
-  </div>
-  <mat-form-field  appearance="fill">
-    <mat-label>E-mail</mat-label>
-    <input formControlName="userEmail" matInput placeholder="Ex. lastname@example.com" required type="email">
-    <mat-error *ngIf="form.get('userEmail')?.invalid">Email is not valid</mat-error>
-  </mat-form-field>
-  <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">Generate Password and Send</button>
-</form>
+    <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">Generate Password and Send</button>
+  </form>
+</app-modal-dialog>

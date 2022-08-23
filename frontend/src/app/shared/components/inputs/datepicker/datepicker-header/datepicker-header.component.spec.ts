@@ -3,8 +3,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DatepickerHeaderComponent } from './datepicker-header.component';
 
 describe('DatepickerHeaderComponent', () => {
-  let component: DatepickerHeaderComponent;
-  let fixture: ComponentFixture<DatepickerHeaderComponent>;
+  let component: DatepickerHeaderComponent<any>;
+  let fixture: ComponentFixture<DatepickerHeaderComponent<any>>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
