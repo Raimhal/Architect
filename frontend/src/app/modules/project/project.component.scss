@@ -1,0 +1,50 @@
+.projects {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.75rem;
+}
+
+.projects > div {
+  width: 580px;
+  height: 480px;
+}
+
+.projects-page {
+  display: flex;
+  flex-direction: column;
+  gap: 2.75rem;
+  width: fit-content;
+}
+
+.head {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.create-project {
+  width: 100%;
+  display: flex;
+  justify-content: start;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+}
+
+:host ::ng-deep .btn {
+  width: 172px;
+}
+
+.controll {
+  display: flex;
+  justify-content: space-between;
+}
+
+.statuses {
+  display: flex;
+  gap: 3rem;
+}

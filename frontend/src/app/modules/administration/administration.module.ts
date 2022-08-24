@@ -2,7 +2,6 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {MatSidenavModule} from "@angular/material/sidenav";
 import {MatListModule} from "@angular/material/list";
-import {AddCompanyMemberComponent} from './add-company-member/add-company-member.component';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
@@ -24,6 +23,7 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
 import {MatCardModule} from '@angular/material/card';
 import {SharedModule} from "../../shared/shared.module";
 import {NgrxFormsModule} from 'ngrx-forms';
+import { AddCompanyMemberComponent } from './add-company-member/add-company-member.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +36,7 @@ import {NgrxFormsModule} from 'ngrx-forms';
   ],
   imports: [
     CommonModule,
+    SharedModule,
     MatSidenavModule,
     MatListModule,
     MatDialogModule,
@@ -53,7 +54,6 @@ import {NgrxFormsModule} from 'ngrx-forms';
     MatIconModule,
     ScrollingModule,
     MatCardModule,
-    SharedModule,
     NgrxFormsModule,
   ],
   providers: [

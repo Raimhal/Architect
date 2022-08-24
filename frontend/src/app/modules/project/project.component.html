@@ -1,3 +1,28 @@
-<p>
-  project works!
-</p>
+
+<div class="container">
+  <div class="projects-page">
+    <div class="head">
+      <div class="controll">
+        <div class="statuses">
+          <app-underlined-button (click)="changeStatus(status.InProcess)">Current projects</app-underlined-button>
+          <app-underlined-button (click)="changeStatus(status.Finished)">Completed</app-underlined-button>
+          <app-underlined-button (click)="changeStatus(status.Suspended)">Suspended</app-underlined-button>
+        </div>
+        <div>
+          <!-- sort and search  -->
+        </div>
+      </div>
+      <div class="create-project">
+        <!-- create project button -->
+        <app-button>Add Project</app-button>
+      </div>
+    </div>
+    <div class="projects" *ngIf="projects$ | async as projects">
+      <app-card 
+        *ngFor="let project of projects"
+        [cardInformation]="getCardInformation(project)"
+      >
+      </app-card>
+    </div>
+  </div>
+</div>

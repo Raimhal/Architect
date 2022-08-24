@@ -18,6 +18,7 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
                 { typeof(UnauthorizedAccessException), HandleUnauthorizedAccessException },
                 { typeof(ForbiddenAccessException), HandleForbiddenAccessException },
                 { typeof(EmailException), HandleEmailException },
+                { typeof(ArgumentException), HandleArgumentException },
             };
     }
 
@@ -155,6 +156,26 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
         context.Result = new ObjectResult(details)
         {
             StatusCode = StatusCodes.Status503ServiceUnavailable
+        };
+
+        context.ExceptionHandled = true;
+    }
+
+    private void HandleArgumentException(ExceptionContext context)
+    {
+        var exception = (ArgumentException)context.Exception;
+
+        var details = new ProblemDetails
+        {
+            Status = StatusCodes.Status500InternalServerError,
+            Title = "Internal Server Error",
+            Type = "https://tools.ietf.org/html/rfc7231#section-6.6.1",
+            Detail = exception.Message
+        };
+
+        context.Result = new ObjectResult(details)
+        {
+            StatusCode = StatusCodes.Status500InternalServerError
         };
 
         context.ExceptionHandled = true;

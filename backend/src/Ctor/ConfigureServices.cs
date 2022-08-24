@@ -3,6 +3,7 @@ using Ctor.Infrastructure.Persistence;
 using Ctor.Services;
 using FluentValidation.AspNetCore;
 using Microsoft.OpenApi.Models;
+using Microsoft.Extensions.DependencyInjection;
 
 public static class ConfigureServices
 {
@@ -17,8 +18,7 @@ public static class ConfigureServices
         services.AddHealthChecks()
             .AddDbContextCheck<ApplicationDbContext>();
 
-        services.AddControllers(opts => 
-            opts.Filters.Add<ApiExceptionFilterAttribute>())
+        services.AddControllers(opts => opts.Filters.Add<ApiExceptionFilterAttribute>())
                 .AddFluentValidation(x => x.AutomaticValidationEnabled = false);
 
         services.AddEndpointsApiExplorer();

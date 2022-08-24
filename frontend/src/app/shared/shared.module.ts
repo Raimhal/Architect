@@ -10,8 +10,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { LargeButtonComponent } from './components/buttons/large-button/large-button.component';
 import { MiniButtonComponent } from './components/buttons/mini-button/mini-button.component';
 import {
-  ForgotPasswordButtonComponent
-} from './components/buttons/forgot-password-button/forgot-password-button.component';
+  UnderlinedButtonComponent
+} from './components/buttons/underlined-button/underlined-button.component';
 import { FilterComponent } from './components/buttons/filter/filter.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -33,11 +33,11 @@ import { MatSelectModule } from "@angular/material/select";
 import { TabsComponent } from './components/inputs/tabs/tabs.component';
 import { MatTabsModule } from "@angular/material/tabs";
 import { CardComponent } from './components/card/card.component';
-import { ModalDialogComponent } from './components/modal-dialog/modal-dialog.component';
 import { FilterInputComponent } from './components/inputs/filter-input/filter-input.component';
 import { NotLoggedInComponent } from "./components/guards/not-logged-in/not-logged-in.component";
 import { LoggedInComponent } from "./components/guards/logged-in/logged-in.component";
 import { HasRoleComponent } from "./components/guards/has-role/has-role.component";
+import { ModalDialogComponent } from './components/modal-dialog/modal-dialog.component';
 
 
 @NgModule({
@@ -49,9 +49,9 @@ import { HasRoleComponent } from "./components/guards/has-role/has-role.componen
     ButtonComponent,
     LargeButtonComponent,
     MiniButtonComponent,
-    ForgotPasswordButtonComponent,
     FilterComponent,
     DatepickerComponent,
+    UnderlinedButtonComponent,
     DatepickerHeaderComponent,
     ModalDialogComponent,
     AutocompleteComponent,
@@ -62,6 +62,7 @@ import { HasRoleComponent } from "./components/guards/has-role/has-role.componen
     LoggedInComponent,
     NotLoggedInComponent,
     HasRoleComponent,
+
   ],
   imports: [
     CommonModule,
@@ -87,7 +88,7 @@ import { HasRoleComponent } from "./components/guards/has-role/has-role.componen
     ButtonComponent,
     LargeButtonComponent,
     MiniButtonComponent,
-    ForgotPasswordButtonComponent,
+    UnderlinedButtonComponent,
     FilterComponent,
     DatepickerComponent,
     MatMomentDateModule,
@@ -96,10 +97,7 @@ import { HasRoleComponent } from "./components/guards/has-role/has-role.componen
     TabsComponent,
     CardComponent,
     FilterInputComponent,
-    LoggedInComponent,
-    NotLoggedInComponent,
-    HasRoleComponent,
-    ModalDialogComponent,
+    ModalDialogComponent
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },

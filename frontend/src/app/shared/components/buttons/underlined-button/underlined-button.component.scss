@@ -1,6 +1,6 @@
 @use "../../colors.scss" as colors;
 
-.forgot-password {
+.underlined-button {
   height: 20;
   font-weight: 400;
   font-size: 14px;
@@ -20,4 +20,5 @@
     text-decoration-thickness: 2px;
     color: colors.$primary4;
   }
+
 }

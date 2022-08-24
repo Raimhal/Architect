@@ -12,6 +12,10 @@ export class ApiService {
     return this.http.get<T>(`${this.baseUrl}${path}`);
   }
 
+  getWithOptions<T>(path: string, options: {}) {
+    return this.http.get<T>(`${this.baseUrl}${path}`, options);
+  }
+
   post<T>(path: string, data: any) {
     return this.http.post<T>(`${this.baseUrl}${path}`, data);
   }

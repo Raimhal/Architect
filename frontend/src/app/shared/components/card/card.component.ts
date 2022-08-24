@@ -1,4 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import { ProjectStatus } from 'src/app/modules/project/resources/models/status';
 
 export interface CardInformation {
   title : string;
@@ -6,9 +7,10 @@ export interface CardInformation {
   date : string;
   subtitle : string;
   id: number | null;
-  status: string | null;
+  status: ProjectStatus | null;
   statusBarLabel: string | null
   statusBarProgress: number | null;
+  statusBarFull: number 
 }
 
 @Component({
@@ -20,7 +22,6 @@ export class CardComponent implements OnInit {
 
   numOfProgressBarSections = 8;
 
-  _dummyArray = Array.from({length: 8}).map((_, i) => i);
 
   @Input() cardId :number =0
   @Input() cardInformation : CardInformation = {
@@ -31,7 +32,8 @@ export class CardComponent implements OnInit {
     id: null,
     status: null,
     statusBarLabel: null,
-    statusBarProgress: null
+    statusBarProgress: null,
+    statusBarFull: 0
   }
 
   @Output() onCardClicked = new EventEmitter<number>();
@@ -43,5 +45,9 @@ export class CardComponent implements OnInit {
 
   onClicked() {
     this.onCardClicked.emit(this.cardId);
+  }
+
+  get _dummyArray() {
+    return Array.from({length: this.cardInformation.statusBarFull}).map((_, i) => i);
   }
 }

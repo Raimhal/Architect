@@ -1,5 +1,14 @@
-﻿using System.Linq.Expressions;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
+using System.Threading.Tasks;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Ctor.Application.Common.Enums;
 using Ctor.Application.Common.Exceptions;
+using Ctor.Application.Common.Extensions;
 using Ctor.Domain.Common;
 using Ctor.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -8,19 +17,20 @@ namespace Ctor.Infrastructure.Persistence.Repositories;
 
 public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
 {
-    protected ApplicationDbContext Context { get; }
+    protected ApplicationDbContext _context;
+    protected DbSet<T> table;
+    private Lazy<IMapper> _mapper;
 
-    protected DbSet<T> Table { get; }
-
-    public GenericRepository(ApplicationDbContext context)
+    public GenericRepository(ApplicationDbContext context, Lazy<IMapper> mapper)
     {
-        Context = context;
-        Table = context.Set<T>();
+        this._context = context;
+        table = _context.Set<T>();
+        _mapper = mapper;
     }
 
     public Task<List<T>> Get(Expression<Func<T, bool>> filter)
     {
-        IQueryable<T> query = Table;
+        IQueryable<T> query = table;
 
         query = query.Where(filter);
         return query.ToListAsync();
@@ -28,7 +38,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
 
     public Task<List<T>> GetAll()
     {
-        return Table.ToListAsync();
+        return table.ToListAsync();
     }
 
     public async Task<T> GetById(long id, CancellationToken ct)
@@ -36,133 +46,147 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         var entity = await FindById(id, ct);
 
         if (entity == null)
-        {
             throw new NotFoundException(typeof(T).Name, id);
-        }
 
         return entity;
     }
 
     public Task<T?> FindById(long id, CancellationToken ct)
     {
-        return Table.FirstOrDefaultAsync(e => e.Id == id, ct);
+        return table.FirstOrDefaultAsync(e => e.Id == id, ct);
     }
 
     public Task Insert(T obj)
     {
-        return Table.AddAsync(obj).AsTask();
+        return table.AddAsync(obj).AsTask();
     }
 
     public void Update(T obj)
     {
-        Table.Attach(obj);
-        Context.Entry(obj).State = EntityState.Modified;
+        table.Attach(obj);
+        _context.Entry(obj).State = EntityState.Modified;
     }
 
     public void Delete(T obj)
     {
-        Table.Remove(obj);
+        table.Remove(obj);
     }
 
     public bool Any()
     {
-        return Table.Any();
+        return table.Any();
     }
 
     public Task AddRangeAsync(IEnumerable<T> values)
     {
-        return Table.AddRangeAsync(values);
+        return table.AddRangeAsync(values);
     }
 
     public Task AddRangeAsync(params T[] value)
     {
-        return Table.AddRangeAsync(value);
+        return table.AddRangeAsync(value);
     }
 
     public async Task<bool> DeleteById(long id)
     {
-        var obj = await Table.FindAsync(id);
-        if (obj == null)
-        {
-            return false;
-        }
+        var obj = await table.FindAsync(id);
 
-        Table.Remove(obj);
+        if (obj == null)
+            return false;
+
+        table.Remove(obj);
         return true;
     }
 
-    public Task<List<T>> GetOrdered(Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
-        Expression<Func<T, bool>>? filter = null)
+
+    public Task<List<T>> GetOrdered(string orderBy, Order order = Order.ASC,
+        Expression<Func<T, bool>> filter = null)
     {
-        IQueryable<T> query = Context.Set<T>();
-
-        if (filter != null)
-        {
-            query = query.Where(filter);
-        }
-
-        if (orderBy != null)
-        {
-            query = orderBy(query);
-        }
+        var query = GetOrderedInternal(orderBy, order, filter);
 
         return query.ToListAsync();
     }
 
-    public async Task<(List<T> entities, int total)> GetFilteredWithTotalSum(int page = 0, int count = 0,
-        Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
-        Expression<Func<T, bool>>? filter = null)
+    public Task<List<TResult>> GetOrdered<TResult>(string orderBy, Order order = Order.ASC,
+    Expression<Func<T, bool>> filter = null)
     {
-        IQueryable<T> query = Context.Set<T>();
+        var query = GetOrderedInternal(orderBy, order, filter);
 
-        if (filter != null)
-        {
-            query = query.Where(filter);
-        }
+        return query.ProjectTo<TResult>(_mapper.Value.ConfigurationProvider).ToListAsync();
+    }
 
-        if (orderBy != null)
-        {
-            query = orderBy(query);
-        }
+    public async Task<(List<T> entities, int total)> GetFilteredWithTotalSum(Expression<Func<T, bool>> filter,
+        int page = 0, int count = 0, string orderBy = null, Order order = Order.ASC)
+    {
+        (var query, var total) = await GetFilteredWithTotalSumInternal(filter, page, count, orderBy, order);
 
-        var countEntities = await query.CountAsync();
+        return (await query.ToListAsync(), total);
+    }
 
-        if (count != 0)
-        {
-            query = query.Skip(page * count).Take(count);
-        }
+    public async Task<(List<TResult> entities, int total)> GetFilteredWithTotalSum<TResult>(Expression<Func<T, bool>> filter,
+    int page = 0, int count = 0, string orderBy = null, Order order = Order.ASC)
+    {
+        (var query, var total) = await GetFilteredWithTotalSumInternal(filter, page, count, orderBy, order);
 
-        return (await query.ToListAsync(), countEntities);
+        return (await query.ProjectTo<TResult>(_mapper.Value.ConfigurationProvider).ToListAsync(), total);
     }
 
     public async Task<(List<T> entities, int total)> GetFilteredWithTotalSumWithQuery(IQueryable<T> query,
-        int page = 0, int count = 0,
-        Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
-        Expression<Func<T, bool>>? filter = null)
+        Expression<Func<T, bool>> filter, int page = 0, int count = 0, string orderBy = null, Order order = Order.ASC)
+    {
+
+        (query, var total) = await GetFilteredWithTotalSumWithQueryInternal(query, filter, page, count, orderBy, order);
+
+        return (await query.ToListAsync(), total);
+    }
+
+    public async Task<(List<TResult> entities, int total)> GetFilteredWithTotalSumWithQuery<TResult>(IQueryable<T> query,
+    Expression<Func<T, bool>> filter, int page = 0, int count = 0, string orderBy = null, Order order = Order.ASC)
+    {
+
+        (query, var total) = await GetFilteredWithTotalSumWithQueryInternal(query, filter, page, count, orderBy, order);
+
+        return (await query.ProjectTo<TResult>(_mapper.Value.ConfigurationProvider).ToListAsync(), total);
+    }
+
+    private IQueryable<T> GetOrderedInternal(string orderBy, Order order = Order.ASC, Expression<Func<T, bool>> filter = null)
+    {
+        IQueryable<T> query = table;
+
+        if (filter != null)
+            query = query.Where(filter);
+
+        return query.DynamicOrderBy(orderBy, order);
+    }
+
+    private async Task<(IQueryable<T> query, int total)> GetFilteredWithTotalSumWithQueryInternal(IQueryable<T> query,
+    Expression<Func<T, bool>> filter, int page = 0, int count = 0, string orderBy = null, Order order = Order.ASC)
     {
         if (filter != null)
-        {
             query = query.Where(filter);
-        }
 
         if (orderBy != null)
-        {
-            query = orderBy(query);
-        }
+            query = query.DynamicOrderBy(orderBy, order);
 
-        var countEntities = await query.CountAsync();
+        var total = await query.CountAsync();
 
         if (count != 0)
-        {
-            query = query.Skip(page * count).Take(count);
-        }
+            query = query.Skip((page - 1) * count).Take(count);
 
-        return (await query.ToListAsync(), countEntities);
+        return (query, total);
+    }
+
+    private async Task<(IQueryable<T> query, int total)> GetFilteredWithTotalSumInternal(Expression<Func<T, bool>> filter,
+    int page = 0, int count = 0, string orderBy = null, Order order = Order.ASC)
+    {
+        IQueryable<T> query = table;
+
+        return await GetFilteredWithTotalSumWithQueryInternal(query, filter, page, count, orderBy, order);
     }
 
     public Task<T?> SingleOrDefault(Expression<Func<T, bool>> filter)
     {
-        IQueryable<T> query = Table;
+        IQueryable<T> query = table;
 
         query = query.Where(filter);
         return query.SingleOrDefaultAsync();

@@ -18,6 +18,8 @@ public class MyEntityController : ApiControllerBase
     [Route("{id}")]
     public async Task<ActionResult<MyEntityDto>> Get(int id)
     {
+       
+       
         return await Mediator.Send(new GetMyEntitiesQuery(id));
     }
 

@@ -24,9 +24,7 @@ public class GetRolesQueryHandler : IRequestHandler<GetRolesQuery, List<RoleDto>
 
     public async Task<List<RoleDto>> Handle(GetRolesQuery request, CancellationToken cancellationToken)
     {
-        var filteredRoles = await _context.Roles.GetFilteredWithTotalSum(0, 0,
-            r => r.OrderBy(x => x.Id),
-            r => r.RoleName != "Admin");
+        var filteredRoles = await _context.Roles.GetFilteredWithTotalSum(r => r.RoleName != "Admin", 0, 0, "Id");
         var smth = filteredRoles.entities;
 
         return _mapper.Map<List<RoleDto>>(smth);

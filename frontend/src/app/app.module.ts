@@ -34,8 +34,8 @@ import {SharedModule} from './shared/shared.module';
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatMomentDateModule} from "@angular/material-moment-adapter";
 import {MatTabsModule} from "@angular/material/tabs";
-import {ProjectModule} from "./modules/project/project.module";
 import {MatDialogModule} from "@angular/material/dialog";
+import { ProjectModule } from './modules/project/project.module';
 
 @NgModule({
   declarations: [
@@ -45,6 +45,7 @@ import {MatDialogModule} from "@angular/material/dialog";
     LandingPageComponent
   ],
   imports: [
+    SharedModule,
     BrowserModule,
     AppRoutingModule,
     StoreModule.forRoot(reducers, {
@@ -60,7 +61,6 @@ import {MatDialogModule} from "@angular/material/dialog";
     }),
     BrowserAnimationsModule,
     RouterModule,
-    SharedModule,
     FormsModule,
     ReactiveFormsModule,
     AuthModule,
@@ -75,6 +75,7 @@ import {MatDialogModule} from "@angular/material/dialog";
       ModalEffects
     ]),
     AdministrationModule,
+    ProjectModule,
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,

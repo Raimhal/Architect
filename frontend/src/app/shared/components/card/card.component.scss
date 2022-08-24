@@ -33,6 +33,7 @@
   background: #FFEBD3;
 }
 
+
 .box img {
   flex: none;
   order: 0;
@@ -44,12 +45,29 @@
   background: url("../../../../assets/dummy.png");
 }
 
+.large-box {
+  width: 580px;
+  height: 460px;
+  padding: 11px;
+}
+
+.large-box img {
+  width: auto;
+  height: 298px;
+}
+
+.large-box .name {
+  font-weight: 500;
+  font-size: 20px
+}
+
 .box-desc {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   padding: 0;
   gap: 8px;
+  width: 100%;
 
 
   /* Inside auto layout */
@@ -73,6 +91,10 @@
   flex-grow: 0;
 }
 
+.date-box {
+  width: 100%;
+}
+
 .date {
   flex: none;
   order: 0;
@@ -88,8 +110,7 @@
 .title-box {
   display: flex;
   flex-direction: row;
-  justify-content: flex-end;
-  align-items: flex-start;
+  align-items: center;
   padding: 0;
   gap: 8px;
 
@@ -107,7 +128,8 @@
 .status {
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
+  align-items: center;
+  justify-content: center;
   padding: 4px 8px;
   gap: 10px;
 
@@ -135,73 +157,29 @@
   flex: none;
   order: 3;
   flex-grow: 0;
+  font-weight: 600;
 }
 
 .progress-bar {
+  width: 100%;
   display: flex;
   flex-direction: row;
-  justify-content: center;
   align-items: flex-start;
   padding: 0px;
-  isolation: isolate;
 
-  flex: none;
   order: 4;
-  flex-grow: 0;
 }
 
 .progress-bar-element {
-  width: 77.38px;
   height: 8px;
 
   background: #FFEBD3;
   border: 1px solid #FFFFFF;
 
-  flex: none;
   align-self: stretch;
   flex-grow: 1;
-  margin: 0px -9px;
 }
 
-.progress-bar-element-0{
-  order: 0;
-  z-index: 7;
-}
-
-.progress-bar-element-1{
-  order: 1;
-  z-index: 6;
-}
-
-.progress-bar-element-2{
-  order: 2;
-  z-index: 5;
-}
-
-.progress-bar-element-3{
-  order: 3;
-  z-index: 4;
-}
-
-.progress-bar-element-4{
-  order: 4;
-  z-index: 3;
-}
-
-.progress-bar-element-5{
-  order: 5;
-  z-index: 2;
-}
-
-.progress-bar-element-6{
-  order: 6;
-  z-index: 1;
-}
-
-.progress-bar-element-7{
-  order: 7;
-  z-index: 0;
-}
 
 .progress-bar-element-selected {
   background: #FFBD93;

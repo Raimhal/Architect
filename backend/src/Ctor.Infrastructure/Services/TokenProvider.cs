@@ -35,7 +35,7 @@ public class TokenProvider : ITokenProvider
             claims: new List<Claim>
             {
                 new("id", userId.ToString()), //
-                new("role", role.RoleName),
+                new("role", role?.RoleName),
             },
             expires: expires,
             signingCredentials: signinCredentials

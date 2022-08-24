@@ -14,7 +14,7 @@
     <div class="address">{{cardInformation.subtitle}}</div>
     <div *ngIf="cardInformation.statusBarLabel" class="progress-bar-label">{{cardInformation.statusBarLabel}}</div>
     <div class="progress-bar" *ngIf="cardInformation.statusBarProgress">
-      <div *ngFor="let i of _dummyArray" class="progress-bar-element progress-bar-element-{{i}}"
+      <div *ngFor="let i of _dummyArray" class="progress-bar-element"
       [class.progress-bar-element-selected]="i <= cardInformation.statusBarProgress - 1"></div>
     </div>
   </div>

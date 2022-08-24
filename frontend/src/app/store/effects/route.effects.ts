@@ -84,5 +84,4 @@ export class RouteEffects {
 
     return this.route.navigate(['/projects'])
   }
-
 }

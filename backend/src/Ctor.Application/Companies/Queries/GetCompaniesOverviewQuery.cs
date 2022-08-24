@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using Ctor.Application.Common.Enums;
 using Ctor.Application.Common.Interfaces;
 using Ctor.Domain.Entities;
 using MediatR;
@@ -23,26 +24,15 @@ public class GetCompaniesOverviewQueryHandler : IRequestHandler<GetCompaniesOver
         _context = context;
         _mapper = mapper;
     }
-
     public async Task<List<CompanyOverviewDto>> Handle(GetCompaniesOverviewQuery request, CancellationToken cancellationToken)
     {
         Expression<Func<Company, bool>> filterPredicate = null;
         if (!string.IsNullOrEmpty(request.Filter))
         {
-            filterPredicate = company => company.CompanyName.StartsWith(request.Filter);
+            filterPredicate = company => company.CompanyName.ToLower().StartsWith(request.Filter.ToLower());
         }
 
-        Func<IQueryable<Company>, IOrderedQueryable<Company>> orderBy = null;
-        if (request.Sort == "name")
-        {
-            orderBy = companies => companies.OrderBy(c => c.CompanyName);
-        }
-        if (request.Sort == "joinDate")
-        {
-            orderBy = companies => companies.OrderByDescending(c => c.JoinDate);
-        }
-
-        var companies = await _context.Companies.GetOrdered(orderBy, filterPredicate);
+        var companies = await _context.Companies.GetOrdered(request.Sort, Order.ASC, filterPredicate);
 
         return _mapper.Map<List<CompanyOverviewDto>>(companies);
     }

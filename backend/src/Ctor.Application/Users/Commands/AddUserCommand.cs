@@ -42,13 +42,13 @@ public class AddUserQueryHandler : IRequestHandler<AddUserCommand,bool>
             UserEmail = request.UserEmail,
             CompanyId = request.CompanyId
         };
-        var roles = await _context.Roles.GetFilteredWithTotalSum(0, 0, null, r => r.RoleName == request.RoleName);
+        var roles = await _context.Roles.GetFilteredWithTotalSum(r => r.RoleName == request.RoleName);
         var role = roles.entities.FirstOrDefault();
 
         if (request.RoleName == "Operational manager")
         {
-            var operationalManagers = await _context.Users.GetFilteredWithTotalSum(0, 1, null, s =>
-                s.Role.RoleName == "Operational manager" && s.CompanyId == request.CompanyId);
+            var operationalManagers = await _context.Users.GetFilteredWithTotalSum(s =>
+                s.Role.RoleName == "Operational manager" && s.CompanyId == request.CompanyId, 1, 1);
 
             var operationalManager = operationalManagers.entities.FirstOrDefault();
 

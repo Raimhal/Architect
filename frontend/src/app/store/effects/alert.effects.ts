@@ -104,7 +104,8 @@ export class AlertEffects {
   );
 
 
-  companiesListLoadingFailed = createEffect(
+
+  companiesListLoadingFailed$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(fromAdministrationActions.getAllCompaniesWithParamsFailure),
