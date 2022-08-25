@@ -10,7 +10,7 @@ using Ctor.Application.Common.Interfaces;
 using Ctor.Domain.Entities;
 using MediatR;
 
-namespace Ctor.Application.Companies.Queries;
+namespace Ctor.Application.Companies.Queries.GetCompanyById;
 
 public record GetCompanyByIdQuery(long Id) : IRequest<CompanyDetailedResponseDto>;
 

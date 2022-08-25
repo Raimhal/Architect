@@ -1,0 +1,69 @@
+<div class="wrapper">
+  <h3>Company Profile</h3>
+  <div class="columns">
+    <div class="company-info">
+      <div class="logo-container">
+        <img>
+        <div class="logo-controls">
+          <mat-icon svgIcon="pencil"></mat-icon>
+          <a class="main-text upload-btn">Upload A Logo</a>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="card-header">
+          <span class="selected-text1">Shopping Centre Valkea Info</span>
+          <button mat-icon-button>
+            <mat-icon svgIcon="pencil"></mat-icon>
+          </button>
+        </div>
+        <div class="info-card-content">
+          <div class="info-card-content-labels">
+            <div class="info-card-label">
+              Join date:
+            </div>
+            <div class="info-card-label">
+              Address:
+            </div>
+            <div class="info-card-label">
+              Email:
+            </div>
+            <div class="info-card-label">
+              Website:
+            </div>
+          </div>
+          <div class="info-card-content-inputs" *ngIf="company$ | async as company">
+            <div class="info-card-input">
+              {{company.joinDate}}
+            </div>
+            <div class="info-card-input">
+              {{getAddress(company)}}
+            </div>
+            <div class="info-card-input">
+              {{company.email}}
+            </div>
+            <div class="info-card-input">
+              {{company.website}}
+            </div>
+          </div>
+        </div>
+        <div class="info-card-description" *ngIf="company$ | async as company">
+          {{company.description}}
+        </div>
+      </div>
+    </div>
+    <div class="projects-card">
+      <div class="card-header">
+        <span class="selected-text1">Projects</span>
+      </div>
+      <div class="project-info" *ngFor="let project of projects$ | async">
+        <img>
+        <div class="project-info-container">
+          <h3>{{project.projectName}}</h3>
+          <div class="project-info-container-subheader">{{getAddress(project)}}</div>
+          <div class="project-info-container-description">{{project.description}}</div>
+        </div>
+        <div class="project-info-container-status">{{project.status}}</div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -4,7 +4,7 @@
       <mat-icon svgIcon="sort"></mat-icon>
     </a>
     <mat-menu #menu="matMenu">
-      <button mat-menu-item (click)="toggleSort('name')">Name</button>
+      <button mat-menu-item (click)="toggleSort('companyName')">Name</button>
       <button mat-menu-item (click)="toggleSort('joinDate')">Join date</button>
     </mat-menu>
     <app-filter-input (onSearchQuery)="onSearchQuery($event)"></app-filter-input>

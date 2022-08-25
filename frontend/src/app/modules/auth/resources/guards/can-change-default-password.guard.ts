@@ -17,8 +17,7 @@ export class CanChangeDefaultPasswordGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     return this.store.pipe(
-      select(fromAuth.selectAskToChangeDefaultPassword),
-      map(askToChangeDefaultPassword => askToChangeDefaultPassword)
+      select(fromAuth.selectAskToChangeDefaultPassword)
     );
   }
 

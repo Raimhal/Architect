@@ -11,6 +11,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddCompanyMemberComponent } from '../add-company-member/add-company-member.component';
 import { FormGroupState } from 'ngrx-forms';
 import * as fromCompanyInformationForm from '../resources/forms/company-information-form';
+import {hideMenu, openMenu, revealMenu} from "../../../store/actions/menu.actions";
 import {openModalDialog} from "../../../store/actions/modal-dialog.action";
 @Component({
   selector: 'app-company-information',
@@ -28,7 +29,10 @@ export class CompanyInformationComponent implements OnInit {
     private matIconRegistry: MatIconRegistry,
     private domSanitizer: DomSanitizer,
     private dialog: MatDialog
-  ) {}
+  ) {
+    this.store.dispatch(openMenu());
+    this.store.dispatch(hideMenu());
+  }
 
   ngOnInit(): void {
     this.companyDetailed$ = this.store.pipe(

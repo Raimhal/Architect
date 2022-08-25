@@ -34,8 +34,10 @@ import {SharedModule} from './shared/shared.module';
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatMomentDateModule} from "@angular/material-moment-adapter";
 import {MatTabsModule} from "@angular/material/tabs";
+import {ProjectModule} from "./modules/project/project.module";
+import {CompanyModule} from "./modules/company/company.module";
 import {MatDialogModule} from "@angular/material/dialog";
-import { ProjectModule } from './modules/project/project.module';
+import { MenuEffects } from './store/effects/menu.effects';
 import { AdministrationEffects } from './modules/administration/state/administration.effects';
 
 @NgModule({
@@ -89,7 +91,9 @@ import { AdministrationEffects } from './modules/administration/state/administra
     MatDatepickerModule,
     MatMomentDateModule,
     MatTabsModule,
-    ProjectModule
+    ProjectModule,
+    CompanyModule,
+    EffectsModule.forFeature([MenuEffects])
   ],
   providers: [],
   bootstrap: [AppComponent],

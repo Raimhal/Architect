@@ -19,7 +19,10 @@ public class LogoutCommandHandler : IRequestHandler<LogoutCommand, LogoutDto>
 
     public async Task<LogoutDto> Handle(LogoutCommand request, CancellationToken ct)
     {
-        await _userManager.LogoutAsync(_currentUserService.Id!.Value, ct);
+        if (_currentUserService.Id is not null)
+        {
+            await _userManager.LogoutAsync(_currentUserService.Id!.Value, ct);
+        }
 
         return new LogoutDto();
     }

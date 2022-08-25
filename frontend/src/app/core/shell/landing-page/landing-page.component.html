@@ -5,7 +5,9 @@
       <h2>Welcome!</h2>
       <h2>To enter the site, you should sign in.</h2>
     </div>
-    <app-button routerLink="/login">Sign in</app-button>
+    <app-large-button *ngIf="!(isLoggedIn$ | async)" routerLink="/login">Sign in</app-large-button>
+    <app-large-button *ngIf="(isLoggedIn$ | async) && !(isAdmin$ | async)" routerLink="/projects">Sign in</app-large-button>
+    <app-large-button *ngIf="(isLoggedIn$ | async) && (isAdmin$ | async)" routerLink="/administration">Sign in</app-large-button>
   </section>
   <section class="section-second">
     <h1>About project</h1>

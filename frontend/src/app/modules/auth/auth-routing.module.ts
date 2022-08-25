@@ -9,36 +9,18 @@ import { ForgotPasswordComponent } from './auth-forgot-password/auth-forgot-pass
 import { CanChangeDefaultPasswordGuard } from "./resources/guards/can-change-default-password.guard";
 import { NotLoggedInComponent } from "../../shared/components/guards/not-logged-in/not-logged-in.component";
 import { LoggedInComponent } from "../../shared/components/guards/logged-in/logged-in.component";
+import {IsNotLoggedInGuard} from "../../core/resources/guards/is-not-logged-in.guard";
+import {IsLoggedInGuard} from "../../core/resources/guards/is-logged-in.guard";
 
 const routes: Routes = [
-  {
-    path: '',
-    component: NotLoggedInComponent,
-    children: [
-      { path: 'login', component: AuthLoginFormComponent },
-      { path: 'forgot-password', component: ForgotPasswordComponent },
-    ],
-  },
-  {
-    path: '',
-    component: LoggedInComponent,
-    children: [
-      {
-        path: 'change-default-password',
-        component: AuthChangeDefaultPasswordFormComponent,
-        canActivate: [CanChangeDefaultPasswordGuard],
-      },
-      {
-        path: 'change-password',
-        component: AuthChangePasswordFormComponent,
-        canActivate: [CanChangeDefaultPasswordGuard],
-      },
-    ],
-  },
+  {path: 'login', component: AuthLoginFormComponent, canActivate: [IsNotLoggedInGuard]},
+  {path: 'forgot-password', component: ForgotPasswordComponent, canActivate: [IsNotLoggedInGuard]},
+  {path: 'change-default-password', component: AuthChangeDefaultPasswordFormComponent, canActivate: [IsLoggedInGuard, CanChangeDefaultPasswordGuard]},
+  {path: 'change-password', component: AuthChangePasswordFormComponent, canActivate: [IsLoggedInGuard, CanChangeDefaultPasswordGuard]},
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
 

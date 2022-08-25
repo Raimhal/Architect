@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Ctor.Application.Companies.Queries;
+using Ctor.Application.Companies.Queries.GetCompaniesOverview;
+using Ctor.Application.Companies.Queries.GetCompanyById;
 using Ctor.Application.Companies.Commands;
+using Ctor.Application.Companies.Queries.GetCompanyByUserId;
 
 namespace Ctor.Controllers;
 
@@ -34,5 +36,11 @@ public class CompanyController : ApiControllerBase
     public async Task<ActionResult<CompanyDetailedResponseDto>> GetCompanyById(long id)
     {
         return await Mediator.Send(new GetCompanyByIdQuery(id));
+    }
+
+    [HttpGet("get-by-user-id/{userId:long}")]
+    public async Task<ActionResult<CompanyProfileDto>> GetCompanyByUserId(long userId)
+    {
+        return await Mediator.Send(new GetCompanyByUserIdQuery(userId));
     }
 }

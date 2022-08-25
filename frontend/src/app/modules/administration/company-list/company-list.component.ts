@@ -13,6 +13,7 @@ import {map, tap} from "rxjs/operators";
 import {MatDialog} from "@angular/material/dialog";
 import {CardInformation} from "../../../shared/components/card/card.component";
 import {CreateCompany} from "../create-company/create-company.component";
+import {openMenu, revealMenu, setMenuLinks} from "../../../store/actions/menu.actions";
 
 @Component({
   selector: 'app-company-list',
@@ -25,7 +26,7 @@ export class CompanyListComponent implements OnInit {
 
   companies$? : Observable<ICompanyOverview[] | null>
 
-  sort : string = "name";
+  sort : string = "companyName";
 
   filterInput = new FormControl("");
 
@@ -43,6 +44,9 @@ export class CompanyListComponent implements OnInit {
       'sort',
       this.domSanitizer.bypassSecurityTrustResourceUrl("assets/icons/sort.svg")
     );
+
+    this.store.dispatch(openMenu());
+    this.store.dispatch(revealMenu());
   }
 
   ngOnInit(): void {

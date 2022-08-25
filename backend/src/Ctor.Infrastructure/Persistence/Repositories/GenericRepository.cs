@@ -78,7 +78,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     }
     public Task<bool> AnyAsync(Expression<Func<T,bool>> filter)
     {
-        return Table.AnyAsync(filter);
+        return table.AnyAsync(filter);
     }
 
     public Task AddRangeAsync(IEnumerable<T> values)

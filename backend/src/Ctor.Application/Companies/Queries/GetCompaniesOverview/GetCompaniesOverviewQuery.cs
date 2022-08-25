@@ -10,7 +10,7 @@ using Ctor.Application.Common.Interfaces;
 using Ctor.Domain.Entities;
 using MediatR;
 
-namespace Ctor.Application.Companies.Queries;
+namespace Ctor.Application.Companies.Queries.GetCompaniesOverview;
 
 public record GetCompaniesOverviewQuery(string Filter, string Sort) : IRequest<List<CompanyOverviewDto>>;
 

@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { AppState } from './store';
-import { selectIsLoggedIn } from "./store/selectors/auth.selectors";
+import {selectIsLoggedIn, selectUserIsAdmin} from "./store/selectors/auth.selectors";
+import {TokenService} from "./modules/auth/resources/services/token.service";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-root',
@@ -11,9 +13,9 @@ import { selectIsLoggedIn } from "./store/selectors/auth.selectors";
 export class AppComponent {
   title = 'frontend';
 
-  userIsLoggedIn$ = this.store.pipe(select(selectIsLoggedIn));
-
-  constructor(private store: Store<AppState>) {
+  constructor(private tokenService: TokenService) {
+    tokenService.refreshIfNeeded()
+      .catch(error => console.error(error));
   }
 
 }

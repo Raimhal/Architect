@@ -7,6 +7,11 @@ import { AuthService } from 'src/app/modules/auth/resources/services/auth.servic
 import { HttpErrorResponse } from '@angular/common/http';
 import * as fromAuthActions from '../actions/auth.actions';
 import { TokenService } from "../../modules/auth/resources/services/token.service";
+import {serializeError} from "serialize-error";
+import {setMenuLinks} from "../actions/menu.actions";
+import {AppState} from "../index";
+import {Store} from "@ngrx/store";
+
 import * as AdministrationActions from "../../modules/administration/state/administration.actions"
 @Injectable()
 export class AuthEffects {
@@ -15,7 +20,7 @@ export class AuthEffects {
     return this.actions$.pipe(
       ofType(fromAuthActions.login),
       mergeMap((action) =>
-        this.authService.login(action.email, action.password).pipe(          
+        this.authService.login(action.email, action.password).pipe(
           map(response => {
 
             this.tokenService.setTokens(
@@ -64,11 +69,11 @@ export class AuthEffects {
           }),
           catchError((error: any) => {
             this.tokenService.removeTokens();
-            return of(fromAuthActions.logoutFailure(error));
+            return of(fromAuthActions.logoutFailure(serializeError(error)));
           }),
         );
       }),
-      catchError((error: any) => of(fromAuthActions.logoutFailure(error)))
+      catchError((error: any) => of(fromAuthActions.logoutFailure(serializeError(error))))
     );
   });
 
@@ -121,10 +126,14 @@ export class AuthEffects {
   }, { dispatch: false }
   );
 
+
+
   constructor(
     private actions$: Actions,
     private authService: AuthService,
-    private tokenService: TokenService,
+    private tokenService: TokenService
   ) {
   }
+
+
 }

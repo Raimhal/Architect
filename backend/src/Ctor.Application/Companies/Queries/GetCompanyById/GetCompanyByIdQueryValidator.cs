@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Ctor.Application.Companies.Queries;
+namespace Ctor.Application.Companies.Queries.GetCompanyById;
 
 public class GetCompanyByIdQueryValidator : AbstractValidator<GetCompanyByIdQuery>
 {

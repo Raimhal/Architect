@@ -97,7 +97,7 @@ export class TokenService {
       if (requireLogin) {
         this.removeTokens();
         return new Promise<void>((resolve, reject) =>
-          this.router.navigate(['/login'])
+          this.router.navigate(['/'])
             .then(() => resolve())
             .catch((error) => reject(error)));
       }

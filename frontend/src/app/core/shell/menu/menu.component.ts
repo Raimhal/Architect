@@ -3,10 +3,13 @@ import {MatIconRegistry} from "@angular/material/icon";
 import {DomSanitizer} from "@angular/platform-browser";
 import {select, Store} from "@ngrx/store";
 import {AppState} from "../../../store";
-import {selectUserIsAdmin} from "../../../store/selectors/auth.selectors";
 import {Observable} from "rxjs";
 import {Router} from "@angular/router";
-import { logout } from 'src/app/store/actions/auth.actions';
+import {IMenuLink} from "./resources/IMenuLink";
+import * as fromMenuSelectors from "../../../store/selectors/menu.selectors";
+import * as fromMenuActions from "../../../store/actions/menu.actions";
+import {logout} from "../../../store/actions/auth.actions";
+import {goBack} from "../../../store/actions/route.actions";
 
 @Component({
   selector: 'app-menu',
@@ -15,23 +18,13 @@ import { logout } from 'src/app/store/actions/auth.actions';
 })
 export class MenuComponent implements OnInit {
 
-  opened : boolean = true;
-  isAdmin$? : Observable<boolean>
+  opened$? : Observable<boolean>
+  revealed$? : Observable<boolean>
 
   selectedRoute? : string
 
-  adminRoutes = [
-    { name: "Companies", path: "/company-list"},
-    { name: "Notifications", path: ""}
-  ]
+  routes? : Observable<IMenuLink[]>
 
-  otherRoutes = [
-    { name: "Projects", path: "/projects" },
-    { name: "Team", path: "" },
-    { name: "Resources", path: "" },
-    { name: "Budgets", path: "" },
-    { name: "Documents", path: "" }
-  ]
 
   constructor(private matIconRegistry: MatIconRegistry,
               private domSanitizer: DomSanitizer,
@@ -43,19 +36,26 @@ export class MenuComponent implements OnInit {
     );
   }
 
-  ngOnInit(): void {
-    this.isAdmin$ = this.store.pipe(select(selectUserIsAdmin));
-    this.selectedRoute = this.router.url;
+  hide() {
+    this.store.dispatch(fromMenuActions.hideMenu());
   }
 
-  toggleOpened(){
-    this.opened = !this.opened;
+  reveal() {
+    this.store.dispatch(fromMenuActions.revealMenu());
+  }
+
+  ngOnInit(): void {
+    this.selectedRoute = this.router.url;
+    this.routes = this.store.pipe(select(fromMenuSelectors.selectMenuLinks));
+    this.opened$ = this.store.pipe(select(fromMenuSelectors.selectIfMenuIsOpened));
+    this.revealed$ = this.store.pipe(select(fromMenuSelectors.selectIfMenuIsRevealed));
   }
 
   onSelect(route: string){
     this.selectedRoute = route;
   }
-  logout(){
-    this.store.dispatch(logout())
+
+  logout() {
+    this.store.dispatch(logout());
   }
 }

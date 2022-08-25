@@ -8,6 +8,7 @@ import { IProjectOverview } from './resources/models/project-overview';
 import { ProjectStatus } from './resources/models/status';
 import { changeParams, getProjectsWithParams } from './resources/state/project.actions';
 import { selectProjects } from './resources/state/project.selectors';
+import {openMenu, revealMenu} from "../../store/actions/menu.actions";
 import { openModalDialog } from 'src/app/store/actions/modal-dialog.action';
 import { AddProjectComponent } from './add-project/add-project.component';
 
@@ -22,11 +23,13 @@ export class ProjectComponent implements OnInit {
   status = ProjectStatus
 
   constructor(public dialog: MatDialog, private store: Store<AppState>) {
-    this.projects$ = this.store.pipe(select(selectProjects))
-  }
+    this.projects$ = this.store.pipe(select(selectProjects));
+    this.store.dispatch(openMenu());
+    this.store.dispatch(revealMenu());
+   }
 
   ngOnInit() {
-    this.store.dispatch(getProjectsWithParams())
+    this.store.dispatch(getProjectsWithParams());
   }
 
   changeStatus(status: ProjectStatus) {

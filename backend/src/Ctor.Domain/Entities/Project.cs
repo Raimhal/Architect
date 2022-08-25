@@ -11,6 +11,7 @@ public class Project : BaseEntity
     public string Address { get; set; }
     public string City { get; set; }
     public decimal Budget { get; set; }
+    public string? Description { get; set; }
     public ProjectStatus Status { get; set; }
     public DateTime StartTime { get; set; }
     public DateTime EndTime { get; set; }
