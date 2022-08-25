@@ -1,17 +1,18 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ModalDialogService} from "./resources/modal-dialog.service";
 import {Store} from "@ngrx/store";
-import {MatIconRegistry} from "@angular/material/icon";
+import {AppState} from "../../../../store";
 import {DomSanitizer} from "@angular/platform-browser";
-import {AppState} from "../../../store";
-import {closeModalDialog} from "../../../store/actions/modal-dialog.action";
+import {MatIconRegistry} from "@angular/material/icon";
+import {closeModalDialog} from "../../../../store/actions/modal-dialog.action";
+import {ModalDialogService} from "../resources/modal-dialog.service";
 
 @Component({
-  selector: 'app-modal-dialog',
-  templateUrl: './modal-dialog.component.html',
-  styleUrls: ['./modal-dialog.component.scss']
+  selector: 'app-modal-dialog-confirmation',
+  templateUrl: './modal-dialog-confirmation.component.html',
+  styleUrls: ['./modal-dialog-confirmation.component.scss']
 })
-export class ModalDialogComponent implements OnInit {
+export class ModalDialogConfirmationComponent implements OnInit {
+
   @Input() title: string = "";
 
   constructor(private service: ModalDialogService,

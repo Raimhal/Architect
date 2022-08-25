@@ -1,6 +1,6 @@
-<app-modal-dialog title="Add project">
+<app-modal-dialog-confirmation title="Add project">
   <form [formGroup]="form" (submit)="submit()">
-    
+
     <div class="blockDialog projectIdContainer">
       <app-block-with-id [id]="projectId" name="Project ID"></app-block-with-id>
     </div>
@@ -25,4 +25,4 @@
       <app-large-button>Submit</app-large-button>
     </div>
   </form>
-</app-modal-dialog>
+</app-modal-dialog-confirmation>

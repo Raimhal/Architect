@@ -8,7 +8,7 @@ import { MyEntityComponent } from './my-entity.component';
 import { MyEntityDetailComponent } from './my-entity-detail/my-entity-detail.component';
 import { HttpClientModule } from '@angular/common/http';
 import { MyEntityService } from './resources/services/my-entity-api.service';
-import { SharedModule } from 'src/app/shared/shared.module';
+import {SharedModule} from "../../shared/shared.module";
 
 @NgModule({
   declarations: [

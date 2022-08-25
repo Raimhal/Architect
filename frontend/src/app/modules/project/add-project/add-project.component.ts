@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
 import { NumberGenarateSevice } from 'src/app/shared/services/numberGenarate.services';
 import { AppState } from 'src/app/store';
 import { CreateProjectDTO } from '../resources/models/createProjectDTO';
 import { RangeDateValidators } from '../resources/validators/rangeDateValidators.directive';
-import { crateProject } from '../state/project.actions';
+import {crateProject} from "../state/project.actions";
 
 @Component({
   selector: 'app-add-project',
@@ -54,7 +53,7 @@ export class AddProjectComponent implements OnInit {
 
     const project: CreateProjectDTO = {
       userId:0,
-      companyId:0,      
+      companyId:0,
       projectId: this.projectId,
       name: this.name.value,
       address: this.address.value,

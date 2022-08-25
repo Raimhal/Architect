@@ -11,7 +11,7 @@ import { AppState } from "../index";
 import { of } from "rxjs";
 import { Location } from "@angular/common";
 import { closeModalDialog } from '../actions/modal-dialog.action';
-import { UserRole } from 'src/app/modules/auth/resources/models/userRole';
+import {UserRole} from "../../modules/auth/resources/models/userRole";
 
 @Injectable()
 export class RouteEffects {

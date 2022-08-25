@@ -35,10 +35,11 @@ import { FilterInputComponent } from './components/inputs/filter-input/filter-in
 import { NotLoggedInComponent } from "./components/guards/not-logged-in/not-logged-in.component";
 import { LoggedInComponent } from "./components/guards/logged-in/logged-in.component";
 import { HasRoleComponent } from "./components/guards/has-role/has-role.component";
-import { ModalDialogComponent } from './components/modal-dialog/modal-dialog.component';
-import { NumberGenarateSevice } from './services/numberGenarate.services';
 import { BlockWithIdComponent } from './components/blocks/blockWithId/block-with-id/block-with-id.component';
 import { AlertComponent } from "./components/misc/alert/alert.component";
+import { ModalDialogConfirmationComponent } from './components/modal-dialog/modal-dialog-confirmation/modal-dialog-confirmation.component';
+import { ModalDialogSavecancelComponent } from './components/modal-dialog/modal-dialog-savecancel/modal-dialog-savecancel.component';
+import {NumberGenarateSevice} from "./services/numberGenarate.services";
 
 
 @NgModule({
@@ -54,7 +55,6 @@ import { AlertComponent } from "./components/misc/alert/alert.component";
     DatepickerComponent,
     UnderlinedButtonComponent,
     DatepickerHeaderComponent,
-    ModalDialogComponent,
     AutocompleteComponent,
     DropdownComponent,
     TabsComponent,
@@ -65,6 +65,8 @@ import { AlertComponent } from "./components/misc/alert/alert.component";
     HasRoleComponent,
     BlockWithIdComponent,
     AlertComponent,
+    ModalDialogConfirmationComponent,
+    ModalDialogSavecancelComponent,
   ],
   imports: [
     CommonModule,
@@ -84,7 +86,6 @@ import { AlertComponent } from "./components/misc/alert/alert.component";
   ],
   exports: [
     BlockWithIdComponent,
-    ModalDialogComponent,
     CloseButtonComponent,
     BackButtonComponent,
     InputComponent,
@@ -101,12 +102,11 @@ import { AlertComponent } from "./components/misc/alert/alert.component";
     TabsComponent,
     CardComponent,
     FilterInputComponent,
-    ModalDialogComponent,
     LoggedInComponent,
     NotLoggedInComponent,
     HasRoleComponent,
-    ModalDialogComponent,
     AlertComponent,
+    ModalDialogConfirmationComponent,
   ],
   providers: [
     NumberGenarateSevice,
