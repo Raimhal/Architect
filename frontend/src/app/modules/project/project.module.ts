@@ -14,6 +14,7 @@ import { ProjectDescriptionComponent } from './project-description/project-descr
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AddProjectComponent } from './add-project/add-project.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatMenuModule } from '@angular/material/menu';
 import { AddProjectPhotosComponent } from './add-project-photos/add-project-photos.component';
 import { ImagePipe } from './resources/pipes/imagePipe';
 import { IvyCarouselModule } from 'angular-responsive-carousel2';
@@ -37,6 +38,7 @@ import { NgxDropzoneModule } from 'ngx-dropzone';
     FormsModule,
     ReactiveFormsModule,
     MatDialogModule,
+    MatMenuModule,
     MatButtonModule,
     IvyCarouselModule,
     NgxDropzoneModule

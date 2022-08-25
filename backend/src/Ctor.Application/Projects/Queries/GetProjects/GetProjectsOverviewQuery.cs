@@ -35,6 +35,7 @@ public class GetProjectsOverviewQueryHandler : IRequestHandler<GetProjectsOvervi
 
         Expression <Func<Domain.Entities.Project, bool>> filterPrecicate = project 
             => (!string.IsNullOrWhiteSpace(query) || project.ProjectName.ToLower().StartsWith(query.ToLower()))
+
                     //&& project.UserId == _currentUserService.Id // will be added when autorization be corrected
                     && project.Status == request.QueryModel.Status;
         

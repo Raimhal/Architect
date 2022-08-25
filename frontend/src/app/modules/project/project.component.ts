@@ -11,6 +11,7 @@ import { selectProjects } from './state/project.selectors';
 import {openMenu, revealMenu} from "../../store/actions/menu.actions";
 import { openModalDialog } from 'src/app/store/actions/modal-dialog.action';
 import { AddProjectComponent } from './add-project/add-project.component';
+import { Order } from './resources/models/order';
 
 @Component({
   selector: 'app-project',
@@ -19,14 +20,16 @@ import { AddProjectComponent } from './add-project/add-project.component';
 })
 export class ProjectComponent implements OnInit {
   projects$: Observable<IProjectOverview[]>
-
+  contains: string
   status = ProjectStatus
 
   constructor(public dialog: MatDialog, private store: Store<AppState>) {
+    this.contains = "";
     this.projects$ = this.store.pipe(select(selectProjects));
     this.store.dispatch(openMenu());
     this.store.dispatch(revealMenu());
    }
+
 
   ngOnInit() {
     this.store.dispatch(getProjectsWithParams());
@@ -36,6 +39,41 @@ export class ProjectComponent implements OnInit {
     this.store.dispatch(changeParams({
       params: {
         status: status
+      }
+    }))
+  }
+
+  sortProjectsByName() {
+    this.store.dispatch(changeParams({
+      params: {
+        sort: "ProjectName",
+        order: Order.ASC
+      }
+    }))
+  }
+
+  sortProjectsByStartTime() {
+    this.store.dispatch(changeParams({
+      params: {
+        sort: "StartTime",
+        order: Order.ASC
+      }
+    }))
+  }
+
+  sortProjectsByStartTimeDesc() {
+    this.store.dispatch(changeParams({
+      params: {
+        sort: "StartTime",
+        order: Order.DESC
+      }
+    }))
+  }
+
+  findProjectsThatContains() {
+    this.store.dispatch(changeParams({
+      params: {
+        query: this.contains
       }
     }))
   }

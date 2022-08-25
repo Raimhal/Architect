@@ -48,3 +48,39 @@
   display: flex;
   gap: 3rem;
 }
+
+.flex {
+  display: flex;
+}
+
+#sortMenu {
+  padding-left: 5px;
+  padding-right: 5px;
+  margin-right: 5px;
+}
+
+#sortMenu:hover {
+  background: #FAFAFA;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  cursor: pointer;
+}
+
+.form-control {
+  box-shadow: 0 10px 40px 0 #b0c1d9;
+}
+
+.form-control::placeholder {
+  font-family: FontAwesome;
+}
+
+#searchInput {
+  border-radius: 10px;
+  border: 2px solid #BFC1C2;
+  padding-left: 10px;
+  box-shadow: 0 10px 10px 0 #b0c1d9;
+}
+
+#searchInput:focus {
+  outline: none;
+}
+

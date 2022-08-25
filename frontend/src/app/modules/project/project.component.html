@@ -8,8 +8,22 @@
           <app-underlined-button (click)="changeStatus(status.Finished)">Completed</app-underlined-button>
           <app-underlined-button (click)="changeStatus(status.Suspended)">Suspended</app-underlined-button>
         </div>
-        <div>
-          <!-- sort and search  -->
+        <div class="flex">
+          <div mat-icon-button id="sortMenu" [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+            <mat-icon>sort</mat-icon>
+          </div>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="sortProjectsByName()">
+              <span>By name</span>
+            </button>
+            <button mat-menu-item (click)="sortProjectsByStartTimeDesc()">
+              <span>New</span>
+            </button>
+            <button mat-menu-item (click)="sortProjectsByStartTime()">
+              <span>Old</span>
+            </button>
+          </mat-menu>
+          <input type="text" [(ngModel)]="contains" (ngModelChange)="findProjectsThatContains()" id="searchInput" placeholder="Search project">
         </div>
       </div>
       <div class="create-project">
