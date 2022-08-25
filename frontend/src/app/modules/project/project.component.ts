@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { CardInformation } from 'src/app/shared/components/card/card.component';
@@ -7,6 +8,8 @@ import { IProjectOverview } from './resources/models/project-overview';
 import { ProjectStatus } from './resources/models/status';
 import { changeParams, getProjectsWithParams } from './resources/state/project.actions';
 import { selectProjects } from './resources/state/project.selectors';
+import { openModalDialog } from 'src/app/store/actions/modal-dialog.action';
+import { AddProjectComponent } from './add-project/add-project.component';
 
 @Component({
   selector: 'app-project',
@@ -18,9 +21,9 @@ export class ProjectComponent implements OnInit {
 
   status = ProjectStatus
 
-  constructor(private store: Store<AppState>) {
+  constructor(public dialog: MatDialog, private store: Store<AppState>) {
     this.projects$ = this.store.pipe(select(selectProjects))
-   }
+  }
 
   ngOnInit() {
     this.store.dispatch(getProjectsWithParams())
@@ -50,4 +53,7 @@ export class ProjectComponent implements OnInit {
     }
   }
 
+  add() {
+    this.store.dispatch(openModalDialog({ component: AddProjectComponent }));
+  }
 }

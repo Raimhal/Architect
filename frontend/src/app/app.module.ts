@@ -36,6 +36,7 @@ import {MatMomentDateModule} from "@angular/material-moment-adapter";
 import {MatTabsModule} from "@angular/material/tabs";
 import {MatDialogModule} from "@angular/material/dialog";
 import { ProjectModule } from './modules/project/project.module';
+import { AdministrationEffects } from './modules/administration/state/administration.effects';
 
 @NgModule({
   declarations: [
@@ -72,7 +73,8 @@ import { ProjectModule } from './modules/project/project.module';
       SpinnerEffects,
       AlertEffects,
       RouteEffects,
-      ModalEffects
+      ModalEffects,
+      AdministrationEffects
     ]),
     AdministrationModule,
     ProjectModule,

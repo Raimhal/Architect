@@ -9,15 +9,20 @@ import { ICompanyDetailed } from '../models/company-detailed.model';
 import { ICompanyUpdate } from '../models/company-update.model';
 import { IRole } from "../models/role.model";
 import { IResultId } from '../models/result-id.model';
+import { UserDetailsDto } from '../models/userDetailsDto';
 
 @Injectable({
   providedIn: AdministrationApiService,
 })
 export class AdministrationApiService extends ApiService {
   ApiPath: string = '';
-
+  UserApi = "/users"
   constructor(http: HttpClient) {
     super(http);
+  }
+
+  getUserDetails(userId: number): Observable<UserDetailsDto> {
+    return this.get<UserDetailsDto>(`${this.UserApi}/details/${userId}`);
   }
 
   postMember(data: IMember): Observable<number> {
@@ -54,7 +59,7 @@ export class AdministrationApiService extends ApiService {
     return this.put<IResultId>('/companies/', company);
   }
 
-  getMembersByCompanyId(companyId: number):Observable<IMember[]>{
+  getMembersByCompanyId(companyId: number): Observable<IMember[]> {
     return this.get<IMember[]>(`/users/byCompanyId/${companyId}`);
   }
 }

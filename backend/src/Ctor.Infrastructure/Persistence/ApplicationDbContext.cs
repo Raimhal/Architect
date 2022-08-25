@@ -32,7 +32,6 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
         _projectRepositoryLazy = repositoryFactory.GetInstanse<Lazy<IProjectRepository>>();
         _phaseRepositoryLazy = repositoryFactory.GetInstanse<Lazy<IPhaseRepository>>();
     }
-
     protected override void OnModelCreating(ModelBuilder builder)
     {       
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

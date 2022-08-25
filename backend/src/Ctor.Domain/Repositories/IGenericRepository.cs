@@ -31,6 +31,7 @@ public interface IGenericRepository<T> where T : BaseEntity
     void Delete(T obj);
     Task<bool> DeleteById(long id);
     bool Any();
+    Task<bool> AnyAsync(Expression<Func<T, bool>> filter);
     Task AddRangeAsync(IEnumerable<T> values);
     Task AddRangeAsync(params T[] value);
 }

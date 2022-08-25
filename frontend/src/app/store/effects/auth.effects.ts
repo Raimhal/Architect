@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, mergeMap } from 'rxjs/operators';
+import { catchError, map, mergeMap, switchMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import * as AuthActions from '../actions/auth.actions';
 import { AuthService } from 'src/app/modules/auth/resources/services/auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import * as fromAuthActions from '../actions/auth.actions';
 import { TokenService } from "../../modules/auth/resources/services/token.service";
-
+import * as AdministrationActions from "../../modules/administration/state/administration.actions"
 @Injectable()
 export class AuthEffects {
 
@@ -15,8 +15,7 @@ export class AuthEffects {
     return this.actions$.pipe(
       ofType(fromAuthActions.login),
       mergeMap((action) =>
-
-        this.authService.login(action.email, action.password).pipe(
+        this.authService.login(action.email, action.password).pipe(          
           map(response => {
 
             this.tokenService.setTokens(
@@ -114,12 +113,12 @@ export class AuthEffects {
   });
 
   keepDefaultPassword$ = createEffect(() => {
-      return this.actions$.pipe(
-        ofType(fromAuthActions.keepDefaultPassword),
-        mergeMap((action) =>
-          this.authService.keepDefaultPassword())
-      )
-    }, { dispatch: false }
+    return this.actions$.pipe(
+      ofType(fromAuthActions.keepDefaultPassword),
+      mergeMap((action) =>
+        this.authService.keepDefaultPassword())
+    )
+  }, { dispatch: false }
   );
 
   constructor(

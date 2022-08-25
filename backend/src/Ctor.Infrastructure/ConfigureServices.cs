@@ -56,6 +56,7 @@ public static class ConfigureServices
         services.AddScoped<IEmailService, EmailService>();
         services.AddTransient<IPasswordService,PasswordService>();
         services.AddTransient<ISecurityService, SecurityService>();
+        services.AddTransient<INumberGenerateService, NumberGenerateSercice>();
         services.AddScoped<ITokenProvider, TokenProvider>();
         services.AddScoped<IUserManager, UserManager>();
 

@@ -11,6 +11,9 @@ import {MatTab, MatTabsModule} from '@angular/material/tabs';
 import { ProjectDashboardComponent } from './project-dashboard/project-dashboard.component';
 import { MatIconModule } from '@angular/material/icon';
 import { ProjectDescriptionComponent } from './project-description/project-description.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AddProjectComponent } from './add-project/add-project.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   imports: [
@@ -24,12 +27,16 @@ import { ProjectDescriptionComponent } from './project-description/project-descr
     ),
     EffectsModule.forFeature([ProjectEffects]),
     MatTabsModule,
-    MatIconModule
+    MatIconModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatDialogModule
   ],
   declarations: [
     ProjectComponent,
     ProjectDashboardComponent,
-    ProjectDescriptionComponent
+    ProjectDescriptionComponent,
+    AddProjectComponent
   ]
 })
 export class ProjectModule { }

@@ -1,6 +1,7 @@
 ﻿using Ctor.Application.Roles.Queries;
 using Ctor.Application.Users.Commands;
 using Ctor.Application.Users.Queries;
+using Ctor.Application.Users.Queries.GetUsersDetailsQuery;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -9,6 +10,11 @@ namespace Ctor.Controllers;
 [Route("api/users")]
 public class UserController : ApiControllerBase
 {
+    [HttpGet("details/{id}")]
+    public async Task<IActionResult> GetCurrentUserDetails(int id)
+    {
+        return Ok(await Mediator.Send(new GetUsersDetailsQuery(id)));
+    }
     [HttpPost]
     public async Task<ActionResult<bool>> Add([FromBody] AddUserCommand command)
     {

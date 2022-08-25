@@ -38,6 +38,8 @@ import { NotLoggedInComponent } from "./components/guards/not-logged-in/not-logg
 import { LoggedInComponent } from "./components/guards/logged-in/logged-in.component";
 import { HasRoleComponent } from "./components/guards/has-role/has-role.component";
 import { ModalDialogComponent } from './components/modal-dialog/modal-dialog.component';
+import { NumberGenarateSevice } from './services/numberGenarate.services';
+import { BlockWithIdComponent } from './components/blocks/blockWithId/block-with-id/block-with-id.component';
 
 
 @NgModule({
@@ -62,7 +64,7 @@ import { ModalDialogComponent } from './components/modal-dialog/modal-dialog.com
     LoggedInComponent,
     NotLoggedInComponent,
     HasRoleComponent,
-
+    BlockWithIdComponent
   ],
   imports: [
     CommonModule,
@@ -81,6 +83,8 @@ import { ModalDialogComponent } from './components/modal-dialog/modal-dialog.com
     MatTabsModule
   ],
   exports: [
+    BlockWithIdComponent,
+    ModalDialogComponent,
     CloseButtonComponent,
     BackButtonComponent,
     InputComponent,
@@ -100,6 +104,7 @@ import { ModalDialogComponent } from './components/modal-dialog/modal-dialog.com
     ModalDialogComponent
   ],
   providers: [
+    NumberGenarateSevice,
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
     { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
     { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS }

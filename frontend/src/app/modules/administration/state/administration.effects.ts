@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {Observable, EMPTY, of} from 'rxjs';
 import * as AdministrationActions from './administration.actions';
+import * as AuthorizationActions from '../../../store/actions/auth.actions';
 import {
   catchError,
   map,
@@ -16,8 +17,8 @@ import {AdministrationApiService} from '../resources/services/administration-api
 import {Store} from '@ngrx/store';
 import {AppState} from 'src/app/store';
 import * as AdministrationSelectors from './administration.selectors';
-import {ICompanyUpdate} from '../resources/models/company-update.model';
-
+import { ICompanyUpdate } from '../resources/models/company-update.model';
+import { HttpErrorResponse } from '@angular/common/http';
 @Injectable()
 export class AdministrationEffects {
   getAllCompaniesWithParams$ = createEffect(() => {
@@ -229,6 +230,19 @@ export class AdministrationEffects {
           )
         )
       )
+    );
+  });
+
+  getUserDetails$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(AuthorizationActions.loginSuccess,
+        AuthorizationActions.refreshAccessTokenSuccess),
+      mergeMap(({ user: { id } }) =>
+        this.service.getUserDetails(id).pipe(
+          map(userDetails => AdministrationActions.GetUserDetailsSuccess({ userDetails })),
+          catchError((error: HttpErrorResponse) =>
+            of(AdministrationActions.GetUserDetailsFailure({ error: error.error }))))
+      ),
     );
   });
 

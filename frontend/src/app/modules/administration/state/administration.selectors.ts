@@ -25,3 +25,11 @@ export const selectCompanyInformationForm = createSelector(
   selectAdministrationState,
   (state) => state.companyInformationForm
 );
+export const selectUserDetails = createSelector(
+  selectAdministrationState,
+  (state) => state.currentUserDetails
+);
+export const selectUserDetailsCompanyId = createSelector(
+  selectUserDetails,
+  (details) => details?.companyId
+);

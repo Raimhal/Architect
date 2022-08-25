@@ -7,6 +7,7 @@ import { AppState } from "../../../../store";
 import { of, take } from "rxjs";
 import { catchError, tap } from "rxjs/operators";
 import { AuthEffects } from "../../../../store/effects/auth.effects";
+import { UserRole } from '../models/userRole';
 
 @Injectable({
   providedIn: 'root',
@@ -51,17 +52,19 @@ export class TokenService {
     return localStorage.getItem('access_token');
   }
 
-  getAccessTokenData(): { id: number, role: string, expires: Date } {
+  getAccessTokenData(): { id: number, role: UserRole, expires: Date } {
     const token = this.getAccessToken();
     const tokenData = this.jwtHelper.decodeToken(token);
 
-    if (!tokenData.id || !tokenData.role || !tokenData.exp) {
+    const userRoleKeyEnum = tokenData.role as keyof typeof UserRole;    
+    const userRole = UserRole[userRoleKeyEnum];
+
+    if (!tokenData.id || userRole==undefined || !tokenData.exp) {
       throw new Error('A value is missing in the access token payload');
     }
-
     return {
       id: tokenData.id,
-      role: tokenData.role,
+      role: userRole,
       expires: new Date(tokenData.exp * 1000),
     };
   }
@@ -107,12 +110,12 @@ export class TokenService {
       const tokenData = this.getAccessTokenData();
 
       this.store.dispatch(fromAuthActions.refreshAccessTokenSuccess({
-          token: this.getRefreshToken()!.token!,
-          user: {
-            id: tokenData.id,
-            role: tokenData.role,
-          }
-        })
+        token: this.getRefreshToken()!.token!,
+        user: {
+          id: tokenData.id,
+          role: tokenData.role,
+        }
+      })
       );
 
       return Promise.resolve();
@@ -130,16 +133,16 @@ export class TokenService {
     this.store.dispatch(fromAuthActions.refreshAccessToken());
 
     return new Promise<void>((resolve, reject) => {
-        const authEffects = this.injector.get(AuthEffects); // prevents circular dependency
-        return authEffects.refreshAccessToken$.pipe(
-          take(2),
-          tap((x) => resolve()),
-          catchError((error: any) => {
-            this.store.dispatch(fromAuthActions.logout());
-            return of(reject(error));
-          }),
-        );
-      }
+      const authEffects = this.injector.get(AuthEffects); // prevents circular dependency
+      return authEffects.refreshAccessToken$.pipe(
+        take(2),
+        tap((x) => resolve()),
+        catchError((error: any) => {
+          this.store.dispatch(fromAuthActions.logout());
+          return of(reject(error));
+        }),
+      );
+    }
     );
   }
 }

@@ -1,4 +1,5 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { UserRole } from 'src/app/modules/auth/resources/models/userRole';
 import * as fromAuth from '../reducers/auth.reducer';
 
 export const selectAuthState = createFeatureSelector<fromAuth.State>(
@@ -34,5 +35,5 @@ export const selectUserRole = createSelector(
 
 export const selectUserIsAdmin = createSelector(
   selectUserRole,
-  (role: string | null) => role == 'Admin'
+  (role: UserRole | null) => role == UserRole.Admin
 )

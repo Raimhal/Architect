@@ -15,10 +15,12 @@ import {
   SetValueAction,
 } from 'ngrx-forms';
 import { IRole } from '../resources/models/role.model';
+import { UserDetailsDto } from '../resources/models/userDetailsDto';
 
 export const administrationFeatureKey = 'administration';
 
 export interface State {
+  currentUserDetails:UserDetailsDto| null;
   companies: ICompanyOverview[] | null;
   currentlyOpenCompany: ICompanyDetailed;
   companyInformationForm: FormGroupState<fromCompanyInformationForm.CompanyInformationFormValue>;
@@ -27,6 +29,7 @@ export interface State {
 }
 
 export const initialState: State = {
+  currentUserDetails:null,
   companies: null,
   currentlyOpenCompany: {
     members: [] as IMember[],
@@ -177,6 +180,13 @@ export const reducer = createReducer(
         members: [],
       },
       error: action.error,
+    })
+  ),
+  on(
+    AdministrationActions.GetUserDetailsSuccess,
+    (state, action) => ({
+      ...state,
+     currentUserDetails:action.userDetails
     })
   )
 );

@@ -13,6 +13,7 @@ public class RoleConfiguration : IEntityTypeConfiguration<Role>
 
         builder.ToTable("Role").HasKey(x => x.Id);
         builder.HasIndex(x => x.Id).IsUnique();
-        builder.Property(x=>x.RoleName).IsRequired();
+        builder.HasIndex(x => x.Type).IsUnique();
+        builder.Property(x => x.Name);
     }
 }

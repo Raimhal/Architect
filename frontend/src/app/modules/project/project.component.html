@@ -14,11 +14,12 @@
       </div>
       <div class="create-project">
         <!-- create project button -->
-        <app-button>Add Project</app-button>
+        <button (click)="add()">add project</button>
+        <app-datepicker  class="endDate"  label="End time"></app-datepicker>
       </div>
     </div>
     <div class="projects" *ngIf="projects$ | async as projects">
-      <app-card 
+      <app-card
         *ngFor="let project of projects"
         [cardInformation]="getCardInformation(project)"
       >

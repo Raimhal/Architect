@@ -4,6 +4,7 @@ using Ctor.Domain.Entities.Enums;
 namespace Ctor.Domain.Entities;
 public class Project : BaseEntity
 {
+    public int ProjectId { get; set; }
     public string ProjectName { get; set; }
     public string ProjectType { get; set; }
     public string Country { get; set; }
@@ -21,10 +22,10 @@ public class Project : BaseEntity
 
 
 
-    public long? CompanyId { get; set; }
+    public long CompanyId { get; set; }
     public Company Company { get; set; }
 
     public long? UserId { get; set; }
-    public User User { get; set; }
+    public User? User { get; set; }
 
 }

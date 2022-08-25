@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ApiService } from 'src/app/core/resources/services/api.service';
 import { Observable } from "rxjs";
-import { LoginDto } from "../dtos/login.dto";
-import { RefreshTokenDto } from "../dtos/refresh-token.dto";
+import { LoginDto } from '../dtos/login.dto';
+import { RefreshTokenDto } from '../dtos/refresh-token.dto';
 
 @Injectable({
   providedIn: "root",

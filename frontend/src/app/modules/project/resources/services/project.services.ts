@@ -5,6 +5,7 @@ import { Params } from "@angular/router";
 import { Observable } from "rxjs";
 import { ApiService } from "src/app/core/resources/services/api.service";
 import { PaginationModel } from "src/app/shared/models/pagination-model";
+import { CreateProjectDTO } from "../models/createProjectDTO";
 import { Order } from "../models/order";
 import { IProjectOverview } from "../models/project-overview";
 
@@ -13,7 +14,7 @@ import { IProjectOverview } from "../models/project-overview";
 })
 
 export class ProjectService extends ApiService {
-  ApiPath: string = `/projects`;
+  projectApiPath: string = `/projects`;
 
   constructor(http: HttpClient) {
     super(http);
@@ -23,8 +24,12 @@ export class ProjectService extends ApiService {
     params: Params
   ): Observable<PaginationModel<IProjectOverview>> {
     console.log(params)
-    return this.getWithOptions<PaginationModel<IProjectOverview>>(this.ApiPath, {
+    return this.getWithOptions<PaginationModel<IProjectOverview>>(this.projectApiPath, {
       params: params
     });
+  }
+
+  createProject(project: CreateProjectDTO) {
+    return this.post(`${this.projectApiPath}`, project);
   }
 }

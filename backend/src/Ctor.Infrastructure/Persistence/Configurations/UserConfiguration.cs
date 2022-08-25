@@ -21,10 +21,6 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.HasOne(x => x.Role)
             .WithMany(x => x.Users)
             .HasForeignKey(x => x.RoleId)
-            .OnDelete(DeleteBehavior.NoAction);
-        builder.HasOne(x => x.Project)
-            .WithOne(x => x.User)
-            .HasForeignKey<Project>(x => x.UserId)
-            .OnDelete(DeleteBehavior.NoAction);
+            .OnDelete(DeleteBehavior.NoAction);      
     }
 }

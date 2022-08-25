@@ -1,0 +1,28 @@
+<app-modal-dialog title="Add project">
+  <form [formGroup]="form" (submit)="submit()">
+    
+    <div class="blockDialog projectIdContainer">
+      <app-block-with-id [id]="projectId" name="Project ID"></app-block-with-id>
+    </div>
+    <div class="blockDialog">
+      <app-input type="text" [formControl]="name" label="Project Name" errorMessage="Project name is required">
+      </app-input>
+    </div>
+    <div class="blockDialog">
+      <app-input type="text" [formControl]="address" label="Address" errorMessage="Address is required"></app-input>
+    </div>
+
+    <div class="blockDialog dateContainer">
+      <app-datepicker [formControl]="startDate" label="Start time"></app-datepicker>
+      <app-datepicker [formControl]="endDate" label="End time"></app-datepicker>
+    </div>
+    <div class="blockDialog alert-danger"
+      *ngIf="form.errors?.['identityRevealed'] && (form.touched || form.dirty)">
+      Range Date is invalid
+    </div>
+
+    <div class="modal-footer">
+      <app-large-button>Submit</app-large-button>
+    </div>
+  </form>
+</app-modal-dialog>

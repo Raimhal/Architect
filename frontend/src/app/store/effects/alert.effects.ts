@@ -13,8 +13,8 @@ export class AlertEffects {
       this.actions$.pipe(
         ofType(fromAuthActions.loginSuccess),
         tap(() => {
-            this._alertService.showAlert("login success", "OK", "success")
-          }
+          this._alertService.showAlert("login success", "OK", "success")
+        }
         )
       ),
     { dispatch: false }
@@ -25,8 +25,8 @@ export class AlertEffects {
       this.actions$.pipe(
         ofType(fromAuthActions.loginFailure),
         tap(() => {
-            this._alertService.showAlert("Login failed", "OK", "error")
-          }
+          this._alertService.showAlert("Login failed", "OK", "error")
+        }
         )
       ),
     { dispatch: false }
@@ -37,8 +37,8 @@ export class AlertEffects {
       this.actions$.pipe(
         ofType(fromAuthActions.changeDefaultPasswordSuccess),
         tap(() => {
-            this._alertService.showAlert("Password successfully changed", "OK", "success")
-          }
+          this._alertService.showAlert("Password successfully changed", "OK", "success")
+        }
         )
       ),
     { dispatch: false }
@@ -49,8 +49,8 @@ export class AlertEffects {
       this.actions$.pipe(
         ofType(fromAuthActions.changeDefaultPasswordFailure),
         tap(() => {
-            this._alertService.showAlert("Failed to change password", "OK", "error")
-          }
+          this._alertService.showAlert("Failed to change password", "OK", "error")
+        }
         )
       ),
     { dispatch: false }
@@ -61,8 +61,8 @@ export class AlertEffects {
       this.actions$.pipe(
         ofType(fromAdministrationActions.addNewMemberSuccess),
         tap(() => {
-            this._alertService.showAlert("Member was added successfully", "OK", "success")
-          }
+          this._alertService.showAlert("Member was added successfully", "OK", "success")
+        }
         )
       ),
     { dispatch: false }
@@ -73,8 +73,8 @@ export class AlertEffects {
       this.actions$.pipe(
         ofType(fromAdministrationActions.addNewMemberFailure),
         tap((action) => {
-            this._alertService.showAlert(`Failed to add member. ${action.error.error.detail}`, "OK", "error")
-          }
+          this._alertService.showAlert(`Failed to add member. ${action.error.error.detail}`, "OK", "error")
+        }
         )
       ),
     { dispatch: false }
@@ -85,8 +85,8 @@ export class AlertEffects {
       this.actions$.pipe(
         ofType(fromAuthActions.forgotPasswordFailure),
         tap((action) => {
-            this._alertService.showAlert(this.errorService.getErrorMessage(action.error, "Forgot Password"), "OK", "error")
-          }
+          this._alertService.showAlert(this.errorService.getErrorMessage(action.error, "Forgot Password"), "OK", "error")
+        }
         )
       ),
     { dispatch: false }
@@ -96,8 +96,8 @@ export class AlertEffects {
       this.actions$.pipe(
         ofType(fromAuthActions.forgotPasswordSuccess),
         tap(() => {
-            this._alertService.showAlert("Reset password success", "OK", "success")
-          }
+          this._alertService.showAlert("Reset password success", "OK", "success")
+        }
         )
       ),
     { dispatch: false }
@@ -111,6 +111,16 @@ export class AlertEffects {
         ofType(fromAdministrationActions.getAllCompaniesWithParamsFailure),
         tap(() => {
           this._alertService.showAlert("Failed load companies from server", "OK", "error")
+        })
+      ),
+    { dispatch: false });
+
+    getUserDetailsFailure$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(fromAdministrationActions.GetUserDetailsFailure),
+        tap(({error}) => {
+          this._alertService.showAlert(this.errorService.getErrorMessage(error,"Details didnt load"), "OK", "error")
         })
       ),
     { dispatch: false });

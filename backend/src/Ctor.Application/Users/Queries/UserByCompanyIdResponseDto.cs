@@ -15,7 +15,7 @@ public class UserByCompanyIdResponseDto : IMapFrom<User>
     public void Mapping(Profile profile)
     {
         profile.CreateMap<User, UserByCompanyIdResponseDto>()
-            .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.RoleName));
+            .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.Name));
     }
     
 }

@@ -13,6 +13,7 @@ public class ProjectConfiguration : IEntityTypeConfiguration<Project>
 
         builder.ToTable("Project").HasKey(x => x.Id);
         builder.HasIndex(x => x.Id).IsUnique();
+        builder.HasIndex(x => x.ProjectId).IsUnique();
         builder.Property(x => x.ProjectName).IsRequired();
         builder.Property(x => x.ProjectName).IsRequired();
         builder.Property(x => x.ProjectType).IsRequired();

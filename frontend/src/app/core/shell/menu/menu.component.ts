@@ -6,6 +6,7 @@ import {AppState} from "../../../store";
 import {selectUserIsAdmin} from "../../../store/selectors/auth.selectors";
 import {Observable} from "rxjs";
 import {Router} from "@angular/router";
+import { logout } from 'src/app/store/actions/auth.actions';
 
 @Component({
   selector: 'app-menu',
@@ -53,5 +54,8 @@ export class MenuComponent implements OnInit {
 
   onSelect(route: string){
     this.selectedRoute = route;
+  }
+  logout(){
+    this.store.dispatch(logout())
   }
 }

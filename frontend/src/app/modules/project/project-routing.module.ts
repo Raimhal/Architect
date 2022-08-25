@@ -4,11 +4,8 @@ import { ProjectDashboardComponent } from './project-dashboard/project-dashboard
 import { ProjectComponent } from './project.component';
 
 const routes : Routes = [
-    {
-        path: 'projects',
-        component: ProjectComponent
-    },
-  {path: 'project-dashboard', component: ProjectDashboardComponent}
+  {path: 'project-dashboard', component: ProjectDashboardComponent},
+  {path: 'projects', component: ProjectComponent}
 ]
 
 

@@ -1,3 +1,4 @@
+using Ctor.Application.Common.Interfaces;
 using Ctor.Domain.Entities;
 using Ctor.Domain.Entities.Enums;
 using Microsoft.EntityFrameworkCore;
@@ -9,11 +10,13 @@ public class ApplicationDbContextInitializer
 {
     private readonly ILogger<ApplicationDbContextInitializer> _logger;
     private readonly ApplicationDbContext _context;
+    private readonly INumberGenerateService _numberGenerateService;
 
-    public ApplicationDbContextInitializer(ILogger<ApplicationDbContextInitializer> logger, ApplicationDbContext context)
+    public ApplicationDbContextInitializer(ILogger<ApplicationDbContextInitializer> logger, ApplicationDbContext context, INumberGenerateService numberGenerateService)
     {
         _logger = logger;
         _context = context;
+        _numberGenerateService = numberGenerateService;
     }
 
     public async Task InitialiseAsync()
@@ -46,16 +49,41 @@ public class ApplicationDbContextInitializer
     }
 
     public async Task TrySeedAsync()
-    {
-        var roleId = 0;
+    {       
 
-        var adminRole = new Role { Id = ++roleId, RoleName = "Admin" };
-        var moderatorRole = new Role { Id = ++roleId, RoleName = "Moderator" };
-        var userRole = new Role { Id = ++roleId, RoleName = "User" };
-        
         if (!_context.Roles.Any())
         {
-            await _context.Roles.AddRangeAsync(adminRole, moderatorRole, userRole);
+            await _context.Roles.AddRangeAsync(
+                  new Role()
+                  {
+                      Id = 1,
+                      Name = "Admin",
+                      Type=UserRoles.Admin
+                  },
+                  new Role()
+                  {
+                      Id = 2,
+                      Name = "Operational manager",
+                      Type = UserRoles.OperationalManager
+                  },
+                  new Role()
+                  {
+                      Id = 3,
+                      Name = "Project manager",
+                      Type = UserRoles.ProjectManager
+                  },
+                  new Role()
+                  {
+                      Id = 4,
+                      Name = "Main engineer",
+                      Type = UserRoles.MainEngineer
+                  },
+                  new Role()
+                  {
+                      Id = 5,
+                      Name = "Foreman",
+                      Type = UserRoles.Foreman
+                  });
         }
         if (!_context.Users.Any())
         {
@@ -67,7 +95,7 @@ public class ApplicationDbContextInitializer
                      LastName = "admin",
                      UserEmail = "admin@radency.com",
                      Password = "admin",
-                     Role = adminRole,
+                     RoleId = 1,
                      CompanyId = 1
                  },
                  new User()
@@ -77,7 +105,7 @@ public class ApplicationDbContextInitializer
                      LastName = "moderator",
                      UserEmail = "moderator@radency.com",
                      Password = "123123",
-                     Role = moderatorRole,
+                     RoleId = 2,
                      CompanyId = 1
                  },
                  new User()
@@ -87,7 +115,7 @@ public class ApplicationDbContextInitializer
                      LastName = "Kravets",
                      UserEmail = "1a@radency.com",
                      Password = "123qweasd",
-                     Role = userRole,
+                     RoleId = 3,
                      CompanyId = 2
                  },
                  new User()
@@ -97,7 +125,7 @@ public class ApplicationDbContextInitializer
                      LastName = "Vitiv",
                      UserEmail = "2a@radency.com",
                      Password = "123qweasd",
-                     Role = userRole,
+                     RoleId = 4,
                      CompanyId = 2
                  },
                  new User()
@@ -107,7 +135,7 @@ public class ApplicationDbContextInitializer
                      LastName = "Fedushin",
                      UserEmail = "3a@radency.com",
                      Password = "123qweasd",
-                     Role = userRole,
+                     RoleId = 5,
                      CompanyId = 3
                  },
                  new User()
@@ -117,7 +145,7 @@ public class ApplicationDbContextInitializer
                      LastName = "Vitiv",
                      UserEmail = "4a@radency.com",
                      Password = "123qweasd",
-                     Role = userRole,
+                     RoleId = 2,
                      CompanyId = 3
                  },
                  new User()
@@ -127,7 +155,7 @@ public class ApplicationDbContextInitializer
                      LastName = "Kryluk",
                      UserEmail = "5a@radency.com",
                      Password = "123qweasd",
-                     Role = userRole,
+                     RoleId = 3,
                      CompanyId = 4
                  },
                  new User()
@@ -137,7 +165,7 @@ public class ApplicationDbContextInitializer
                      LastName = "Gavriluk",
                      UserEmail = "6a@radency.com",
                      Password = "123qweasd",
-                     Role = userRole,
+                     RoleId = 4,
                      CompanyId = 4
                  },
                  new User()
@@ -147,7 +175,7 @@ public class ApplicationDbContextInitializer
                      LastName = "Svereda",
                      UserEmail = "7a@radency.com",
                      Password = "123qweasd",
-                     Role = userRole,
+                     RoleId = 5,
                      CompanyId = 5
                  },
                  new User()
@@ -157,7 +185,7 @@ public class ApplicationDbContextInitializer
                      LastName = "Boyko",
                      UserEmail = "8a@radency.com",
                      Password = "123qweasd",
-                     Role = userRole,
+                     RoleId = 2,
                      CompanyId = 5
                  },
                  new User()
@@ -167,7 +195,7 @@ public class ApplicationDbContextInitializer
                      LastName = "Lis",
                      UserEmail = "9a@radency.com",
                      Password = "123qweasd",
-                     Role = userRole,
+                     RoleId = 3,
                      CompanyId = 1
                  },
                  new User()
@@ -177,7 +205,7 @@ public class ApplicationDbContextInitializer
                      LastName = "Piven",
                      UserEmail = "10a@radency.com",
                      Password = "123qweasd",
-                     Role = userRole,
+                     RoleId = 4,
                      CompanyId = 1
                  }, new User()
                  {
@@ -186,7 +214,7 @@ public class ApplicationDbContextInitializer
                      LastName = "Sergienko",
                      UserEmail = "11a@radency.com",
                      Password = "123qweasd",
-                     Role = userRole,
+                     RoleId = 5,
                      CompanyId = 2
                  },
                  new User()
@@ -196,7 +224,7 @@ public class ApplicationDbContextInitializer
                      LastName = "Goretska",
                      UserEmail = "12a@radency.com",
                      Password = "123qweasd",
-                     Role = userRole,
+                     RoleId = 2,
                      CompanyId = 2
 
                  },
@@ -207,7 +235,7 @@ public class ApplicationDbContextInitializer
                      LastName = "Parush",
                      UserEmail = "13a@radency.com",
                      Password = "123qweasd",
-                     Role = userRole,
+                     RoleId = 2,
                      CompanyId = 3
                  },
                  new User()
@@ -217,7 +245,7 @@ public class ApplicationDbContextInitializer
                      LastName = "Pavlishina",
                      UserEmail = "14a@radency.com",
                      Password = "123qweasd",
-                     Role = userRole,
+                     RoleId = 3,
                      CompanyId = 3
                  },
                  new User()
@@ -227,7 +255,7 @@ public class ApplicationDbContextInitializer
                      LastName = "Rak",
                      UserEmail = "15a@radency.com",
                      Password = "123qweasd",
-                     Role = userRole,
+                     RoleId = 4,
                      CompanyId = 4
                  });
         }
@@ -236,7 +264,7 @@ public class ApplicationDbContextInitializer
             await _context.Companies.AddRangeAsync(
                 new Company
                 {
-                    Id=1,
+                    Id = 1,
                     CompanyId = 9743953,
                     CompanyName = "EloECorporation",
                     Country = "Poland",
@@ -247,8 +275,8 @@ public class ApplicationDbContextInitializer
                 },
                 new Company
                 {
-                    Id=2,
-                    CompanyId = 6437326, 
+                    Id = 2,
+                    CompanyId = 6437326,
                     CompanyName = "SigCop",
                     Country = "Ukraine",
                     City = "Lviv",
@@ -258,7 +286,7 @@ public class ApplicationDbContextInitializer
                 },
                 new Company
                 {
-                    Id=3,
+                    Id = 3,
                     CompanyId = 4264658,
                     CompanyName = "Pegas",
                     Country = "UK",
@@ -269,7 +297,7 @@ public class ApplicationDbContextInitializer
                 },
                 new Company
                 {
-                    Id=4,
+                    Id = 4,
                     CompanyId = 1436347,
                     CompanyName = "LeadOf",
                     Country = "US",
@@ -280,7 +308,7 @@ public class ApplicationDbContextInitializer
                 },
                 new Company
                 {
-                    Id=5,
+                    Id = 5,
                     CompanyId = 9234198,
                     CompanyName = "CastelCas",
                     Country = "US",
@@ -296,6 +324,7 @@ public class ApplicationDbContextInitializer
                  new Project
                  {
                      Id = 1,
+                     ProjectId = _numberGenerateService.GetRandomNumberForId(),
                      ProjectName = "Leessas Town",
                      ProjectType = "Roads",
                      Country = "Poland",
@@ -311,6 +340,7 @@ public class ApplicationDbContextInitializer
                  new Project
                  {
                      Id = 2,
+                     ProjectId = _numberGenerateService.GetRandomNumberForId(),
                      ProjectName = "Stoagem Valley",
                      ProjectType = "Housing District",
                      Country = "Poland",
@@ -326,6 +356,7 @@ public class ApplicationDbContextInitializer
                  new Project
                  {
                      Id = 3,
+                     ProjectId = _numberGenerateService.GetRandomNumberForId(),
                      ProjectName = "Rufus Street",
                      ProjectType = "Housing District",
                      Country = "Ukraine",
@@ -341,6 +372,7 @@ public class ApplicationDbContextInitializer
                  new Project
                  {
                      Id = 4,
+                     ProjectId = _numberGenerateService.GetRandomNumberForId(),
                      ProjectName = "Cliftonville",
                      ProjectType = "Housing District",
                      Country = "Ukraine",
@@ -356,6 +388,7 @@ public class ApplicationDbContextInitializer
                  new Project
                  {
                      Id = 5,
+                     ProjectId = _numberGenerateService.GetRandomNumberForId(),
                      ProjectName = "Plotezalf Center",
                      ProjectType = "Housing District",
                      Country = "Uk",
@@ -371,6 +404,7 @@ public class ApplicationDbContextInitializer
                  new Project
                  {
                      Id = 6,
+                     ProjectId = _numberGenerateService.GetRandomNumberForId(),
                      ProjectName = "Wistful Vista",
                      ProjectType = "Housing District",
                      Country = "Uk",
@@ -386,6 +420,7 @@ public class ApplicationDbContextInitializer
                  new Project
                  {
                      Id = 7,
+                     ProjectId = _numberGenerateService.GetRandomNumberForId(),
                      ProjectName = "Upper South Xorisk",
                      ProjectType = "Housing District",
                      Country = "US",
@@ -401,6 +436,7 @@ public class ApplicationDbContextInitializer
                  new Project
                  {
                      Id = 8,
+                     ProjectId = _numberGenerateService.GetRandomNumberForId(),
                      ProjectName = "Ropewalks",
                      ProjectType = "Housing District",
                      Country = "US",

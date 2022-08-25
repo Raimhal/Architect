@@ -4,6 +4,21 @@ import { IMember } from '../resources/models/member.model';
 import { INewCompanyDto } from '../resources/DTOmodels/new-company-dto.model';
 import { ICompanyDetailed } from '../resources/models/company-detailed.model';
 import { IRole } from '../resources/models/role.model';
+import { UserDetailsDto } from '../resources/models/userDetailsDto';
+import { HttError } from '../../error/resources/models/httpError';
+
+export const GetUserDetails = createAction(
+  '[Administration] Get User Details',
+  props<{ userId: number }>()
+);
+export const GetUserDetailsSuccess = createAction(
+  '[Administration] Get User Details Success',
+  props<{ userDetails: UserDetailsDto }>()
+);
+export const GetUserDetailsFailure = createAction(
+  '[Administration] Get User Details Failure',
+  props<{ error: HttError }>()
+);
 
 export const loadAdministrations = createAction(
   '[Administration] Load Administrations'

@@ -4,7 +4,7 @@ import {LandingPageComponent} from "./core/shell/landing-page/landing-page.compo
 import {ProjectDashboardComponent} from "./modules/project/project-dashboard/project-dashboard.component";
 
 const routes: Routes = [
-  {path: '', component: ProjectDashboardComponent}
+  {path: '', component: LandingPageComponent}
 ];
 
 @NgModule({

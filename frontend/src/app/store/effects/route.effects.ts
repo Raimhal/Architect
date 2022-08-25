@@ -3,12 +3,15 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Router } from '@angular/router';
 import * as fromAuthSelectors from '../selectors/auth.selectors';
 import * as fromAuthActions from '../actions/auth.actions';
+import * as fromProjectActions from '../../modules/project/state/project.actions';
 import * as RoutActions from '../actions/route.actions';
-import { switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import { map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { Store } from "@ngrx/store";
 import { AppState } from "../index";
 import { of } from "rxjs";
 import { Location } from "@angular/common";
+import { closeModalDialog } from '../actions/modal-dialog.action';
+import { UserRole } from 'src/app/modules/auth/resources/models/userRole';
 
 @Injectable()
 export class RouteEffects {
@@ -26,11 +29,12 @@ export class RouteEffects {
       this.actions$.pipe(
         ofType(fromAuthActions.loginSuccess),
         tap((state) => {
+          console.log(state)
           if (state.askToChangeDefaultPassword) {
             return this.route.navigate(['/change-default-password'])
           }
 
-          if (state.user.role == "Admin") {
+          if (state.user.role == UserRole.Admin) {
             return this.route.navigate(['/administration'])
           }
 
@@ -68,6 +72,14 @@ export class RouteEffects {
         tap((role) => this.postLoginNavigate(role))
       ), { dispatch: false }
   );
+  crateProjectSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(fromProjectActions.crateProjectSuccess),
+        map(()=>closeModalDialog()),
+        tap(() => this.route.navigate(['/projects']))
+      ), { dispatch: false }
+  );
 
   constructor(
     private actions$: Actions,
@@ -77,8 +89,8 @@ export class RouteEffects {
   ) {
   }
 
-  postLoginNavigate(role: string | null) {
-    if (role === 'Admin') {
+  postLoginNavigate(role: UserRole | null) {
+    if (role === UserRole.Admin) {
       return this.route.navigate(['/administration'])
     }
 

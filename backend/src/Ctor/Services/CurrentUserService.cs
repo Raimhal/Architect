@@ -1,5 +1,7 @@
+using System;
 using System.Security.Claims;
 using Ctor.Application.Common.Interfaces;
+using Ctor.Domain.Entities.Enums;
 
 namespace Ctor.Services;
 
@@ -24,6 +26,19 @@ public class CurrentUserService : ICurrentUserService
             }
 
             return null;
+        }
+    }
+    public UserRoles Role
+    {
+        get
+        {
+            var role = _httpContextAccessor.HttpContext?.User?.FindFirst(x=>x.Type==ClaimsIdentity.DefaultRoleClaimType)?.Value;
+            var roleEnum = Enum.TryParse(role,out UserRoles result);
+            
+            if (!roleEnum) {
+                throw new ArgumentException("bad roles");
+            }
+            return result;
         }
     }
 }

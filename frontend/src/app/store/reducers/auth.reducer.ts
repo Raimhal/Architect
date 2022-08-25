@@ -1,11 +1,12 @@
 import { createReducer, on } from '@ngrx/store';
+import { UserRole } from 'src/app/modules/auth/resources/models/userRole';
 import * as fromAuthActions from '../actions/auth.actions';
 
 export const authFeatureKey = 'auth';
 
 export interface User {
   id: number,
-  role: string
+  role: UserRole
 }
 
 export interface State {

@@ -3,6 +3,7 @@ using Ctor.Application.Common.Interfaces;
 using Ctor.Application.DTOs.EmailDTos;
 using Ctor.Application.MyEntity.Queries;
 using Ctor.Domain.Entities;
+using Ctor.Domain.Entities.Enums;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -42,13 +43,13 @@ public class AddUserQueryHandler : IRequestHandler<AddUserCommand,bool>
             UserEmail = request.UserEmail,
             CompanyId = request.CompanyId
         };
-        var roles = await _context.Roles.GetFilteredWithTotalSum(r => r.RoleName == request.RoleName);
+        var roles = await _context.Roles.GetFilteredWithTotalSum(r => r.Name == request.RoleName);
         var role = roles.entities.FirstOrDefault();
 
         if (request.RoleName == "Operational manager")
         {
             var operationalManagers = await _context.Users.GetFilteredWithTotalSum(s =>
-                s.Role.RoleName == "Operational manager" && s.CompanyId == request.CompanyId, 1, 1);
+                s.Role.Type == UserRoles.OperationalManager && s.CompanyId == request.CompanyId, 1, 1);
 
             var operationalManager = operationalManagers.entities.FirstOrDefault();
 
