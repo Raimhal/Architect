@@ -8,13 +8,13 @@ import { MatButtonModule } from '@angular/material/button';
 
 
 @NgModule({
-  declarations: [ 
+  declarations: [
     AlertComponent
   ],
   imports: [
     CommonModule,
     MatSnackBarModule,
-    MatButtonModule
+    MatButtonModule,
   ],
   exports: [
     AlertComponent

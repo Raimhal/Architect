@@ -6,8 +6,7 @@ import { StoreModule } from '@ngrx/store';
 import * as fromProject from './state/project.reducer'
 import { ProjectEffects } from './state/project.effects';
 import { EffectsModule } from '@ngrx/effects';
-import { SharedModule } from 'src/app/shared/shared.module';
-import {MatTab, MatTabsModule} from '@angular/material/tabs';
+import { MatTabsModule} from '@angular/material/tabs';
 import { ProjectDashboardComponent } from './project-dashboard/project-dashboard.component';
 import { MatIconModule } from '@angular/material/icon';
 import { ProjectDescriptionComponent } from './project-description/project-description.component';
@@ -21,6 +20,7 @@ import { IvyCarouselModule } from 'angular-responsive-carousel2';
 import { ProjectPhotosComponent } from './project-photos/project-photos.component';
 import { MatButtonModule } from '@angular/material/button';
 import { NgxDropzoneModule } from 'ngx-dropzone';
+import {SharedModule} from "../../shared/shared.module";
 
 @NgModule({
   imports: [
@@ -49,7 +49,7 @@ import { NgxDropzoneModule } from 'ngx-dropzone';
     ProjectDescriptionComponent,
     AddProjectComponent,
     ProjectPhotosComponent,
-    AddProjectPhotosComponent, 
+    AddProjectPhotosComponent,
     ImagePipe
   ]
 })

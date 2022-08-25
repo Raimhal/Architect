@@ -15,7 +15,6 @@ import {SpinnerEffects} from './store/effects/spinner.effects';
 import {AlertEffects} from './store/effects/alert.effects';
 import {RouteEffects} from './store/effects/route.effects';
 import {ModalEffects} from './store/effects/modal.effects';
-import {AuthEffects} from './store/effects/auth.effects';
 import {AuthModule} from './modules/auth/auth.module';
 import {MyEntityModule} from './modules/my-entity/my-entity.module';
 import {AdministrationModule} from "./modules/administration/administration.module";

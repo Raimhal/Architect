@@ -34,15 +34,12 @@ import { FilterInputComponent } from "./components/inputs/filter-input/filter-in
 import { InputComponent } from "./components/inputs/input/input.component";
 import { PasswordInputComponent } from "./components/inputs/password-input/password-input.component";
 import { TabsComponent } from "./components/inputs/tabs/tabs.component";
-import { AlertComponent } from "./components/misc/alert/alert.component";
 import { ModalDialogConfirmationComponent } from "./components/modal-dialogs/modal-dialog-confirmation/modal-dialog-confirmation.component";
-import { ModalDialogSaveCancelComponent } from "./components/modal-dialogs/modal-dialog-savecancel/modal-dialog-savecancel.component";
-import { NumberGenarateSevice } from "./services/numberGenarate.services";
-import { BlockWithIdComponent } from './components/blocks/blockWithId/block-with-id/block-with-id.component';
-import { AlertComponent } from "./components/misc/alert/alert.component";
-import { ModalDialogConfirmationComponent } from './components/modal-dialog/modal-dialog-confirmation/modal-dialog-confirmation.component';
-import { ModalDialogSavecancelComponent } from './components/modal-dialog/modal-dialog-savecancel/modal-dialog-savecancel.component';
+import {
+  ModalDialogSaveCancelComponent
+} from "./components/modal-dialogs/modal-dialog-savecancel/modal-dialog-savecancel.component";
 import {NumberGenarateSevice} from "./services/numberGenarate.services";
+
 
 
 @NgModule({
@@ -68,10 +65,7 @@ import {NumberGenarateSevice} from "./services/numberGenarate.services";
     HasRoleComponent,
     ModalDialogSaveCancelComponent,
     ModalDialogConfirmationComponent,
-    BlockWithIdComponent,
-    AlertComponent,
-    ModalDialogConfirmationComponent,
-    ModalDialogSavecancelComponent,
+    BlockWithIdComponent
   ],
   imports: [
     CommonModule,
@@ -111,9 +105,7 @@ import {NumberGenarateSevice} from "./services/numberGenarate.services";
     NotLoggedInComponent,
     HasRoleComponent,
     ModalDialogSaveCancelComponent,
-    ModalDialogConfirmationComponent
-    AlertComponent,
-
+    ModalDialogConfirmationComponent,
   ],
   providers: [
     NumberGenarateSevice,
