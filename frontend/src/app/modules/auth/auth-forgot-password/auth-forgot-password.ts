@@ -18,6 +18,7 @@ export class ForgotPasswordComponent {
   });
 
   isSubmitted = false;
+
   constructor(private store: Store<AppState>) {
   }
 
@@ -30,8 +31,18 @@ export class ForgotPasswordComponent {
     this.isSubmitted = true
 
     this.store.dispatch(forgotPassword({
-      email:this.email.value!
+      email: this.email.value!
     }));
+  }
+
+  emailError() {
+    if (this.email.hasError('required')) {
+      return 'Email is required';
+    }
+    if (this.email.hasError('email')) {
+      return 'Please enter a valid email address';
+    }
+    return '';
   }
 
 }

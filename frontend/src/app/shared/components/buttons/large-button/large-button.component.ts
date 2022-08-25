@@ -1,17 +1,13 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-large-button',
   templateUrl: './large-button.component.html',
   styleUrls: ['./large-button.component.scss']
 })
-export class LargeButtonComponent implements OnInit {
+export class LargeButtonComponent {
 
   @Input() disabled = false
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
+  @Input() type: 'submit' | 'button' = 'button'
 
 }

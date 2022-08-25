@@ -1,5 +1,21 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap');
 
+:host ::ng-deep {
+
+  mat-form-field {
+    width: 100%
+  }
+
+  form > * {
+    display: block;
+  }
+
+  form > * + * {
+    margin-top: 20px;
+  }
+
+}
+
 .image-column {
   float: left;
   width: 50%;
@@ -18,7 +34,7 @@
   background: #F3F4F8;
 
   .content-padding {
-    padding: 118px;
+    padding: 80px 118px;
     overflow: scroll;
   }
 
@@ -27,7 +43,8 @@
 .btn-back {
   width: 90px;
   height: 44px;
-  top: -100px;
+  top: -40px;
+  color: #515364;
 }
 
 @media screen and (max-width: 1024px) {
@@ -40,21 +57,30 @@
   .content-column {
     width: 100%;
     max-width: 100%;
-
-    .content-padding {
-      padding-left: 20px;
-      padding-right: 20px;
-    }
   }
 }
 
-#componentLabel {
+@media screen and (max-width: 600px) {
+  .content-column {
+
+    .content-padding {
+      min-width: initial;
+      width: 80vw;
+    }
+
+  }
+}
+
+.heading {
   font-family: 'Poppins';
   font-style: normal;
-  font-weight: 900;
-  margin-top: 28px;
+  font-weight: 600;
   font-size: 40px;
+  text-align: left;
   line-height: 48px;
+  margin-top: 28px;
+  margin-bottom: 60px;
+  color: #181A25;
 }
 
 #CompanyIdDiv {
@@ -64,32 +90,12 @@
   height: 56px;
   vertical-align: central;
   justify-content: space-between;
-  margin-top: 45px;
-  margin-bottom: 45px;
-}
 
-#CompanyIdDiv div {
-  height: 100%;
-  margin-top: 16px;
-  margin-left: 12px;
-  margin-right: 12px;
-  vertical-align: central;
-}
-
-#SubmitButton {
-  width: 100%;
-  text-align: center;
-  padding-top: 16px;
-  background: #2658D7;
-  padding-bottom: 16px;
-  color: white;
-  font-family: 'Poppins';
-  font-size: 16px;
-}
-
-#SubmitButton:hover {
-  background: #2E5ED7;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-  color: snow;
-  cursor: pointer;
+  div {
+    height: 100%;
+    margin-top: 16px;
+    margin-left: 12px;
+    margin-right: 12px;
+    vertical-align: central;
+  }
 }

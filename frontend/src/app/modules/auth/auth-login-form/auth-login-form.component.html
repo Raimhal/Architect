@@ -1,28 +1,16 @@
 <app-auth-page-layout>
-  <h4 class="mat-display-2" style="text-align: center; font-weight: 600">Login</h4>
+  <h1 class="heading">Login</h1>
 
   <form [formGroup]="form" (submit)="submit()">
+    <app-input label="Email" type="email" [control]="email" [errorMessage]="emailError()">
+    </app-input>
 
-    <mat-form-field class="w-100" appearance="fill">
-      <mat-label>Email</mat-label>
-      <input matInput type="email" formControlName="email">
-      <mat-error *ngIf="email?.hasError('email')">Please enter a valid email address</mat-error>
-      <mat-error *ngIf="email?.hasError('required')">Email is <strong>required</strong></mat-error>
-    </mat-form-field>
+    <app-password-input label="Password" [control]="password" [errorMessage]="passwordError()">
+    </app-password-input>
 
-    <mat-form-field class="w-100" appearance="fill">
-      <mat-label>Password</mat-label>
-      <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password">
-      <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" type="button"
-              [attr.aria-label]="'Show/Hide password'" [attr.aria-pressed]="hidePassword">
-        <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
-      </button>
-      <mat-error *ngIf="password?.hasError('required')">Password is <strong>required</strong></mat-error>
-      <mat-error *ngIf="password?.hasError('minLength')">Password must be at least 6 characters long</mat-error>
-    </mat-form-field>
+    <app-large-button type="submit">Login</app-large-button>
 
-    <button mat-raised-button class="w-100" color="primary" type="submit">Login</button>
-
-    <a mat-button routerLink="/forgot-password" class="w-100" style="margin-top: 18px">Forgot Password</a>
+    <app-underlined-button routerLink="/forgot-password">Forgot password</app-underlined-button>
   </form>
+
 </app-auth-page-layout>

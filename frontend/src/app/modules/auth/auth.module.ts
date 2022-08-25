@@ -23,6 +23,7 @@ import { ForgotPasswordComponent } from './auth-forgot-password/auth-forgot-pass
 import { environment } from "../../../environments/environment";
 import { RefreshTokenInterceptor } from "./resources/interceptors/refresh-token.interceptor";
 import { HTTP_INTERCEPTORS } from "@angular/common/http";
+import { SharedModule } from "../../shared/shared.module";
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import { HTTP_INTERCEPTORS } from "@angular/common/http";
     MatInputModule,
     MatIconModule,
     MatButtonModule,
+    SharedModule,
   ],
   exports: [
     AuthPageLayoutComponent,

@@ -30,7 +30,7 @@ export class AdministrationApiService extends ApiService {
   }
 
   createCompany(data: INewCompanyDto): Observable<any> {
-    return this.putWithOptions(this.ApiPath, data, { observe: 'response' });
+    return this.post('/companies/create', data);
   }
 
   getAllCompaniesWithParameters(filter: string, sort: string): Observable<ICompanyOverview[]> {

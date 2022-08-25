@@ -1,5 +1,5 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { Component, Input } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { TextInputType } from 'src/app/shared/types/input-types';
 
 @Component({
@@ -7,24 +7,19 @@ import { TextInputType } from 'src/app/shared/types/input-types';
   templateUrl: './input.component.html',
   styleUrls: ['./input.component.scss']
 })
-export class InputComponent implements OnInit {
+export class InputComponent {
 
-  @Input() formControl: FormControl = new FormControl()
+  // don't rename to formControl
+  // why: https://ittutoria.net/question/no-value-accessor-for-form-control-with-unspecified-name-attribute/#comment-19560
+  @Input() control = new FormControl()
+
   @Input() label: string = ""
   @Input() placeholder: string = ""
   @Input() errorMessage: string = ""
   @Input() type: TextInputType = "text"
- 
-  constructor() { }
-
-  ngOnInit(): void {  }
-
-  change() {
-  }
 
   get title() {
-    return this.formControl.invalid && this.formControl.touched? this.errorMessage : this.label
+    return this.control.invalid && this.control.touched ? this.errorMessage : this.label
   }
-  
 
 }

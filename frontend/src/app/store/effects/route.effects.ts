@@ -53,6 +53,15 @@ export class RouteEffects {
     { dispatch: false }
   );
 
+  navigate$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(RoutActions.navigate),
+        tap((action) => this.route.navigate(action.commands, action.extras))
+      ),
+    { dispatch: false }
+  );
+
   changeDefaultPasswordSuccess$ = createEffect(
     () =>
       this.actions$.pipe(

@@ -1,3 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap');
+
+:host ::ng-deep {
+
+  mat-form-field {
+    width: 100%
+  }
+
+  form > * {
+    display: block;
+  }
+
+  form > * + * {
+    margin-top: 20px;
+  }
+
+  .heading {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 40px;
+    text-align: center;
+    line-height: 48px;
+    margin-top: 28px;
+    margin-bottom: 60px;
+    color: #181A25;
+  }
+}
+
 .image-column {
   float: left;
   width: 50%;
@@ -16,7 +45,10 @@
   background: #F3F4F8;
 
   .content-padding {
-    padding: 118px;
+    min-width: 400px;
+    margin-top: 200px;
+    margin-left: auto;
+    margin-right: auto;
     overflow: scroll;
   }
 
@@ -25,7 +57,9 @@
 .btn-back {
   width: 90px;
   height: 44px;
-  top: -100px;
+  top: 20px;
+  position: fixed;
+  color: #515364;
 }
 
 @media screen and (max-width: 1024px) {
@@ -38,10 +72,16 @@
   .content-column {
     width: 100%;
     max-width: 100%;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .content-column {
 
     .content-padding {
-      padding-left: 20px;
-      padding-right: 20px;
+      min-width: initial;
+      width: 80vw;
     }
+
   }
 }

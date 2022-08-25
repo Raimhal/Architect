@@ -23,9 +23,6 @@ export class AuthChangePasswordFormComponent {
     confirmPassword: this.confirmPassword,
   }, { validators: this.passwordMatchingValidator });
 
-  hidePassword = true;
-  hideConfirmPassword = true;
-
   constructor(private store: Store<AppState>) {
   }
 
@@ -39,6 +36,16 @@ export class AuthChangePasswordFormComponent {
     this.store.dispatch(fromAuthActions.changeDefaultPassword({
       newPassword: this.password.value!,
     }));
+  }
+
+  passwordError() {
+    if (this.password.hasError('required')) {
+      return 'Password is required';
+    }
+    if (this.password.hasError('minLength')) {
+      return 'Password must be at least 5 characters long';
+    }
+    return '';
   }
 
 }

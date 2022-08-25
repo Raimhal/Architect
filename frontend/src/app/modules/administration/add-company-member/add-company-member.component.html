@@ -1,26 +1,24 @@
 <app-modal-dialog title="Add a new Company Member">
-  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="wrapper">
-    <mat-form-field appearance="fill">
-      <mat-label>Position</mat-label>
-      <mat-select formControlName="roleName" required>
-        <mat-option *ngFor="let role of (roles$ | async)" value="{{role.roleName}}">{{role.roleName}}</mat-option>
-      </mat-select>
-    </mat-form-field>
-    <div class="fullname-wrapper">
-      <mat-form-field appearance="fill">
-        <mat-label>First Name</mat-label>
-        <input formControlName="firstName" matInput required placeholder="David">
-      </mat-form-field>
-      <mat-form-field appearance="fill">
-        <mat-label>Last Name</mat-label>
-        <input formControlName="lastName" matInput required placeholder="Robinson">
-      </mat-form-field>
+  <form [formGroup]="form" (submit)="onSubmit()" class="wrapper">
+
+    <app-dropdown class="wide" label="Position" placeholder="Select a role"
+                  [control]="roleName" [options]="roles$" [required]="true">
+    </app-dropdown>
+
+    <div> <!-- div for inlining -->
+      <app-input style="margin-right: 10px" label="First Name" type="text"
+                 [control]="firstName" [errorMessage]="firstNameError()">
+      </app-input>
+
+      <app-input style="margin-left: 10px" label="Last Name" type="text"
+                 [control]="lastName" [errorMessage]="lastNameError()">
+      </app-input>
     </div>
-    <mat-form-field appearance="fill">
-      <mat-label>E-mail</mat-label>
-      <input formControlName="userEmail" matInput placeholder="Ex. lastname@example.com" required type="email">
-      <mat-error *ngIf="form.get('userEmail')?.invalid">Email is not valid</mat-error>
-    </mat-form-field>
-    <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">Generate Password and Send</button>
+
+    <app-input class="wide" label="Email" type="email" [control]="userEmail" [errorMessage]="userEmailError()">
+    </app-input>
+
+    <app-large-button type="submit">Generate Password and Send</app-large-button>
+
   </form>
 </app-modal-dialog>

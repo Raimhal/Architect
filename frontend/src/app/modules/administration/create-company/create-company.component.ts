@@ -1,11 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroupDirective, NgForm, Validators } from '@angular/forms';
-import { ErrorStateMatcher } from '@angular/material/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../store';
-import { INewCompanyDto } from '../resources/DTOmodels/new-company-dto.model';
 import * as AdminActions from '../state/administration.actions';
-import {MatDialogRef} from "@angular/material/dialog";
+import { MatDialogRef } from "@angular/material/dialog";
 
 @Component({
   selector: 'create-company',
@@ -14,66 +12,86 @@ import {MatDialogRef} from "@angular/material/dialog";
 })
 export class CreateCompany implements OnInit {
   @Input() NewCompanyId: number = 0;
-  company: INewCompanyDto;
 
-  addressFormControl = new FormControl('', [Validators.required]);
-  cityFormControl = new FormControl('', [Validators.required]);
-  countryFormControl = new FormControl('', [Validators.required]);
-  nameFormControl = new FormControl('', [Validators.required]);
-  emailFormControl = new FormControl('', [Validators.required, Validators.email]);
-  matcher = new CreateCompanyErrorStateMatcher();
-  constructor(private state: Store<AppState>,
-              public dialogRef: MatDialogRef<CreateCompany>) {
-    this.company = {
-      companyid: this.NewCompanyId,
-      address: '',
-      city: '',
-      country: '',
-      email: '',
-      companyname: ''
-    }
+  address = new FormControl('', [Validators.required]);
+  city = new FormControl('', [Validators.required]);
+  country = new FormControl('', [Validators.required]);
+  name = new FormControl('', [Validators.required]);
+  email = new FormControl('', [Validators.required, Validators.email]);
+
+  form = new FormGroup({
+    address: this.address,
+    city: this.city,
+    country: this.country,
+    name: this.name,
+    email: this.email,
+  });
+
+  constructor(private state: Store<AppState>, public dialogRef: MatDialogRef<CreateCompany>) {
   }
 
   ngOnInit(): void {
 
   }
 
-  Submit(): void {
-    if (this.nameFormControl.errors != null) {
-      alert("Company name is required.");
-      return;
-    }
-    if (this.emailFormControl.errors != null) {
-      alert("Please, enter right email.");
-      return;
-    }
-    if (this.countryFormControl.errors != null) {
-      alert("Country is required.");
-      return;
-    }
-    if (this.cityFormControl.errors != null) {
-      alert("City is required.");
-      return
-    }
-    if (this.addressFormControl.errors != null) {
-      alert("Address is required.");
+  submit(): void {
+    this.form.markAllAsTouched();
+
+    if (!this.form.valid) {
       return;
     }
 
-    // Send it to effects, that must send request to server
-    this.state.dispatch(AdminActions.CreateCompany({ date: this.company }));
+    this.state.dispatch(AdminActions.CreateCompany({
+      date: {
+        companyid: this.NewCompanyId,
+        companyname: this.name.value!,
+        email: this.email.value!,
+        country: this.country.value!,
+        city: this.city.value!,
+        address: this.address.value!,
+      }
+    }));
   }
-
 
   close() {
     this.dialogRef.close()
   }
-}
 
-export class CreateCompanyErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
-    const isSubmitted = form && form.submitted;
-    return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
+  nameError() {
+    if (this.name.hasError('required')) {
+      return 'Name is required';
+    }
+    return '';
+  }
+
+  emailError() {
+    if (this.email.hasError('required')) {
+      return 'Email is required';
+    }
+    if (this.email.hasError('email')) {
+      return 'Please enter a valid email address';
+    }
+    return '';
+  }
+
+  countryError() {
+    if (this.country.hasError('required')) {
+      return 'Country is required';
+    }
+    return '';
+  }
+
+  cityError() {
+    if (this.city.hasError('required')) {
+      return 'City is required';
+    }
+    return '';
+  }
+
+  addressError() {
+    if (this.address.hasError('required')) {
+      return 'Address is required';
+    }
+    return '';
   }
 }
-

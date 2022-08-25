@@ -9,9 +9,7 @@ import { ButtonComponent } from './components/buttons/button/button.component';
 import { MatButtonModule } from '@angular/material/button';
 import { LargeButtonComponent } from './components/buttons/large-button/large-button.component';
 import { MiniButtonComponent } from './components/buttons/mini-button/mini-button.component';
-import {
-  UnderlinedButtonComponent
-} from './components/buttons/underlined-button/underlined-button.component';
+import { UnderlinedButtonComponent } from './components/buttons/underlined-button/underlined-button.component';
 import { FilterComponent } from './components/buttons/filter/filter.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -40,6 +38,7 @@ import { HasRoleComponent } from "./components/guards/has-role/has-role.componen
 import { ModalDialogComponent } from './components/modal-dialog/modal-dialog.component';
 import { NumberGenarateSevice } from './services/numberGenarate.services';
 import { BlockWithIdComponent } from './components/blocks/blockWithId/block-with-id/block-with-id.component';
+import { AlertComponent } from "./components/misc/alert/alert.component";
 
 
 @NgModule({
@@ -64,7 +63,8 @@ import { BlockWithIdComponent } from './components/blocks/blockWithId/block-with
     LoggedInComponent,
     NotLoggedInComponent,
     HasRoleComponent,
-    BlockWithIdComponent
+    BlockWithIdComponent,
+    AlertComponent,
   ],
   imports: [
     CommonModule,
@@ -101,7 +101,12 @@ import { BlockWithIdComponent } from './components/blocks/blockWithId/block-with
     TabsComponent,
     CardComponent,
     FilterInputComponent,
-    ModalDialogComponent
+    ModalDialogComponent,
+    LoggedInComponent,
+    NotLoggedInComponent,
+    HasRoleComponent,
+    ModalDialogComponent,
+    AlertComponent,
   ],
   providers: [
     NumberGenarateSevice,

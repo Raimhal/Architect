@@ -18,8 +18,6 @@ export class AuthLoginFormComponent {
     password: this.password,
   });
 
-  hidePassword = true;
-
   constructor(private store: Store<AppState>) {
   }
 
@@ -31,6 +29,26 @@ export class AuthLoginFormComponent {
     }
 
     this.store.dispatch(login({ email: this.email.value!, password: this.password.value! }));
+  }
+
+  emailError() {
+    if (this.email.hasError('required')) {
+      return 'Email is required';
+    }
+    if (this.email.hasError('email')) {
+      return 'Please enter a valid email address';
+    }
+    return '';
+  }
+
+  passwordError() {
+    if (this.password.hasError('required')) {
+      return 'Password is required';
+    }
+    if (this.password.hasError('minLength')) {
+      return 'Password must be at least 5 characters long';
+    }
+    return '';
   }
 
 }

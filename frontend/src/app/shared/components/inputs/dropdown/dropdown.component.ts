@@ -1,9 +1,10 @@
-import {Component, Input, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
-import {FormControl} from "@angular/forms";
+import { Component, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { FormControl } from "@angular/forms";
+import { Observable } from "rxjs";
 
 export interface Option {
-  value : any,
-  viewValue : string
+  value: any,
+  viewValue: string
 }
 
 
@@ -13,17 +14,11 @@ export interface Option {
   styleUrls: ['./dropdown.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class DropdownComponent implements OnInit {
+export class DropdownComponent {
 
-  @Input() options : Option[] = [];
-  @Input() formControl : FormControl = new FormControl();
-  @Input() placeholder : string = "";
-  @Input() required : boolean = false;
-
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
+  @Input() options: Observable<Option[]> | null = null;
+  @Input() control: FormControl = new FormControl();
+  @Input() placeholder: string = "";
+  @Input() required: boolean = false;
 
 }

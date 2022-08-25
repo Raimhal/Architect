@@ -95,7 +95,7 @@ export class TokenService {
     if (!this.getAccessTokenOrNull() || !this.getRefreshToken()) {
 
       if (requireLogin) {
-        this.store.dispatch(fromAuthActions.logout());
+        this.removeTokens();
         return new Promise<void>((resolve, reject) =>
           this.router.navigate(['/login'])
             .then(() => resolve())
