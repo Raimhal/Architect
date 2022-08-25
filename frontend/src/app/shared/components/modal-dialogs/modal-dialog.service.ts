@@ -20,3 +20,4 @@ export class ModalDialogService {
     this._dialog.closeAll();
   }
 }
+

@@ -5,7 +5,8 @@ import * as fromAuthActions from '../actions/auth.actions';
 import * as fromAdministrationActions from '../../modules/administration/state/administration.actions';
 import {tap} from 'rxjs/operators';
 import {MatDialog} from "@angular/material/dialog";
-import {ModalDialogService} from "../../shared/components/modal-dialog/resources/modal-dialog.service";
+import {ModalDialogService} from "../../shared/components/modal-dialogs/modal-dialog.service";
+
 
 
 @Injectable()
