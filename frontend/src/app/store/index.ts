@@ -9,7 +9,7 @@ import {
 import * as fromMyEntity from '../modules/my-entity/state/my-entity.reducer';
 import * as fromAdministration from '../modules/administration/state/administration.reducer';
 import * as fromCompany from '../modules/company/state/company.reducer'
-import * as fromProject from '../modules/project/resources/state/project.reducers';
+import * as fromProject from '../modules/project/state/project.reducer';
 import * as fromMenu from './reducers/menu.reducer';
 
   export interface AppState {

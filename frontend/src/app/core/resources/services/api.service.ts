@@ -23,7 +23,9 @@ export class ApiService {
   put<T>(path: string, body: any | null) {
     return this.http.put<T>(`${this.baseUrl}${path}`, body);
   }
-
+  delete<T>(path: string) {
+    return this.http.delete<T>(`${this.baseUrl}${path}`);
+  }
   putWithOptions<T>(path: string, body: any | null, options?: any) {
     return this.http.put<T>(`${this.baseUrl}${path}`, body, options);
   }

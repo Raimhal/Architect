@@ -40,6 +40,11 @@ public static class ConfigureServices
             mailSetting.DiplayName = Environment.GetEnvironmentVariable("DiplayName");
         });
 
+        services.Configure<FileManipulatorSettings>((fileManipulatorSettings) =>
+        {
+            fileManipulatorSettings.FolderPath = configuration["FilesFolder"];
+        });
+
         services.AddScoped<IRepositoryFactory, RepositoryFactory>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IBuildingRepository, BuildingRepository>();
@@ -47,6 +52,7 @@ public static class ConfigureServices
         services.AddScoped<IProjectRepository, ProjectRepository>();
         services.AddScoped<IPhaseRepository, PhaseRepository>();
         services.AddScoped<IRoleRepository, RoleRepository>();
+        services.AddScoped<IProjectPhotoRepository, ProjectPhotoRepository>();
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
         services.AddScoped<ApplicationDbContextInitializer>();
@@ -59,6 +65,7 @@ public static class ConfigureServices
         services.AddTransient<INumberGenerateService, NumberGenerateSercice>();
         services.AddScoped<ITokenProvider, TokenProvider>();
         services.AddScoped<IUserManager, UserManager>();
+        services.AddScoped<IFileManipulatorService, FileManipulatorService>();
 
         services.AddAuthentication(opt =>
         {

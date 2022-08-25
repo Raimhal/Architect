@@ -110,18 +110,12 @@ namespace Ctor.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("JoinDate")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Website")
-                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -255,9 +249,6 @@ namespace Ctor.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("timestamp with time zone");
 
@@ -354,6 +345,39 @@ namespace Ctor.Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("ProjectNote", (string)null);
+                });
+
+            modelBuilder.Entity("Ctor.Domain.Entities.ProjectPhoto", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                    NpgsqlPropertyBuilderExtensions.HasIdentityOptions(b.Property<long>("Id"), 100L, null, null, null, null, null);
+
+                    b.Property<string>("Link")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Path")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<long>("ProjectId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Id")
+                        .IsUnique();
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("ProjectPhoto", (string)null);
                 });
 
             modelBuilder.Entity("Ctor.Domain.Entities.Role", b =>
@@ -578,6 +602,17 @@ namespace Ctor.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Ctor.Domain.Entities.ProjectPhoto", b =>
+                {
+                    b.HasOne("Ctor.Domain.Entities.Project", "Project")
+                        .WithMany("ProjectPhotos")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
+                });
+
             modelBuilder.Entity("Ctor.Domain.Entities.User", b =>
                 {
                     b.HasOne("Ctor.Domain.Entities.Company", "Company")
@@ -638,6 +673,8 @@ namespace Ctor.Infrastructure.Migrations
                     b.Navigation("ProjectDocument");
 
                     b.Navigation("ProjectNote");
+
+                    b.Navigation("ProjectPhotos");
                 });
 
             modelBuilder.Entity("Ctor.Domain.Entities.Role", b =>

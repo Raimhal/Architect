@@ -58,11 +58,13 @@
       <div class="photos-card">
         <div class="card-header">
           <span class="selected-text1">Project Photos</span>
-          <button mat-icon-button>
+          <button mat-icon-button (click)="addPhotosModal()">
             <mat-icon svgIcon="plus"></mat-icon>
           </button>
         </div>
-        <img>
+        <div class="card-img">
+          <app-project-photos [projecId]="projectId" [width]="550"></app-project-photos>
+        </div>
       </div>
 
       <div class="team-card">

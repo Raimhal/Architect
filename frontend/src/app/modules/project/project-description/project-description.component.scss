@@ -80,17 +80,15 @@
   background: colors.$gray2;
 }
 
-.photos-card > img {
-  margin: 0 16px 16px 16px;
+.photos-card > .card-img {
+  min-height: 300px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 8px;
 }
 
-.photos-card > img {
+.photos-card > .card-img {
   width: inherit - 32px;
-
-  //temp
-  height: 300px;
-  border: 1px solid;
-  //temp end
 }
 
 .buildings-card {

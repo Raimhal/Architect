@@ -5,6 +5,7 @@ import * as fromAdministrationActions from '../../modules/administration/state/a
 import { tap } from 'rxjs/operators';
 import { AlertService } from 'src/app/modules/alert/resources/services/alert.service';
 import { ErrorService } from 'src/app/modules/error/resources/services/error.services';
+import * as fromProjectActions from '../../modules/project/state/project.actions'
 
 @Injectable()
 export class AlertEffects {
@@ -114,6 +115,27 @@ export class AlertEffects {
         })
       ),
     { dispatch: false });
+  
+    projectPhotoUploadSuccess$ = createEffect(
+      () =>
+        this.actions$.pipe(
+          ofType(fromProjectActions.uploadProjecPhotoSuccess),
+          tap(() => {
+            this._alertService.showAlert("Upload project photos success", "OK", "success")
+          })
+        ),
+      { dispatch: false });
+    
+      projectPhotoUploadFailure$ = createEffect(
+        () =>
+          this.actions$.pipe(
+            ofType(fromProjectActions.uploadProjecPhotoFailure),
+            tap(() => {
+              this._alertService.showAlert("Upload project photos failure", "OK", "error")
+            })
+          ),
+        { dispatch: false });
+      
 
     getUserDetailsFailure$ = createEffect(
     () =>

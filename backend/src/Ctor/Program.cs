@@ -1,6 +1,8 @@
 using Ctor.Application;
 using Ctor.Infrastructure;
 using Ctor.Infrastructure.Persistence;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.Extensions.FileProviders;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -40,11 +42,19 @@ app.UseCors(builder => builder
     .AllowAnyHeader()
 );
 
-
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+        builder.Configuration["FileFolder"] ?? "C:\\RadencyFiles"),
+    RequestPath = "/files"
+});
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
 
 app.Run();
-public partial class Program { }
+
+public partial class Program
+{
+}

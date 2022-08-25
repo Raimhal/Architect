@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, concatMap, withLatestFrom } from 'rxjs/operators';
+import { catchError, map, concatMap, withLatestFrom, mergeMap } from 'rxjs/operators';
 import { Observable, EMPTY, of, combineLatest } from 'rxjs';
 import * as ProjectActions from './project.actions';
 import * as ModalDialogAction from '../../../store/actions/modal-dialog.action';
@@ -11,11 +11,12 @@ import { AppState } from 'src/app/store';
 import { select, Store } from '@ngrx/store';
 import { selectUserId } from 'src/app/store/selectors/auth.selectors';
 import { selectUserDetailsCompanyId } from '../../administration/state/administration.selectors';
+import { serializeError } from 'serialize-error';
+import * as fromProjectSelectors from './project.selectors';
 
 
 @Injectable()
 export class ProjectEffects {
-
   loadProjects$ = createEffect(() => {
     return this.actions$.pipe(
 
@@ -23,29 +24,84 @@ export class ProjectEffects {
       concatMap(() =>
         /** An EMPTY observable only emits completion. Replace with your own observable API request */
         EMPTY.pipe(
-          map(data => ProjectActions.loadProjectsSuccess({ data })),
-          catchError(error => of(ProjectActions.loadProjectsFailure({ error }))))
+          map((data) => ProjectActions.loadProjectsSuccess({ data })),
+          catchError((error) =>
+            of(ProjectActions.loadProjectsFailure({ error }))
+          )
+        )
       )
     );
   });
-  crateProject$ = createEffect(() => {
+
+  loadProjectPhotos$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(ProjectActions.crateProject),
-      withLatestFrom(    
-        this.store.select(selectUserDetailsCompanyId),        
-        this.store.select(selectUserId),
-      ),     
-      concatMap(([action, userId,companyId]) =>
-        this.projectService.createProject({ ...action.project, userId: userId!, companyId: companyId! })
+      ofType(ProjectActions.loadProjectPhotos),
+      mergeMap((action) =>
+        this.projectService.getProjectPhotos(action.projectId).pipe(
+          map((result) =>
+            ProjectActions.loadProjectPhotosSuccess({
+              data: result,
+            })
+          ),
+          catchError((error) =>
+            of(
+              ProjectActions.loadProjectsFailure({
+                error: serializeError(error),
+              })
+            )
+          )
+        )
+      )
+    );
+  });
+
+  deleteProjectPhoto$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(ProjectActions.deleteProjectPhoto),
+      mergeMap((action) =>
+        this.projectService
+          .deleteProjectPhoto(action.projectId, action.photoId)
           .pipe(
-            map(() => ProjectActions.crateProjectSuccess()),
-            catchError((error: HttpErrorResponse) =>
-              of(ProjectActions.loadProjectsFailure({ error: this.errorService.getErrorMessage(error.error, "Create project is failure") })))
+            map((serviceResult) =>
+              ProjectActions.deleteProjectPhotoSuccess({
+                projectId: serviceResult.projectId,
+                id: serviceResult.id,
+              })
+            ),
+            catchError((error) =>
+              of(
+                ProjectActions.loadProjectPhotoFailure({
+                  error: serializeError(error),
+                })
+              )
+            )
           )
       )
     );
   });
 
+  getProjectsWithParams$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(ProjectActions.getProjectsWithParams),
+      withLatestFrom(this.store.select(fromProjectSelectors.selectParams)),
+      concatMap(([_, action]) =>
+        this.projectService.getProjectsWithParams(action).pipe(
+          map((data) =>
+            ProjectActions.getProjectssWithParamsSuccess({
+              data,
+            })
+          ),
+          catchError((error) =>
+            of(
+              ProjectActions.getProjectsWithParamsFailure({
+                error: error.error,
+              })
+            )
+          )
+        )
+      )
+    );
+  });
   effectName$ = createEffect(() => {
     return this.actions$.pipe(
         ofType(ProjectActions.crateProjectSuccess),
@@ -53,7 +109,12 @@ export class ProjectEffects {
     );
   });
 
-
+  uploadProjectPhotoSuccess$ =  createEffect(() => {
+    return this.actions$.pipe(
+        ofType(ProjectActions.uploadProjecPhotoSuccess),
+        map((action) => ProjectActions.loadProjectPhotos({projectId: action.id})),
+    );
+  });
   constructor(
     private actions$: Actions,
     private projectService: ProjectService,

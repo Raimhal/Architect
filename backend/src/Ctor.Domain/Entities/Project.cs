@@ -2,6 +2,7 @@
 using Ctor.Domain.Entities.Enums;
 
 namespace Ctor.Domain.Entities;
+
 public class Project : BaseEntity
 {
     public int ProjectId { get; set; }
@@ -20,8 +21,7 @@ public class Project : BaseEntity
     public virtual ICollection<Phase> Phases { get; set; }
     public virtual ICollection<ProjectDocument> ProjectDocument { get; set; }
     public virtual ICollection<ProjectNote> ProjectNote { get; set; }
-
-
+    public virtual ICollection<ProjectPhoto> ProjectPhotos { get; set; }
 
     public long CompanyId { get; set; }
     public Company Company { get; set; }

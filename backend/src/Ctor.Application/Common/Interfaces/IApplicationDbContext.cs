@@ -10,6 +10,7 @@ public interface IApplicationDbContext
     IBuildingRepository Buildings { get; }
     IProjectRepository Projects { get; }
     IPhaseRepository Phases { get; }
+    IProjectPhotoRepository ProjectsPhotos { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

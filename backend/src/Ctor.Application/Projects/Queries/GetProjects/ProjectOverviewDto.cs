@@ -6,7 +6,7 @@ using Ctor.Domain.Entities.Enums;
 
 namespace Ctor.Application.Projects.Queries.GetProjectsQuery;
 
-public class ProjectOverviewDto : IMapFrom<Project>
+public class ProjectOverviewDto : IMapFrom<Domain.Entities.Project>
 {
     public long Id { get; set; }
     public string ProjectName { get; set; }
@@ -21,7 +21,7 @@ public class ProjectOverviewDto : IMapFrom<Project>
 
     public void Mapping(Profile profile)
     {
-        profile.CreateMap<Project, ProjectOverviewDto>()
+        profile.CreateMap<Domain.Entities.Project, ProjectOverviewDto>()
             .ForMember(dest => dest.StartTime, opt => opt.MapFrom(src => src.StartTime.ToString("dd.MM.yyyy")))
             .ForMember(dest => dest.EndTime, opt => opt.MapFrom(src => src.EndTime.ToString("dd.MM.yyyy")))
             .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()))
