@@ -24,7 +24,6 @@ import { environment } from "../../../environments/environment";
 import { RefreshTokenInterceptor } from "./resources/interceptors/refresh-token.interceptor";
 import { HTTP_INTERCEPTORS } from "@angular/common/http";
 import { SharedModule } from "../../shared/shared.module";
-import {AlertModule} from "../alert/alert.module";
 
 @NgModule({
   declarations: [
@@ -57,7 +56,6 @@ import {AlertModule} from "../alert/alert.module";
     MatIconModule,
     MatButtonModule,
     SharedModule,
-    AlertModule
   ],
   exports: [
     AuthPageLayoutComponent,
