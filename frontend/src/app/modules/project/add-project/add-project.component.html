@@ -5,16 +5,16 @@
       <app-block-with-id [id]="projectId" name="Project ID"></app-block-with-id>
     </div>
     <div class="blockDialog">
-      <app-input type="text" [formControl]="name" label="Project Name" errorMessage="Project name is required">
+      <app-input type="text" [control]="name" label="Project Name" errorMessage="Project name is required">
       </app-input>
     </div>
     <div class="blockDialog">
-      <app-input type="text" [formControl]="address" label="Address" errorMessage="Address is required"></app-input>
+      <app-input type="text" [control]="address" label="Address" errorMessage="Address is required"></app-input>
     </div>
 
     <div class="blockDialog dateContainer">
-      <app-datepicker [formControl]="startDate" label="Start time"></app-datepicker>
-      <app-datepicker [formControl]="endDate" label="End time"></app-datepicker>
+      <app-datepicker [control]="startDate" label="Start time"></app-datepicker>
+      <app-datepicker [control]="endDate" label="End time"></app-datepicker>
     </div>
     <div class="blockDialog alert-danger"
       *ngIf="form.errors?.['identityRevealed'] && (form.touched || form.dirty)">

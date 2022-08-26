@@ -29,7 +29,7 @@ export class DatepickerComponent implements OnInit {
   datepickerHeader = DatepickerHeaderComponent;
 
   @Input() placeholder : string = ""
-  @Input() formControl : FormControl = new FormControl('');
+  @Input() control : FormControl = new FormControl('');
 
   dateClass: MatCalendarCellClassFunction<Date> = (cellDate, view) => {
     return 'example-custom-date-class';

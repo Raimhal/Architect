@@ -1,8 +1,8 @@
 <mat-form-field appearance="fill">
-  <input matInput [matDatepicker]="picker" placeholder="{{placeholder}}" [formControl]="formControl">
+  <input matInput [matDatepicker]="picker" placeholder="{{placeholder}}" [formControl]="control">
   <mat-datepicker-toggle matSuffix [for]="picker">
-    <mat-icon matDatepickerToggleIcon svgIcon="calendar" *ngIf="!formControl.value"></mat-icon>
-    <mat-icon matDatepickerToggleIcon svgIcon="calendar-picked" *ngIf="formControl.value"></mat-icon>
+    <mat-icon matDatepickerToggleIcon svgIcon="calendar" *ngIf="!control.value"></mat-icon>
+    <mat-icon matDatepickerToggleIcon svgIcon="calendar-picked" *ngIf="control.value"></mat-icon>
   </mat-datepicker-toggle>
   <mat-datepicker #picker disabled="false" [dateClass]="dateClass" [calendarHeaderComponent]="datepickerHeader"></mat-datepicker>
 </mat-form-field>
