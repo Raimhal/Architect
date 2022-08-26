@@ -89,6 +89,7 @@ import { AdministrationEffects } from './modules/administration/state/administra
     MatSidenavModule,
     MatDatepickerModule,
     MatMomentDateModule,
+    MatDialogModule,
     MatTabsModule,
     ProjectModule,
     CompanyModule,

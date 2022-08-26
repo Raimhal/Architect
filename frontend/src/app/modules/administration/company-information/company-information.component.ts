@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { AppState } from 'src/app/store';
@@ -7,12 +7,17 @@ import * as AdministrationSelectors from '../state/administration.selectors';
 import * as fromAdministrationActions from '../state/administration.actions';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
-import { MatDialog } from '@angular/material/dialog';
 import { AddCompanyMemberComponent } from '../add-company-member/add-company-member.component';
 import { FormGroupState } from 'ngrx-forms';
 import * as fromCompanyInformationForm from '../resources/forms/company-information-form';
 import {hideMenu, openMenu, revealMenu} from "../../../store/actions/menu.actions";
 import {openModalDialog} from "../../../store/actions/modal-dialog.action";
+import {
+  loadMembersToOpenCompany,
+  uploadFileSuccess
+} from "../state/administration.actions";
+import {AdministrationFileService} from "../resources/services/administration-file.service";
+import {MatDialog} from "@angular/material/dialog";
 @Component({
   selector: 'app-company-information',
   templateUrl: './company-information.component.html',
@@ -20,14 +25,14 @@ import {openModalDialog} from "../../../store/actions/modal-dialog.action";
 })
 export class CompanyInformationComponent implements OnInit {
   companyDetailed$?: Observable<ICompanyDetailed | null>;
-  companyInformationForm$?: Observable<
-    FormGroupState<fromCompanyInformationForm.CompanyInformationFormValue>
-  >;
+  companyInformationForm$?: Observable<FormGroupState<fromCompanyInformationForm.CompanyInformationFormValue>>;
   isEditEnabled: boolean = false;
+
   constructor(
     private store: Store<AppState>,
     private matIconRegistry: MatIconRegistry,
     private domSanitizer: DomSanitizer,
+    private fileService: AdministrationFileService,
     private dialog: MatDialog
   ) {
     this.store.dispatch(openMenu());
@@ -42,7 +47,9 @@ export class CompanyInformationComponent implements OnInit {
     this.companyInformationForm$ = this.store.pipe(
       select(AdministrationSelectors.selectCompanyInformationForm)
     );
-
+    this.store.dispatch(
+      fromAdministrationActions.loadDetailedCompany({id: 1})
+    );
     this.addSvgIcons();
   }
 
@@ -67,6 +74,7 @@ export class CompanyInformationComponent implements OnInit {
       fromAdministrationActions.cancelEditCompanyInformationForm()
     );
   }
+
   uploadImage(id: number, event: Event) {
     // const target = event.target as HTMLInputElement;
     // if (target.files !== null) {
@@ -111,5 +119,18 @@ export class CompanyInformationComponent implements OnInit {
         data: companyId
       }
     }))
+  }
+
+  @ViewChild('hiddenfileinput') hiddenFileInput?: ElementRef
+  async onFileSelect(files:FileList|null, companyId: number) {
+    if (files) {
+      let selectedFile = files[0];
+      let result = await this.fileService.postNewMembers({companyId: companyId, file: selectedFile})
+      this.store.dispatch(uploadFileSuccess({errorLines:result, companyId:companyId}));
+      this.companyInformationForm$ = this.store.pipe(
+        select(AdministrationSelectors.selectCompanyInformationForm)
+      );
+      this.hiddenFileInput!.nativeElement.value="";
+    }
   }
 }

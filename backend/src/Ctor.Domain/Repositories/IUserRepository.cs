@@ -11,4 +11,5 @@ public interface IUserRepository : IGenericRepository<User>
     new Task<User> GetById(long id, CancellationToken ct); // todo: remove (see comment in the implementation)
 
     new Task<User?> FindById(long id, CancellationToken ct); // todo: remove (see comment in the implementation)
+
 }

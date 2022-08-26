@@ -21,6 +21,16 @@ public class UserController : ApiControllerBase
         return await Mediator.Send(command);
 
     }
+    [HttpPost]
+    [Route("upload")]
+    public async Task<IEnumerable<string>> AddSeveralUsers([FromForm]IFormFile file, [FromForm]long companyId)
+    {       
+        return await Mediator.Send(new AddSeveralUsersCommand
+        { 
+            File = file.OpenReadStream(),
+            CompanyId = companyId
+        });
+    }
     [HttpGet]
     [Route("roles")]
     public async Task<List<RoleDto>> GetAllRoles()

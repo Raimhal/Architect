@@ -1,6 +1,5 @@
 using AutoMapper;
 using Ctor.Application.Common.Exceptions;
-using AutoMapper;
 using Ctor.Domain.Entities;
 using Ctor.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;

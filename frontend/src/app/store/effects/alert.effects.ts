@@ -115,8 +115,40 @@ export class AlertEffects {
         })
       ),
     { dispatch: false });
-  
-    projectPhotoUploadSuccess$ = createEffect(
+  addMembersSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(fromAdministrationActions.uploadFileSuccess),
+        tap(() => {
+            this._alertService.showAlert("Not all users were added", "OK", "warning");
+          }
+        )
+      ),
+    { dispatch: false }
+  );
+  addMembersFailure$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(fromAdministrationActions.uploadFileFailure),
+        tap((action) => {
+            this._alertService.showAlert(`Failed to add members. ${action.error.error.detail}`, "OK", "error")
+          }
+        )
+      ),
+    { dispatch: false }
+  );
+  addMembersSuccessWithoutError$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(fromAdministrationActions.uploadFileSuccessWithoutError),
+        tap((action) => {
+            this._alertService.showAlert("Members added successfully", "OK", "success")
+          }
+        )
+      ),
+    { dispatch: false }
+  );
+  projectPhotoUploadSuccess$ = createEffect(
       () =>
         this.actions$.pipe(
           ofType(fromProjectActions.uploadProjecPhotoSuccess),
@@ -125,7 +157,7 @@ export class AlertEffects {
           })
         ),
       { dispatch: false });
-    
+
       projectPhotoUploadFailure$ = createEffect(
         () =>
           this.actions$.pipe(
@@ -135,7 +167,7 @@ export class AlertEffects {
             })
           ),
         { dispatch: false });
-      
+
 
     getUserDetailsFailure$ = createEffect(
     () =>

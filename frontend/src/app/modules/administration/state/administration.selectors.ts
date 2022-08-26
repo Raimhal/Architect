@@ -33,3 +33,12 @@ export const selectUserDetailsCompanyId = createSelector(
   selectUserDetails,
   (details) => details?.companyId
 );
+
+export const selectErrorLines = createSelector(
+  selectAdministrationState,
+  (state)=> state.failedLines
+);
+export const selectCompanyId = createSelector(
+  selectAdministrationState,
+  (state)=> state.currentlyOpenCompany.id
+)

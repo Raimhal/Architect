@@ -74,7 +74,7 @@
               <label>Join Date:</label>
               <p class="date">{{ company.joinDate }}</p>
 
-              <label for="addres">Address:</label>
+              <label for="address">Address:</label>
               <input
                 id="address"
                 class="company-information-input"
@@ -112,8 +112,9 @@
             <span>Team</span>
           </mat-card-title>
           <mat-card-actions>
-            <button mat-icon-button aria-label="Load a file">
+            <button mat-icon-button aria-label="Load a file" (click)="hiddenfileinput.click()">
               <mat-icon svgIcon="file_plus"></mat-icon>
+              <input style="display: none" type="file" accept=".csv" (change)="onFileSelect(hiddenfileinput.files, company.id)" #hiddenfileinput>
             </button>
             <button mat-icon-button aria-label="Add member" (click)="openModal(company.id)">
               <mat-icon svgIcon="plus"></mat-icon>

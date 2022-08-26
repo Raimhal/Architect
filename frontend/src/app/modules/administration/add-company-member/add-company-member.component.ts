@@ -1,15 +1,17 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { IMember } from "../resources/models/member.model";
-import { addNewMember, loadRoles } from "../state/administration.actions";
-import { select, Store } from "@ngrx/store";
-import { MatIconRegistry } from "@angular/material/icon";
-import { DomSanitizer } from "@angular/platform-browser";
-import { MAT_DIALOG_DATA } from "@angular/material/dialog";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { selectRoles } from "../state/administration.selectors";
-import { Observable, of } from "rxjs";
-import { Option } from "../../../shared/components/inputs/dropdown/dropdown.component";
-import { map } from "rxjs/operators";
+import {Component, Inject, OnInit} from '@angular/core';
+import {IMember} from "../resources/models/member.model";
+import {addNewMember, loadRoles} from "../state/administration.actions";
+import {select, Store} from "@ngrx/store";
+import {MatIconRegistry} from "@angular/material/icon";
+import {DomSanitizer} from "@angular/platform-browser";
+import {MatDialogRef, MAT_DIALOG_DATA} from "@angular/material/dialog";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {IRole} from "../resources/models/role.model";
+import {selectRoles} from "../state/administration.selectors";
+import {Observable} from "rxjs";
+import {Option} from "../../../shared/components/inputs/dropdown/dropdown.component";
+import {map} from "rxjs/operators";
+
 
 @Component({
   selector: 'app-add-company-member',
@@ -22,7 +24,7 @@ export class AddCompanyMemberComponent {
     select(selectRoles),
     map(roles => roles == null
       ? []
-      : roles.map<Option>(role => ({ value: role.id, viewValue: role.roleName, }))),
+      : roles.map<Option>(role => ({ value: role.name, viewValue: role.name }))),
   );
 
   companyId: number

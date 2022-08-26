@@ -5,6 +5,6 @@ namespace Ctor.Application.Roles.Queries;
 public class RoleDto : IMapFrom<Role>
 {
     public int Id { get; set; }
-    public string RoleName { get; set; }
+    public string Name { get; set; }
 }
 

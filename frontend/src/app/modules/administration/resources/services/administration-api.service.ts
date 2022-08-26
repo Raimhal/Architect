@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../../../../core/resources/services/api.service';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { ICompanyOverview } from '../models/company-overview.model';
 import { IMember } from '../models/member.model';
 import { INewCompanyDto } from '../DTOmodels/new-company-dto.model';
@@ -26,7 +26,7 @@ export class AdministrationApiService extends ApiService {
   }
 
   postMember(data: IMember): Observable<number> {
-    return this.post<number>(`/addMember`, data);
+    return this.post<number>(`/users`, data);
   }
 
   createCompany(data: INewCompanyDto): Observable<any> {
@@ -62,4 +62,5 @@ export class AdministrationApiService extends ApiService {
   getMembersByCompanyId(companyId: number): Observable<IMember[]> {
     return this.get<IMember[]>(`/users/byCompanyId/${companyId}`);
   }
+
 }

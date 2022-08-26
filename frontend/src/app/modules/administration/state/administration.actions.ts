@@ -151,3 +151,18 @@ export const loadMembersToOpenCompanySuccessFailure = createAction(
   '[Company-information Component] Load Members To Currently Open Company Failure',
   props<{ error: any }>()
 );
+export const uploadFile = createAction(
+  '[Company-information Component] File to add members sent',
+  props<{ companyId: number, file:string }>()
+);
+export const uploadFileSuccess = createAction(
+  '[Company-information Component] Members added successfully',
+  props<{ errorLines: string[]|undefined, companyId:number}>()
+)
+export const uploadFileFailure = createAction(
+  '[Company-information Component] Failed to add members',
+  props<{ error: any }>()
+);
+export const uploadFileSuccessWithoutError= createAction(
+  '[Company-information Component] Members added successfully without error lines',
+)

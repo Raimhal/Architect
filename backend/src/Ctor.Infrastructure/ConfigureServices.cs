@@ -65,6 +65,7 @@ public static class ConfigureServices
         services.AddTransient<INumberGenerateService, NumberGenerateSercice>();
         services.AddScoped<ITokenProvider, TokenProvider>();
         services.AddScoped<IUserManager, UserManager>();
+        services.AddTransient<ICsvFileService, CsvFileService>();
         services.AddScoped<IFileManipulatorService, FileManipulatorService>();
 
         services.AddAuthentication(opt =>

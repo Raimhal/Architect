@@ -43,15 +43,13 @@ public class AddUserQueryHandler : IRequestHandler<AddUserCommand,bool>
             UserEmail = request.UserEmail,
             CompanyId = request.CompanyId
         };
-        var roles = await _context.Roles.GetFilteredWithTotalSum(r => r.Name == request.RoleName);
-        var role = roles.entities.FirstOrDefault();
+        var role = await _context.Roles.SingleOrDefault(r => r.Name == request.RoleName);
 
         if (request.RoleName == "Operational manager")
         {
-            var operationalManagers = await _context.Users.GetFilteredWithTotalSum(s =>
-                s.Role.Type == UserRoles.OperationalManager && s.CompanyId == request.CompanyId, 1, 1);
 
-            var operationalManager = operationalManagers.entities.FirstOrDefault();
+            var operationalManager = await _context.Users.SingleOrDefault(s =>
+                    s.Role.Type == UserRoles.OperationalManager && s.CompanyId == request.CompanyId);
 
             if (operationalManager is not null)
             {
@@ -67,10 +65,10 @@ public class AddUserQueryHandler : IRequestHandler<AddUserCommand,bool>
                 Name = string.Format("{0} {1}", newUser.FirstName, newUser.LastName)
             }
         };
-        newUser.Password = _securityService.ComputeSha256Hash(password);
-        await _email.SendAsync(emailDTOs, "Password for your new account!", password, $"<h2>{password}</h2>");
+        newUser.Password = _securityService.ComputeSha256Hash(password);        
         await _context.Users.Insert(newUser);
         await _context.SaveChangesAsync();
+        await _email.SendAsync(emailDTOs, "Password for your new account!", password, $"<h2>{password}</h2>");
         return true;
     }
 }

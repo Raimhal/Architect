@@ -23,13 +23,16 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
 import {MatCardModule} from '@angular/material/card';
 import {SharedModule} from "../../shared/shared.module";
 import {NgrxFormsModule} from 'ngrx-forms';
+import { AddMemberFailureComponent } from './add-member-failure/add-member-failure.component';
 import { AddCompanyMemberComponent } from './add-company-member/add-company-member.component';
+import {AdministrationFileService} from "./resources/services/administration-file.service";
 
 @NgModule({
   declarations: [
     CompanyListComponent,
     AddCompanyMemberComponent,
-    CompanyInformationComponent
+    CompanyInformationComponent,
+    AddMemberFailureComponent
   ],
   exports: [
     CompanyInformationComponent
@@ -57,7 +60,8 @@ import { AddCompanyMemberComponent } from './add-company-member/add-company-memb
     NgrxFormsModule,
   ],
   providers: [
-    AdministrationApiService
+    AdministrationApiService,
+    AdministrationFileService
   ]
 })
 export class AdministrationModule {

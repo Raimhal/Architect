@@ -36,6 +36,65 @@ public class EmailService : IEmailService
         if (!response.IsSuccessStatusCode)
             throw new EmailException("Message couldn't be sent");
     }
+    public async Task SendAsync(IEnumerable<EmailDTO> emails, string subject, string html)
+    {
+        if (_mailSetting == null)
+            throw new EmailException("Email settings not found");
+
+
+        MailjetClient client = new MailjetClient(
+            _mailSetting.ApiKey,
+            _mailSetting.ApiSecret
+            );
+
+        var request = GetMailjetRequest(emails, subject, html);
+
+        MailjetResponse response = await client.PostAsync(request);
+
+        if (!response.IsSuccessStatusCode)
+            throw new EmailException("Message couldn't be sent");
+    }
+
+    private MailjetRequest GetMailjetRequest(IEnumerable<EmailDTO> emails, string subject, string html)
+    {
+        var from = new JObject
+        {
+             {"Email", _mailSetting.FromEmail},
+             {"Name", _mailSetting.DiplayName}
+        };
+
+        var to = new JArray();
+        var bodyRequest = new JArray();
+        foreach (var email in emails)
+        {
+            var emailJObject = new JObject {
+
+                {"Email", email.Email},
+                {"Name",email.Name}
+              };
+            to.Add(emailJObject);
+            var bodyJObject = new JObject {
+
+               {"From", from},
+               {"To",to},
+               {"Subject",subject},
+               {"TextPart",email.Text},
+               {"HTMLPart",html},
+               {"CustomID","AppGettingStartedTest"}
+
+           };
+            bodyRequest.Add(bodyJObject);
+        }
+
+        MailjetRequest request = new MailjetRequest
+        {
+            Resource = SendV31.Resource,
+        }
+        .Property(Send.Messages, bodyRequest);
+
+        return request;
+    }
+
     private MailjetRequest GetMailjetRequest(IEnumerable<EmailDTO> emails, string subject, string text, string html)
     {
         var from = new JObject
@@ -51,7 +110,6 @@ public class EmailService : IEmailService
 
                 {"Email", email.Email},
                 {"Name",email.Name}
-
               };
             to.Add(emailJObject);
         }

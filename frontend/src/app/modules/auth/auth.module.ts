@@ -24,6 +24,7 @@ import { environment } from "../../../environments/environment";
 import { RefreshTokenInterceptor } from "./resources/interceptors/refresh-token.interceptor";
 import { HTTP_INTERCEPTORS } from "@angular/common/http";
 import { SharedModule } from "../../shared/shared.module";
+import {AlertModule} from "../alert/alert.module";
 
 @NgModule({
   declarations: [
@@ -33,30 +34,31 @@ import { SharedModule } from "../../shared/shared.module";
     AuthChangePasswordFormComponent,
     ForgotPasswordComponent
   ],
-  imports: [
-    CommonModule,
-    AuthRoutingModule,
-    FormsModule,
-    ReactiveFormsModule,
-    StoreModule.forFeature(
-      fromAuth.authFeatureKey,
-      fromAuth.reducer
-    ),
-    EffectsModule.forFeature([AuthEffects]),
-    JwtModule.forRoot({
-      config: {
-        tokenGetter: () => localStorage.getItem('access_token'),
-        headerName: 'Authorization',
-        authScheme: 'Bearer ',
-        allowedDomains: [environment.apiHost],
-      }
-    }),
-    MatFormFieldModule,
-    MatInputModule,
-    MatIconModule,
-    MatButtonModule,
-    SharedModule,
-  ],
+    imports: [
+        CommonModule,
+        AuthRoutingModule,
+        FormsModule,
+        ReactiveFormsModule,
+        StoreModule.forFeature(
+            fromAuth.authFeatureKey,
+            fromAuth.reducer
+        ),
+        EffectsModule.forFeature([AuthEffects]),
+        JwtModule.forRoot({
+            config: {
+                tokenGetter: () => localStorage.getItem('access_token'),
+                headerName: 'Authorization',
+                authScheme: 'Bearer ',
+                allowedDomains: [environment.apiHost],
+            }
+        }),
+        MatFormFieldModule,
+        MatInputModule,
+        MatIconModule,
+        MatButtonModule,
+        SharedModule,
+        AlertModule,
+    ],
   exports: [
     AuthPageLayoutComponent,
   ],

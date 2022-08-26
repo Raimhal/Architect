@@ -25,7 +25,8 @@ export interface State {
   currentlyOpenCompany: ICompanyDetailed;
   companyInformationForm: FormGroupState<fromCompanyInformationForm.CompanyInformationFormValue>;
   error: any;
-  roles: IRole[] | null;
+  roles: IRole[]|null;
+  failedLines: string[]|undefined;
 }
 
 export const initialState: State = {
@@ -37,6 +38,7 @@ export const initialState: State = {
   companyInformationForm: fromCompanyInformationForm.initialFormState,
   error: null,
   roles: null,
+  failedLines: undefined,
 };
 
 export const reducer = createReducer(
@@ -162,6 +164,24 @@ export const reducer = createReducer(
     }
   ),
   on(
+    AdministrationActions.uploadFileSuccess,
+    (state, action)=>{
+      return{
+        ...state,
+        failedLines: action.errorLines
+      }
+    }
+  ),
+  on(
+    AdministrationActions.uploadFileFailure,
+    (state, action) => {
+      return {
+        ...state,
+        error: action.error,
+      };
+    }
+  ),
+  on(
     AdministrationActions.loadMembersToOpenCompanySuccess,
     (state, action) => ({
       ...state,
@@ -188,5 +208,5 @@ export const reducer = createReducer(
       ...state,
      currentUserDetails:action.userDetails
     })
-  )
+  ),
 );

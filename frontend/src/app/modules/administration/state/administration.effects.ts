@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {Observable, EMPTY, of} from 'rxjs';
 import * as AdministrationActions from './administration.actions';
+import * as DialogActions from '../../../store/actions/modal-dialog.action'
 import * as AuthorizationActions from '../../../store/actions/auth.actions';
 import {
   catchError,
@@ -9,15 +10,18 @@ import {
   concatMap,
   mergeMap,
   withLatestFrom,
-  switchMap,
+  switchMap, tap,
 } from 'rxjs/operators';
 import {serializeError} from 'serialize-error';
 
 import {AdministrationApiService} from '../resources/services/administration-api.service';
-import {Store} from '@ngrx/store';
+import {select, Store} from '@ngrx/store';
 import {AppState} from 'src/app/store';
 import * as AdministrationSelectors from './administration.selectors';
-import { ICompanyUpdate } from '../resources/models/company-update.model';
+import {ICompanyUpdate} from '../resources/models/company-update.model';
+import {AddMemberFailureComponent} from "../add-member-failure/add-member-failure.component";
+import {AdministrationFileService} from "../resources/services/administration-file.service";
+import {selectCompanyId} from "./administration.selectors";
 import { HttpErrorResponse } from '@angular/common/http';
 @Injectable()
 export class AdministrationEffects {
@@ -232,6 +236,32 @@ export class AdministrationEffects {
       )
     );
   });
+  openErrorDialog$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(AdministrationActions.uploadFileSuccess),
+      map((action) => {
+        if (action.errorLines!.length != 0)
+          return DialogActions.openModalDialog({component: AddMemberFailureComponent})
+        else
+          return AdministrationActions.uploadFileSuccessWithoutError()
+      }),
+      catchError((error) =>
+        of(
+          AdministrationActions.uploadFileFailure({
+            error: serializeError(error),
+          })
+        )
+      )
+    );
+  });
+  loadNewMembers$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(AdministrationActions.uploadFileSuccess),
+      map((action)=>{
+        return AdministrationActions.loadMembersToOpenCompany({companyId:action.companyId})
+      })
+    )
+  });
 
   getUserDetails$ = createEffect(() => {
     return this.actions$.pipe(
@@ -249,6 +279,7 @@ export class AdministrationEffects {
   constructor(
     private actions$: Actions,
     private service: AdministrationApiService,
+    private fileService: AdministrationFileService,
     private store: Store<AppState>
   ) {
   }
