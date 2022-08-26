@@ -115,6 +115,14 @@ export class ProjectEffects {
         map((action) => ProjectActions.loadProjectPhotos({projectId: action.id})),
     );
   });
+
+  changeParams$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(ProjectActions.changeParams),
+      map(() => ProjectActions.getProjectsWithParams())
+    );
+  });
+
   constructor(
     private actions$: Actions,
     private projectService: ProjectService,
