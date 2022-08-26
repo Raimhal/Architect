@@ -11,7 +11,7 @@
       (onSearchQuery)="onSearchQuery($event)"
     ></app-filter-input>
   </div>
-  <button class="add-company" (click)="openModal()">Add Company</button>
+  <app-button class="add-company" (click)="openModal()">Add Company</app-button>
 </header>
 <div class="company-list">
   <ng-container *ngIf="companies$ | async as companies">

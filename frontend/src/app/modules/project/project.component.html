@@ -28,8 +28,8 @@
       </div>
       <div class="create-project">
         <!-- create project button -->
-        <button (click)="add()">add project</button>
-        <app-datepicker  class="endDate"  label="End time"></app-datepicker>
+        <app-button (click)="add()">add project</app-button>
+        <!--<app-datepicker  class="endDate"  label="End time"></app-datepicker>-->
       </div>
     </div>
     <div class="projects" *ngIf="projects$ | async as projects">
