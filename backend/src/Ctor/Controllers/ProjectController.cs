@@ -1,6 +1,7 @@
 using Ctor.Application.Companies.Queries;
 using Ctor.Application.DTOs;
 using Ctor.Application.Projects.Commands;
+using Ctor.Application.Projects.Commands.ChangeStatus;
 using Ctor.Application.Projects.Queries;
 using Ctor.Application.Projects.Queries.GetProjectsByCompanyId;
 using Ctor.Application.Projects.Queries.GetProjectsQuery;
@@ -41,7 +42,7 @@ public class ProjectController : ApiControllerBase
 
     [HttpPut("{id:long}/photos")]
     public async Task<ActionResult<List<PutProjectPhotoResponseDto>>> PutProjectPhotos(
-        [FromForm]IFormCollection data, long id)
+        [FromForm] IFormCollection data, long id)
     {
         return await Mediator.Send(
             new PutProjectPhotosCommand(await Task.WhenAll(data.Files.Select(file => file.GetBytes())), id));
@@ -51,5 +52,11 @@ public class ProjectController : ApiControllerBase
     public async Task<ActionResult<DeleteProjectPhotoByIdResponseDto>> DeleteProjectPhotoById(long photoId, long id)
     {
         return await Mediator.Send(new DeleteProjectPhotoByIdCommand(id, photoId));
+    }
+
+    [HttpPut("change-status")]
+    public async Task<IActionResult> ChangeStatus([FromBody] ChangeStatusCommand command)
+    {
+        return Ok(await Mediator.Send(command));
     }
 }

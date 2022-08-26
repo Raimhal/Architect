@@ -20,9 +20,19 @@
 .header > .project-status {
   order: 2;
   background-color: colors.$primary1;
+  transition: background-color 0.2s ease;
   padding: 8px 12px;
   align-content: center;
   justify-content: center;
+
+  &.project-status-clickable {
+    cursor: pointer;
+
+    &:hover {
+      background-color: colors.$primary3;
+    }
+  }
+
 }
 
 

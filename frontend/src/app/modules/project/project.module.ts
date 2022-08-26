@@ -20,7 +20,8 @@ import { IvyCarouselModule } from 'angular-responsive-carousel2';
 import { ProjectPhotosComponent } from './project-photos/project-photos.component';
 import { MatButtonModule } from '@angular/material/button';
 import { NgxDropzoneModule } from 'ngx-dropzone';
-import {SharedModule} from "../../shared/shared.module";
+import { SharedModule } from "../../shared/shared.module";
+import { MatSelectModule } from "@angular/material/select";
 
 @NgModule({
   imports: [
@@ -41,7 +42,8 @@ import {SharedModule} from "../../shared/shared.module";
     MatMenuModule,
     MatButtonModule,
     IvyCarouselModule,
-    NgxDropzoneModule
+    NgxDropzoneModule,
+    MatSelectModule,
   ],
   declarations: [
     ProjectComponent,
@@ -50,7 +52,7 @@ import {SharedModule} from "../../shared/shared.module";
     AddProjectComponent,
     ProjectPhotosComponent,
     AddProjectPhotosComponent,
-    ImagePipe
+    ImagePipe,
   ]
 })
 export class ProjectModule { }

@@ -8,7 +8,7 @@
              [class.selected]="selectedRoute == route.path"
              routerLink="{{route.path}}"
              (click)="onSelect(route.path)">{{route.displayName}}</a>
-          <a class="nav-item main-text" (click)="logout()">Logout</a>
+          <a class="nav-item main-text" (click)="logout()">Log out</a>
         </div>
     </ng-container>
     <ng-container *ngIf="!(revealed$ | async)">

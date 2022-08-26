@@ -39,6 +39,7 @@ import {
   ModalDialogSaveCancelComponent
 } from "./components/modal-dialogs/modal-dialog-savecancel/modal-dialog-savecancel.component";
 import {NumberGenarateSevice} from "./services/numberGenarate.services";
+import { AlertComponent } from "./components/misc/alert/alert.component";
 
 
 
@@ -65,7 +66,8 @@ import {NumberGenarateSevice} from "./services/numberGenarate.services";
     HasRoleComponent,
     ModalDialogSaveCancelComponent,
     ModalDialogConfirmationComponent,
-    BlockWithIdComponent
+    BlockWithIdComponent,
+    AlertComponent
   ],
   imports: [
     CommonModule,
@@ -106,6 +108,7 @@ import {NumberGenarateSevice} from "./services/numberGenarate.services";
     HasRoleComponent,
     ModalDialogSaveCancelComponent,
     ModalDialogConfirmationComponent,
+    AlertComponent,
   ],
   providers: [
     NumberGenarateSevice,

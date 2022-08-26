@@ -95,6 +95,7 @@ public class ApplicationDbContextInitializer
                      LastName = "admin",
                      UserEmail = "admin@radency.com",
                      Password = "admin",
+                     AskToChangeDefaultPassword = false,
                      RoleId = 1,
                      CompanyId = 1
                  },

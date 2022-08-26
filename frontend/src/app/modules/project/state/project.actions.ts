@@ -5,6 +5,7 @@ import { PaginationModel } from 'src/app/shared/models/pagination-model';
 import { Params } from '../resources/models/params';
 import { IProjectOverview } from '../resources/models/project-overview';
 import { IProjectPhoto } from '../resources/models/project-photo.model';
+import { ProjectStatus } from "../resources/models/status";
 
 export const loadProjects = createAction(
   '[Project] Load Projects'
@@ -88,4 +89,19 @@ export const uploadProjecPhotoSuccess = createAction(
 
 export const uploadProjecPhotoFailure = createAction(
   '[Add Project Photos Component] Upload Projects Photos Failure'
+);
+
+export const changeProjectStatus = createAction(
+  '[Project] Change Project Status',
+  props<{ projectId: number, newStatus: ProjectStatus }>()
+);
+
+export const changeProjectStatusSuccess = createAction(
+  '[Project] change Project Status Success',
+  props<{ newStatus: ProjectStatus }>()
+);
+
+export const changeProjectStatusFailure = createAction(
+  '[Project] change Project Status Failure',
+  props<{ error: any }>()
 );

@@ -123,6 +123,20 @@ export class ProjectEffects {
     );
   });
 
+  changeProjectStatus$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(ProjectActions.changeProjectStatus),
+      concatMap((action) =>
+        this.projectService.changeStatus(action.projectId, action.newStatus).pipe(
+          map(() => ProjectActions.changeProjectStatusSuccess({ newStatus: action.newStatus })),
+          catchError((error: any) =>
+            of(ProjectActions.changeProjectStatusFailure({ error }))
+          )
+        )
+      )
+    );
+  });
+
   constructor(
     private actions$: Actions,
     private projectService: ProjectService,

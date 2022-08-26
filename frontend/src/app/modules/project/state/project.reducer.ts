@@ -14,6 +14,7 @@ export interface State {
   params: Params,
   total: number,
   currentlyOpenProjectPhotos: IProjectPhoto[];
+  currentProject: { id: number, status: ProjectStatus } | null;
 }
 export const initialState: State = {
   projects: [],
@@ -26,7 +27,8 @@ export const initialState: State = {
     status: ProjectStatus.InProcess
   },
   total: 0,
-  currentlyOpenProjectPhotos: []
+  currentlyOpenProjectPhotos: [],
+  currentProject: { id: 1, status: ProjectStatus.InProcess, }, // todo: retrieve from backend
 };
 
 export const reducer = createReducer(
@@ -54,5 +56,14 @@ export const reducer = createReducer(
   }),
   on(ProjectActions.changeParams, (state, action) => {
     return {...state, params: {...state.params, ...action.params}}
-  })
+  }),
+  on(ProjectActions.changeProjectStatusSuccess, (state, action) => {
+    return {
+      ...state,
+      currentProject: {
+        id: state.currentProject!.id,
+        status: action.newStatus
+      },
+    }
+  }),
 );

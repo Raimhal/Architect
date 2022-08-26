@@ -34,11 +34,7 @@ export class RouteEffects {
             return this.route.navigate(['/change-default-password'])
           }
 
-          if (state.user.role == UserRole.Admin) {
-            return this.route.navigate(['/administration'])
-          }
-
-          return this.route.navigate(['/projects'])
+          return this.postLoginNavigate(state.user.role);
         })
       ),
     { dispatch: false }

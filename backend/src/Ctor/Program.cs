@@ -45,7 +45,7 @@ app.UseCors(builder => builder
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(
-        builder.Configuration["FileFolder"] ?? "C:\\RadencyFiles"),
+        builder.Configuration["FilesFolder"] ?? "C:\\RadencyFiles"),
     RequestPath = "/files"
 });
 app.UseAuthentication();

@@ -10,6 +10,7 @@ import { PaginationModel } from "src/app/shared/models/pagination-model";
 import { CreateProjectDTO } from "../models/createProjectDTO";
 import { Order } from "../models/order";
 import { IProjectOverview } from "../models/project-overview";
+import { ProjectStatus } from "../models/status";
 
 @Injectable({
   providedIn: 'root',
@@ -40,5 +41,9 @@ export class ProjectService extends ApiService {
   }
   deleteProjectPhoto(projectId: number, projectPhotoId: number){
     return this.delete<IProjectPhotoId>(`${this.projectApiPath}/${projectId}/photos/${projectPhotoId}`)
+  }
+
+  changeStatus(projectId: number, newStatus: ProjectStatus) {
+    return this.put(`${this.projectApiPath}/change-status`, { projectId, newStatus });
   }
 }
