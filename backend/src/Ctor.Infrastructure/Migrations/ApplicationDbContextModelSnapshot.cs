@@ -110,12 +110,18 @@ namespace Ctor.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("JoinDate")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Website")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -241,16 +247,21 @@ namespace Ctor.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<long?>("CompanyId")
-                        .IsRequired()
+                    b.Property<long>("CompanyId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Country")
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("ProjectName")
                         .IsRequired()
@@ -276,8 +287,10 @@ namespace Ctor.Infrastructure.Migrations
                     b.HasIndex("Id")
                         .IsUnique();
 
-                    b.HasIndex("UserId")
+                    b.HasIndex("ProjectId")
                         .IsUnique();
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Project", (string)null);
                 });
@@ -389,13 +402,19 @@ namespace Ctor.Infrastructure.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
                     NpgsqlPropertyBuilderExtensions.HasIdentityOptions(b.Property<long>("Id"), 100L, null, null, null, null, null);
 
-                    b.Property<string>("RoleName")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
+                        .IsUnique();
+
+                    b.HasIndex("Type")
                         .IsUnique();
 
                     b.ToTable("Role", (string)null);
@@ -413,8 +432,7 @@ namespace Ctor.Infrastructure.Migrations
                     b.Property<bool>("AskToChangeDefaultPassword")
                         .HasColumnType("boolean");
 
-                    b.Property<long?>("CompanyId")
-                        .IsRequired()
+                    b.Property<long>("CompanyId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("FirstName")
@@ -428,9 +446,6 @@ namespace Ctor.Infrastructure.Migrations
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<long?>("ProjectId")
-                        .HasColumnType("bigint");
 
                     b.Property<string>("RefreshToken")
                         .HasColumnType("text");
@@ -555,9 +570,8 @@ namespace Ctor.Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("Ctor.Domain.Entities.User", "User")
-                        .WithOne("Project")
-                        .HasForeignKey("Ctor.Domain.Entities.Project", "UserId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .WithMany()
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Company");
 
@@ -684,9 +698,6 @@ namespace Ctor.Infrastructure.Migrations
 
             modelBuilder.Entity("Ctor.Domain.Entities.User", b =>
                 {
-                    b.Navigation("Project")
-                        .IsRequired();
-
                     b.Navigation("ProjectNote");
                 });
 #pragma warning restore 612, 618
