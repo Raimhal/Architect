@@ -24,7 +24,7 @@ export class AddCompanyMemberComponent {
     select(selectRoles),
     map(roles => roles == null
       ? []
-      : roles.map<Option>(role => ({ value: role.name, viewValue: role.name }))),
+      : roles.map<Option>(role => ({ value: role.name, viewValue: role.name, }))),
   );
 
   companyId: number
