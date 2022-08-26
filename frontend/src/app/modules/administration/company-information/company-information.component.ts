@@ -10,8 +10,14 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { AddCompanyMemberComponent } from '../add-company-member/add-company-member.component';
 import { FormGroupState } from 'ngrx-forms';
 import * as fromCompanyInformationForm from '../resources/forms/company-information-form';
-import {hideMenu, openMenu, revealMenu} from "../../../store/actions/menu.actions";
-import {openModalDialog} from "../../../store/actions/modal-dialog.action";
+import {
+  hideMenu,
+  openMenu,
+  revealMenu,
+} from '../../../store/actions/menu.actions';
+import { openModalDialog } from '../../../store/actions/modal-dialog.action';
+import { ActivatedRoute } from '@angular/router';
+
 import {
   loadMembersToOpenCompany,
   uploadFileSuccess
@@ -25,21 +31,30 @@ import {MatDialog} from "@angular/material/dialog";
 })
 export class CompanyInformationComponent implements OnInit {
   companyDetailed$?: Observable<ICompanyDetailed | null>;
-  companyInformationForm$?: Observable<FormGroupState<fromCompanyInformationForm.CompanyInformationFormValue>>;
-  isEditEnabled: boolean = false;
-
+  companyInformationForm$?: Observable<
+    FormGroupState<fromCompanyInformationForm.CompanyInformationFormValue>
+  >;
+  isEditEnabled$?: Observable<boolean>;
+  companyId?: number;
   constructor(
     private store: Store<AppState>,
     private matIconRegistry: MatIconRegistry,
     private domSanitizer: DomSanitizer,
     private fileService: AdministrationFileService,
-    private dialog: MatDialog
+    private activatedRoute: ActivatedRoute
   ) {
     this.store.dispatch(openMenu());
     this.store.dispatch(hideMenu());
   }
 
   ngOnInit(): void {
+    this.setId();
+    if (this.companyId) {
+      this.store.dispatch(
+        fromAdministrationActions.loadDetailedCompany({ id: this.companyId })
+      );
+    }
+
     this.companyDetailed$ = this.store.pipe(
       select(AdministrationSelectors.selectCurrentlyOpenCompany)
     );
@@ -47,19 +62,21 @@ export class CompanyInformationComponent implements OnInit {
     this.companyInformationForm$ = this.store.pipe(
       select(AdministrationSelectors.selectCompanyInformationForm)
     );
-    this.store.dispatch(
-      fromAdministrationActions.loadDetailedCompany({id: 1})
-    );
+    
+    this.isEditEnabled$ = this.store.pipe(select(AdministrationSelectors.selectFormEnabled))
+    
     this.addSvgIcons();
+  }
+  setId() {
+    const id = this.activatedRoute.snapshot.paramMap.get('id');
+    if (id !== null) this.companyId = parseInt(id);
   }
 
   onFormEdit() {
-    this.isEditEnabled = true;
     this.store.dispatch(fromAdministrationActions.editCompanyInformationForm());
   }
 
   onSave(address: string, email: string) {
-    this.isEditEnabled = false;
     this.store.dispatch(
       fromAdministrationActions.submitCompanyInformationForm({
         address: address,
@@ -69,7 +86,6 @@ export class CompanyInformationComponent implements OnInit {
   }
 
   onCancel() {
-    this.isEditEnabled = false;
     this.store.dispatch(
       fromAdministrationActions.cancelEditCompanyInformationForm()
     );
@@ -114,11 +130,14 @@ export class CompanyInformationComponent implements OnInit {
   }
 
   openModal(companyId: number) {
-    this.store.dispatch(openModalDialog({
-      component: AddCompanyMemberComponent, config: {
-        data: companyId
-      }
-    }))
+    this.store.dispatch(
+      openModalDialog({
+        component: AddCompanyMemberComponent,
+        config: {
+          data: companyId,
+        },
+      })
+    );
   }
 
   @ViewChild('hiddenfileinput') hiddenFileInput?: ElementRef

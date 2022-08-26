@@ -7,14 +7,19 @@
       <button mat-menu-item (click)="toggleSort('companyName')">Name</button>
       <button mat-menu-item (click)="toggleSort('joinDate')">Join date</button>
     </mat-menu>
-    <app-filter-input (onSearchQuery)="onSearchQuery($event)"></app-filter-input>
+    <app-filter-input
+      (onSearchQuery)="onSearchQuery($event)"
+    ></app-filter-input>
   </div>
   <button class="add-company" (click)="openModal()">Add Company</button>
 </header>
 <div class="company-list">
   <ng-container *ngIf="companies$ | async as companies">
-    <app-card *ngFor="let company of companies" [cardId]="company.id"
-              [cardInformation]="getCardInformation(company)"
-              routerLink="/company-information"></app-card>
+    <app-card
+      *ngFor="let company of companies"
+      [cardId]="company.id"
+      [cardInformation]="getCardInformation(company)"
+      [routerLink]="['/company-information', company.id]"
+    ></app-card>
   </ng-container>
 </div>

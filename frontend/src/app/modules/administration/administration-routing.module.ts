@@ -16,7 +16,7 @@ const routes: Routes = [
     data: {roles: [UserRole.Admin] }
   },
   {
-    path: 'company-information',
+    path: 'company-information/:id',
     component: CompanyInformationComponent,
     canActivate: [IsLoggedInGuard, IsInRoleGuard],
     data: {roles: [UserRole.Admin] }

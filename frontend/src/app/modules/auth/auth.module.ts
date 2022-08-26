@@ -34,31 +34,31 @@ import {AlertModule} from "../alert/alert.module";
     AuthChangePasswordFormComponent,
     ForgotPasswordComponent
   ],
-    imports: [
-        CommonModule,
-        AuthRoutingModule,
-        FormsModule,
-        ReactiveFormsModule,
-        StoreModule.forFeature(
-            fromAuth.authFeatureKey,
-            fromAuth.reducer
-        ),
-        EffectsModule.forFeature([AuthEffects]),
-        JwtModule.forRoot({
-            config: {
-                tokenGetter: () => localStorage.getItem('access_token'),
-                headerName: 'Authorization',
-                authScheme: 'Bearer ',
-                allowedDomains: [environment.apiHost],
-            }
-        }),
-        MatFormFieldModule,
-        MatInputModule,
-        MatIconModule,
-        MatButtonModule,
-        SharedModule,
-        AlertModule,
-    ],
+  imports: [
+    CommonModule,
+    AuthRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+    StoreModule.forFeature(
+      fromAuth.authFeatureKey,
+      fromAuth.reducer
+    ),
+    EffectsModule.forFeature([AuthEffects]),
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: () => localStorage.getItem('access_token'),
+        headerName: 'Authorization',
+        authScheme: 'Bearer ',
+        allowedDomains: [environment.apiHost],
+      }
+    }),
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    MatButtonModule,
+    SharedModule,
+    AlertModule
+  ],
   exports: [
     AuthPageLayoutComponent,
   ],

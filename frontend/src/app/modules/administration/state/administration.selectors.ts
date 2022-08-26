@@ -33,7 +33,10 @@ export const selectUserDetailsCompanyId = createSelector(
   selectUserDetails,
   (details) => details?.companyId
 );
-
+export const selectFormEnabled = createSelector(
+  selectCompanyInformationForm,
+  (form) => form.isEnabled
+);
 export const selectErrorLines = createSelector(
   selectAdministrationState,
   (state)=> state.failedLines

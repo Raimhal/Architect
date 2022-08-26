@@ -12,7 +12,9 @@ export class SpinnerEffects {
       this.actions$.pipe(
         ofType(
           fromAuthActions.login,
-          fromAdministrationActions.getAllCompaniesWithParams
+          fromAdministrationActions.getAllCompaniesWithParams,
+          fromAdministrationActions.loadDetailedCompany,
+          fromAdministrationActions.submitCompanyInformationForm
         ),
         tap(() =>  {
           this.spinner.show();
@@ -28,7 +30,11 @@ export class SpinnerEffects {
           fromAuthActions.loginSuccess,
           fromAuthActions.loginFailure,
           fromAdministrationActions.getAllCompaniesWithParamsSuccess,
-          fromAdministrationActions.getAllCompaniesWithParamsFailure
+          fromAdministrationActions.getAllCompaniesWithParamsFailure,
+          fromAdministrationActions.loadDetailedCompanySuccess,
+          fromAdministrationActions.loadDetailedCompanyFailure,
+          fromAdministrationActions.submitCompanyInformationFormSuccess,
+          fromAdministrationActions.submitCompanyInformationFormFailure
         ),
         tap(() => {
           setTimeout(() => {
@@ -38,7 +44,7 @@ export class SpinnerEffects {
       ),
     { dispatch: false }
   );
-
+  
   constructor(private actions$: Actions, private spinner : NgxSpinnerService) {}
 
 }

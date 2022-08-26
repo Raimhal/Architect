@@ -1,6 +1,7 @@
 .container {
   margin: 0 2.5vw;
   .header {
+    margin-top: 2vh;
     display: grid;
     margin-bottom: 5vh;
     padding-left: 1vw;
@@ -75,7 +76,15 @@
     .card-1 {
       grid-area: 1 / 1 / span 2 / span 2;
       background-color: #eff5ff;
-      min-height: 20vh;
+      min-height: 25vh;
+      .form_button{
+        background-color: inherit;
+        border:none;
+        color: #515364;
+        .active{
+          color: #2658D7;
+        }
+      }
       .date{
         color: grey;
       }
@@ -98,18 +107,24 @@
         }
       }
       .company-information-input {
+        box-sizing: border-box;
         background-color: inherit;
         border: none;
+        width: 100%;
       }
       .company-information-input:focus {
         outline: none;
+        
       }
       .company-information-input:disabled {
         padding-bottom: 2px;
         color: black;
       }
       .company-information-input:enabled {
-        border-bottom: 1px solid black;
+        background-color: white;
+        padding: 1vh 0;
+        margin: .75vh 0;
+        padding-left: .5vw;
       }
     }
     .card-2 {

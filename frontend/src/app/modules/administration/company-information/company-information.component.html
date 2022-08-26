@@ -1,5 +1,5 @@
 <ng-container *ngIf="companyDetailed$ | async as company">
-  <div class="container">
+  <div class="container" *ngIf="company.id">
     <div class="header">
       <div class="header-top">
         <button mat-icon-button aria-label="arrow_left" routerLink="/company-list">
@@ -13,7 +13,7 @@
         <img
           class="logo-img"
           alt="Logo"
-          src="{{ company.image }}"
+          src="../../../../assets/dummy.png"
           (click)="selectImage.click()"
         />
         <input
@@ -37,9 +37,9 @@
             <mat-card-title>
               <span>Information</span>
             </mat-card-title>
-            <mat-card-actions>
+            <mat-card-actions >
               <button
-                *ngIf="!isEditEnabled"
+                *ngIf="!(isEditEnabled$|async)"
                 mat-icon-button
                 aria-label="Pencil"
                 (click)="onFormEdit()"
@@ -47,23 +47,23 @@
                 <mat-icon svgIcon="pencil"></mat-icon>
               </button>
               <button
-                *ngIf="isEditEnabled"
+                *ngIf="(isEditEnabled$|async)"
+                mat-button
+                aria-label="Pencil"
+                (click)="onCancel()"
+              >
+              Cancel
+              </button>
+              <button
+                *ngIf="(isEditEnabled$|async)"
                 disabled="{{ !companyForm.isValid }}"
-                mat-icon-button
+                mat-button
                 aria-label="Save"
                 (click)="
                   onSave(companyForm.value.address, companyForm.value.email)
                 "
               >
-                <mat-icon>save</mat-icon>
-              </button>
-              <button
-                *ngIf="isEditEnabled"
-                mat-icon-button
-                aria-label="Pencil"
-                (click)="onCancel()"
-              >
-                <mat-icon>cancel</mat-icon>
+              Save
               </button>
             </mat-card-actions>
           </mat-card-title-group>
