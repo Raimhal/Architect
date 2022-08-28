@@ -9,46 +9,56 @@
           <a class="main-text upload-btn">Upload A Logo</a>
         </div>
       </div>
-      <div class="info-card">
-        <div class="card-header">
-          <span class="selected-text1">Shopping Centre Valkea Info</span>
-          <button mat-icon-button>
-            <mat-icon svgIcon="pencil"></mat-icon>
-          </button>
-        </div>
-        <div class="info-card-content">
-          <div class="info-card-content-labels">
-            <div class="info-card-label">
-              Join date:
-            </div>
-            <div class="info-card-label">
-              Address:
-            </div>
-            <div class="info-card-label">
-              Email:
-            </div>
-            <div class="info-card-label">
-              Website:
+      <div class="info-card" *ngIf="company$ | async as company">
+        <ng-container *ngIf="companyProfileForm$ | async as companyForm">
+          <div class="card-header">
+            <span class="selected-text1">Shopping Centre Valkea Info</span>
+            <button mat-icon-button *ngIf="companyForm.isDisabled" (click)="enableEditing()">
+              <mat-icon svgIcon="pencil"></mat-icon>
+            </button>
+            <div class="secondary-btn" *ngIf="!companyForm.isDisabled" (click)="disableEditing()">Cancel</div>
+            <div class="primary-btn" *ngIf="!companyForm.isDisabled"
+                 (click)="onSubmit(companyForm.value.address, companyForm.value.email, companyForm.value.website)">Save
             </div>
           </div>
-          <div class="info-card-content-inputs" *ngIf="company$ | async as company">
-            <div class="info-card-input">
-              {{company.joinDate}}
+          <div class="info-card-content">
+            <div class="info-card-content-labels">
+              <div class="info-card-label">
+                Join date:
+              </div>
+              <div class="info-card-label">
+                Address:
+              </div>
+              <div class="info-card-label">
+                Email:
+              </div>
+              <div class="info-card-label">
+                Website:
+              </div>
             </div>
-            <div class="info-card-input">
-              {{getAddress(company)}}
-            </div>
-            <div class="info-card-input">
-              {{company.email}}
-            </div>
-            <div class="info-card-input">
-              {{company.website}}
-            </div>
+            <form novalidate class="info-card-content-inputs"
+                  [ngrxFormState]="companyForm">
+              <div class="info-card-input">
+                {{company.joinDate}}
+              </div>
+              <input class="info-card-input"
+                     [ngrxFormControlState]="companyForm.controls.address">
+              <input class="info-card-input"
+                     [ngrxFormControlState]="companyForm.controls.email">
+              <input class="info-card-input"
+                     [ngrxFormControlState]="companyForm.controls.website">
+            </form>
           </div>
-        </div>
-        <div class="info-card-description" *ngIf="company$ | async as company">
-          {{company.description}}
-        </div>
+          <!--        <p class="warning" *ngIf="companyForm.errors['_address']?.required">-->
+          <!--          Address is required-->
+          <!--        </p>-->
+          <!--        <p class="warning" *ngIf="companyForm.errors['_email']?.required">-->
+          <!--          Email is required-->
+          <!--        </p>-->
+          <!--        <p class="warning" *ngIf="companyForm.errors['_email']?.email">-->
+          <!--          Please, enter valid email address-->
+          <!--        </p>-->
+        </ng-container>
       </div>
     </div>
     <div class="projects-card">
@@ -59,7 +69,7 @@
         <img>
         <div class="project-info-container">
           <h3>{{project.projectName}}</h3>
-          <div class="project-info-container-subheader">{{getAddress(project)}}</div>
+          <div class="project-info-container-subheader">{{project.address}}</div>
           <div class="project-info-container-description">{{project.description}}</div>
         </div>
         <div class="project-info-container-status">{{project.status}}</div>

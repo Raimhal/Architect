@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import * as fromAuthActions from '../actions/auth.actions';
 import * as fromAdministrationActions from '../../modules/administration/state/administration.actions';
+import * as fromCompanyActions from '../../modules/company/state/company.actions';
 import { tap } from 'rxjs/operators';
 import {NgxSpinnerService} from "ngx-spinner";
 
@@ -14,7 +15,9 @@ export class SpinnerEffects {
           fromAuthActions.login,
           fromAdministrationActions.getAllCompaniesWithParams,
           fromAdministrationActions.loadDetailedCompany,
-          fromAdministrationActions.submitCompanyInformationForm
+          fromAdministrationActions.submitCompanyInformationForm,
+          fromCompanyActions.submitEditingCompanyProfileForm,
+          fromCompanyActions.loadCompany
         ),
         tap(() =>  {
           this.spinner.show();
@@ -34,7 +37,11 @@ export class SpinnerEffects {
           fromAdministrationActions.loadDetailedCompanySuccess,
           fromAdministrationActions.loadDetailedCompanyFailure,
           fromAdministrationActions.submitCompanyInformationFormSuccess,
-          fromAdministrationActions.submitCompanyInformationFormFailure
+          fromAdministrationActions.submitCompanyInformationFormFailure,
+          fromCompanyActions.submitEditingCompanyProfileFormSuccess,
+          fromCompanyActions.submitEditingCompanyProfileFormFailure,
+          fromCompanyActions.loadCompanySuccess,
+          fromCompanyActions.loadCompanyFailure
         ),
         tap(() => {
           setTimeout(() => {
@@ -44,7 +51,7 @@ export class SpinnerEffects {
       ),
     { dispatch: false }
   );
-  
+
   constructor(private actions$: Actions, private spinner : NgxSpinnerService) {}
 
 }

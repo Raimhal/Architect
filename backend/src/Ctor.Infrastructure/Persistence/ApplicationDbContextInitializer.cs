@@ -272,7 +272,8 @@ public class ApplicationDbContextInitializer
                     City = "Krakow",
                     Address = "Street 1/32",
                     Email = "1a@Eloe.com",
-                    JoinDate = DateTime.UtcNow
+                    JoinDate = DateTime.UtcNow,
+                    Website = "elo-corporation.com"
                 },
                 new Company
                 {
@@ -283,7 +284,8 @@ public class ApplicationDbContextInitializer
                     City = "Lviv",
                     Address = "Street 13/5B",
                     Email = "2a@SigCop.com",
-                    JoinDate = DateTime.UtcNow
+                    JoinDate = DateTime.UtcNow,
+                    Website = "sig-cop.com"
                 },
                 new Company
                 {
@@ -294,7 +296,8 @@ public class ApplicationDbContextInitializer
                     City = "London",
                     Address = "Street 221",
                     Email = "3a@Eloe.com",
-                    JoinDate = DateTime.UtcNow
+                    JoinDate = DateTime.UtcNow,
+                    Website = "pegas.com"
                 },
                 new Company
                 {
@@ -305,7 +308,8 @@ public class ApplicationDbContextInitializer
                     City = "New York",
                     Address = "Street 1",
                     Email = "4a@Eloe.com",
-                    JoinDate = DateTime.UtcNow
+                    JoinDate = DateTime.UtcNow,
+                    Website = "leadof.com"
                 },
                 new Company
                 {
@@ -316,7 +320,8 @@ public class ApplicationDbContextInitializer
                     City = "Seattle",
                     Address = "Street 3",
                     Email = "5a@Eloe.com",
-                    JoinDate = DateTime.UtcNow
+                    JoinDate = DateTime.UtcNow,
+                    Website = "castel-cas.com"
                 });
         }
         if (!_context.Projects.Any())

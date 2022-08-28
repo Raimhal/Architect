@@ -5,7 +5,8 @@ import * as fromAdministrationActions from '../../modules/administration/state/a
 import { tap } from 'rxjs/operators';
 import { AlertService } from 'src/app/modules/alert/resources/services/alert.service';
 import { ErrorService } from 'src/app/modules/error/resources/services/error.services';
-import * as fromProjectActions from '../../modules/project/state/project.actions'
+import * as fromProjectActions from '../../modules/project/state/project.actions';
+import * as fromCompanyActions from '../../modules/company/state/company.actions';
 
 @Injectable()
 export class AlertEffects {
@@ -178,6 +179,23 @@ export class AlertEffects {
         })
       ),
     { dispatch: false });
+
+    companyProfileEditingSuccess$ = createEffect( () =>
+      this.actions$.pipe(
+        ofType(fromCompanyActions.submitEditingCompanyProfileFormSuccess),
+        tap(() => {
+          this._alertService.showAlert("Company profile changed successfully", "OK", "success");
+        })
+      ), {dispatch: false});
+
+    companyProfileEditingFailure = createEffect(() =>
+      this.actions$.pipe(
+        ofType(fromCompanyActions.submitEditingCompanyProfileFormFailure),
+        tap(({error}) =>
+          this._alertService.showAlert("Failed to edit company profile. Check your inputs.", "OK", "error")
+        )
+      ),
+      {dispatch:false});
 
   constructor(private actions$: Actions, private _alertService: AlertService, private errorService: ErrorService) {
   }
