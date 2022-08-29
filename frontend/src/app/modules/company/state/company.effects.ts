@@ -18,13 +18,11 @@ export class CompanyEffects {
   loadCompany$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(CompanyActions.loadCompany),
-      concatMap(() =>
-        this.store.pipe(select(selectUser)).pipe(
-          concatMap((user) => this.service.getCompanyProfile(user!.id).pipe(
-              map(result => CompanyActions.loadCompanySuccess({company: result})),
-              catchError(error => of(CompanyActions.loadCompanyFailure({error: serializeError(error)})))
-            )
-          )
+      withLatestFrom(this.store.pipe(select(selectUser))),
+      concatMap(([_, user]) =>
+        this.service.getCompanyProfile(user!.id).pipe(
+          map(result => CompanyActions.loadCompanySuccess({company: result})),
+          catchError(error => of(CompanyActions.loadCompanyFailure({error: serializeError(error)})))
         )
       )
     )
@@ -77,10 +75,10 @@ export class CompanyEffects {
   );
 
   updateEditedFormToInitialState$ = createEffect(() =>
-  this.actions$.pipe(
-    ofType(CompanyActions.cancelEditingCompanyProfileForm),
-    map(CompanyActions.loadDisabledCompanyProfileForm)
-  ))
+    this.actions$.pipe(
+      ofType(CompanyActions.cancelEditingCompanyProfileForm),
+      map(CompanyActions.loadDisabledCompanyProfileForm)
+    ))
 
   constructor(private actions$: Actions,
               private service: CompanyApiService,
