@@ -31,14 +31,11 @@ export class CompanyEffects {
 
   loadProjects$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(CompanyActions.loadProjects),
-      concatMap(() =>
-        this.store.pipe(select(selectCompany)).pipe(concatMap((company) =>
-            this.service.getProjectsByCompanyId(company.id).pipe(
-              map((result) => CompanyActions.loadProjectsSuccess({projects: result})),
-              catchError(error => of(CompanyActions.loadProjectsFailure({error: serializeError(error)})))
-            )
-          )
+      ofType(CompanyActions.loadCompanySuccess),
+      concatMap((action) =>
+        this.service.getProjectsByCompanyId(action.company.id).pipe(
+          map((result) => CompanyActions.loadProjectsSuccess({ projects: result })),
+          catchError(error => of(CompanyActions.loadProjectsFailure({ error: serializeError(error) })))
         )
       )
     )
@@ -79,6 +76,28 @@ export class CompanyEffects {
       ofType(CompanyActions.cancelEditingCompanyProfileForm),
       map(CompanyActions.loadDisabledCompanyProfileForm)
     ))
+
+  loadCompanyLogo$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(CompanyActions.loadCompanyLogo, CompanyActions.loadCompanySuccess, CompanyActions.uploadCompanyLogoSuccess),
+      withLatestFrom(this.store.pipe(select(selectCompany))),
+      switchMap(([action, company]) => this.service.getLogoByCompanyId(company.id).pipe(
+        map(result => CompanyActions.loadCompanyLogoSuccess({ logo: result })),
+        catchError(error => of(CompanyActions.loadCompanyLogoFailure({ error: serializeError(error) })))
+      ))
+    )
+  });
+
+  deleteCompanyLogo$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(CompanyActions.deleteCompanyLogo),
+      withLatestFrom(this.store.pipe(select(selectCompany))),
+      switchMap(([action, company]) => this.service.deleteCompanyLogo(company.id).pipe(
+        map(result => CompanyActions.deleteCompanyLogoSuccess({ logo: result })),
+        catchError(error => of(CompanyActions.deleteCompanyLogoFailure({ error: serializeError(error) })))
+      ))
+    )
+  });
 
   constructor(private actions$: Actions,
               private service: CompanyApiService,

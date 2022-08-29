@@ -11,6 +11,7 @@ public interface IApplicationDbContext
     IProjectRepository Projects { get; }
     IPhaseRepository Phases { get; }
     IProjectPhotoRepository ProjectsPhotos { get; }
+    ICompanyLogoRepository CompanyLogos { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

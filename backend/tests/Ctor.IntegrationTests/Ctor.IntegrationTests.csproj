@@ -27,4 +27,10 @@
     <ProjectReference Include="..\..\src\Ctor\Ctor.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="TestPhotos\dummy.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

@@ -197,6 +197,26 @@ export class AlertEffects {
       ),
       {dispatch:false});
 
+      uploadCompanyLogoSuccess$ = createEffect(
+        () =>
+          this.actions$.pipe(
+            ofType(fromCompanyActions.uploadCompanyLogoSuccess),
+            tap(() => {
+              this._alertService.showAlert("Company logo upload success", "OK", "success")
+            })
+          ),
+        { dispatch: false });
+
+        uploadCompanyLogoFailure$ = createEffect(
+          () =>
+            this.actions$.pipe(
+              ofType(fromCompanyActions.uploadCompanyLogoFailure),
+              tap(() => {
+                this._alertService.showAlert("Company logo upload failure", "OK", "error")
+              })
+            ),
+          { dispatch: false });
+  
   constructor(private actions$: Actions, private _alertService: AlertService, private errorService: ErrorService) {
   }
 }

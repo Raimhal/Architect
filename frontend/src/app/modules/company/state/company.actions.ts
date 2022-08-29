@@ -1,4 +1,6 @@
-import {createAction, props} from '@ngrx/store';
+import { createAction, props } from '@ngrx/store';
+import { ICompanyLogo } from '../recources/models/company-logo';
+import { ICompanyLogoId } from '../recources/models/company-logo-id';
 import {ICompanyProfile} from "../recources/models/company-profile";
 import {IProjectOverview} from "../recources/models/project-overview";
 
@@ -57,3 +59,51 @@ export const submitEditingCompanyProfileFormFailure = createAction(
   props<{error : any}>()
 );
 
+export const loadCompanyLogo = createAction(
+  '[Company Component] Load Company Logo',
+);
+
+export const loadCompanyLogoSuccess = createAction(
+  '[Company Service] Load Company Logo Success',
+  props<{logo : ICompanyLogo}>()
+);
+
+export const loadCompanyLogoFailure = createAction(
+  '[Company Service] Load Company Logo Failure',
+  props<{error : any}>()
+);
+
+export const deleteCompanyLogo = createAction(
+  '[Company Component] Delete Company Logo',
+)
+
+export const deleteCompanyLogoSuccess = createAction(
+  '[Company Service] Delete Company Logo Success',
+  props<{logo : ICompanyLogoId}>()
+);
+
+export const deleteCompanyLogoFailure = createAction(
+  '[Company Service] Delete Company Logo Failure',
+  props<{error : any}>()
+);
+
+export const loadCropImageStart = createAction(
+  '[Company Image Crop Component] Load Image to Crop Start',
+);
+
+export const loadCropImageFinish = createAction(
+  '[Company Image Crop Component] Load Image to Crop Finish',
+);
+
+export const loadCropImageFailed = createAction(
+  '[Company Image Crop Component] Load Image to Crop Failed',
+);
+
+
+export const uploadCompanyLogoSuccess = createAction(
+  '[Company Component] Upload Company Logo Success'
+);
+
+export const uploadCompanyLogoFailure = createAction(
+  '[Company Component] Upload Company Logo Failure',
+);

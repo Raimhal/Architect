@@ -7,6 +7,9 @@ import {Params} from "@angular/router";
 import {PaginationModel} from "../../../../shared/models/pagination-model";
 import {IProjectOverview} from "../models/project-overview";
 import {ICompanyUpdate} from "../models/company-update";
+import { ICompanyLogo } from '../models/company-logo';
+import { deleteCompanyLogo } from '../../state/company.actions';
+import { ICompanyLogoId } from '../models/company-logo-id';
 
 @Injectable({
   providedIn: 'root'
@@ -31,5 +34,13 @@ export class CompanyApiService extends ApiService {
 
   putCompanyProfile(company : ICompanyUpdate) : Observable<ICompanyProfile> {
     return this.put<ICompanyProfile>(`${this.apiUrl}/company-profile/${company.id}`, company);
+  }
+
+  getLogoByCompanyId(id: number): Observable<ICompanyLogo>{
+    return this.get<ICompanyLogo>(`${this.apiUrl}/${id}/logo`);
+  }
+
+  deleteCompanyLogo(id: number): Observable<ICompanyLogoId>{
+    return this.delete<ICompanyLogoId>(`${this.apiUrl}/${id}/logo`);
   }
 }

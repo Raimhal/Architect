@@ -11,25 +11,29 @@ import {openMenu, revealMenu} from "../../store/actions/menu.actions";
 import {IProjectOverview} from "./recources/models/project-overview";
 import {FormGroupState} from "ngrx-forms";
 import {CompanyProfileFormValue} from "./recources/forms/company-profile-form";
+import { openModalDialog } from 'src/app/store/actions/modal-dialog.action';
+import { CompanyImageCropComponent } from './company-image-crop/company-image-crop.component';
+import { CompanyFileService } from './recources/services/company-file.service';
 
 @Component({
   selector: 'app-company',
   templateUrl: './company.component.html',
-  styleUrls: ['./company.component.scss']
+  styleUrls: ['./company.component.scss'],
 })
 export class CompanyComponent implements OnInit {
-
-  company$: Observable<ICompanyProfile>
-  projects$: Observable<IProjectOverview[]>
-
+  company$?: Observable<ICompanyProfile>;
+  projects$: Observable<IProjectOverview[]>;
   companyProfileForm$: Observable<FormGroupState<CompanyProfileFormValue>>
 
-  constructor(iconRegistry: MatIconRegistry,
-              sanitizer: DomSanitizer,
-              private store: Store<AppState>) {
+  constructor(
+    iconRegistry: MatIconRegistry,
+    sanitizer: DomSanitizer,
+    private store: Store<AppState>,
+    private companyFileService: CompanyFileService
+  ) {
     iconRegistry.addSvgIcon(
       'pencil',
-      sanitizer.bypassSecurityTrustResourceUrl("assets/icons/pencil.svg")
+      sanitizer.bypassSecurityTrustResourceUrl('assets/icons/pencil.svg')
     );
     this.store.dispatch(openMenu());
     this.store.dispatch(revealMenu());
@@ -40,7 +44,6 @@ export class CompanyComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(fromCompanyActions.loadCompany());
-    this.store.dispatch(fromCompanyActions.loadProjects());
   }
 
   enableEditing() {
@@ -58,5 +61,32 @@ export class CompanyComponent implements OnInit {
       website: website
     }));
   }
+  uploadLogo(event: Event, companyId: number) {
+    const target = event.target as HTMLInputElement;
+    if (target.files !== null) {
+      const file = target.files[0];
+      this.companyFileService.putLogo(companyId, file).then(() => {
+        this.store.dispatch(fromCompanyActions.uploadCompanyLogoSuccess())
+      }).catch(()=>
+        this.store.dispatch(fromCompanyActions.uploadCompanyLogoFailure())
+      );
+    }
+  }
 
+  editLogo(link: string, companyId: number) {
+    this.store.dispatch(openModalDialog({
+      component: CompanyImageCropComponent, config: {
+        data: { link: link, companyId: companyId }
+      }
+    }))
+    this.store.dispatch(fromCompanyActions.loadCropImageStart());
+  }
+
+  deleteLogo(){
+    this.store.dispatch(fromCompanyActions.deleteCompanyLogo());
+  }
+
+  isLogoEmpty(logo: string){
+    return logo === '';
+  }
 }
