@@ -3,6 +3,7 @@ using Ctor.Application.Companies.Queries.GetCompaniesOverview;
 using Ctor.Application.Companies.Queries.GetCompanyById;
 using Ctor.Application.Companies.Commands;
 using Ctor.Application.Companies.Queries.GetCompanyByUserId;
+using Ctor.Application.Companies.Commands.UpdateCompanyProfile;
 
 namespace Ctor.Controllers;
 
@@ -42,5 +43,16 @@ public class CompanyController : ApiControllerBase
     public async Task<ActionResult<CompanyProfileDto>> GetCompanyByUserId(long userId)
     {
         return await Mediator.Send(new GetCompanyByUserIdQuery(userId));
+    }
+
+    [HttpPut("company-profile/{id:long}")]
+    public async Task<ActionResult<CompanyProfileUpdatedDto>> UpdateCompanyProfile(long id, [FromBody] UpdateCompanyProfileCommand command)
+    {
+        if (id != command.Id)
+        {
+            return BadRequest();
+        }
+
+        return await Mediator.Send(command);
     }
 }

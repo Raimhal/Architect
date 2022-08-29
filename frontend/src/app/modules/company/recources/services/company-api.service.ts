@@ -6,6 +6,7 @@ import {ICompanyProfile} from "../models/company-profile";
 import {Params} from "@angular/router";
 import {PaginationModel} from "../../../../shared/models/pagination-model";
 import {IProjectOverview} from "../models/project-overview";
+import {ICompanyUpdate} from "../models/company-update";
 
 @Injectable({
   providedIn: 'root'
@@ -26,5 +27,9 @@ export class CompanyApiService extends ApiService {
     id: number
   ): Observable<IProjectOverview[]> {
     return this.get<IProjectOverview[]>(`/projects/company/${id}`);
+  }
+
+  putCompanyProfile(company : ICompanyUpdate) : Observable<ICompanyProfile> {
+    return this.put<ICompanyProfile>(`${this.apiUrl}/company-profile/${company.id}`, company);
   }
 }

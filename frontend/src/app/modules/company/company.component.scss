@@ -127,8 +127,15 @@
   color: colors.$gray6;
 }
 
-.project-info-container-description {
-  margin-top: 10px;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.secondary-btn, .primary-btn  {
+  padding: 8px 10px;
+}
+
+.primary-btn {
+  color: colors.$primary4;
+}
+
+.secondary-btn:hover, .primary-btn:hover {
+  cursor: pointer;
+  text-underline-offset: 0.4em;
 }

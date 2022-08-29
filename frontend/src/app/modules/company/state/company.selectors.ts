@@ -13,4 +13,9 @@ export const selectCompany = createSelector(
 export const selectProjects = createSelector(
   selectCompanyState,
   (state) => state.companyProjects
+);
+
+export const selectCompanyProfileForm = createSelector(
+  selectCompanyState,
+  (state) => state.companyProfileForm
 )

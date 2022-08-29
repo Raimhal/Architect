@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 
-import {catchError, concatMap, map} from 'rxjs/operators';
+import {catchError, concatMap, map, switchMap, withLatestFrom} from 'rxjs/operators';
 import {Observable, EMPTY, of} from 'rxjs';
 import * as CompanyActions from './company.actions';
 import {CompanyApiService} from "../recources/services/company-api.service";
@@ -18,13 +18,11 @@ export class CompanyEffects {
   loadCompany$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(CompanyActions.loadCompany),
-      concatMap(() =>
-        this.store.pipe(select(selectUser)).pipe(
-          concatMap((user) => this.service.getCompanyProfile(user!.id).pipe(
-              map(result => CompanyActions.loadCompanySuccess({company: result})),
-              catchError(error => of(CompanyActions.loadCompanyFailure({error: serializeError(error)})))
-            )
-          )
+      withLatestFrom(this.store.pipe(select(selectUser))),
+      concatMap(([_, user]) =>
+        this.service.getCompanyProfile(user!.id).pipe(
+          map(result => CompanyActions.loadCompanySuccess({company: result})),
+          catchError(error => of(CompanyActions.loadCompanyFailure({error: serializeError(error)})))
         )
       )
     )
@@ -45,6 +43,42 @@ export class CompanyEffects {
       )
     )
   });
+
+  updateFormState = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CompanyActions.loadCompanySuccess),
+      map(() => CompanyActions.loadDisabledCompanyProfileForm())
+    ));
+
+  submitCompanyProfileForm$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CompanyActions.submitEditingCompanyProfileForm),
+      withLatestFrom(
+        this.store.select(selectCompany)
+      ),
+      switchMap(([action, company]) =>
+        this.service.putCompanyProfile({
+          id: company.id,
+          website: action.website,
+          email: action.email,
+          address: action.address
+        }).pipe(
+          map((result) =>
+            CompanyActions.submitEditingCompanyProfileFormSuccess({result: result})
+          ),
+          catchError(error =>
+            of(CompanyActions.submitEditingCompanyProfileFormFailure({error: serializeError(error)}))
+          )
+        )
+      )
+    )
+  );
+
+  updateEditedFormToInitialState$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CompanyActions.cancelEditingCompanyProfileForm),
+      map(CompanyActions.loadDisabledCompanyProfileForm)
+    ))
 
   constructor(private actions$: Actions,
               private service: CompanyApiService,

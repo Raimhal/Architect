@@ -7,6 +7,7 @@ import {MatButtonModule} from "@angular/material/button";
 import { EffectsModule } from '@ngrx/effects';
 import { CompanyEffects } from './state/company.effects';
 import {SharedModule} from "../../shared/shared.module";
+import {NgrxFormsModule} from "ngrx-forms";
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import {SharedModule} from "../../shared/shared.module";
     MatIconModule,
     MatButtonModule,
     EffectsModule.forFeature([CompanyEffects]),
-    SharedModule
+    SharedModule,
+    NgrxFormsModule
   ]
 })
 export class CompanyModule { }
