@@ -74,8 +74,8 @@ export class ProjectDescriptionComponent implements OnInit {
   }
   
   ngOnInit(): void { 
-    const id = this.route.snapshot.params["id"]
-    this.store.dispatch(getDetailedProject(id))
+    this.project$ = this.store.pipe(select(selectProjectInformation))
+    this.projectInformationForm$ = this.store.pipe(select(selectProjectInformationForm))
   }
 
   onSave(id: number, form: fromProjectInformationForm.ProjectInformationFormValue) {

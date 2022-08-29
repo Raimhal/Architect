@@ -48,7 +48,6 @@ export const reducer = createReducer(
     return {...state, params: {...state.params, ...action.params}}
   }),
   on(ProjectActions.getDetailedProjectSuccess, (state, action) => {
-    ProjectActions.loadDisabledProjectInformationForm()
     return {...state, project: action.data}
   }),
   on(ProjectActions.getDetailedProjectFailure, (state, action) => {
@@ -73,7 +72,6 @@ export const reducer = createReducer(
     }
   }),
   on(ProjectActions.cancelEditProjectInformationForm, (state) => {
-    ProjectActions.loadDisabledProjectInformationForm()
     return {
       ...state,
       companyInformationForm: disable(state.projectInformationForm),
@@ -82,7 +80,6 @@ export const reducer = createReducer(
   on(
     ProjectActions.submitProjectInformationFormFailure,
     (state, action) => {
-      ProjectActions.loadDisabledProjectInformationForm()
       return {
         ...state,
         error: action.error,
