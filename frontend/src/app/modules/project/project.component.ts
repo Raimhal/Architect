@@ -1,17 +1,20 @@
 import { Component, OnInit } from '@angular/core';
+import { MatTabChangeEvent } from '@angular/material/tabs';
+import { Route, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { select, Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { map, Observable, tap } from 'rxjs';
 import { CardInformation } from 'src/app/shared/components/card/card.component';
 import { AppState } from 'src/app/store';
 import { IProjectOverview } from './resources/models/project-overview';
 import { ProjectStatus } from './resources/models/status';
-import { changeParams, getProjectsWithParams } from './state/project.actions';
+import { changeParams, getDetailedProject, getProjectsWithParams } from './state/project.actions';
 import { selectProjects } from './state/project.selectors';
 import {openMenu, revealMenu} from "../../store/actions/menu.actions";
 import { openModalDialog } from 'src/app/store/actions/modal-dialog.action';
 import { AddProjectComponent } from './add-project/add-project.component';
 import { Order } from './resources/models/order';
+import { navigate } from 'src/app/store/actions/route.actions';
 
 @Component({
   selector: 'app-project',
@@ -35,10 +38,11 @@ export class ProjectComponent implements OnInit {
     this.store.dispatch(getProjectsWithParams());
   }
 
-  changeStatus(status: ProjectStatus) {
+  changeStatus(event: MatTabChangeEvent) {
+    console.log(event.index)
     this.store.dispatch(changeParams({
       params: {
-        status: status
+        status: event.index + 1
       }
     }))
   }
@@ -83,8 +87,7 @@ export class ProjectComponent implements OnInit {
     return {
       id: project.id,
       title: project.projectName,
-      // image: project.image,
-      image: 'https://res.cloudinary.com/hlsg8sz6b/image/upload/v1654073701/images/2d6ea765-57e4-474c-8a90-221f2f0d0f06.jpg',
+      image: 'https://eitrawmaterials.eu/wp-content/uploads/2019/10/KAVA7.jpg',
       date: `${project.startTime}-${project.endTime}`,
       subtitle: 'last stage title',
       status: project.status,
@@ -97,4 +100,9 @@ export class ProjectComponent implements OnInit {
   add() {
     this.store.dispatch(openModalDialog({ component: AddProjectComponent }));
   }
+  
+  redirectToProjectPage(id: number) {
+    this.store.dispatch(navigate({commands: [`/projects/${id}`]}))
+  }
+
 }

@@ -1,35 +1,37 @@
-<header class="header">
-  <mat-icon svgIcon="arrow-left"></mat-icon>
-  <h2>Shopping Centre Valkea</h2>
+<div *ngIf="project$ | async as project">
+  <header class="header">
+    <mat-icon svgIcon="arrow-left"></mat-icon>
+    <h2> {{ project.projectName }}</h2>
 
-  <ng-container *ngIf="currentStatus$ | async as currentStatus">
+    <ng-container *ngIf="currentStatus$ | async as currentStatus">
 
-    <ng-container *ngIf="canChangeStatus$ | async; else nonClickableStatus">
-      <div class="project-status bar project-status-clickable" (click)="statusSelector.open()">
-        <mat-select #statusSelector [(value)]="selectedStatus" (selectionChange)="changeStatus($event.value)"
-                    style="visibility: hidden; height: 0; width: 0">
-          <mat-option *ngFor="let status of statuses; let statusIndex = index" [value]="statusIndex">
-            {{status.displayName}}
-          </mat-option>
-        </mat-select>
-        {{statuses[selectedStatus].displayName}}
-      </div>
+      <ng-container *ngIf="canChangeStatus$ | async; else nonClickableStatus">
+        <div class="project-status bar project-status-clickable" (click)="statusSelector.open()">
+          <mat-select #statusSelector [(value)]="selectedStatus" (selectionChange)="changeStatus($event.value)"
+            style="visibility: hidden; height: 0; width: 0">
+            <mat-option *ngFor="let status of statuses; let statusIndex = index" [value]="statusIndex">
+              {{status.displayName}}
+            </mat-option>
+          </mat-select>
+          {{statuses[selectedStatus].displayName}}
+        </div>
+      </ng-container>
+
+      <ng-template #nonClickableStatus>
+        <div class="project-status bar">
+          {{statuses[currentStatus].displayName}}
+        </div>
+      </ng-template>
+
     </ng-container>
-
-    <ng-template #nonClickableStatus>
-      <div class="project-status bar">
-        {{statuses[currentStatus].displayName}}
-      </div>
-    </ng-template>
-
-  </ng-container>
-</header>
-<mat-tab-group>
-  <mat-tab label="Description">
-    <app-project-description></app-project-description>
-  </mat-tab>
-  <mat-tab label="Timeline">time</mat-tab>
-  <mat-tab label="Recourses">Rec</mat-tab>
-  <mat-tab label="Budget">Budg</mat-tab>
-  <mat-tab label="Document">docs</mat-tab>
-</mat-tab-group>
+  </header>
+  <mat-tab-group>
+    <mat-tab label="Description">
+      <app-project-description></app-project-description>
+    </mat-tab>
+    <mat-tab label="Timeline">time</mat-tab>
+    <mat-tab label="Recourses">Rec</mat-tab>
+    <mat-tab label="Budget">Budg</mat-tab>
+    <mat-tab label="Document">docs</mat-tab>
+  </mat-tab-group>
+</div>

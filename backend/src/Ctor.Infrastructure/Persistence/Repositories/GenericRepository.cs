@@ -10,6 +10,7 @@ using Ctor.Application.Common.Enums;
 using Ctor.Application.Common.Exceptions;
 using Ctor.Application.Common.Extensions;
 using Ctor.Domain.Common;
+using Ctor.Domain.Entities;
 using Ctor.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 
@@ -43,12 +44,21 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
 
     public async Task<T> GetById(long id, CancellationToken ct)
     {
-        var entity = await FindById(id, ct);
+        return await FirstOrDefault(e => e.Id == id, ct);
+    }
 
-        if (entity == null)
-            throw new NotFoundException(typeof(T).Name, id);
+    public async Task<T> FirstOrDefault(Expression<Func<T, bool>> expression, CancellationToken cancellationToken = default)
+    {
+        var query = table;
 
-        return entity;
+        return await FirstOrDefaultInternal(query, expression, cancellationToken);
+    }
+
+    public async Task<TResult> FirstOrDefault<TResult>(Expression<Func<TResult, bool>> expression, CancellationToken cancellationToken = default)
+    {
+        var query = table.ProjectTo<TResult>(_mapper.Value.ConfigurationProvider);
+
+        return await FirstOrDefaultInternal<TResult>(query, expression, cancellationToken);
     }
 
     public Task<T?> FindById(long id, CancellationToken ct)
@@ -186,6 +196,20 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         IQueryable<T> query = table;
 
         return await GetFilteredWithTotalSumWithQueryInternal(query, filter, page, count, orderBy, order);
+    }
+
+    private async Task<TResult> FirstOrDefaultInternal<TResult>(IQueryable<TResult> query, Expression<Func<TResult, bool>> expression, CancellationToken cancellationToken = default)
+    {
+        var entity = await query.FirstOrDefaultAsync(expression, cancellationToken);
+
+        if (entity == null)
+        {
+            var body = expression.Body as BinaryExpression;
+            var value = Expression.Lambda(body.Right).Compile().DynamicInvoke();
+            throw new NotFoundException(typeof(T).Name, value);
+        }
+
+        return entity;
     }
 
     public Task<T?> SingleOrDefault(Expression<Func<T, bool>> filter)

@@ -4,11 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Ctor.Domain.Entities.Enums;
-public enum ProjectStatus
+namespace Ctor.Application.Projects.Queries.GetProjectsQuery;
+internal class GetProjectsDetailedQueryValidator
 {
-    NotStarted,
-    InProcess,
-    Finished,
-    Suspended,
 }

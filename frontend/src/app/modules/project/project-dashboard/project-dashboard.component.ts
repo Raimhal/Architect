@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatIconRegistry } from "@angular/material/icon";
 import { DomSanitizer } from "@angular/platform-browser";
-import { Store } from "@ngrx/store";
 import { map } from 'rxjs';
-import { AppState } from "../../../store";
 import { hideMenu, openMenu } from "../../../store/actions/menu.actions";
 import { UserRole } from "../../auth/resources/models/userRole";
 import { ProjectStatus } from "../resources/models/status";
@@ -11,6 +9,12 @@ import { ActivatedRoute } from "@angular/router";
 import * as fromAuthSelectors from "../../../store/selectors/auth.selectors";
 import * as fromProjectSelectors from "../state/project.selectors";
 import * as fromProjectActions from "../state/project.actions";
+import { select, Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { AppState } from 'src/app/store';
+import { IProjectDetailed } from '../resources/models/project-details';
+import { getDetailedProject } from '../state/project.actions';
+import { selectProjectInformation } from '../state/project.selectors';
 
 @Component({
   selector: 'app-project-dashboard',
@@ -22,6 +26,8 @@ export class ProjectDashboardComponent implements OnInit {
   canChangeStatus$ = this.store.select(fromAuthSelectors.selectUserRole).pipe(
     map(role => role === UserRole.OperationalManager || role === UserRole.ProjectManager)
   );
+
+  project$?: Observable<IProjectDetailed> 
 
   currentStatus$ = this.store.select(fromProjectSelectors.selectCurrentProjectStatus);
   selectedStatus: number = 0;
@@ -46,6 +52,9 @@ export class ProjectDashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const id = this.route.snapshot.params["id"]
+    this.store.dispatch(getDetailedProject({id: id}))
+    this.project$ = this.store.pipe(select(selectProjectInformation))
     this.store.dispatch(openMenu());
     this.store.dispatch(hideMenu());
   }

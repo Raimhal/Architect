@@ -1,5 +1,6 @@
-import { Component, Input } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
+import { createFormControlState, FormControlState } from 'ngrx-forms';
 import { TextInputType } from 'src/app/shared/types/input-types';
 
 @Component({
@@ -9,17 +10,14 @@ import { TextInputType } from 'src/app/shared/types/input-types';
 })
 export class InputComponent {
 
-  // don't rename to formControl
-  // why: https://ittutoria.net/question/no-value-accessor-for-form-control-with-unspecified-name-attribute/#comment-19560
-  @Input() control = new FormControl()
-
+  @Input() control: FormControl = new FormControl('')
   @Input() label: string = ""
   @Input() placeholder: string = ""
   @Input() errorMessage: string = ""
   @Input() type: TextInputType = "text"
 
   get title() {
-    return this.control.invalid && this.control.touched ? this.errorMessage : this.label
+      return this.control.invalid && this.control.touched? this.errorMessage : this.label
   }
 
 }

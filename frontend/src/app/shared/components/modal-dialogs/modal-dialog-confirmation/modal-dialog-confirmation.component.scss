@@ -1,6 +1,6 @@
 @use "../../colors.scss" as colors;
 
-::ng-deep.mat-dialog-container{
+::ng-deep .mat-dialog-container{
   background-color: colors.$orange1;
   display: flex;
   flex-direction: column;

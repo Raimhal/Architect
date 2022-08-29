@@ -1,3 +1,4 @@
+using Ctor.Application.Companies.Commands;
 using Ctor.Application.Companies.Queries;
 using Ctor.Application.DTOs;
 using Ctor.Application.Projects.Commands;
@@ -18,6 +19,18 @@ public class ProjectController : ApiControllerBase
     public async Task<ActionResult> GetProjectsWithParams([FromQuery] ProjectPaginationQueryDTO queryModel)
     {
         return Ok(await Mediator.Send(new GetProjectsOverviewQuery(queryModel)));
+    }
+
+    [HttpGet("{id:long}")]
+    public async Task<ActionResult> GetProjectDetailed(long id)
+    {
+        return Ok(await Mediator.Send(new GetProjectDetailedQuery(id)));
+    }
+
+    [HttpPut]
+    public async Task<ActionResult> PutProject([FromBody] ProjectDetailedRequestDto project)
+    {
+        return Ok(await Mediator.Send(new PutProjectDetailedCommand(project)));
     }
 
     [HttpPost("")]

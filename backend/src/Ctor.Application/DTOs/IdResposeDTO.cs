@@ -4,11 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Ctor.Domain.Entities.Enums;
-public enum ProjectStatus
+namespace Ctor.Application.DTOs;
+public  class IdResposeDTO
 {
-    NotStarted,
-    InProcess,
-    Finished,
-    Suspended,
+    public long Id { get; set; }
 }

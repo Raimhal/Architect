@@ -11,6 +11,7 @@ import { ProjectDashboardComponent } from './project-dashboard/project-dashboard
 import { MatIconModule } from '@angular/material/icon';
 import { ProjectDescriptionComponent } from './project-description/project-description.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgrxFormsModule } from 'ngrx-forms';
 import { AddProjectComponent } from './add-project/add-project.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
@@ -19,9 +20,10 @@ import { ImagePipe } from './resources/pipes/imagePipe';
 import { IvyCarouselModule } from 'angular-responsive-carousel2';
 import { ProjectPhotosComponent } from './project-photos/project-photos.component';
 import { MatButtonModule } from '@angular/material/button';
+import { SharedModule } from 'src/app/shared/shared.module';
 import { NgxDropzoneModule } from 'ngx-dropzone';
-import { SharedModule } from "../../shared/shared.module";
-import { MatSelectModule } from "@angular/material/select";
+import { MatSelectModule } from '@angular/material/select';
+
 
 @NgModule({
   imports: [
@@ -44,6 +46,10 @@ import { MatSelectModule } from "@angular/material/select";
     IvyCarouselModule,
     NgxDropzoneModule,
     MatSelectModule,
+    MatButtonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgrxFormsModule
   ],
   declarations: [
     ProjectComponent,

@@ -1,4 +1,4 @@
-@use '../../colors' as colors;
+@use '../../../colors' as colors;
 
 .mat-calendar-body-label:not(:last-of-type) {
   visibility: hidden;

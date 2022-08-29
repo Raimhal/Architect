@@ -30,7 +30,6 @@ import { AutocompleteComponent } from "./components/inputs/autocomplete/autocomp
 import { DatepickerHeaderComponent } from "./components/inputs/datepicker/datepicker-header/datepicker-header.component";
 import { DatepickerComponent, MY_FORMATS } from "./components/inputs/datepicker/datepicker.component";
 import { DropdownComponent } from "./components/inputs/dropdown/dropdown.component";
-import { FilterInputComponent } from "./components/inputs/filter-input/filter-input.component";
 import { InputComponent } from "./components/inputs/input/input.component";
 import { PasswordInputComponent } from "./components/inputs/password-input/password-input.component";
 import { TabsComponent } from "./components/inputs/tabs/tabs.component";
@@ -41,6 +40,8 @@ import {
 import {NumberGenarateSevice} from "./services/numberGenarate.services";
 import { AlertComponent } from "./components/misc/alert/alert.component";
 
+import { NgrxFormsModule } from 'ngrx-forms';
+import { FilterInputComponent } from "./components/inputs/filter-input/filter-input.component";
 
 
 @NgModule({
@@ -83,7 +84,8 @@ import { AlertComponent } from "./components/misc/alert/alert.component";
     MatAutocompleteModule,
     MatChipsModule,
     MatSelectModule,
-    MatTabsModule
+    MatTabsModule,
+    NgrxFormsModule
   ],
   exports: [
     BlockWithIdComponent,

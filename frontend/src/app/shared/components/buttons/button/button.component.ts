@@ -8,6 +8,7 @@ import { Component, ElementRef, EventEmitter, Input, OnInit, Output } from '@ang
 export class ButtonComponent implements OnInit {
 
   @Input() disabled = false;
+  @Input() type?: string = "button"
 
   constructor() { }
 

@@ -11,5 +11,5 @@ export interface IProjectOverview {
   startTime: string,
   endTime: string,
   phases: IPhaseOverviewDTO[],
-  status: ProjectStatus
+  status: ProjectStatus,
 }

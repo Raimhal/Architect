@@ -1,46 +1,60 @@
-<div class="container">
+<div class="container" *ngIf="project$ | async as project">
   <div class="arrow-bar"></div>
   <div class="cards-container">
 
-    <div class="cards-container-column">
-      <div class="info-card">
+    <div class="cards-container-column" *ngIf="projectInformationForm$ | async as projectForm">
+      <form novalidate [ngrxFormState]="projectForm" class="info-card">
         <div class="card-header">
           <span class="selected-text1">Shopping Centre Valkea Info</span>
-          <button mat-icon-button>
-            <mat-icon svgIcon="pencil"></mat-icon>
+          <button mat-icon-button *ngIf="!isEditEnabled">
+            <mat-icon svgIcon="pencil" (click)="changeEdit($event)"></mat-icon>
           </button>
+          <div class="form-buttons">
+            <app-mini-button (click)="onSave(project.id, projectForm.value)" *ngIf="isEditEnabled">Save
+            </app-mini-button>
+            <app-mini-button (click)="onCancel()" *ngIf="isEditEnabled">Close</app-mini-button>
+          </div>
         </div>
         <div class="info-card-content">
-          <div class="info-card-content-labels">
+          <div class="unchangeble">
             <div class="info-card-label">
               Project ID:
             </div>
-            <div class="info-card-label">
-              Address:
-            </div>
-            <div class="info-card-label">
-              Start Date:
-            </div>
-            <div class="info-card-label">
-              End Date:
+            <div class="info-card-input">
+              <span>{{ project.id }}</span>
             </div>
           </div>
-          <div class="info-card-content-inputs">
-            <div class="info-card-input">
-              47821456
+          <div>
+            <div class="info-card-content-labels">
+              <div class="info-card-label">
+                Address:
+              </div>
+              <div class="info-card-label">
+                Start Date:
+              </div>
+              <div class="info-card-label">
+                End Date:
+              </div>
             </div>
-            <div class="info-card-input">
-              Finland, Oulu, Arina Kiinteistot 1y
-            </div>
-            <div class="info-card-input">
-              3.08.2022
-            </div>
-            <div class="info-card-input">
-              18.12.2022
+            <div class="info-card-content-inputs">
+              <div class="info-card-input">
+                <span *ngIf="!isEditEnabled">{{ project.address }}</span>
+                <input class="form-input" *ngIf="isEditEnabled" [ngrxFormControlState]="projectForm.controls.address">
+              </div>
+              <div class="info-card-input">
+                <span *ngIf="!isEditEnabled">{{ project.startTime | date }}</span>
+                <input class="form-input" type="date" *ngIf="isEditEnabled"
+                  [ngrxFormControlState]="projectForm.controls.startTime">
+              </div>
+              <div class="info-card-input">
+                <span *ngIf="!isEditEnabled">{{ project.endTime | date }}</span>
+                <input class="form-input" type="date" *ngIf="isEditEnabled"
+                  [ngrxFormControlState]="projectForm.controls.endTime">
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </form>
 
       <div class="buildings-card">
         <div class="card-header">
@@ -54,22 +68,21 @@
     </div>
 
     <div class="cards-container-column">
-
       <div class="photos-card">
         <div class="card-header">
           <span class="selected-text1">Project Photos</span>
-          <button mat-icon-button (click)="addPhotosModal()">
+          <button mat-icon-button (click)="addPhotosModal(project.id)">
             <mat-icon svgIcon="plus"></mat-icon>
           </button>
         </div>
         <div class="card-img">
-          <app-project-photos [projecId]="projectId" [width]="550"></app-project-photos>
+          <app-project-photos [projecId]="project.id" [width]="550"></app-project-photos>
         </div>
       </div>
 
       <div class="team-card">
         <div class="card-header">
-          <span class="selected-text1">Project Buildings</span>
+          <span class="selected-text1">Project Team</span>
           <button mat-icon-button>
             <mat-icon svgIcon="plus"></mat-icon>
           </button>

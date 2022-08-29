@@ -19,7 +19,7 @@ public class ProjectOverviewDto : IMapFrom<Domain.Entities.Project>
     public string Status { get; set; }
     public List<PhaseOverviewDto> Phases { get; set; }
 
-    public void Mapping(Profile profile)
+    public virtual void Mapping(Profile profile)
     {
         profile.CreateMap<Domain.Entities.Project, ProjectOverviewDto>()
             .ForMember(dest => dest.StartTime, opt => opt.MapFrom(src => src.StartTime.ToString("dd.MM.yyyy")))

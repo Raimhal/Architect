@@ -1,11 +1,14 @@
+import { Params } from '@angular/router';
 import { Action, createReducer, on } from '@ngrx/store';
 import { Order } from '../resources/models/order';
-import { Params } from '../resources/models/params';
 import { IProjectOverview } from '../resources/models/project-overview';
 import { IProjectPhotoId } from '../resources/models/project-photo-id-response.model';
 import { IProjectPhoto } from '../resources/models/project-photo.model';
+import { createFormGroupState, disable, enable, FormGroupState, onNgrxForms, onNgrxFormsAction, SetValueAction } from 'ngrx-forms';
 import { ProjectStatus } from '../resources/models/status';
 import * as ProjectActions from './project.actions';
+import * as fromProjectInformationForm from "../resources/forms/project-information-form"
+import { IProjectDetailed } from '../resources/models/project-details';
 
 export const projectFeatureKey = 'project';
 
@@ -13,10 +16,12 @@ export interface State {
   projects: IProjectOverview[],
   params: Params,
   total: number,
-  currentlyOpenProjectPhotos: IProjectPhoto[];
-  currentProject: { id: number, status: ProjectStatus } | null;
+  currentlyOpenProjectPhotos: IProjectPhoto[],
+  project: IProjectDetailed,
+  projectInformationForm: FormGroupState<fromProjectInformationForm.ProjectInformationFormValue>,
+  error: string
 }
-export const initialState: State = {
+const initialProjectState: State = {
   projects: [],
   params: {
     page: 1,
@@ -27,16 +32,79 @@ export const initialState: State = {
     status: ProjectStatus.InProcess
   },
   total: 0,
+  error: "",
+  project: {} as IProjectDetailed,
   currentlyOpenProjectPhotos: [],
-  currentProject: { id: 1, status: ProjectStatus.InProcess, }, // todo: retrieve from backend
-};
+  projectInformationForm: fromProjectInformationForm.initialFormState,
+}
 
 export const reducer = createReducer(
-  initialState,
-
-  on(ProjectActions.loadProjects, (state) => state),
-  on(ProjectActions.loadProjectsSuccess, (state, action) => state),
-  on(ProjectActions.loadProjectsFailure, (state, action) => state),
+  initialProjectState,
+  onNgrxForms(),
+  on(ProjectActions.getProjectssWithParamsSuccess, (state, action) => {
+    return {...state, projects: action.data.list, total: action.data.total}
+  }),
+  on(ProjectActions.changeParams, (state, action) => {
+    return {...state, params: {...state.params, ...action.params}}
+  }),
+  on(ProjectActions.getDetailedProjectSuccess, (state, action) => {
+    ProjectActions.loadDisabledProjectInformationForm()
+    return {...state, project: action.data}
+  }),
+  on(ProjectActions.getDetailedProjectFailure, (state, action) => {
+    return {...state, error: action.error};
+    }
+  ),
+  onNgrxFormsAction(SetValueAction, (state, action) => {
+    return {
+      ...state,
+      projectInformationForm:
+        fromProjectInformationForm.validateCompanyInformationForm(
+          state.projectInformationForm
+        ),
+    };
+  }),
+  on(ProjectActions.editProjectInformationForm, (state) => {
+    {
+      return {
+        ...state,
+        companyInformationForm: enable(state.projectInformationForm),
+      };
+    }
+  }),
+  on(ProjectActions.cancelEditProjectInformationForm, (state) => {
+    ProjectActions.loadDisabledProjectInformationForm()
+    return {
+      ...state,
+      companyInformationForm: disable(state.projectInformationForm),
+    };
+  }),
+  on(
+    ProjectActions.submitProjectInformationFormFailure,
+    (state, action) => {
+      ProjectActions.loadDisabledProjectInformationForm()
+      return {
+        ...state,
+        error: action.error,
+      };
+    }
+  ),
+  on(
+    ProjectActions.loadDisabledProjectInformationForm,
+    (state, action) => ({
+      ...state,
+      projectInformationForm: 
+        createFormGroupState<fromProjectInformationForm.ProjectInformationFormValue>(
+          fromProjectInformationForm.FORM_ID,
+          {
+            address: state.project.address,
+            startTime: state.project.startTime,
+            endTime: state.project.endTime,
+          }
+        )
+      ,
+    })
+  ),
   on(ProjectActions.loadProjectPhotosSuccess, (state, action) => {
     return {
       ...state,
@@ -61,7 +129,7 @@ export const reducer = createReducer(
     return {
       ...state,
       currentProject: {
-        id: state.currentProject!.id,
+        id: state.project!.id,
         status: action.newStatus
       },
     }

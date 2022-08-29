@@ -1,24 +1,52 @@
+import { Params } from '@angular/router';
 import { createAction, props } from '@ngrx/store';
+import { PaginationModel } from "src/app/shared/models/pagination-model";
 import { HttError } from '../../error/resources/models/httpError';
 import { CreateProjectDTO } from '../resources/models/createProjectDTO';
-import { PaginationModel } from 'src/app/shared/models/pagination-model';
-import { Params } from '../resources/models/params';
+import { IProjectDetailed } from '../resources/models/project-details';
 import { IProjectOverview } from '../resources/models/project-overview';
 import { IProjectPhoto } from '../resources/models/project-photo.model';
-import { ProjectStatus } from "../resources/models/status";
+import { IProjectUpdate } from '../resources/models/project-update';
+import { ProjectStatus } from '../resources/models/status';
 
-export const loadProjects = createAction(
-  '[Project] Load Projects'
+
+export const getDetailedProject = createAction(
+  '[Project Information Component] Load Detailed Project',
+  props<{ id: number }>()
 );
 
-export const loadProjectsSuccess = createAction(
-  '[Project] Load Projects Success',
-  props<{ data: any }>()
+export const getDetailedProjectSuccess = createAction(
+  '[Project Information Component] Load Detailed Project Success',
+  props<{ data: IProjectDetailed }>()
 );
 
-export const loadProjectsFailure = createAction(
-  '[Project] Load Projects Failure',
+export const getDetailedProjectFailure = createAction(
+  '[Project Information Component] Load Detailed Project Failure',
   props<{ error: any }>()
+);
+
+export const loadDisabledProjectInformationForm = createAction(
+  '[Project Information Component] Load Project Information Form'
+);
+
+export const editProjectInformationForm = createAction(
+  '[Project Information Component] Edit Project Information Form'
+);
+
+export const submitProjectInformationForm = createAction(
+  '[Project Information Component] Submit Project Information Form',
+  props<IProjectUpdate>()
+);
+export const submitProjectInformationFormSuccess = createAction(
+  '[Project Information Component] Submit Project Information Form Success',
+  props<{ data: IProjectDetailed }>()
+);
+export const submitProjectInformationFormFailure = createAction(
+  '[Project Information Component] Submit Project Information Form Failure',
+  props<{ error: any }>()
+);
+export const cancelEditProjectInformationForm = createAction(
+  '[Project Information Component] Cancel Project Information Form'
 );
 export const crateProject = createAction(
   '[Project] Create Project',

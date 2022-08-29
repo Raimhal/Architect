@@ -10,10 +10,6 @@ export const selectProjectState = createFeatureSelector<fromProject.State>(
   fromProject.projectFeatureKey
 );
 
-export const selectProjectPhotos = createSelector(
-  selectProjectState,
-  (state) => state.currentlyOpenProjectPhotos
-);
 
 export const selectProjects = createSelector(
   selectProjectState,
@@ -25,17 +21,30 @@ export const selectParams = createSelector(
   (state) => state.params
 );
 
-export const selectCurrentProject = createSelector(
+export const selectProjectInformation = createSelector(
   selectProjectState,
-  (state) => state.currentProject
+  (state) => state.project
+);
+
+export const selectProjectInformationForm = createSelector(
+  selectProjectState,
+  (state) => state.projectInformationForm
+);
+
+ 
+ 
+
+export const selectProjectPhotos = createSelector(
+  selectProjectState,
+  (state) => state.currentlyOpenProjectPhotos
 );
 
 export const selectCurrentProjectId = createSelector(
-  selectCurrentProject,
+  selectProjectInformation,
   (state): number | null => state?.id ?? null
 );
 
 export const selectCurrentProjectStatus = createSelector(
-  selectCurrentProject,
+  selectProjectInformation,
   (state): ProjectStatus | null => state?.status ?? null
 );
