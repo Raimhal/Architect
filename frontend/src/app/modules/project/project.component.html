@@ -9,8 +9,10 @@
           <mat-tab label="Suspended"></mat-tab>
         </mat-tab-group>
         <div class="flex">
-          <div mat-icon-button id="sortMenu" [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
-            <mat-icon>sort</mat-icon>
+          <div mat-icon-button class="sortMenu" [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+            <div class="sort-svg">
+              <mat-icon svgIcon="sort"></mat-icon>
+            </div>
           </div>
           <mat-menu #menu="matMenu">
             <button mat-menu-item (click)="sortProjectsByName()">
@@ -23,15 +25,15 @@
               <span>Old</span>
             </button>
           </mat-menu>
-          <input type="text" [(ngModel)]="contains" (ngModelChange)="findProjectsThatContains()" id="searchInput" placeholder="Search project">
+          <app-filter-input (onSearchQuery)="onSearchQuery($event)"></app-filter-input>
         </div>
+      </div>
       </div>
       <div class="create-project">
         <!-- create project button -->
         <app-button (click)="add()">add project</app-button>
         <!--<app-datepicker  class="endDate"  label="End time"></app-datepicker>-->
       </div>
-    </div>
     <div class="projects" *ngIf="projects$ | async as projects">
       <app-card
         *ngFor="let project of projects"

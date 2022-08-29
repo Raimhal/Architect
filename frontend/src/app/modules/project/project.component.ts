@@ -15,6 +15,8 @@ import { openModalDialog } from 'src/app/store/actions/modal-dialog.action';
 import { AddProjectComponent } from './add-project/add-project.component';
 import { Order } from './resources/models/order';
 import { navigate } from 'src/app/store/actions/route.actions';
+import { MatIconRegistry } from '@angular/material/icon';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-project',
@@ -23,11 +25,14 @@ import { navigate } from 'src/app/store/actions/route.actions';
 })
 export class ProjectComponent implements OnInit {
   projects$: Observable<IProjectOverview[]>
-  contains: string
   status = ProjectStatus
 
-  constructor(public dialog: MatDialog, private store: Store<AppState>) {
-    this.contains = "";
+  constructor(public dialog: MatDialog, private matIconRegistry: MatIconRegistry,
+    private domSanitizer: DomSanitizer, private store: Store<AppState>) {
+    this.matIconRegistry.addSvgIcon(
+      'sort',
+      this.domSanitizer.bypassSecurityTrustResourceUrl("assets/icons/sort.svg")
+    );
     this.projects$ = this.store.pipe(select(selectProjects));
     this.store.dispatch(openMenu());
     this.store.dispatch(revealMenu());
@@ -74,10 +79,10 @@ export class ProjectComponent implements OnInit {
     }))
   }
 
-  findProjectsThatContains() {
+  onSearchQuery($event: string) {
     this.store.dispatch(changeParams({
       params: {
-        query: this.contains
+        query: $event
       }
     }))
   }
