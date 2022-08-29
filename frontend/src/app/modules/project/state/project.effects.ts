@@ -20,6 +20,29 @@ import * as fromProjectSelectors from './project.selectors';
 @Injectable()
 export class ProjectEffects {
 
+  getProjectsWithParams$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(ProjectActions.getProjectsWithParams),
+      withLatestFrom(this.store.select(fromProjectSelectors.selectParams)),
+      concatMap(([_, action]) =>
+        this.projectService.getProjectsWithParams(action).pipe(
+          map((data) =>
+            ProjectActions.getProjectssWithParamsSuccess({
+              data,
+            })
+          ),
+          catchError((error) =>
+            of(
+              ProjectActions.getProjectsWithParamsFailure({
+                error: error.error,
+              })
+            )
+          )
+        )
+      )
+    );
+  });
+
   getProject$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(ProjectActions.getDetailedProject),
@@ -27,7 +50,7 @@ export class ProjectEffects {
         this.projectService
           .getDetailedProject(action.id)
           .pipe(
-            map((data) => 
+            map((data) =>
               ProjectActions.getDetailedProjectSuccess({
                 data
               })
@@ -45,7 +68,7 @@ export class ProjectEffects {
     );
   });
 
-  
+
   submitProjectInformationFormState$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(ProjectActions.submitProjectInformationForm),
@@ -58,7 +81,7 @@ export class ProjectEffects {
             endTime: project.endTime
           } as IProjectUpdate)
           .pipe(
-            map((data) => ProjectActions.getDetailedProject({id: data.id})),
+            map((data) => ProjectActions.getDetailedProject({ id: data.id })),
             catchError((error) =>
               of(
                 ProjectActions.submitProjectInformationFormFailure({
@@ -117,18 +140,18 @@ export class ProjectEffects {
       )
     );
   });
-  
+
   effectName$ = createEffect(() => {
     return this.actions$.pipe(
-        ofType(ProjectActions.crateProjectSuccess),
-        map(() => ModalDialogAction.closeModalDialog()),
+      ofType(ProjectActions.crateProjectSuccess),
+      map(() => ModalDialogAction.closeModalDialog()),
     );
   });
 
-  uploadProjectPhotoSuccess$ =  createEffect(() => {
+  uploadProjectPhotoSuccess$ = createEffect(() => {
     return this.actions$.pipe(
-        ofType(ProjectActions.uploadProjecPhotoSuccess),
-        map((action) => ProjectActions.loadProjectPhotos({projectId: action.id})),
+      ofType(ProjectActions.uploadProjecPhotoSuccess),
+      map((action) => ProjectActions.loadProjectPhotos({ projectId: action.id })),
     );
   });
 
@@ -150,6 +173,15 @@ export class ProjectEffects {
           )
         )
       )
+    );
+  });
+
+  getProjectSuccess = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(ProjectActions.getDetailedProjectSuccess,
+        ProjectActions.submitProjectInformationFormFailure,
+        ProjectActions.cancelEditProjectInformationForm),
+      map(() => ProjectActions.loadDisabledProjectInformationForm())
     );
   });
 
