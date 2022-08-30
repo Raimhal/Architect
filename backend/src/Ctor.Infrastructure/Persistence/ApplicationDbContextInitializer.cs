@@ -151,13 +151,13 @@ public class ApplicationDbContextInitializer
     private readonly ICollection<ProjectSeed> _projects = new ProjectSeed[]
     {
         new("Leessas Town", "Roads"), //
-        new("Stoagem Valley", "Housing District"), //
+        new("Stoagem Valley", "Park"), //
         new("Rufus Street", "Housing District"), //
-        new("Cliftonville", "Housing District"), //
-        new("Plotezalf Center", "Housing District"), //
-        new("Wistful Vista", "Housing District"), //
+        new("Cliftonville", "Mansion"), //
+        new("Plotezalf Center", "Shopping Centre"), //
+        new("Wistful Vista", "Recreation Complex"), //
         new("Upper South Xorisk", "Housing District"), //
-        new("Ropewalks", "Housing District"), //
+        new("Ropewalks", "Roads"), //
     };
 
     private ICollection<Project> GenerateProjects(User owner)
