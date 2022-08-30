@@ -1,15 +1,25 @@
 <div class="wrapper">
   <h3>Company Profile</h3>
   <div class="columns">
-    <div class="company-info">
+    <div class="company-info" *ngIf="company$ | async as company">
       <div class="logo-container">
-        <img>
+        <img [src]="company.image">
         <div class="logo-controls">
-          <mat-icon svgIcon="pencil"></mat-icon>
-          <a class="main-text upload-btn">Upload A Logo</a>
+          <button *ngIf="!isLogoEmpty(company.image)" mat-icon-button (click)="this.editLogo(company.image, company.id)">
+            <mat-icon svgIcon="pencil"></mat-icon>
+          </button>
+          <input
+          class="logo-input"
+          type="file"
+          accept="image/png, image/jpeg, image/svg+xml"
+          (change)="uploadLogo($event, company.id)"
+          #selectLogo
+        />
+          <a *ngIf="!isLogoEmpty(company.image)" class="main-text logo-btn" (click)="this.deleteLogo()">Delete A Logo</a>
+          <a *ngIf="isLogoEmpty(company.image)" class="main-text logo-btn" (click)="selectLogo.click()">Upload A Logo</a>
         </div>
       </div>
-      <div class="info-card" *ngIf="company$ | async as company">
+      <div class="info-card" >
         <ng-container *ngIf="companyProfileForm$ | async as companyForm">
           <div class="card-header">
             <span class="selected-text1">Shopping Centre Valkea Info</span>

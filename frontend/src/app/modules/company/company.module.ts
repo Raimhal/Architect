@@ -8,10 +8,12 @@ import { EffectsModule } from '@ngrx/effects';
 import { CompanyEffects } from './state/company.effects';
 import {SharedModule} from "../../shared/shared.module";
 import {NgrxFormsModule} from "ngrx-forms";
-
+import { CompanyImageCropComponent } from './company-image-crop/company-image-crop.component';
+import { ImageCropperModule } from 'ngx-image-cropper';
 @NgModule({
   declarations: [
-    CompanyComponent
+    CompanyComponent,
+    CompanyImageCropComponent
   ],
   imports: [
     CommonModule,
@@ -20,6 +22,7 @@ import {NgrxFormsModule} from "ngrx-forms";
     MatButtonModule,
     EffectsModule.forFeature([CompanyEffects]),
     SharedModule,
+    ImageCropperModule,
     NgrxFormsModule
   ]
 })

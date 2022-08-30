@@ -53,6 +53,7 @@ public static class ConfigureServices
         services.AddScoped<IPhaseRepository, PhaseRepository>();
         services.AddScoped<IRoleRepository, RoleRepository>();
         services.AddScoped<IProjectPhotoRepository, ProjectPhotoRepository>();
+        services.AddScoped<ICompanyLogoRepository, CompanyLogoRepository>();
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
         services.AddScoped<ApplicationDbContextInitializer>();

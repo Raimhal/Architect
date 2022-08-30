@@ -17,7 +17,8 @@ export class SpinnerEffects {
           fromAdministrationActions.loadDetailedCompany,
           fromAdministrationActions.submitCompanyInformationForm,
           fromCompanyActions.submitEditingCompanyProfileForm,
-          fromCompanyActions.loadCompany
+          fromCompanyActions.loadCompany,
+          fromCompanyActions.loadCropImageStart
         ),
         tap(() =>  {
           this.spinner.show();
@@ -41,7 +42,9 @@ export class SpinnerEffects {
           fromCompanyActions.submitEditingCompanyProfileFormSuccess,
           fromCompanyActions.submitEditingCompanyProfileFormFailure,
           fromCompanyActions.loadCompanySuccess,
-          fromCompanyActions.loadCompanyFailure
+          fromCompanyActions.loadCompanyFailure,
+          fromCompanyActions.loadCropImageFinish,
+          fromCompanyActions.loadCropImageFailed,
         ),
         tap(() => {
           setTimeout(() => {

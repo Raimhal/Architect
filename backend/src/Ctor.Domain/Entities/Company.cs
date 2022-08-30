@@ -12,6 +12,8 @@ public class Company : BaseEntity
     public DateTime JoinDate { get; set; }
     public string? Website { get; set; }
     public string? Description { get; set; }
+    public long? CompanyLogoId { get; set; }
+    public CompanyLogo? CompanyLogo { get; set; }
     public virtual ICollection<Material> Materials { get; set; }
     public virtual ICollection<User> Users { get; set; }
     public virtual ICollection<Vendor> Vendors { get; set; }

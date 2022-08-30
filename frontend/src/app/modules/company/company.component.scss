@@ -42,6 +42,7 @@
   width: 275px;
   height: 220px;
   border: 1px solid;
+  object-fit: cover;
 }
 
 .logo-controls {
@@ -53,7 +54,7 @@
   cursor: pointer;
 }
 
-.upload-btn {
+.logo-btn {
   margin-top: auto;
   color: colors.$primary4;
   cursor: pointer;
@@ -138,4 +139,8 @@
 .secondary-btn:hover, .primary-btn:hover {
   cursor: pointer;
   text-underline-offset: 0.4em;
+}
+
+.logo-input{
+  display: none;
 }

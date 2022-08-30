@@ -4,6 +4,8 @@ import {ICompanyProfile} from "../recources/models/company-profile";
 import {IProjectOverview} from "../recources/models/project-overview";
 import {createFormGroupState, disable, enable, FormGroupState, onNgrxForms} from "ngrx-forms";
 import * as fromCompanyProfileForm from "../recources/forms/company-profile-form";
+import { state } from '@angular/animations';
+import { environment } from 'src/environments/environment';
 
 export const companyFeatureKey = 'company';
 
@@ -87,5 +89,39 @@ export const reducer = createReducer(
       ...state,
       error: action.error
     }
-  })
+  }),
+  on(CompanyActions.loadCompanyLogoSuccess, (state, action)=>{
+    return{
+      ...state,
+      company: {
+        ...state.company,
+        image:`${environment.filesBaseUrl}/${action.logo.link}` 
+      }
+    }
+  }),
+  on(CompanyActions.loadCompanyLogoFailure, (state, action) => {
+    return {
+      ...state,
+      company:{
+        ...state.company,
+        image: ''
+      },
+      error: action.error
+    }
+  }),
+  on(CompanyActions.deleteCompanyLogoSuccess, (state, action)=>{
+    return{
+      ...state,
+      company: {
+        ...state.company,
+        image:'' 
+      }
+    }
+  }),
+  on(CompanyActions.deleteCompanyLogoFailure, (state, action) => {
+    return {
+      ...state,
+      error: action.error
+    }
+  }),
 );

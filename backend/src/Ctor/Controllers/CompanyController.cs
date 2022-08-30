@@ -2,8 +2,11 @@
 using Ctor.Application.Companies.Queries.GetCompaniesOverview;
 using Ctor.Application.Companies.Queries.GetCompanyById;
 using Ctor.Application.Companies.Commands;
+using Ctor.Application.Companies.Commands.DeleteCompanyLogo;
 using Ctor.Application.Companies.Queries.GetCompanyByUserId;
 using Ctor.Application.Companies.Commands.UpdateCompanyProfile;
+using Ctor.Application.Companies.Queries.GetCompanyLogoByCompanyId;
+using Ctor.Infrastructure.Extensions;
 
 namespace Ctor.Controllers;
 
@@ -54,5 +57,23 @@ public class CompanyController : ApiControllerBase
         }
 
         return await Mediator.Send(command);
+    }
+
+    [HttpGet("{id:long}/logo")]
+    public async Task<ActionResult<GetCompanyLogoByCompanyIdResponseDto>> GetCompanyLogo(long id)
+    {
+        return await Mediator.Send(new GetCompanyLogoByCompanyIdQuery(id));
+    }
+
+    [HttpDelete("{id:long}/logo")]
+    public async Task<ActionResult<DeleteCompanyLogoResponseDto>> DeleteCompanyLogo(long id)
+    {
+        return await Mediator.Send(new DeleteCompanyLogoCommand(id));
+    }
+
+    [HttpPut("{id:long}/logo")]
+    public async Task<ActionResult<PutCompanyLogoResponseDto>> PutCompanyLogo([FromForm]IFormFile data, long id)
+    {
+        return await Mediator.Send(new PutCompanyLogoCommand(await data.GetBytes(), id, Path.GetExtension(data.FileName)));
     }
 }
