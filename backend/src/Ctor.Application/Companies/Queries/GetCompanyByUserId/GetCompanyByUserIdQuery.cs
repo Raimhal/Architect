@@ -34,7 +34,7 @@ public class GetCompanyByUserIdHandler : IRequestHandler<GetCompanyByUserIdQuery
             throw new NotFoundException("Company for this user doesn't exists");
         }
 
-        var company = await _context.Companies.GetById((long)user.CompanyId);
+        var company = await _context.Companies.GetById(user.CompanyId!.Value, cancellationToken);
 
         return _mapper.Map<CompanyProfileDto>(company);
     }

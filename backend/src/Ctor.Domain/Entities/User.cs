@@ -21,6 +21,6 @@ public class User : BaseEntity
     public long RoleId { get; set; }
     public Role Role { get; set; }
 
-    public long CompanyId { get; set; }
-    public Company Company { get; set; }
+    public long? CompanyId { get; set; }
+    public Company? Company { get; set; }
 }

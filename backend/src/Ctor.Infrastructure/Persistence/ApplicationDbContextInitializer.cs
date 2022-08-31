@@ -92,7 +92,7 @@ public class ApplicationDbContextInitializer
                 Password = "12345",
                 AskToChangeDefaultPassword = false,
                 Role = _adminRole,
-                CompanyId = 0 // should this be nullable?
+                CompanyId = null,
             });
 
         await _context.Companies.AddRangeAsync(GenerateCompanies());
