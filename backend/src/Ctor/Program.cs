@@ -1,4 +1,5 @@
 using Ctor.Application;
+using Ctor.Hubs;
 using Ctor.Infrastructure;
 using Ctor.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authentication;
@@ -34,13 +35,19 @@ else
 }
 
 app.UseHealthChecks("/health");
-app.UseHttpsRedirection();
+
 
 app.UseCors(builder => builder
     .AllowAnyOrigin()
     .AllowAnyMethod()
     .AllowAnyHeader()
+    .AllowCredentials()
+    .WithOrigins("http://localhost:4200")   
 );
+
+app.UseHttpsRedirection();
+
+app.UseRouting();
 
 app.UseStaticFiles(new StaticFileOptions
 {
@@ -56,6 +63,11 @@ app.UseStaticFiles(new StaticFileOptions
 });
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapHub<NotificationsHub>("/notification");
+});
 
 app.MapControllers();
 

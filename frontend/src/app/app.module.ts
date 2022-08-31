@@ -38,6 +38,7 @@ import {CompanyModule} from "./modules/company/company.module";
 import {MatDialogModule} from "@angular/material/dialog";
 import { MenuEffects } from './store/effects/menu.effects';
 import { AdministrationEffects } from './modules/administration/state/administration.effects';
+import { NotificationService } from './shared/services/notification.service';
 
 @NgModule({
   declarations: [
@@ -95,7 +96,7 @@ import { AdministrationEffects } from './modules/administration/state/administra
     CompanyModule,
     EffectsModule.forFeature([MenuEffects])
   ],
-  providers: [],
+  providers: [NotificationService],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

@@ -4,6 +4,7 @@ using Ctor.Services;
 using FluentValidation.AspNetCore;
 using Microsoft.OpenApi.Models;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.SignalR;
 
 public static class ConfigureServices
 {
@@ -12,8 +13,11 @@ public static class ConfigureServices
         services.AddDatabaseDeveloperPageExceptionFilter();
 
         services.AddSingleton<ICurrentUserService, CurrentUserService>();
-
+        services.AddSingleton<INotificationService, NotificationService>();
         services.AddHttpContextAccessor();
+
+        services.AddSignalR();
+        services.AddSingleton<IUserIdProvider, NotificationUserIdProvider>();
 
         services.AddHealthChecks()
             .AddDbContextCheck<ApplicationDbContext>();

@@ -13,6 +13,7 @@ import {AppState} from "../index";
 import {Store} from "@ngrx/store";
 
 import * as AdministrationActions from "../../modules/administration/state/administration.actions"
+import { NotificationService } from '../../shared/services/notification.service';
 @Injectable()
 export class AuthEffects {
 
@@ -61,7 +62,7 @@ export class AuthEffects {
     return this.actions$.pipe(
       ofType(fromAuthActions.logout),
       mergeMap((action) => {
-
+        this.notifService.stopService();
         return this.authService.logout().pipe(
           map(response => {
             this.tokenService.removeTokens();
@@ -128,10 +129,20 @@ export class AuthEffects {
 
 
 
+    loginSucces$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(fromAuthActions.loginSuccess),
+      tap(() =>
+        this.notifService.startService()
+      )
+    ),
+    { dispatch: false });
+
   constructor(
     private actions$: Actions,
     private authService: AuthService,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private notifService: NotificationService
   ) {
   }
 

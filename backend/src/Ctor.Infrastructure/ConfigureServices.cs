@@ -69,6 +69,7 @@ public static class ConfigureServices
         services.AddTransient<ICsvFileService, CsvFileService>();
         services.AddScoped<IFileManipulatorService, FileManipulatorService>();
         services.AddScoped<IAddressParsingService, AddressParsingService>();
+        services.AddScoped<IGroupsService, GroupsService>();
 
         services.AddAuthentication(opt =>
         {
