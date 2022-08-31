@@ -30,7 +30,7 @@ public class UserManager : IUserManager
 
         EnsurePasswordIsCorrect(user, password);
 
-        var accessToken = _tokenProvider.GenerateAccessToken(user.Id, user.Role);
+        var accessToken = _tokenProvider.GenerateAccessToken(user.Id, user.Role.Type);
         var refreshToken = _tokenProvider.GenerateRefreshToken(user.Id);
 
         user.RefreshToken = refreshToken.Value;
@@ -70,7 +70,7 @@ public class UserManager : IUserManager
             throw new UnauthorizedAccessException();
         }
 
-        return _tokenProvider.GenerateAccessToken(user.Id, user.Role);
+        return _tokenProvider.GenerateAccessToken(user.Id, user.Role.Type);
     }
 
     public async Task KeepDefaultPasswordAsync(long userId, CancellationToken ct)

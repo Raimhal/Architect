@@ -2,28 +2,28 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using Ctor.Application.Companies.Commands;
+using Mailjet.Client.Resources;
 using Newtonsoft.Json;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace Ctor.IntegrationTests.CompanyControllerTests.GetTests;
 
-public class PutCompanyLogoTest : GetFixture
+public class PutCompanyLogoTest : CompanyControllerFixture
 {
     private readonly ITestOutputHelper _testOutputHelper;
     private HttpClient _client;
+    private Testing _testing;
 
-    public PutCompanyLogoTest(ITestOutputHelper testOutputHelper)
+    public PutCompanyLogoTest(ITestOutputHelper testOutputHelper, Testing testing)
     {
         _testOutputHelper = testOutputHelper;
+        _client = testing._client;
     }
 
     [Fact]
     public async Task Put_CompanyLogo_Check()
     {
-        using TestingWebAppFactory<Program> factory = new TestingWebAppFactory<Program>();
-        _client = factory.CreateClient();
-
         //Arrange
         const int companyId = 1;
         PutCompanyLogoResponseDto expected = new() { Id = 1, Link = "companyLogos/name.png" };
@@ -37,13 +37,13 @@ public class PutCompanyLogoTest : GetFixture
                 using (MultipartFormDataContent formData = new())
                 {
                     formData.Add(content, "data", "dummy.png");
-                    putResponse = await _client.PutAsync($"{_getApi}/{companyId}/logo", formData);
+                    putResponse = await _client.PutAsync($"{_COMPANY_CONTROLLER_API}/{companyId}/logo", formData);
                 }
             }
         }
 
         //Delete from disk
-        HttpResponseMessage deleteResponse = await _client.DeleteAsync($"{_getApi}/{companyId}/logo");
+        HttpResponseMessage deleteResponse = await _client.DeleteAsync($"{_COMPANY_CONTROLLER_API}/{companyId}/logo");
 
         //Assertion
         putResponse.EnsureSuccessStatusCode();

@@ -64,7 +64,7 @@ public static class ConfigureServices
         services.AddTransient<IPasswordService,PasswordService>();
         services.AddTransient<ISecurityService, SecurityService>();
         services.AddTransient<INumberGenerateService, NumberGenerateSercice>();
-        services.AddScoped<ITokenProvider, TokenProvider>();
+        services.AddSingleton<ITokenProvider, TokenProvider>();
         services.AddScoped<IUserManager, UserManager>();
         services.AddTransient<ICsvFileService, CsvFileService>();
         services.AddScoped<IFileManipulatorService, FileManipulatorService>();

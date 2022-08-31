@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 using Xunit;
 
 namespace Ctor.IntegrationTests.MyEntityControllerTests.GetTests;
-public class GetTest: GetFixture
+public class GetTest : MyEntityControllerFixture
 {
     private readonly HttpClient _client;
     public GetTest(TestingWebAppFactory<Program> factory)
@@ -31,14 +31,14 @@ public class GetTest: GetFixture
         };
 
         //Action
-        var response = await _client.GetAsync($"{_getApi}/{id}");
+        var response = await _client.GetAsync($"{_MY_ENTITY_CONTROLLER_API}/{id}");
 
-        //Assertion
+        
         response.EnsureSuccessStatusCode();
-        var responceString=await response.Content.ReadAsStringAsync();
+        var responceString = await response.Content.ReadAsStringAsync();
         var actual = JsonConvert.DeserializeObject<MyEntityDto>(responceString);
-       
+
         expected.Should().BeEquivalentTo(actual);
-       
+
     }
 }

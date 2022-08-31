@@ -47,9 +47,10 @@ app.UseStaticFiles(new StaticFileOptions
     FileProvider = new PhysicalFileProvider(
         builder.Configuration["FilesFolder"] ?? "C:\\RadencyFiles"),
     RequestPath = "/files",
-    OnPrepareResponse = ctx => {
+    OnPrepareResponse = ctx =>
+    {
         ctx.Context.Response.Headers.Append("Access-Control-Allow-Origin", "*");
-        ctx.Context.Response.Headers.Append("Access-Control-Allow-Headers", 
+        ctx.Context.Response.Headers.Append("Access-Control-Allow-Headers",
             "Origin, X-Requested-With, Content-Type, Accept");
     },
 });

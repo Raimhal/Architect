@@ -8,22 +8,22 @@ using Xunit.Abstractions;
 
 namespace Ctor.IntegrationTests.CompanyControllerTests.GetTests;
 
-public class GetCompanyLogoTest : GetFixture
+public class GetCompanyLogoTest : CompanyControllerFixture
 {
     private readonly ITestOutputHelper _testOutputHelper;
     private HttpClient _client;
+    private Testing _testing;
 
-    public GetCompanyLogoTest(ITestOutputHelper testOutputHelper)
+    public GetCompanyLogoTest(ITestOutputHelper testOutputHelper, Testing testing)
     {
         _testOutputHelper = testOutputHelper;
+        _testing = testing;
+        _client = testing._client;
     }
 
     [Fact]
     public async Task Get_CompanyLogo_Check()
     {
-        using TestingWebAppFactory<Program> factory = new TestingWebAppFactory<Program>();
-        _client = factory.CreateClient();
-
         //Arrange
 
         const int companyId = 1;
@@ -40,16 +40,16 @@ public class GetCompanyLogoTest : GetFixture
                 using (MultipartFormDataContent formData = new())
                 {
                     formData.Add(content, "data", "dummy.png");
-                    await _client.PutAsync($"{_getApi}/{companyId}/logo", formData);
+                    await _client.PutAsync($"{_COMPANY_CONTROLLER_API}/{companyId}/logo", formData);
                 }
             }
         }
 
         //Test
-        HttpResponseMessage getResponse = await _client.GetAsync($"{_getApi}/{companyId}/logo");
+        HttpResponseMessage getResponse = await _client.GetAsync($"{_COMPANY_CONTROLLER_API}/{companyId}/logo");
 
         //Delete from disk
-        HttpResponseMessage deleteResponse = await _client.DeleteAsync($"{_getApi}/{companyId}/logo");
+        HttpResponseMessage deleteResponse = await _client.DeleteAsync($"{_COMPANY_CONTROLLER_API}/{companyId}/logo");
 
         //Assertion
         getResponse.EnsureSuccessStatusCode();

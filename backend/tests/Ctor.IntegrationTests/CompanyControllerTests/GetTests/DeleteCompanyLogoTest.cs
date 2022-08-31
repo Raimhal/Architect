@@ -9,14 +9,17 @@ using Xunit.Abstractions;
 
 namespace Ctor.IntegrationTests.CompanyControllerTests.GetTests;
 
-public class DeleteCompanyLogoTest : GetFixture
+public class DeleteCompanyLogoTest :CompanyControllerFixture
 {
     private readonly ITestOutputHelper _testOutputHelper;
     private HttpClient _client;
+    private Testing _testing;
 
-    public DeleteCompanyLogoTest(ITestOutputHelper testOutputHelper)
+    public DeleteCompanyLogoTest(ITestOutputHelper testOutputHelper, Testing testing)
     {
         _testOutputHelper = testOutputHelper;
+        _testing = testing;
+        _client = testing._client;
     }
 
     [Fact]
@@ -39,13 +42,13 @@ public class DeleteCompanyLogoTest : GetFixture
                 using (MultipartFormDataContent formData = new())
                 {
                     formData.Add(content, "data", "dummy.png");
-                    await _client.PutAsync($"{_getApi}/{companyId}/logo", formData);
+                    await _client.PutAsync($"{_COMPANY_CONTROLLER_API}/{companyId}/logo", formData);
                 }
             }
         }
 
         //Test
-        HttpResponseMessage deleteResponse = await _client.DeleteAsync($"{_getApi}/{companyId}/logo");
+        HttpResponseMessage deleteResponse = await _client.DeleteAsync($"{_COMPANY_CONTROLLER_API}/{companyId}/logo");
 
         //Assertion
         deleteResponse.EnsureSuccessStatusCode();

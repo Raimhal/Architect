@@ -6,6 +6,7 @@ using Ctor.Application.Auth.Interfaces;
 using Ctor.Application.Auth.Models;
 using Ctor.Application.Common.Interfaces;
 using Ctor.Domain.Entities;
+using Ctor.Domain.Entities.Enums;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
@@ -22,7 +23,7 @@ public class TokenProvider : ITokenProvider
         _dateTime = dateTime;
     }
 
-    public Token GenerateAccessToken(long userId, Role role)
+    public Token GenerateAccessToken(long userId, UserRoles role)
     {
         var secret = _config["Jwt:Secret"];
         var secretBytes = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));
@@ -35,7 +36,7 @@ public class TokenProvider : ITokenProvider
             claims: new List<Claim>
             {
                 new("id", userId.ToString()), //
-                new("role", role.Type.ToString()),
+                new("role", role.ToString()),
             },
             expires: expires,
             signingCredentials: signinCredentials
