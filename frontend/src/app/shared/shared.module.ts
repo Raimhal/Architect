@@ -2,7 +2,11 @@ import { CommonModule } from "@angular/common";
 import { HttpClientModule } from "@angular/common/http";
 import { NgModule } from "@angular/core";
 import { ReactiveFormsModule } from "@angular/forms";
-import { MatMomentDateModule, MomentDateAdapter } from "@angular/material-moment-adapter";
+import {
+  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
+  MatMomentDateModule,
+  MomentDateAdapter
+} from "@angular/material-moment-adapter";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { MatButtonModule } from "@angular/material/button";
 import { MatChipsModule } from "@angular/material/chips";
@@ -39,8 +43,7 @@ import {
 } from "./components/modal-dialogs/modal-dialog-savecancel/modal-dialog-savecancel.component";
 import {NumberGenarateSevice} from "./services/numberGenarate.services";
 import { AlertComponent } from "./components/misc/alert/alert.component";
-
-import { NgrxFormsModule } from 'ngrx-forms';
+import {NgrxFormsModule} from "ngrx-forms";
 import { FilterInputComponent } from "./components/inputs/filter-input/filter-input.component";
 
 
@@ -116,7 +119,8 @@ import { FilterInputComponent } from "./components/inputs/filter-input/filter-in
     NumberGenarateSevice,
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
     { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
-    { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS }
+    { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
+    { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } }
   ]
 })
 export class SharedModule {

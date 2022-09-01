@@ -5,21 +5,24 @@
       <div class="logo-container">
         <img [src]="company.image">
         <div class="logo-controls">
-          <button *ngIf="!isLogoEmpty(company.image)" mat-icon-button (click)="this.editLogo(company.image, company.id)">
+          <button *ngIf="!isLogoEmpty(company.image)" mat-icon-button
+                  (click)="this.editLogo(company.image, company.id)">
             <mat-icon svgIcon="pencil"></mat-icon>
           </button>
           <input
-          class="logo-input"
-          type="file"
-          accept="image/png, image/jpeg, image/svg+xml"
-          (change)="uploadLogo($event, company.id)"
-          #selectLogo
-        />
-          <a *ngIf="!isLogoEmpty(company.image)" class="main-text logo-btn" (click)="this.deleteLogo()">Delete A Logo</a>
-          <a *ngIf="isLogoEmpty(company.image)" class="main-text logo-btn" (click)="selectLogo.click()">Upload A Logo</a>
+            class="logo-input"
+            type="file"
+            accept="image/png, image/jpeg, image/svg+xml"
+            (change)="uploadLogo($event, company.id)"
+            #selectLogo
+          />
+          <a *ngIf="!isLogoEmpty(company.image)" class="main-text logo-btn" (click)="this.deleteLogo()">Delete A
+            Logo</a>
+          <a *ngIf="isLogoEmpty(company.image)" class="main-text logo-btn" (click)="selectLogo.click()">Upload A
+            Logo</a>
         </div>
       </div>
-      <div class="info-card" >
+      <div class="info-card">
         <ng-container *ngIf="companyProfileForm$ | async as companyForm">
           <div class="card-header">
             <span class="selected-text1">Shopping Centre Valkea Info</span>
@@ -31,43 +34,49 @@
                  (click)="onSubmit(companyForm.value.address, companyForm.value.email, companyForm.value.website)">Save
             </div>
           </div>
-          <div class="info-card-content">
-            <div class="info-card-content-labels">
+          <form novalidate class="info-card-content" [ngrxFormState]="companyForm">
+            <div class="info-card-field">
               <div class="info-card-label">
                 Join date:
               </div>
-              <div class="info-card-label">
-                Address:
-              </div>
-              <div class="info-card-label">
-                Email:
-              </div>
-              <div class="info-card-label">
-                Website:
-              </div>
-            </div>
-            <form novalidate class="info-card-content-inputs"
-                  [ngrxFormState]="companyForm">
               <div class="info-card-input">
                 {{company.joinDate}}
               </div>
-              <input class="info-card-input"
-                     [ngrxFormControlState]="companyForm.controls.address">
-              <input class="info-card-input"
-                     [ngrxFormControlState]="companyForm.controls.email">
-              <input class="info-card-input"
-                     [ngrxFormControlState]="companyForm.controls.website">
-            </form>
-          </div>
-          <!--        <p class="warning" *ngIf="companyForm.errors['_address']?.required">-->
-          <!--          Address is required-->
-          <!--        </p>-->
-          <!--        <p class="warning" *ngIf="companyForm.errors['_email']?.required">-->
-          <!--          Email is required-->
-          <!--        </p>-->
-          <!--        <p class="warning" *ngIf="companyForm.errors['_email']?.email">-->
-          <!--          Please, enter valid email address-->
-          <!--        </p>-->
+            </div>
+            <div class="info-card-field">
+              <div class="info-card-label">
+                Address:
+              </div>
+              <div class="info-card-input" *ngIf="companyForm.isDisabled">
+                {{company.address}}
+              </div>
+              <app-input class="info-card-input" *ngIf="!companyForm.isDisabled"
+                         [controlState]="companyForm.controls.address">
+              </app-input>
+            </div>
+            <div class="info-card-field">
+              <div class="info-card-label">
+                Email:
+              </div>
+              <div class="info-card-input" *ngIf="companyForm.isDisabled">
+                {{company.email}}
+              </div>
+              <app-input class="info-card-input" *ngIf="!companyForm.isDisabled"
+                         [controlState]="companyForm.controls.email">
+              </app-input>
+            </div>
+            <div class="info-card-field">
+              <div class="info-card-label">
+                Website:
+              </div>
+              <div class="info-card-input" *ngIf="companyForm.isDisabled">
+                {{company.website}}
+              </div>
+              <app-input class="info-card-input" *ngIf="!companyForm.isDisabled"
+                         [controlState]="companyForm.controls.website">
+              </app-input>
+            </div>
+          </form>
         </ng-container>
       </div>
     </div>

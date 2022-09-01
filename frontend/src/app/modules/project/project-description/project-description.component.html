@@ -39,17 +39,17 @@
             <div class="info-card-content-inputs">
               <div class="info-card-input">
                 <span *ngIf="!isEditEnabled">{{ project.address }}</span>
-                <input class="form-input" *ngIf="isEditEnabled" [ngrxFormControlState]="projectForm.controls.address">
+                <app-input class="form-input" *ngIf="isEditEnabled" [controlState]="projectForm.controls.address"></app-input>
               </div>
               <div class="info-card-input">
                 <span *ngIf="!isEditEnabled">{{ project.startTime | date }}</span>
-                <input class="form-input" type="date" *ngIf="isEditEnabled"
-                  [ngrxFormControlState]="projectForm.controls.startTime">
+                <app-datepicker class="form-input" *ngIf="isEditEnabled"
+                           [controlState]="projectForm.controls.startTime"></app-datepicker>
               </div>
               <div class="info-card-input">
                 <span *ngIf="!isEditEnabled">{{ project.endTime | date }}</span>
-                <input class="form-input" type="date" *ngIf="isEditEnabled"
-                  [ngrxFormControlState]="projectForm.controls.endTime">
+                <app-datepicker class="form-input" *ngIf="isEditEnabled"
+                                [controlState]="projectForm.controls.endTime"></app-datepicker>
               </div>
             </div>
           </div>

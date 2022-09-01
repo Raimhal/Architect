@@ -1,7 +1,7 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { createFormControlState, FormControlState } from 'ngrx-forms';
-import { TextInputType } from 'src/app/shared/types/input-types';
+import {Component, Input} from '@angular/core';
+import {TextInputType} from 'src/app/shared/types/input-types';
 
 @Component({
   selector: 'app-input',
@@ -10,14 +10,15 @@ import { TextInputType } from 'src/app/shared/types/input-types';
 })
 export class InputComponent {
 
-  @Input() control: FormControl = new FormControl('')
+  @Input() control: FormControl | null = null;
   @Input() label: string = ""
   @Input() placeholder: string = ""
   @Input() errorMessage: string = ""
   @Input() type: TextInputType = "text"
+  @Input() controlState: FormControlState<any> | null = null;
 
   get title() {
-      return this.control.invalid && this.control.touched? this.errorMessage : this.label
+    return this.control?.invalid && (this.control.touched || this.controlState?.isTouched) ? this.errorMessage : this.label;
   }
 
 }

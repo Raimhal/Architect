@@ -4,6 +4,9 @@ import {MatIconRegistry} from "@angular/material/icon";
 import {DomSanitizer} from "@angular/platform-browser";
 import {DatepickerHeaderComponent} from "./datepicker-header/datepicker-header.component";
 import {MatCalendarCellClassFunction} from "@angular/material/datepicker";
+import {FormControlState, NgrxValueConverter, NgrxValueConverters} from "ngrx-forms";
+import {MomentDateAdapter} from "@angular/material-moment-adapter";
+import * as moment from 'moment';
 
 
 export const MY_FORMATS = {
@@ -29,10 +32,25 @@ export class DatepickerComponent implements OnInit {
   datepickerHeader = DatepickerHeaderComponent;
 
   @Input() placeholder : string = ""
-  @Input() control : FormControl = new FormControl('');
+  @Input() control : FormControl | null = null;
+  @Input() controlState: FormControlState<any> | null = null;
 
   dateClass: MatCalendarCellClassFunction<Date> = (cellDate, view) => {
     return 'example-custom-date-class';
+  };
+
+  dateValueConverter: NgrxValueConverter<Date | null, string | null> = {
+    convertViewToStateValue(value) {
+      if (value === null) {
+        return null;
+      }
+      value = moment(value).toDate();
+      // the value provided by the date picker is in local time but we want UTC so we recreate the date as UTC
+      value = new Date(Date.UTC(value.getFullYear(), value.getMonth(), value.getDate()));
+      return NgrxValueConverters.dateToISOString.convertViewToStateValue(value);
+    },
+    // tslint:disable-next-line: no-unbound-method
+    convertStateToViewValue: NgrxValueConverters.dateToISOString.convertStateToViewValue,
   };
 
   constructor(private matIconRegistry: MatIconRegistry,

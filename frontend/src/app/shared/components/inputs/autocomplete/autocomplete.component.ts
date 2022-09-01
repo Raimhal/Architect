@@ -49,13 +49,9 @@ export class AutocompleteComponent implements OnInit {
   add(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
 
-    if (this.options.indexOf(value) < 0) {
-      return;
-    }
     if (value) {
       this._outputOptions.push(value);
     }
-
 
     event.chipInput!.clear();
 

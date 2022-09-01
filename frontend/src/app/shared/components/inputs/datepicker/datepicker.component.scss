@@ -55,4 +55,12 @@ button.example-custom-date-class:not(.mat-calendar-body-disabled) > div.mat-cale
   border: none;
 }
 
+.mat-form-field-flex {
+  display: inline-flex;
+  align-items: flex-start;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+
 

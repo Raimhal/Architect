@@ -77,7 +77,9 @@
 
 .info-card-content {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  margin: 16px;
+  gap: 20px;
 }
 
 .info-card-content-labels, .info-card-content-inputs {
@@ -143,4 +145,14 @@
 
 .logo-input{
   display: none;
+}
+
+.info-card-field {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.info-card-label {
+  width: 100px;
 }
