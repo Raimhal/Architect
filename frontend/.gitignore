@@ -49,5 +49,9 @@ Thumbs.db
 !.vscode/extensions.json
 *.code-workspace
 
+# Cypress
+cypress/screenshots
+cypress/videos
+
 # Local History for Visual Studio Code
 .history/
