@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Ctor.Application.DTOs;
 
-namespace Ctor.Application.Notification.Interfaces;
+namespace Ctor.Application.Notifications.Interfaces;
 public interface IHubNotification
 {
     Task SendNotif(NotificationDTO notification);

@@ -2,7 +2,7 @@
 
 using System.Threading.Tasks;
 using Ctor.Application.Common.Interfaces;
-using Ctor.Application.Notification.Interfaces;
+using Ctor.Application.Notifications.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 

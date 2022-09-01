@@ -3,6 +3,7 @@ using System;
 using Ctor.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Ctor.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220901142454_CreatedNotificationEntity")]
+    partial class CreatedNotificationEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,29 +23,6 @@ namespace Ctor.Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("Ctor.Domain.Entities.Assignee", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<long>("ProjectId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProjectId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Assignee");
-                });
 
             modelBuilder.Entity("Ctor.Domain.Entities.Building", b =>
                 {
@@ -536,9 +515,6 @@ namespace Ctor.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("text");
-
                     b.Property<string>("RefreshToken")
                         .HasColumnType("text");
 
@@ -607,25 +583,6 @@ namespace Ctor.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Vendor", (string)null);
-                });
-
-            modelBuilder.Entity("Ctor.Domain.Entities.Assignee", b =>
-                {
-                    b.HasOne("Ctor.Domain.Entities.Project", "Project")
-                        .WithMany("Assignees")
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Ctor.Domain.Entities.User", "User")
-                        .WithMany("Assignees")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Project");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Ctor.Domain.Entities.Building", b =>
@@ -803,8 +760,6 @@ namespace Ctor.Infrastructure.Migrations
 
             modelBuilder.Entity("Ctor.Domain.Entities.Project", b =>
                 {
-                    b.Navigation("Assignees");
-
                     b.Navigation("Building");
 
                     b.Navigation("Phases");
@@ -823,8 +778,6 @@ namespace Ctor.Infrastructure.Migrations
 
             modelBuilder.Entity("Ctor.Domain.Entities.User", b =>
                 {
-                    b.Navigation("Assignees");
-
                     b.Navigation("ProjectNote");
                 });
 #pragma warning restore 612, 618

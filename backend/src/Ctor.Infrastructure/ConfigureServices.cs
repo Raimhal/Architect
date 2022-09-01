@@ -57,6 +57,7 @@ public static class ConfigureServices
         services.AddScoped<ICompanyRepository, CompanyRepository>();
         services.AddScoped<IProjectRepository, ProjectRepository>();
         services.AddScoped<IPhaseRepository, PhaseRepository>();
+        services.AddScoped<INotificationRepository, NotificationRepository>();
         services.AddScoped<IRoleRepository, RoleRepository>();
         services.AddScoped<IProjectPhotoRepository, ProjectPhotoRepository>();
         services.AddScoped<IBuildingBlockRepository, BuildingBlockRepository>();
