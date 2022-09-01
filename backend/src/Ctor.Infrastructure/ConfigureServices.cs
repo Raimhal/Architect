@@ -64,6 +64,10 @@ public static class ConfigureServices
         services.AddScoped<ICompanyLogoRepository, CompanyLogoRepository>();
         services.AddScoped<IProjectDocumentRepository, ProjectDocumentRepository>();
         services.AddScoped<IDocumentRepository, DocumentRepository>();
+        services.AddScoped<IMaterialRepository, MaterialRepository>();
+        services.AddScoped<IMaterialTypeRepository, MaterialTypeRepository>();
+        services.AddScoped<IMeasurementRepository, MeasurementRepository>();
+        services.AddScoped<IRequiredMaterialRepository, RequiredMaterialRepository>();
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
         services.AddScoped<ApplicationDbContextInitializer>();
@@ -81,8 +85,6 @@ public static class ConfigureServices
         services.AddScoped<IAddressParsingService, AddressParsingService>();
         services.AddScoped<IGroupsService, GroupsService>();
         services.AddScoped<ICompanyIdGeneratorService, CompanyIdGeneratorService>();
-
-       
 
         if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
         {

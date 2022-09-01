@@ -9,16 +9,14 @@ import { IProjectUpdate } from '../resources/models/project-update';
 import * as ModalDialogAction from '../../../store/actions/modal-dialog.action';
 import { ProjectService } from '../resources/services/project.services';
 import { ErrorService } from '../../error/resources/services/error.services';
-import { HttpErrorResponse } from '@angular/common/http';
 import { AppState } from 'src/app/store';
 import { select, Store } from '@ngrx/store';
-import { selectUserId } from 'src/app/store/selectors/auth.selectors';
-import { selectUserDetailsCompanyId } from '../../administration/state/administration.selectors';
 import * as fromProjectSelectors from './project.selectors';
 import { BuildingApiService } from "../resources/services/building-api.service";
 import { IBuilding } from "../resources/models/building.model";
 import { ProjectFileService } from "../resources/services/project-file.services";
 import * as fromProjectActions from "./project.actions";
+import { ResourceApiService } from '../resources/services/resource-api.service';
 
 
 @Injectable()
@@ -403,13 +401,28 @@ export class ProjectEffects {
     );
   })
 
+  saveRequiredMaterial$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(ProjectActions.saveRequiredMaterials),
+      concatMap((action) =>
+        this.resourcesService.saveRequiredMaterials(action.materials).pipe(
+            switchMap(res => of(ProjectActions.saveRequiredMaterialsSuccess()) ),
+            catchError((error: any) =>
+            of(ProjectActions.saveRequiredMaterialsFailure({ error: serializeError(error) }))
+          )
+        )
+      )
+    )
+  })
+
   constructor(
     private actions$: Actions,
     private projectService: ProjectService,
     private projectFileService: ProjectFileService,
     private errorService: ErrorService,
     private store: Store<AppState>,
-    private buildingService: BuildingApiService
+    private buildingService: BuildingApiService,
+    private resourcesService: ResourceApiService
   ) {
   }
 }

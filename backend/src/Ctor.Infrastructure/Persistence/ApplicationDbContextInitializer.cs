@@ -97,6 +97,264 @@ public class ApplicationDbContextInitializer
 
         await _context.Companies.AddRangeAsync(GenerateCompanies());
 
+        if (!_context.Measurements.Any())
+        {
+            await _context.Measurements.AddRangeAsync(
+               new Measurement
+               {
+                   Id = 1,
+                   Name = "Item"
+               }, new Measurement
+               {
+                   Id = 2,
+                   Name = "Kilo"
+               }, new Measurement
+               {
+                   Id = 3,
+                   Name = "Foot"
+               }, new Measurement
+               {
+                   Id = 4,
+                   Name = "Tons"
+               });
+        }
+        if (!_context.MaterialType.Any())
+        {
+            await _context.MaterialType.AddRangeAsync(
+               new MaterialType
+               {
+                   Id = 1,
+                   Name = "Mud bricks",
+               },
+               new MaterialType
+               {
+                   Id = 2,
+                   Name = "Facing bricks",
+               }, new MaterialType
+               {
+                   Id = 3,
+                   Name = "Extruded bricks",
+               }, new MaterialType
+               {
+                   Id = 4,
+                   Name = "Engineering bricks",
+               }, new MaterialType
+               {
+                   Id = 5,
+                   Name = "Common bricks",
+               }, new MaterialType
+               {
+                   Id = 6,
+                   Name = "Mud bricks",
+               }, new MaterialType
+               {
+                   Id = 7,
+                   Name = "OPC",
+               }, new MaterialType
+               {
+                   Id = 8,
+                   Name = "PPC",
+               }, new MaterialType
+               {
+                   Id = 9,
+                   Name = "White cement",
+               }, new MaterialType
+               {
+                   Id = 10,
+                   Name = "Colored cement",
+               }, new MaterialType
+               {
+                   Id = 11,
+                   Name = "Hydrographic cement",
+               }, new MaterialType
+               {
+                   Id = 12,
+                   Name = "High-alumina cement",
+               }, new MaterialType
+               {
+                   Id = 13,
+                   Name = "Portland slag cement",
+               }, new MaterialType
+               {
+                   Id = 14,
+                   Name = "Float glass",
+               },
+               new MaterialType
+               {
+                   Id = 15,
+                   Name = "Shatterproof glass",
+               }, new MaterialType
+               {
+                   Id = 16,
+                   Name = "Laminated glass",
+               }, new MaterialType
+               {
+                   Id = 17,
+                   Name = "Extra clean glass",
+               }, new MaterialType
+               {
+                   Id = 18,
+                   Name = "Chromatic glass",
+               }, new MaterialType
+               {
+                   Id = 19,
+                   Name = "Tinted glass",
+               }, new MaterialType
+               {
+                   Id = 20,
+                   Name = "Toughened glass",
+               }, new MaterialType
+               {
+                   Id = 21,
+                   Name = "Glass blocks",
+               }, new MaterialType
+               {
+                   Id = 22,
+                   Name = "Glass wool",
+               }, new MaterialType
+               {
+                   Id = 23,
+                   Name = "Insulated glazed units",
+               }, new MaterialType
+               {
+                   Id = 24,
+                   Name = "River sand",
+               },
+               new MaterialType
+               {
+                   Id = 25,
+                   Name = "Concrete sand",
+               }, new MaterialType
+               {
+                   Id = 26,
+                   Name = "Coarse sand",
+               }, new MaterialType
+               {
+                   Id = 27,
+                   Name = "Utility sand",
+               }, new MaterialType
+               {
+                   Id = 28,
+                   Name = "Pit sand",
+               }, new MaterialType
+               {
+                   Id = 29,
+                   Name = "Fine sand",
+               }, new MaterialType
+               {
+                   Id = 30,
+                   Name = "Fill sand",
+               }, new MaterialType
+               {
+                   Id = 31,
+                   Name = "Desert sand",
+               }, new MaterialType
+               {
+                   Id = 32,
+                   Name = "Beach sand",
+               }, new MaterialType
+               {
+                   Id = 33,
+                   Name = "Marine sand",
+               }, new MaterialType
+               {
+                   Id = 34,
+                   Name = "Basalt",
+               }, new MaterialType
+               {
+                   Id = 35,
+                   Name = "Granite",
+               }, new MaterialType
+               {
+                   Id = 36,
+                   Name = "Sandstone",
+               }, new MaterialType
+               {
+                   Id = 37,
+                   Name = "Slate",
+               },
+               new MaterialType
+               {
+                   Id = 38,
+                   Name = "Limestone",
+               }, new MaterialType
+               {
+                   Id = 39,
+                   Name = "Laterite",
+               }, new MaterialType
+               {
+                   Id = 40,
+                   Name = "Marble",
+               }, new MaterialType
+               {
+                   Id = 41,
+                   Name = "Gneiss",
+               }, new MaterialType
+               {
+                   Id = 42,
+                   Name = "Quartzite",
+               }, new MaterialType
+               {
+                   Id = 43,
+                   Name = "Travertine",
+               }, new MaterialType
+               {
+                   Id = 44,
+                   Name = "Pinewood",
+               }, new MaterialType
+               {
+                   Id = 45,
+                   Name = "Cedarwood",
+               }, new MaterialType
+               {
+                   Id = 46,
+                   Name = "Firwood",
+               }
+               , new MaterialType
+               {
+                   Id = 47,
+                   Name = "Hemlock timber",
+               }, new MaterialType
+               {
+                   Id = 48,
+                   Name = "Teak wood",
+               },
+               new MaterialType
+               {
+                   Id = 49,
+                   Name = "Oakwood",
+               }, new MaterialType
+               {
+                   Id = 50,
+                   Name = "Maple wood",
+               }, new MaterialType
+               {
+                   Id = 51,
+                   Name = "Cherry wood",
+               }, new MaterialType
+               {
+                   Id = 52,
+                   Name = "Walnut wood",
+               }, new MaterialType
+               {
+                   Id = 53,
+                   Name = "Beechwood",
+               }, new MaterialType
+               {
+                   Id = 54,
+                   Name = "Mahogany",
+               }, new MaterialType
+               {
+                   Id = 55,
+                   Name = "Sal wood",
+               }, new MaterialType
+               {
+                   Id = 56,
+                   Name = "Plywood",
+               });
+
+        }
+
         await _context.SaveChangesAsync();
     }
 

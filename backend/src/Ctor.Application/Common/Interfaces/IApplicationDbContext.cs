@@ -17,6 +17,10 @@ public interface IApplicationDbContext
     IAssigneeRepository Assignees { get; }
     IProjectDocumentRepository ProjectDocuments { get; }
     IDocumentRepository Documents { get; }
+    IMaterialRepository Materials { get; }
+    IMaterialTypeRepository MaterialType { get; }
+    IMeasurementRepository Measurements { get; }
+    IRequiredMaterialRepository RequiredMaterials { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

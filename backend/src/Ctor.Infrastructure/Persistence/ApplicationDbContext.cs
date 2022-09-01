@@ -21,7 +21,10 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     private readonly Lazy<INotificationRepository> _notificationRepositoryLazy;
     private readonly Lazy<IProjectDocumentRepository> _projectDocumentRepository;
     private readonly Lazy<IDocumentRepository> _documentRepository;
-
+    private readonly Lazy<IMaterialRepository> _materialRepository;
+    private readonly Lazy<IMaterialTypeRepository> _materialTypeRepository;
+    private readonly Lazy<IMeasurementRepository> _measurementRepository;
+    private readonly Lazy<IRequiredMaterialRepository> _requiredMaterialsRepository;
     public IUserRepository Users => _userRepositoryLazy.Value;
     public IRoleRepository Roles => _roleRepositoryLazy.Value;
     public ICompanyRepository Companies => _companyRepositoryLazy.Value;
@@ -35,7 +38,10 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     public IAssigneeRepository Assignees => _assigneeRepository.Value;
     public IProjectDocumentRepository ProjectDocuments => _projectDocumentRepository.Value;
     public IDocumentRepository Documents => _documentRepository.Value;
-
+    public IMaterialRepository Materials => _materialRepository.Value;
+    public IMaterialTypeRepository MaterialType => _materialTypeRepository.Value;
+    public IMeasurementRepository Measurements => _measurementRepository.Value;
+    public IRequiredMaterialRepository RequiredMaterials => _requiredMaterialsRepository.Value;
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IRepositoryFactory repositoryFactory)
         : base(options)
     {
@@ -52,7 +58,10 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
         _notificationRepositoryLazy = repositoryFactory.GetInstanse<Lazy<INotificationRepository>>();
         _projectDocumentRepository = repositoryFactory.GetInstanse<Lazy<IProjectDocumentRepository>>();
         _documentRepository = repositoryFactory.GetInstanse<Lazy<IDocumentRepository>>();
-
+        _materialRepository = repositoryFactory.GetInstanse<Lazy<IMaterialRepository>>();
+        _materialTypeRepository = repositoryFactory.GetInstanse<Lazy<IMaterialTypeRepository>>();
+        _measurementRepository = repositoryFactory.GetInstanse<Lazy<IMeasurementRepository>>();
+        _requiredMaterialsRepository = repositoryFactory.GetInstanse<Lazy<IRequiredMaterialRepository>>();
     }
     protected override void OnModelCreating(ModelBuilder builder)
     {       
