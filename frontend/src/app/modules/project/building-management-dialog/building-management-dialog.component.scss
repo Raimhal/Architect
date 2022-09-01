@@ -1,0 +1,69 @@
+@use '../../../shared/colors' as colors;
+
+.dialog-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.dialog-header > h3 {
+  margin-bottom: 0;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.add-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 24px
+}
+
+.progress-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 8px
+}
+
+.add-subsection {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  padding: 10px 12px;
+  color: colors.$primary4;
+  align-items: center;
+}
+
+.add-subsection:hover {
+  cursor: pointer;
+}
+
+.subsection-list-item {
+  padding: 5px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.subsection-list-item > mat-checkbox {
+  margin-right: auto;
+  color: colors.$gray7;
+}
+
+:host::ng-deep{
+  .mat-progress-bar-fill::after {
+    background: colors.$orange3;
+  }
+  .mat-progress-bar {
+    height: 8px;
+  }
+  .mat-progress-bar-buffer{
+    background: colors.$white;
+  }
+  .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background, .mat-checkbox-checked.mat-accent .mat-checkbox-background {
+    background-color: colors.$primary4;
+  }
+}

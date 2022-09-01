@@ -5,6 +5,7 @@ import * as fromAdministrationActions from '../../modules/administration/state/a
 import * as fromCompanyActions from '../../modules/company/state/company.actions';
 import { tap } from 'rxjs/operators';
 import {NgxSpinnerService} from "ngx-spinner";
+import * as fromProjectActions from '../../modules/project/state/project.actions';
 
 @Injectable()
 export class SpinnerEffects {
@@ -18,7 +19,10 @@ export class SpinnerEffects {
           fromAdministrationActions.submitCompanyInformationForm,
           fromCompanyActions.submitEditingCompanyProfileForm,
           fromCompanyActions.loadCompany,
-          fromCompanyActions.loadCropImageStart
+          fromCompanyActions.loadCropImageStart,
+          fromAdministrationActions.submitCompanyInformationForm,
+          fromProjectActions.loadBuildingWithBuildingBlocks,
+          fromProjectActions.addNewBuilding
         ),
         tap(() =>  {
           this.spinner.show();
@@ -38,6 +42,10 @@ export class SpinnerEffects {
           fromAdministrationActions.loadDetailedCompanySuccess,
           fromAdministrationActions.loadDetailedCompanyFailure,
           fromAdministrationActions.submitCompanyInformationFormSuccess,
+          fromAdministrationActions.submitCompanyInformationFormFailure,
+          fromProjectActions.loadBuildingWithBuildingBlocksSuccess,
+          fromProjectActions.loadBuildingWithBuildingBlocksFailure,
+          fromProjectActions.addNewBuildingFailure,
           fromAdministrationActions.submitCompanyInformationFormFailure,
           fromCompanyActions.submitEditingCompanyProfileFormSuccess,
           fromCompanyActions.submitEditingCompanyProfileFormFailure,

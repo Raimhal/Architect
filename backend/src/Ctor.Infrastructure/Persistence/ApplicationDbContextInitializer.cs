@@ -193,13 +193,26 @@ public class ApplicationDbContextInitializer
             .ToArray();
     }
 
+    private record BuildingSeed(string BuildingName);
+
+    private ICollection<BuildingSeed> _buildings = new BuildingSeed[]
+    {
+        new("First floor"),
+        new("Parking"),
+        new("Park"),
+        new("Second floor"),
+    };
+
     private ICollection<Building> GenerateBuildings()
     {
         return Enumerable.Range(0, _faker.Random.Int(1, 3))
-            .Select(_ => new Building
-            {
-                BuildingType = _faker.Random.Enum<BuildingType>(),
-                BlockType = _faker.Random.Enum<BuildingBlockType>(),
+            .Select(_ => {
+                var building = _faker.Random.CollectionItem(_buildings);
+
+                return new Building
+                {
+                    BuildingName = building.BuildingName,
+                };
             })
             .ToArray();
     }

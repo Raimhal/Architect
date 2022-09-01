@@ -62,9 +62,9 @@ export class CompanyInformationComponent implements OnInit {
     this.companyInformationForm$ = this.store.pipe(
       select(AdministrationSelectors.selectCompanyInformationForm)
     );
-    
+
     this.isEditEnabled$ = this.store.pipe(select(AdministrationSelectors.selectFormEnabled))
-    
+
     this.addSvgIcons();
   }
   setId() {

@@ -31,11 +31,9 @@ namespace Ctor.Infrastructure.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
                     NpgsqlPropertyBuilderExtensions.HasIdentityOptions(b.Property<long>("Id"), 100L, null, null, null, null, null);
 
-                    b.Property<int>("BlockType")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("BuildingType")
-                        .HasColumnType("integer");
+                    b.Property<string>("BuildingName")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<long?>("ProjectId")
                         .IsRequired()
@@ -71,6 +69,9 @@ namespace Ctor.Infrastructure.Migrations
                     b.Property<string>("Details")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<bool>("IsDone")
+                        .HasColumnType("boolean");
 
                     b.HasKey("Id");
 
@@ -568,7 +569,7 @@ namespace Ctor.Infrastructure.Migrations
             modelBuilder.Entity("Ctor.Domain.Entities.BuildingBlock", b =>
                 {
                     b.HasOne("Ctor.Domain.Entities.Building", "Building")
-                        .WithMany("BuildingBlock")
+                        .WithMany("BuildingBlocks")
                         .HasForeignKey("BuildingId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -706,7 +707,7 @@ namespace Ctor.Infrastructure.Migrations
 
             modelBuilder.Entity("Ctor.Domain.Entities.Building", b =>
                 {
-                    b.Navigation("BuildingBlock");
+                    b.Navigation("BuildingBlocks");
                 });
 
             modelBuilder.Entity("Ctor.Domain.Entities.Company", b =>

@@ -9,6 +9,8 @@ import { ProjectStatus } from '../resources/models/status';
 import * as ProjectActions from './project.actions';
 import * as fromProjectInformationForm from "../resources/forms/project-information-form"
 import { IProjectDetailed } from '../resources/models/project-details';
+import {IBuilding} from "../resources/models/building.model";
+import {error} from "@angular/compiler-cli/src/transformers/util";
 
 export const projectFeatureKey = 'project';
 
@@ -19,6 +21,8 @@ export interface State {
   currentlyOpenProjectPhotos: IProjectPhoto[],
   project: IProjectDetailed,
   projectInformationForm: FormGroupState<fromProjectInformationForm.ProjectInformationFormValue>,
+  buildings : IBuilding[],
+  currentlyRevealedBuilding : number | null
   error: string
 }
 const initialProjectState: State = {
@@ -36,6 +40,8 @@ const initialProjectState: State = {
   project: {} as IProjectDetailed,
   currentlyOpenProjectPhotos: [],
   projectInformationForm: fromProjectInformationForm.initialFormState,
+  buildings: [],
+  currentlyRevealedBuilding: null
 }
 
 export const reducer = createReducer(
@@ -90,7 +96,7 @@ export const reducer = createReducer(
     ProjectActions.loadDisabledProjectInformationForm,
     (state, action) => ({
       ...state,
-      projectInformationForm: 
+      projectInformationForm:
         createFormGroupState<fromProjectInformationForm.ProjectInformationFormValue>(
           fromProjectInformationForm.FORM_ID,
           {
@@ -131,4 +137,23 @@ export const reducer = createReducer(
       },
     }
   }),
+  on(ProjectActions.loadBuildingWithBuildingBlocksSuccess, (state, action) =>{
+    return {
+      ...state,
+      buildings: action.result
+    }
+  }),
+  on(ProjectActions.loadBuildingWithBuildingBlocksFailure, (state, action) => {
+    return {
+      ...state,
+      error: action.error
+    }
+  }),
+  on(ProjectActions.revealBuildingCard, (state, action) => {
+    return {
+      ...state,
+      currentlyRevealedBuilding: state.currentlyRevealedBuilding == action.id ? null : action.id
+    }
+  })
+
 );

@@ -29,12 +29,23 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         _mapper = mapper;
     }
 
+    public Task<List<TResult>> Get<TResult>(Expression<Func<T, bool>> filter)
+    {
+        var query = GetInternal(filter);
+        return query.ProjectTo<TResult>(_mapper.Value.ConfigurationProvider).ToListAsync();
+    }
+
     public Task<List<T>> Get(Expression<Func<T, bool>> filter)
+    {
+        var query = GetInternal(filter);
+        return query.ToListAsync();
+    }
+
+    private IQueryable<T> GetInternal(Expression<Func<T, bool>> filter)
     {
         IQueryable<T> query = table;
 
-        query = query.Where(filter);
-        return query.ToListAsync();
+        return query.Where(filter);
     }
 
     public Task<List<T>> GetAll()

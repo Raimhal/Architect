@@ -3,4 +3,5 @@
 namespace Ctor.Domain.Repositories;
 public interface IBuildingRepository : IGenericRepository<Building>
 {
+
 }

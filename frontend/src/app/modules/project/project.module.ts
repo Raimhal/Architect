@@ -23,6 +23,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { MatSelectModule } from '@angular/material/select';
+import { BuildingSectionComponent } from './building-section/building-section.component';
+import { BuildingsListItemComponent } from './buildings-list-item/buildings-list-item.component';
+import {MatProgressBarModule} from "@angular/material/progress-bar";
+import {MatCheckboxModule} from "@angular/material/checkbox";
+import { BuildingAddingListItemComponent } from './building-adding-list-item/building-adding-list-item.component';
+import { BuildingManagementDialogComponent } from './building-management-dialog/building-management-dialog.component';
 
 
 @NgModule({
@@ -49,7 +55,9 @@ import { MatSelectModule } from '@angular/material/select';
     MatButtonModule,
     FormsModule,
     ReactiveFormsModule,
-    NgrxFormsModule
+    NgrxFormsModule,
+    MatProgressBarModule,
+    MatCheckboxModule
   ],
   declarations: [
     ProjectComponent,
@@ -59,6 +67,10 @@ import { MatSelectModule } from '@angular/material/select';
     ProjectPhotosComponent,
     AddProjectPhotosComponent,
     ImagePipe,
+    BuildingSectionComponent,
+    BuildingsListItemComponent,
+    BuildingAddingListItemComponent,
+    BuildingManagementDialogComponent,
   ]
 })
 export class ProjectModule { }

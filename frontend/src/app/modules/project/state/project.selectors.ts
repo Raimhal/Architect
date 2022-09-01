@@ -31,8 +31,8 @@ export const selectProjectInformationForm = createSelector(
   (state) => state.projectInformationForm
 );
 
- 
- 
+
+
 
 export const selectProjectPhotos = createSelector(
   selectProjectState,
@@ -47,4 +47,15 @@ export const selectCurrentProjectId = createSelector(
 export const selectCurrentProjectStatus = createSelector(
   selectProjectInformation,
   (state): ProjectStatus | null => state?.status ?? null
+);
+
+
+export const selectProjectBuildings = createSelector(
+  selectProjectState,
+  (state) => state.buildings
+);
+
+export const selectCurrentlyRevealedBuilding = createSelector(
+  selectProjectState,
+  (state) => state.currentlyRevealedBuilding
 );

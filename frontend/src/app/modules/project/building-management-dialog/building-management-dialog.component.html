@@ -1,0 +1,48 @@
+<app-modal-dialog-savecancel *ngIf="building$ | async as building">
+  <div header-content class="dialog-header">
+    <h3 *ngIf="!isEditing">{{building.buildingName}}</h3>
+    <app-input *ngIf="isEditing" [control]="buildingName"></app-input>
+    <button mat-icon-button *ngIf="!isEditing" (click)="onEdit(building.buildingName)">
+      <mat-icon svgIcon="pencil"></mat-icon>
+    </button>
+    <button mat-icon-button *ngIf="!isEditing" (click)="onDelete(building.id)">
+      <mat-icon svgIcon="trash"></mat-icon>
+    </button>
+    <button mat-icon-button *ngIf="isEditing" (click)="onSubmit(building)">
+      <mat-icon svgIcon="check"></mat-icon>
+    </button>
+    <button mat-icon-button *ngIf="isEditing" (click)="isEditing=false;buildingName.reset()">
+      <mat-icon svgIcon="cross"></mat-icon>
+    </button>
+  </div>
+  <div class="content">
+    <div class="add-buttons">
+      <button>Add services</button>
+      <button>Add materials</button>
+      <button>Add documents</button>
+    </div>
+    <div class="progress-bar">
+      <span>{{building.buildingProgress}}%</span>
+      <mat-progress-bar mode="determinate" value="{{building.buildingProgress}}"></mat-progress-bar>
+    </div>
+    <div>
+      <div class="add-subsection" (click)="isAdding=!isAdding">
+        <mat-icon svgIcon="plus"></mat-icon>
+        <span class="small-text">Add section</span>
+      </div>
+    </div>
+    <app-building-adding-list-item *ngIf="isAdding"
+                                   [placeholder]="'Add A Project Building Blocks'"
+                                   (cancelClicked)="isAdding=false"
+                                   (submitClicked)="onSubmitAdding($event, building.id)"></app-building-adding-list-item>
+    <div class="subsection-list-item"
+         *ngFor="let buildingBlock of building.buildingBlocks"
+         (mouseover)="isMouseOverSubsectionListItem=true"
+         (mouseleave)="isMouseOverSubsectionListItem=false">
+      <mat-checkbox (change)="editBuildingBlock($event.checked, buildingBlock)" [checked]="buildingBlock.isDone">{{buildingBlock.buildingBlockName}}</mat-checkbox>
+      <button mat-icon-button [class.hidden]="!isMouseOverSubsectionListItem" (click)="deleteSubsection(buildingBlock.id)">
+        <mat-icon svgIcon="cross"></mat-icon>
+      </button>
+    </div>
+  </div>
+</app-modal-dialog-savecancel>

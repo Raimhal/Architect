@@ -27,7 +27,7 @@ export class ProjectDashboardComponent implements OnInit {
     map(role => role === UserRole.OperationalManager || role === UserRole.ProjectManager)
   );
 
-  project$?: Observable<IProjectDetailed> 
+  project$?: Observable<IProjectDetailed>
 
   currentStatus$ = this.store.select(fromProjectSelectors.selectCurrentProjectStatus);
   selectedStatus: number = 0;

@@ -13,9 +13,7 @@ public class BuildingConfiguration : IEntityTypeConfiguration<Building>
 
         builder.ToTable("Building").HasKey(x => x.Id);
         builder.HasIndex(x => x.Id).IsUnique();
-        builder.Property(x => x.BuildingType).IsRequired();
-        builder.Property(x => x.BlockType).IsRequired(); ;
-        builder.HasMany(x => x.BuildingBlock)
+        builder.HasMany(x => x.BuildingBlocks)
                .WithOne(x => x.Building)
                .OnDelete(DeleteBehavior.Cascade);
     }

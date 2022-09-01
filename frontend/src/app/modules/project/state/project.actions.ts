@@ -8,6 +8,8 @@ import { IProjectOverview } from '../resources/models/project-overview';
 import { IProjectPhoto } from '../resources/models/project-photo.model';
 import { IProjectUpdate } from '../resources/models/project-update';
 import { ProjectStatus } from '../resources/models/status';
+import {IBuilding} from "../resources/models/building.model";
+import {IBuildingBlock} from "../resources/models/building-block.model";
 
 
 export const getDetailedProject = createAction(
@@ -132,4 +134,89 @@ export const changeProjectStatusSuccess = createAction(
 export const changeProjectStatusFailure = createAction(
   '[Project] change Project Status Failure',
   props<{ error: any }>()
+);
+
+export const loadBuildingWithBuildingBlocks = createAction(
+  '[Building Section Component] Load Building With Building Blocks',
+  props<{projectId : number}>()
+);
+
+export const loadBuildingWithBuildingBlocksSuccess = createAction(
+  '[Project Effect] Load Building With Building Blocks Success',
+  props<{result : IBuilding[]}>()
+);
+
+export const loadBuildingWithBuildingBlocksFailure = createAction(
+  '[Project Effect] Load Building With Building Blocks Failure',
+  props<{error: any}>()
+);
+
+export const addNewBuilding = createAction(
+  '[Building Section Component] Add New Building',
+  props<{buildingName: string}>()
+);
+
+export const addNewBuildingFailure = createAction(
+  '[Project Effect] Add New Building Failure',
+  props<{error : any}>()
+);
+
+export const addNewBuildingBlock = createAction(
+  '[Building Section Component] Add New Building Block',
+  props<{buildingBlock: IBuildingBlock}>()
+);
+
+export const addNewBuildingBlockSuccess = createAction(
+  '[Project Effect] Add New Building Block Success',
+  props<{result : IBuildingBlock}>()
+);
+
+export const addNewBuildingBlockFailure = createAction(
+  '[Project Effect] Add New Building Block Failure',
+  props<{error : any}>()
+);
+
+export const updateBuilding = createAction(
+  '[Building Management Dialog] Update Building',
+  props<{building: IBuilding}>()
+);
+
+export const updateBuildingFailure = createAction(
+  '[Building Management Dialog] Update Building Failure',
+  props<{error: any}>()
+);
+
+export const deleteBuilding = createAction(
+  '[Building Management Dialog] Delete Building',
+  props<{id: number}>()
+);
+
+export const deleteBuildingFailure = createAction(
+  '[Building Management Dialog] Delete Building Failure',
+  props<{error: any}>()
+);
+
+export const deleteBuildingBlock = createAction(
+  '[Building Management Dialog] Delete Building Block',
+  props<{id: number}>()
+);
+
+export const deleteBuildingBlockFailure = createAction(
+  '[Building Management Dialog] Delete Building Block Failure',
+  props<{error: any}>()
+);
+
+export const updateBuildingBlock = createAction(
+  '[Building Management Dialog] Update Building Block',
+  props<{buildingBlock: IBuildingBlock}>()
+);
+
+export const updateBuildingBlockFailure = createAction(
+  '[Building Management Dialog] Update Building Block Failure',
+  props<{error: any}>()
+);
+
+export const revealBuildingCard = createAction(
+  '[Building List Item Component] Reveal Building Card',
+  props<{id: number | null}>()
 );

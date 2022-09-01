@@ -16,6 +16,7 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     private readonly Lazy<IRoleRepository> _roleRepositoryLazy;
     private readonly Lazy<IProjectPhotoRepository> _projectPhotoRepository;
     private readonly Lazy<ICompanyLogoRepository> _companyLogoRepository;
+    private readonly Lazy<IBuildingBlockRepository> _buildingBlockRepository;
 
     public IUserRepository Users => _userRepositoryLazy.Value;
     public IRoleRepository Roles => _roleRepositoryLazy.Value;
@@ -25,6 +26,7 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     public IPhaseRepository Phases=> _phaseRepositoryLazy.Value;
     public IProjectPhotoRepository ProjectsPhotos => _projectPhotoRepository.Value;
     public ICompanyLogoRepository CompanyLogos => _companyLogoRepository.Value;
+    public IBuildingBlockRepository BuildingBlocks => _buildingBlockRepository.Value;
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IRepositoryFactory repositoryFactory)
         : base(options)
@@ -37,6 +39,7 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
         _phaseRepositoryLazy = repositoryFactory.GetInstanse<Lazy<IPhaseRepository>>();
         _projectPhotoRepository = repositoryFactory.GetInstanse <Lazy<IProjectPhotoRepository>>();
         _companyLogoRepository = repositoryFactory.GetInstanse<Lazy<ICompanyLogoRepository>>();
+        _buildingBlockRepository = repositoryFactory.GetInstanse<Lazy<IBuildingBlockRepository>>();
     }
     protected override void OnModelCreating(ModelBuilder builder)
     {       
