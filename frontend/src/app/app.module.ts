@@ -39,13 +39,16 @@ import {MatDialogModule} from "@angular/material/dialog";
 import { MenuEffects } from './store/effects/menu.effects';
 import { AdministrationEffects } from './modules/administration/state/administration.effects';
 import { NotificationService } from './shared/services/notification.service';
+import { NotificationsComponent } from './modules/notifications/notifications.component';
+import { NotificationsEffects } from './store/effects/notifi.effects';
 
 @NgModule({
   declarations: [
     AppComponent,
     CreateCompany,
     MenuComponent,
-    LandingPageComponent
+    LandingPageComponent,
+    NotificationsComponent
   ],
   imports: [
     SharedModule,
@@ -76,7 +79,8 @@ import { NotificationService } from './shared/services/notification.service';
       AlertEffects,
       RouteEffects,
       ModalEffects,
-      AdministrationEffects
+      AdministrationEffects,
+      NotificationsEffects
     ]),
     AdministrationModule,
     ProjectModule,

@@ -10,12 +10,12 @@ using Ctor.Domain.Entities;
 namespace Ctor.Application.Notifications.Queries.GetNotifListByUserId;
 public class NotificationDto : IMapFrom<Notification>
 {
-    public int Id { get; set; }
+    public long Id { get; set; }
     public string Type { get; set; }
     public string Message { get; set; }
 
     public void Mapping(Profile profile)
     {
-        profile.CreateMap<Building, NotificationDto>();
+        profile.CreateMap<Notification, NotificationDto>();
     }
 }

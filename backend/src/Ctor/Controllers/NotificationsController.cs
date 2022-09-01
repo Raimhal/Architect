@@ -11,10 +11,10 @@ namespace Ctor.Controllers;
 public class NotificationsController : ApiControllerBase
 {
     [HttpGet]
-    [Route("{userId:long}")]
-    public async Task<IActionResult> GetAllNotificationsForUser(long id)
+    [Route("{userId}")]
+    public async Task<IActionResult> GetAllNotificationsForUser(long userId)
     {
-        return Ok(await Mediator.Send(new GetNotifListByUserIdQuery(id)));
+        return Ok(await Mediator.Send(new GetNotifListByUserIdQuery(userId)));
     }
 
     [HttpDelete("delete/{id:long}")]
