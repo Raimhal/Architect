@@ -1,3 +1,4 @@
+using Ctor;
 using Ctor.Application;
 using Ctor.Hubs;
 using Ctor.Infrastructure;
@@ -70,6 +71,7 @@ app.UseEndpoints(endpoints =>
 });
 
 app.MapControllers();
+app.ConfigureBus();
 
 app.Run();
 

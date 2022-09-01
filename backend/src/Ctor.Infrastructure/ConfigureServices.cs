@@ -1,6 +1,7 @@
 using System.Text;
 using Ctor.Application.Auth.Interfaces;
 using Ctor.Application.Common.Interfaces;
+using Ctor.Application.Common.Interfaces.Bus;
 using Ctor.Application.Common.Models;
 using Ctor.Domain.Repositories;
 using Ctor.Infrastructure.Core;
@@ -11,6 +12,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Ctor.Infrastructure;
@@ -32,7 +34,7 @@ public static class ConfigureServices
                 options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"),
                     builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
         }
-    
+
         services.Configure<MailSetting>((mailSetting) => {
             mailSetting.ApiSecret = Environment.GetEnvironmentVariable("ApiSecret");
             mailSetting.ApiKey = Environment.GetEnvironmentVariable("ApiKey");
@@ -44,7 +46,7 @@ public static class ConfigureServices
         {
             fileManipulatorSettings.FolderPath = configuration["FilesFolder"];
         });
-
+        
         services.AddScoped<IRepositoryFactory, RepositoryFactory>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IBuildingRepository, BuildingRepository>();
@@ -70,6 +72,18 @@ public static class ConfigureServices
         services.AddScoped<IFileManipulatorService, FileManipulatorService>();
         services.AddScoped<IAddressParsingService, AddressParsingService>();
         services.AddScoped<IGroupsService, GroupsService>();
+
+        services.AddTransient<IEventBus, RabbitMqBus>(sp =>
+        {
+            IServiceScopeFactory scopeFactory = sp.GetRequiredService<IServiceScopeFactory>();
+            MessageBrokerSettings settings = new(
+                configuration["MessageBroker:HostName"],
+                Convert.ToUInt16(configuration["MessageBroker:Port"]), 
+                configuration["MessageBroker:UserName"],
+                configuration["MessageBroker:Password"]);
+
+            return new RabbitMqBus(scopeFactory, settings, sp.GetService<ILogger<RabbitMqBus>>());
+        });
 
         services.AddAuthentication(opt =>
         {

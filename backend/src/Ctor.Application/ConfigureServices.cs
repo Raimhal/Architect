@@ -1,4 +1,5 @@
 using System.Reflection;
+using Ctor.Application.BusEventHandlers.BusTestReceive;
 using Ctor.Application.Common.Behaviours;
 using FluentValidation;
 using MediatR;
@@ -17,6 +18,8 @@ public static class ConfigureServices
         // services.AddTransient(typeof(IPipelineBehavior<,>), typeof(AuthorizationBehaviour<,>));
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehaviour<,>));
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
+        // bus subscription handler
+        services.AddTransient<BusTestReceiveEventHandler>();
 
         return services;
     }
