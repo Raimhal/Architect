@@ -17,3 +17,16 @@ export const loadNotifisFailure = createAction(
   '[Notifi] Load Notifi Failure',
   props<{ error: any }>()
 );
+
+export const deleteNotifi = createAction( 
+  '[Notifi] Delete Notifi',
+  props<{ id: number, userId: number}>()
+);
+
+export const deleteNotifiSuccess = createAction(
+  '[Notifi] Delete Notifi Success'
+);
+
+export const deleteNotifiFailure = createAction(
+  '[Notifi] Delete Notifi Failure'
+);

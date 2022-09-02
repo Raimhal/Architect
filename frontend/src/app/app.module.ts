@@ -41,6 +41,7 @@ import { AdministrationEffects } from './modules/administration/state/administra
 import { NotificationService } from './shared/services/notification.service';
 import { NotificationsComponent } from './modules/notifications/notifications.component';
 import { NotificationsEffects } from './store/effects/notifi.effects';
+import { NotificationsModule } from './modules/notifications/notifications.module';
 
 @NgModule({
   declarations: [
@@ -98,7 +99,8 @@ import { NotificationsEffects } from './store/effects/notifi.effects';
     MatTabsModule,
     ProjectModule,
     CompanyModule,
-    EffectsModule.forFeature([MenuEffects])
+    EffectsModule.forFeature([MenuEffects]),
+    NotificationsModule
   ],
   providers: [NotificationService],
   bootstrap: [AppComponent],

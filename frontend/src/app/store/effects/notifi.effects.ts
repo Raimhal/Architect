@@ -23,5 +23,19 @@ export class NotificationsEffects {
       ), 
   );
 
+  deleteNotif$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(fromNotifiActions.deleteNotifi),
+        mergeMap((action) =>
+          this.notifiApiService.deleteNotification(action.id).pipe(
+            map(() =>
+              fromNotifiActions.loadNotifis({ userId: action.userId })
+            )
+          )
+          )
+      )
+  )
+
   constructor(private actions$: Actions, private notifiApiService: NotifiApiService) { }
 }

@@ -18,7 +18,7 @@ public class NotificationsController : ApiControllerBase
     }
 
     [HttpDelete("delete/{id:long}")]
-    public async Task<IActionResult> DeleteProjectPhotoById(long id)
+    public async Task<IActionResult> DeleteNotificationById(long id)
     {
         await Mediator.Send(new DeleteNotificationByIdCommand(id));
         return NoContent();

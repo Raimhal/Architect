@@ -75,4 +75,9 @@ export class NotificationService {
     this.started = false;
     this.UserId = undefined;
   }
+
+  deleteNotif(notiid: number) {
+    if (this.UserId != undefined)
+    this.store.dispatch(fromNotifiActions.deleteNotifi({ id: notiid, userId: this.UserId }));
+  }
 }
