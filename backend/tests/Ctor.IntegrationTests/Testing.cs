@@ -26,6 +26,7 @@ public partial class Testing : IDisposable
 
         _client = _factory.CreateClient();
     }
+
     public async Task<TResponse> SendAsync<TResponse>(IRequest<TResponse> request)
     {
         using var scope = _scopeFactory.CreateScope();
@@ -43,23 +44,25 @@ public partial class Testing : IDisposable
     public async Task<HttpClient> RunAsOperationalManagerAsync()
     {
         var tokenProvider = _factory.Services.GetRequiredService<ITokenProvider>();
+        var token = tokenProvider.GenerateAccessToken(2, UserRoles.OperationalManager, 1);
 
-        var token = tokenProvider.GenerateAccessToken(2, UserRoles.Admin);
         _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.Value);
+
         return _client;
     }
 
     public async Task<HttpClient> RunAsAdministratorAsync()
     {
         var tokenProvider = _factory.Services.GetRequiredService<ITokenProvider>();
+        var token = tokenProvider.GenerateAccessToken(1, UserRoles.Admin, null);
 
-        var token = tokenProvider.GenerateAccessToken(1, UserRoles.Admin);
         _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.Value);
+
         return _client;
     }
 
     public async Task<TEntity?> FindAsync<TEntity>(params object[] keyValues)
-    where TEntity : class
+        where TEntity : class
     {
         using var scope = _scopeFactory.CreateScope();
 
@@ -91,6 +94,6 @@ public partial class Testing : IDisposable
 
     public void Dispose()
     {
-        //tier down
+        // tear down
     }
 }

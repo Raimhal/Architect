@@ -22,6 +22,7 @@ public class Project : BaseEntity
     public virtual ICollection<ProjectDocument> ProjectDocument { get; set; }
     public virtual ICollection<ProjectNote> ProjectNote { get; set; }
     public virtual ICollection<ProjectPhoto> ProjectPhotos { get; set; }
+    public ICollection<Assignee> Assignees { get; set; }
 
     public long CompanyId { get; set; }
     public Company Company { get; set; }

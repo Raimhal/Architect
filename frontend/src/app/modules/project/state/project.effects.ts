@@ -279,6 +279,37 @@ export class ProjectEffects {
     )
   );
 
+  getProjectTeam$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(ProjectActions.getProjectTeam),
+      concatMap((action) =>
+        this.projectService.getProjectTeam(action.projectId).pipe(
+          map(response => ProjectActions.getProjectTeamSuccess({ response  })),
+          catchError((error: any) =>
+            of(ProjectActions.getProjectTeamFailure({ error }))
+          )
+        )
+      )
+    );
+  });
+
+  setProjectTeam$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(ProjectActions.setProjectTeam),
+      concatMap((action) =>
+        this.projectService.setProjectTeam(action.projectId, action.userIds).pipe(
+          map(response => {
+            this.store.dispatch(ProjectActions.getProjectTeam({ projectId: action.projectId }));
+            return ProjectActions.setProjectTeamSuccess();
+          }),
+          catchError((error: any) =>
+            of(ProjectActions.setProjectTeamFailure({ error }))
+          )
+        )
+      )
+    );
+  });
+
   constructor(
     private actions$: Actions,
     private projectService: ProjectService,

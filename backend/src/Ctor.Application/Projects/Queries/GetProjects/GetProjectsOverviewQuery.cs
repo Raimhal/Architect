@@ -19,7 +19,6 @@ public record GetProjectsOverviewQuery(ProjectPaginationQueryDTO QueryModel) : I
 
 public class GetProjectsOverviewQueryHandler : IRequestHandler<GetProjectsOverviewQuery, PaginationModel<ProjectOverviewDto>>
 {
-
     private readonly IApplicationDbContext _context;
     private readonly ICurrentUserService _currentUserService;
 
@@ -33,18 +32,18 @@ public class GetProjectsOverviewQueryHandler : IRequestHandler<GetProjectsOvervi
     {
         var query = request.QueryModel.Query;
 
-        Expression <Func<Domain.Entities.Project, bool>> filterPrecicate = project 
+        Expression<Func<Domain.Entities.Project, bool>> filterPredicate = project
             => (string.IsNullOrWhiteSpace(query) || project.ProjectName.ToLower().Contains(query.ToLower()))
-                    //&& project.UserId == _currentUserService.Id // will be added when autorization be corrected
-                    && project.Status == request.QueryModel.Status;
-        
+               && (project.UserId == _currentUserService.Id!.Value || project.Assignees.Any(a => a.User.Id == _currentUserService.Id!.Value))
+               && project.Status == request.QueryModel.Status;
 
         var sort = request.QueryModel.Sort;
         var order = request.QueryModel.Order;
         var page = request.QueryModel.Page;
         var count = request.QueryModel.Count;
 
-        (var projects, var total) = await _context.Projects.GetFilteredWithTotalSum<ProjectOverviewDto>(filterPrecicate, page, count, sort, order);
+        var (projects, total) = await _context.Projects
+            .GetFilteredWithTotalSum<ProjectOverviewDto>(filterPredicate, page, count, sort, order);
 
         return new() { List = projects, Total = total };
     }

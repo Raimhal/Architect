@@ -5,7 +5,6 @@ using System.Text;
 using Ctor.Application.Auth.Interfaces;
 using Ctor.Application.Auth.Models;
 using Ctor.Application.Common.Interfaces;
-using Ctor.Domain.Entities;
 using Ctor.Domain.Entities.Enums;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -23,21 +22,28 @@ public class TokenProvider : ITokenProvider
         _dateTime = dateTime;
     }
 
-    public Token GenerateAccessToken(long userId, UserRoles role)
+    public Token GenerateAccessToken(long userId, UserRoles role, long? companyId)
     {
         var secret = _config["Jwt:Secret"];
         var secretBytes = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));
         var signinCredentials = new SigningCredentials(secretBytes, SecurityAlgorithms.HmacSha256);
         var expires = _dateTime.Now.AddMinutes(5);
 
+        var claims = new List<Claim>
+        {
+            new("id", userId.ToString()), //
+            new("role", role.ToString()),
+        };
+
+        if (companyId != null)
+        {
+            claims.Add(new Claim("companyId", companyId.Value.ToString()));
+        }
+
         var token = new JwtSecurityToken(
             issuer: _config["Jwt:Issuer"],
             audience: _config["Jwt:Audience"],
-            claims: new List<Claim>
-            {
-                new("id", userId.ToString()), //
-                new("role", role.ToString()),
-            },
+            claims: claims,
             expires: expires,
             signingCredentials: signinCredentials
         );

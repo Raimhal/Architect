@@ -14,8 +14,8 @@ public interface IGenericRepository<T> where T : BaseEntity
     Task<T?> SingleOrDefault(Expression<Func<T, bool>> filter);
     Task<List<T>> Get(Expression<Func<T, bool>> filter);
     Task<List<TResult>> Get<TResult>(Expression<Func<T, bool>> filter);
-    Task<T> FirstOrDefault(Expression<Func<T, bool>> expression, CancellationToken cancellationToken = default);
-    Task<TResult> FirstOrDefault<TResult>(Expression<Func<TResult, bool>> expression, CancellationToken cancellationToken = default);
+    Task<T?> FirstOrDefault(Expression<Func<T, bool>> expression, CancellationToken cancellationToken = default);
+    Task<TResult?> FirstOrDefault<TResult>(Expression<Func<TResult, bool>> expression, CancellationToken cancellationToken = default);
     Task<List<T>> GetOrdered(string orderBy, Order order = Order.ASC, Expression<Func<T, bool>> filter = null);
     Task<List<TResult>> GetOrdered<TResult>(string orderBy, Order order = Order.ASC, Expression<Func<T, bool>> filter = null);
     Task<(List<T> entities, int total)> GetFilteredWithTotalSum(Expression<Func<T, bool>> filter,
@@ -28,6 +28,7 @@ public interface IGenericRepository<T> where T : BaseEntity
         Expression<Func<T, bool>> filter, int page = 0, int count = 0, string orderBy = null, Order order = Order.ASC);
     Task<List<T>> GetAll();
     Task<T> GetById(long id, CancellationToken ct = default);
+    Task<TProjectTo> GetById<TProjectTo>(long id, CancellationToken ct);
     Task<T?> FindById(long id, CancellationToken ct = default);
     Task Insert(T obj);
     void Update(T obj);

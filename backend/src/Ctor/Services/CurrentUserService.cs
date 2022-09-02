@@ -28,17 +28,36 @@ public class CurrentUserService : ICurrentUserService
             return null;
         }
     }
+
     public UserRoles Role
     {
         get
         {
-            var role = _httpContextAccessor.HttpContext?.User?.FindFirst(x=>x.Type==ClaimsIdentity.DefaultRoleClaimType)?.Value;
-            var roleEnum = Enum.TryParse(role,out UserRoles result);
-            
-            if (!roleEnum) {
+            var role = _httpContextAccessor.HttpContext?.User
+                ?.FindFirst(x => x.Type == ClaimsIdentity.DefaultRoleClaimType)?.Value;
+            var roleEnum = Enum.TryParse(role, out UserRoles result);
+
+            if (!roleEnum)
+            {
                 throw new ArgumentException("bad roles");
             }
+
             return result;
+        }
+    }
+
+    public long? CompanyId
+    {
+        get
+        {
+            var claim = _httpContextAccessor.HttpContext?.User?.FindFirstValue("companyId");
+
+            if (long.TryParse(claim, out long id))
+            {
+                return id;
+            }
+
+            return null;
         }
     }
 }

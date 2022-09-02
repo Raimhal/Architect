@@ -8,8 +8,9 @@ import { IProjectOverview } from '../resources/models/project-overview';
 import { IProjectPhoto } from '../resources/models/project-photo.model';
 import { IProjectUpdate } from '../resources/models/project-update';
 import { ProjectStatus } from '../resources/models/status';
-import {IBuilding} from "../resources/models/building.model";
-import {IBuildingBlock} from "../resources/models/building-block.model";
+import { IBuilding } from "../resources/models/building.model";
+import { IBuildingBlock } from "../resources/models/building-block.model";
+import { GetProjectTeamDto } from "../resources/models/get-project-team-dto.model";
 
 
 export const getDetailedProject = createAction(
@@ -84,7 +85,7 @@ export const changeParams = createAction(
 
 export const loadProjectPhotos = createAction(
   '[Project Photos Component] Load Project Photos',
-  props<{projectId: number}>()
+  props<{ projectId: number }>()
 );
 
 export const loadProjectPhotosSuccess = createAction(
@@ -99,7 +100,7 @@ export const loadProjectPhotoFailure = createAction(
 
 export const deleteProjectPhoto = createAction(
   '[Project Photos Component] Delete Project Photo',
-  props<{projectId: number, photoId: number}>()
+  props<{ projectId: number, photoId: number }>()
 );
 
 export const deleteProjectPhotoSuccess = createAction(
@@ -114,7 +115,7 @@ export const deleteProjectPhotoFailure = createAction(
 
 export const uploadProjecPhotoSuccess = createAction(
   '[Add Project Photos Component] Upload Projects Photos Success',
-  props<{id: number}>()
+  props<{ id: number }>()
 );
 
 export const uploadProjecPhotoFailure = createAction(
@@ -138,85 +139,114 @@ export const changeProjectStatusFailure = createAction(
 
 export const loadBuildingWithBuildingBlocks = createAction(
   '[Building Section Component] Load Building With Building Blocks',
-  props<{projectId : number}>()
+  props<{ projectId: number }>()
 );
 
 export const loadBuildingWithBuildingBlocksSuccess = createAction(
   '[Project Effect] Load Building With Building Blocks Success',
-  props<{result : IBuilding[]}>()
+  props<{ result: IBuilding[] }>()
 );
 
 export const loadBuildingWithBuildingBlocksFailure = createAction(
   '[Project Effect] Load Building With Building Blocks Failure',
-  props<{error: any}>()
+  props<{ error: any }>()
 );
 
 export const addNewBuilding = createAction(
   '[Building Section Component] Add New Building',
-  props<{buildingName: string}>()
+  props<{ buildingName: string }>()
 );
 
 export const addNewBuildingFailure = createAction(
   '[Project Effect] Add New Building Failure',
-  props<{error : any}>()
+  props<{ error: any }>()
 );
 
 export const addNewBuildingBlock = createAction(
   '[Building Section Component] Add New Building Block',
-  props<{buildingBlock: IBuildingBlock}>()
+  props<{ buildingBlock: IBuildingBlock }>()
 );
 
 export const addNewBuildingBlockSuccess = createAction(
   '[Project Effect] Add New Building Block Success',
-  props<{result : IBuildingBlock}>()
+  props<{ result: IBuildingBlock }>()
 );
 
 export const addNewBuildingBlockFailure = createAction(
   '[Project Effect] Add New Building Block Failure',
-  props<{error : any}>()
+  props<{ error: any }>()
 );
 
 export const updateBuilding = createAction(
   '[Building Management Dialog] Update Building',
-  props<{building: IBuilding}>()
+  props<{ building: IBuilding }>()
 );
 
 export const updateBuildingFailure = createAction(
   '[Building Management Dialog] Update Building Failure',
-  props<{error: any}>()
+  props<{ error: any }>()
 );
 
 export const deleteBuilding = createAction(
   '[Building Management Dialog] Delete Building',
-  props<{id: number}>()
+  props<{ id: number }>()
 );
 
 export const deleteBuildingFailure = createAction(
   '[Building Management Dialog] Delete Building Failure',
-  props<{error: any}>()
+  props<{ error: any }>()
 );
 
 export const deleteBuildingBlock = createAction(
   '[Building Management Dialog] Delete Building Block',
-  props<{id: number}>()
+  props<{ id: number }>()
 );
 
 export const deleteBuildingBlockFailure = createAction(
   '[Building Management Dialog] Delete Building Block Failure',
-  props<{error: any}>()
+  props<{ error: any }>()
 );
 
 export const updateBuildingBlock = createAction(
   '[Building Management Dialog] Update Building Block',
-  props<{buildingBlock: IBuildingBlock}>()
+  props<{ buildingBlock: IBuildingBlock }>()
 );
 
 export const updateBuildingBlockFailure = createAction(
   '[Building Management Dialog] Update Building Block Failure',
-  props<{error: any}>()
+  props<{ error: any }>()
 );
 
 export const revealBuildingCard = createAction(
   '[Building List Item Component] Reveal Building Card',
-  props<{id: number | null}>()
+  props<{ id: number | null }>()
+);
+
+export const getProjectTeam = createAction(
+  '[Project] Get Project Team',
+  props<{ projectId: number }>()
+);
+
+export const getProjectTeamSuccess = createAction(
+  '[Project] Get Project Team Success',
+  props<{ response: GetProjectTeamDto }>()
+);
+
+export const getProjectTeamFailure = createAction(
+  '[Project] Get Project Team Failure',
+  props<{ error: any }>()
+);
+
+export const setProjectTeam = createAction(
+  '[Project] Set Project Team',
+  props<{ projectId: number, userIds: number[] }>()
+);
+
+export const setProjectTeamSuccess = createAction(
+  '[Project] Set Project Team Success',
+);
+
+export const setProjectTeamFailure = createAction(
+  '[Project] Set Project Team Failure',
+  props<{ error: any }>()
 );

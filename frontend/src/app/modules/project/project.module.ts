@@ -6,7 +6,7 @@ import { StoreModule } from '@ngrx/store';
 import * as fromProject from './state/project.reducer'
 import { ProjectEffects } from './state/project.effects';
 import { EffectsModule } from '@ngrx/effects';
-import { MatTabsModule} from '@angular/material/tabs';
+import { MatTabsModule } from '@angular/material/tabs';
 import { ProjectDashboardComponent } from './project-dashboard/project-dashboard.component';
 import { MatIconModule } from '@angular/material/icon';
 import { ProjectDescriptionComponent } from './project-description/project-description.component';
@@ -26,17 +26,18 @@ import { MatSelectModule } from '@angular/material/select';
 import { BuildingSectionComponent } from './building-section/building-section.component';
 import { BuildingsListItemComponent } from './buildings-list-item/buildings-list-item.component';
 import {MatProgressBarModule} from "@angular/material/progress-bar";
-import {MatCheckboxModule} from "@angular/material/checkbox";
 import { BuildingAddingListItemComponent } from './building-adding-list-item/building-adding-list-item.component';
 import { BuildingManagementDialogComponent } from './building-management-dialog/building-management-dialog.component';
-
+import { AddProjectTeamComponent } from "./add-project-team/add-project-team.component";
+import { ClipboardModule } from "@angular/cdk/clipboard";
+import { OverlayModule } from "@angular/cdk/overlay";
+import { MatCheckboxModule } from "@angular/material/checkbox";
 
 @NgModule({
   imports: [
     CommonModule,
     SharedModule,
     ProjectRoutingModule,
-    MatTabsModule,
     StoreModule.forFeature(
       fromProject.projectFeatureKey,
       fromProject.reducer
@@ -52,12 +53,11 @@ import { BuildingManagementDialogComponent } from './building-management-dialog/
     IvyCarouselModule,
     NgxDropzoneModule,
     MatSelectModule,
-    MatButtonModule,
-    FormsModule,
-    ReactiveFormsModule,
     NgrxFormsModule,
     MatProgressBarModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    ClipboardModule,
+    OverlayModule,
   ],
   declarations: [
     ProjectComponent,
@@ -66,6 +66,7 @@ import { BuildingManagementDialogComponent } from './building-management-dialog/
     AddProjectComponent,
     ProjectPhotosComponent,
     AddProjectPhotosComponent,
+    AddProjectTeamComponent,
     ImagePipe,
     BuildingSectionComponent,
     BuildingsListItemComponent,
@@ -73,4 +74,5 @@ import { BuildingManagementDialogComponent } from './building-management-dialog/
     BuildingManagementDialogComponent,
   ]
 })
-export class ProjectModule { }
+export class ProjectModule {
+}

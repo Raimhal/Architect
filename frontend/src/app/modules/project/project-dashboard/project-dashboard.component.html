@@ -8,7 +8,7 @@
       <ng-container *ngIf="canChangeStatus$ | async; else nonClickableStatus">
         <div class="project-status bar project-status-clickable" (click)="statusSelector.open()">
           <mat-select #statusSelector [(value)]="selectedStatus" (selectionChange)="changeStatus($event.value)"
-            style="visibility: hidden; height: 0; width: 0">
+                      style="visibility: hidden; height: 0; width: 0">
             <mat-option *ngFor="let status of statuses; let statusIndex = index" [value]="statusIndex">
               {{status.displayName}}
             </mat-option>
@@ -27,7 +27,7 @@
   </header>
   <mat-tab-group>
     <mat-tab label="Description">
-      <app-project-description></app-project-description>
+      <app-project-description [projectId]="currentProjectId"></app-project-description>
     </mat-tab>
     <mat-tab label="Timeline">time</mat-tab>
     <mat-tab label="Recourses">Rec</mat-tab>

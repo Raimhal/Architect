@@ -1,5 +1,4 @@
 using Ctor.Application.Companies.Commands;
-using Ctor.Application.Companies.Queries;
 using Ctor.Application.DTOs;
 using Ctor.Application.Projects.Commands;
 using Ctor.Application.Projects.Commands.ChangeStatus;
@@ -7,11 +6,15 @@ using Ctor.Application.Projects.Queries;
 using Ctor.Application.Projects.Queries.GetProjectsByCompanyId;
 using Ctor.Application.Projects.Queries.GetProjectsQuery;
 using Ctor.Application.Projects.Commands.CreateProjectCommand;
+using Ctor.Application.Projects.Commands.SetProjectTeam;
+using Ctor.Application.Projects.Queries.GetProjectTeam;
 using Ctor.Infrastructure.Extensions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ctor.Controllers;
 
+[Authorize]
 [Route("api/projects")]
 public class ProjectController : ApiControllerBase
 {
@@ -69,6 +72,18 @@ public class ProjectController : ApiControllerBase
 
     [HttpPut("change-status")]
     public async Task<IActionResult> ChangeStatus([FromBody] ChangeStatusCommand command)
+    {
+        return Ok(await Mediator.Send(command));
+    }
+
+    [HttpGet("team")]
+    public async Task<IActionResult> GetTeam([FromQuery] GetProjectTeamQuery query)
+    {
+        return Ok(await Mediator.Send(query));
+    }
+
+    [HttpPost("team")]
+    public async Task<IActionResult> SetTeam([FromBody] SetProjectTeamCommand command)
     {
         return Ok(await Mediator.Send(command));
     }

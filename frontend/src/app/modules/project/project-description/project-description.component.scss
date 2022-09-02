@@ -1,6 +1,6 @@
 @use '../../../shared/colors' as colors;
 
-.container{
+.container {
   margin: 36px;
   display: flex;
   flex-direction: column;
@@ -40,7 +40,6 @@
   width: 45%;
   min-width: 580px;
 }
-
 
 
 .info-card {
@@ -106,6 +105,76 @@
 
 .team-card {
   background: colors.$green1;
+
+  .team-card-content {
+    padding: 0 16px 16px 16px;
+
+    .member-row {
+      padding: 12px;
+      color: #181A25;
+      background: #D8F5E2;
+      display: flex;
+
+      > :first-child {
+        flex: 50%;
+      }
+
+      + .member-row {
+        margin-top: 8px;
+      }
+
+      .member-role {
+        background: #AAE4BE;
+        width: fit-content;
+        padding: 4px 8px;
+        margin-bottom: 5px;
+      }
+
+      .member-name {
+        font-weight: 600;
+      }
+
+      .member-email {
+        margin-bottom: 9px;
+        display: flex;
+        align-items: center;
+        text-align: right;
+        justify-content: flex-end;
+
+        &:hover .hover-icon {
+          visibility: visible;
+          width: fit-content;
+          margin-left: 5px;
+        }
+
+      }
+
+      .member-phone {
+        display: flex;
+        align-items: center;
+        text-align: right;
+        justify-content: flex-end;
+        color: #313345;
+
+        &:hover .hover-icon {
+          visibility: visible;
+          width: fit-content;
+          margin-left: 5px;
+        }
+
+      }
+
+      .hover-icon {
+        visibility: hidden;
+        width: 0;
+        cursor: pointer;
+        margin-left: 0;
+      }
+
+    }
+
+  }
+
 }
 
 .form-buttons {

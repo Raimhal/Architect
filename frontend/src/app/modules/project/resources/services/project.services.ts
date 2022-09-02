@@ -1,4 +1,3 @@
-
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Params } from "@angular/router";
@@ -14,6 +13,8 @@ import { IProjectDetailed } from "../models/project-details";
 import { IProjectOverview } from "../models/project-overview";
 import { IProjectUpdate } from "../models/project-update";
 import { ProjectStatus } from "../models/status";
+import { GetProjectTeamDto } from "../models/get-project-team-dto.model";
+import { GetCompanyUsersDto } from "../models/get-company-users-dto";
 
 @Injectable({
   providedIn: 'root',
@@ -51,8 +52,6 @@ export class ProjectService extends ApiService {
       endTime: new Date(data.endTime).toISOString()
     }
 
-    console.log("test")
-    console.log(project)
     return this.put<IResultId>(this.apiPath, project)
   }
 
@@ -64,11 +63,24 @@ export class ProjectService extends ApiService {
   getProjectPhotos(projectId: number) {
     return this.get<IProjectPhoto[]>(`${this.apiPath}/${projectId}/photos`);
   }
+
   deleteProjectPhoto(projectId: number, projectPhotoId: number){
     return this.delete<IProjectPhotoId>(`${this.apiPath}/${projectId}/photos/${projectPhotoId}`)
   }
 
   changeStatus(projectId: number, newStatus: ProjectStatus) {
     return this.put(`${this.apiPath}/change-status`, { projectId, newStatus });
+  }
+
+  getProjectTeam(projectId: number) {
+    return this.get<GetProjectTeamDto>(`${this.apiPath}/team?projectId=${projectId}`);
+  }
+
+  setProjectTeam(projectId: number, userIds: number[]) {
+    return this.post(`${this.apiPath}/team`, { projectId, userIds });
+  }
+
+  getCompanyUsers(filter: string | null, sort: 'role' | 'firstName' | null): Observable<GetCompanyUsersDto> {
+    return this.get<GetCompanyUsersDto>(`/users/?filter=${filter ?? ''}&sort=${sort ?? 'role'}`);
   }
 }

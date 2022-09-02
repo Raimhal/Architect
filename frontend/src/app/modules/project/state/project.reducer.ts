@@ -1,8 +1,7 @@
 import { Params } from '@angular/router';
-import { Action, createReducer, on } from '@ngrx/store';
+import { createReducer, on } from '@ngrx/store';
 import { Order } from '../resources/models/order';
 import { IProjectOverview } from '../resources/models/project-overview';
-import { IProjectPhotoId } from '../resources/models/project-photo-id-response.model';
 import { IProjectPhoto } from '../resources/models/project-photo.model';
 import { createFormGroupState, disable, enable, FormGroupState, onNgrxForms, onNgrxFormsAction, SetValueAction } from 'ngrx-forms';
 import { ProjectStatus } from '../resources/models/status';
@@ -10,7 +9,6 @@ import * as ProjectActions from './project.actions';
 import * as fromProjectInformationForm from "../resources/forms/project-information-form"
 import { IProjectDetailed } from '../resources/models/project-details';
 import {IBuilding} from "../resources/models/building.model";
-import {error} from "@angular/compiler-cli/src/transformers/util";
 
 export const projectFeatureKey = 'project';
 
@@ -22,10 +20,22 @@ export interface State {
   project: IProjectDetailed,
   projectInformationForm: FormGroupState<fromProjectInformationForm.ProjectInformationFormValue>,
   buildings : IBuilding[],
-  currentlyRevealedBuilding : number | null
-  error: string
+  currentlyRevealedBuilding : number | null,
+  currentProject: {
+    id: number,
+    status: ProjectStatus,
+    team: {
+      id: number,
+      name: string,
+      role: string,
+      email: string,
+      phoneNumber: string
+    }[] | null,
+  } | null,
+  error: string,
 }
-const initialProjectState: State = {
+
+export const initialState: State = {
   projects: [],
   params: {
     page: 1,
@@ -41,23 +51,28 @@ const initialProjectState: State = {
   currentlyOpenProjectPhotos: [],
   projectInformationForm: fromProjectInformationForm.initialFormState,
   buildings: [],
-  currentlyRevealedBuilding: null
-}
+  currentlyRevealedBuilding: null,
+  currentProject: {
+    id: 1,
+    status: ProjectStatus.InProcess,
+    team: [],
+  },
+};
 
 export const reducer = createReducer(
-  initialProjectState,
+  initialState,
   onNgrxForms(),
   on(ProjectActions.getProjectssWithParamsSuccess, (state, action) => {
-    return {...state, projects: action.data.list, total: action.data.total}
+    return { ...state, projects: action.data.list, total: action.data.total }
   }),
   on(ProjectActions.changeParams, (state, action) => {
-    return {...state, params: {...state.params, ...action.params}}
+    return { ...state, params: { ...state.params, ...action.params } }
   }),
   on(ProjectActions.getDetailedProjectSuccess, (state, action) => {
-    return {...state, project: action.data}
+    return { ...state, project: action.data }
   }),
   on(ProjectActions.getDetailedProjectFailure, (state, action) => {
-    return {...state, error: action.error};
+      return { ...state, error: action.error };
     }
   ),
   onNgrxFormsAction(SetValueAction, (state, action) => {
@@ -123,17 +138,41 @@ export const reducer = createReducer(
     };
   }),
   on(ProjectActions.getProjectssWithParamsSuccess, (state, action) => {
-    return {...state, projects: action.data.list, total: action.data.total}
+    return { ...state, projects: action.data.list, total: action.data.total }
   }),
   on(ProjectActions.changeParams, (state, action) => {
-    return {...state, params: {...state.params, ...action.params}}
+    return { ...state, params: { ...state.params, ...action.params } }
   }),
   on(ProjectActions.changeProjectStatusSuccess, (state, action) => {
     return {
       ...state,
       currentProject: {
-        id: state.project!.id,
-        status: action.newStatus
+        ...state.currentProject!,
+        status: action.newStatus,
+      },
+    }
+  }),
+  on(ProjectActions.getProjectTeamSuccess, (state, action) => {
+    return {
+      ...state,
+      currentProject: {
+        ...state.currentProject!,
+        team: action.response.users.map(u => ({
+          id: u.id,
+          name: `${u.firstName} ${u.lastName}`,
+          role: u.role,
+          email: u.email,
+          phoneNumber: u.phoneNumber,
+        })),
+      },
+    }
+  }),
+  on(ProjectActions.getProjectTeamFailure, (state, action) => {
+    return {
+      ...state,
+      currentProject: {
+        ...state.currentProject!,
+        team: null,
       },
     }
   }),

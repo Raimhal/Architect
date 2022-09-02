@@ -31,12 +31,14 @@ export const selectProjectInformationForm = createSelector(
   (state) => state.projectInformationForm
 );
 
-
-
-
 export const selectProjectPhotos = createSelector(
   selectProjectState,
   (state) => state.currentlyOpenProjectPhotos
+);
+
+export const selectCurrentProject = createSelector(
+  selectProjectState,
+  (state) => state.currentProject
 );
 
 export const selectCurrentProjectId = createSelector(
@@ -49,7 +51,6 @@ export const selectCurrentProjectStatus = createSelector(
   (state): ProjectStatus | null => state?.status ?? null
 );
 
-
 export const selectProjectBuildings = createSelector(
   selectProjectState,
   (state) => state.buildings
@@ -58,4 +59,9 @@ export const selectProjectBuildings = createSelector(
 export const selectCurrentlyRevealedBuilding = createSelector(
   selectProjectState,
   (state) => state.currentlyRevealedBuilding
+);
+
+export const selectCurrentProjectTeam = createSelector(
+  selectCurrentProject,
+  (state) => state?.team ?? null
 );

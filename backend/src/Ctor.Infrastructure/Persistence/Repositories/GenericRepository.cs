@@ -55,21 +55,30 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
 
     public async Task<T> GetById(long id, CancellationToken ct)
     {
-        return await FirstOrDefault(e => e.Id == id, ct);
+        return await FirstOrDefault(e => e.Id == id, ct) 
+            ?? throw new NotFoundException();
     }
 
-    public async Task<T> FirstOrDefault(Expression<Func<T, bool>> expression, CancellationToken cancellationToken = default)
+    public async Task<T?> FirstOrDefault(Expression<Func<T, bool>> expression, CancellationToken cancellationToken = default)
     {
         var query = table;
 
         return await FirstOrDefaultInternal(query, expression, cancellationToken);
     }
 
-    public async Task<TResult> FirstOrDefault<TResult>(Expression<Func<TResult, bool>> expression, CancellationToken cancellationToken = default)
+    public async Task<TResult?> FirstOrDefault<TResult>(Expression<Func<TResult, bool>> expression, CancellationToken cancellationToken = default)
     {
         var query = table.ProjectTo<TResult>(_mapper.Value.ConfigurationProvider);
 
         return await FirstOrDefaultInternal<TResult>(query, expression, cancellationToken);
+    }
+
+    public Task<TProjectTo> GetById<TProjectTo>(long id, CancellationToken ct)
+    {
+        return table
+            .Where(e => e.Id == id)
+            .ProjectTo<TProjectTo>(_mapper.Value.ConfigurationProvider)
+            .SingleAsync(cancellationToken: ct);
     }
 
     public Task<T?> FindById(long id, CancellationToken ct)

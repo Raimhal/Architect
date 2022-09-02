@@ -42,7 +42,7 @@ export class AuthChangePasswordFormComponent {
     if (this.password.hasError('required')) {
       return 'Password is required';
     }
-    if (this.password.hasError('minLength')) {
+    if (this.password.hasError('minlength')) {
       return 'Password must be at least 5 characters long';
     }
     return '';

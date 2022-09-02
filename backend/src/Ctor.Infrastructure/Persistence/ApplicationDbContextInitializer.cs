@@ -119,7 +119,7 @@ public class ApplicationDbContextInitializer
                     JoinDate = _faker.Date.Past(yearsToGoBack: 5).ToUniversalTime(),
                     Website = _faker.Internet.DomainName(),
                     Users = users,
-                    Projects = GenerateProjects(users.First()),
+                    Projects = GenerateProjects(users.First(u => u.Role.Type == UserRoles.OperationalManager)),
                 };
             })
             .ToArray();
@@ -133,6 +133,7 @@ public class ApplicationDbContextInitializer
                 FirstName = _faker.Name.FirstName(),
                 LastName = _faker.Name.LastName(),
                 UserEmail = $"{i}{emailNameSuffix}@radency.com",
+                PhoneNumber = _faker.Phone.PhoneNumber("+380 9# ### ## ##"),
                 Password = "12345",
                 Role = i switch
                 {
@@ -140,7 +141,7 @@ public class ApplicationDbContextInitializer
                     2 => _projectManagerRole,
                     3 => _mainEngineerRole,
                     4 => _foremanRole,
-                    _ => throw new ArgumentOutOfRangeException(nameof(i)),
+                    _ => throw new ArgumentOutOfRangeException(nameof(i), i, null)
                 },
             })
             .ToArray();
@@ -186,6 +187,7 @@ public class ApplicationDbContextInitializer
                     StartTime = _faker.Date.Past(yearsToGoBack: 5).ToUniversalTime(),
                     EndTime = endTime.ToUniversalTime(),
                     User = owner,
+                    Assignees = new List<Assignee> { new() { User = owner, } },
                     Building = GenerateBuildings(),
                     Phases = GeneratePhases(),
                 };
@@ -229,7 +231,7 @@ public class ApplicationDbContextInitializer
                     2 => "Procurement",
                     3 => "Construction",
                     4 => "Post-construction",
-                    _ => throw new ArgumentOutOfRangeException(nameof(phaseStep)),
+                    _ => throw new ArgumentOutOfRangeException(nameof(phaseStep), phaseStep, null),
                 },
                 StartTime = _faker.Date.Past(yearsToGoBack: 5).ToUniversalTime(),
                 EndTime = _faker.Date.Past(yearsToGoBack: 5).ToUniversalTime(),

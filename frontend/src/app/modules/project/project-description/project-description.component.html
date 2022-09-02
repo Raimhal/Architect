@@ -75,11 +75,30 @@
       <div class="team-card">
         <div class="card-header">
           <span class="selected-text1">Project Team</span>
-          <button mat-icon-button>
-            <mat-icon svgIcon="plus"></mat-icon>
+          <button mat-icon-button (click)="addTeamModal()">
+            <mat-icon [svgIcon]="(hasTeamMembers$ | async) ? 'pencil' : 'plus'"></mat-icon>
           </button>
         </div>
-        <!-- insert your html here -->
+        <div class="team-card-content" [style]="(hasTeamMembers$ | async) ? '' : 'min-height: 200px;'">
+
+          <div class="member-row" *ngFor="let member of teamMembers$ | async">
+            <div>
+              <div class="member-role">{{member.role}}</div>
+              <div class="member-name">{{member.name}}</div>
+            </div>
+            <div>
+              <span class="member-email" [cdkCopyToClipboard]="member.email">
+                <span>{{member.email}}</span>
+                <mat-icon class="hover-icon" svgIcon="copy"></mat-icon>
+              </span>
+              <span class="member-phone" [cdkCopyToClipboard]="member.phoneNumber">
+                <span>{{member.phoneNumber}}</span>
+                <mat-icon class="hover-icon" svgIcon="copy"></mat-icon>
+              </span>
+            </div>
+          </div>
+
+        </div>
       </div>
 
     </div>

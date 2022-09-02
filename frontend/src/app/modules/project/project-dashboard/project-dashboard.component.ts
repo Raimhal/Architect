@@ -32,6 +32,8 @@ export class ProjectDashboardComponent implements OnInit {
   currentStatus$ = this.store.select(fromProjectSelectors.selectCurrentProjectStatus);
   selectedStatus: number = 0;
 
+  currentProjectId = 0;
+
   statuses: { internalName: ProjectStatus, displayName: string }[] = [
     { internalName: ProjectStatus.NotStarted, displayName: 'Not Started' },
     { internalName: ProjectStatus.InProcess, displayName: 'In Progress' },
@@ -45,6 +47,8 @@ export class ProjectDashboardComponent implements OnInit {
     private store: Store<AppState>,
     private route: ActivatedRoute) {
 
+    this.currentProjectId = parseInt(this.route.snapshot.paramMap.get('id')!);
+
     iconRegistry.addSvgIcon(
       'arrow-left',
       sanitizer.bypassSecurityTrustResourceUrl("assets/icons/arrow_left.svg")
@@ -52,15 +56,10 @@ export class ProjectDashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const id = this.route.snapshot.params["id"]
-    this.store.dispatch(getDetailedProject({id: id}))
+    this.store.dispatch(getDetailedProject({ id: this.currentProjectId }))
     this.project$ = this.store.pipe(select(selectProjectInformation))
     this.store.dispatch(openMenu());
     this.store.dispatch(hideMenu());
-  }
-
-  get currentProjectId() {
-    return parseInt(this.route.snapshot.paramMap.get('id')!);
   }
 
   changeStatus(newStatus: number) {

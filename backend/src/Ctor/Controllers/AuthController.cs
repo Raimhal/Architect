@@ -20,7 +20,6 @@ public class AuthController : ApiControllerBase
         return await Mediator.Send(command);
     }
 
-    [AllowAnonymous]
     [HttpPost("logout")]
     public async Task<ActionResult<LogoutDto>> Logout([FromBody] LogoutCommand command)
     {

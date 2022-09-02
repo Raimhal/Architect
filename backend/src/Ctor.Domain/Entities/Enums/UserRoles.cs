@@ -11,5 +11,5 @@ public enum UserRoles
     OperationalManager,
     ProjectManager,
     MainEngineer,
-    Foreman
+    Foreman,
 }

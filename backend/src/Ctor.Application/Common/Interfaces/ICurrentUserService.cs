@@ -6,4 +6,5 @@ public interface ICurrentUserService
 {
     long? Id { get; }
     UserRoles Role { get; }
+    long? CompanyId { get; }
 }
