@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Ctor;
 using Ctor.Application;
 using Ctor.Hubs;
@@ -37,23 +38,32 @@ else
 
 app.UseHealthChecks("/health");
 
+string[] origins = {"http://localhost:4200", "https://thankful-sand-0d354de03.1.azurestaticapps.net"};
 
 app.UseCors(builder => builder
     .AllowAnyOrigin()
     .AllowAnyMethod()
     .AllowAnyHeader()
     .AllowCredentials()
-    .WithOrigins("http://localhost:4200")   
+    .WithOrigins(origins)   
 );
+
+
+
 
 app.UseHttpsRedirection();
 
 app.UseRouting();
 
+var filesFolderPath = Path.GetFullPath(builder.Configuration["FilesFolder"]);
+
+if(!Directory.Exists(filesFolderPath))
+    Directory.CreateDirectory(filesFolderPath);
+
 app.UseStaticFiles(new StaticFileOptions
 {
-    FileProvider = new PhysicalFileProvider(
-        builder.Configuration["FilesFolder"] ?? "C:\\RadencyFiles"),
+    FileProvider = new PhysicalFileProvider(filesFolderPath ?? ""),
+
     RequestPath = "/files",
     OnPrepareResponse = ctx =>
     {

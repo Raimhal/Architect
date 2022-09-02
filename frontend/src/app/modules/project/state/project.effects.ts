@@ -82,7 +82,7 @@ export class ProjectEffects {
             endTime: project.endTime
           } as IProjectUpdate)
           .pipe(
-            map((data) => ProjectActions.getDetailedProject({id: data.id})),
+            map((data) => ProjectActions.getDetailedProject({ id: data.id })),
             catchError((error) =>
               of(
                 ProjectActions.submitProjectInformationFormFailure({

@@ -30,7 +30,7 @@ export class NotificationService {
     console.log("Start creating NotifService");
     this.connection = new signalR.HubConnectionBuilder()
       .configureLogging(signalR.LogLevel.Information)
-      .withUrl(environment.BaseUrl + '/notification?userid=' + this.UserId)
+      .withUrl(environment.apiHost + '/notification?userid=' + this.UserId)
       .build();
     this.connection.start().then(function () {
       console.log('SignalR Connected!');

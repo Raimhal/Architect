@@ -149,7 +149,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     }
 
     public async Task<(List<TResult> entities, int total)> GetFilteredWithTotalSum<TResult>(Expression<Func<T, bool>> filter,
-    int page = 0, int count = 0, string orderBy = null, Order order = Order.ASC)
+    int page = 1, int count = 0, string orderBy = null, Order order = Order.ASC)
     {
         (var query, var total) = await GetFilteredWithTotalSumInternal(filter, page, count, orderBy, order);
 
@@ -157,7 +157,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     }
 
     public async Task<(List<T> entities, int total)> GetFilteredWithTotalSumWithQuery(IQueryable<T> query,
-        Expression<Func<T, bool>> filter, int page = 0, int count = 0, string orderBy = null, Order order = Order.ASC)
+        Expression<Func<T, bool>> filter, int page = 1, int count = 0, string orderBy = null, Order order = Order.ASC)
     {
 
         (query, var total) = await GetFilteredWithTotalSumWithQueryInternal(query, filter, page, count, orderBy, order);
@@ -166,7 +166,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     }
 
     public async Task<(List<TResult> entities, int total)> GetFilteredWithTotalSumWithQuery<TResult>(IQueryable<T> query,
-    Expression<Func<T, bool>> filter, int page = 0, int count = 0, string orderBy = null, Order order = Order.ASC)
+    Expression<Func<T, bool>> filter, int page = 1, int count = 0, string orderBy = null, Order order = Order.ASC)
     {
 
         (query, var total) = await GetFilteredWithTotalSumWithQueryInternal(query, filter, page, count, orderBy, order);
@@ -185,7 +185,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     }
 
     private async Task<(IQueryable<T> query, int total)> GetFilteredWithTotalSumWithQueryInternal(IQueryable<T> query,
-    Expression<Func<T, bool>> filter, int page = 0, int count = 0, string orderBy = null, Order order = Order.ASC)
+    Expression<Func<T, bool>> filter, int page = 1, int count = 0, string orderBy = null, Order order = Order.ASC)
     {
         if (filter != null)
             query = query.Where(filter);

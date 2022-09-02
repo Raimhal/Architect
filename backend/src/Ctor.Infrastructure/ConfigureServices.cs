@@ -13,7 +13,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
+using System.Diagnostics;
 
 namespace Ctor.Infrastructure;
 
@@ -36,15 +38,17 @@ public static class ConfigureServices
         }
 
         services.Configure<MailSetting>((mailSetting) => {
-            mailSetting.ApiSecret = Environment.GetEnvironmentVariable("ApiSecret");
-            mailSetting.ApiKey = Environment.GetEnvironmentVariable("ApiKey");
-            mailSetting.FromEmail = Environment.GetEnvironmentVariable("FromEmail");
-            mailSetting.DiplayName = Environment.GetEnvironmentVariable("DiplayName");
+            mailSetting.ApiSecret = configuration["Email:ApiSecret"];
+            mailSetting.ApiKey = configuration["Email:ApiKey"];
+            mailSetting.FromEmail = configuration["Email:FromEmail"];
+            mailSetting.DiplayName = configuration["Email:DiplayName"];
         });
 
         services.Configure<FileManipulatorSettings>((fileManipulatorSettings) =>
         {
-            fileManipulatorSettings.FolderPath = configuration["FilesFolder"];
+            var filesFolderPath = Path.GetFullPath(configuration["FilesFolder"]);
+
+            fileManipulatorSettings.FolderPath = filesFolderPath;
         });
         
         services.AddScoped<IRepositoryFactory, RepositoryFactory>();
@@ -74,23 +78,31 @@ public static class ConfigureServices
         services.AddScoped<IAddressParsingService, AddressParsingService>();
         services.AddScoped<IGroupsService, GroupsService>();
 
-        services.AddTransient<IEventBus, RabbitMqBus>(sp =>
+        if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
         {
-            IServiceScopeFactory scopeFactory = sp.GetRequiredService<IServiceScopeFactory>();
-            MessageBrokerSettings settings = new(
-                configuration["MessageBroker:HostName"],
-                Convert.ToUInt16(configuration["MessageBroker:Port"]), 
-                configuration["MessageBroker:UserName"],
-                configuration["MessageBroker:Password"]);
+            services.AddTransient<IEventBus, RabbitMqBus>(sp =>
+            {
+                IServiceScopeFactory scopeFactory = sp.GetRequiredService<IServiceScopeFactory>();
+                MessageBrokerSettings settings = new(
+                    configuration["MessageBroker:HostName"],
+                    Convert.ToUInt16(configuration["MessageBroker:Port"]),
+                    configuration["MessageBroker:UserName"],
+                    configuration["MessageBroker:Password"]);
 
-            return new RabbitMqBus(scopeFactory, settings, sp.GetService<ILogger<RabbitMqBus>>());
-        });
+                return new RabbitMqBus(scopeFactory, settings, sp.GetService<ILogger<RabbitMqBus>>());
+            });
+        }
+        else
+        {
+            services.AddTransient<IEventBus, TestBus>();
+        }
 
         services.AddAuthentication(opt =>
         {
             opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
             opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        }).AddJwtBearer(options =>
+        })
+            .AddJwtBearer(options =>
         {
             var secret = configuration["Jwt:Secret"];
             options.TokenValidationParameters = new TokenValidationParameters

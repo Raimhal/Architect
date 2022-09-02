@@ -39,6 +39,10 @@ _TBD_
 
 ## Git
 
+### Status
+- ![backend workflow](https://github.com/Radency/internship-2022-ctor/actions/workflows/backend-workflow.yml/badge.svg)
+- ![frontend workflow](https://github.com/Radency/internship-2022-ctor/actions/workflows/frontend-workflow.yml/badge.svg)
+
 ### Branches
 - `main` - release version.
 - `dev` - development version.
