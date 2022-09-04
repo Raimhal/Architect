@@ -32,6 +32,8 @@ import { AddProjectTeamComponent } from "./add-project-team/add-project-team.com
 import { ClipboardModule } from "@angular/cdk/clipboard";
 import { OverlayModule } from "@angular/cdk/overlay";
 import { MatCheckboxModule } from "@angular/material/checkbox";
+import { PhaseBarComponent } from "./phase-bar/phase-bar.component";
+
 
 @NgModule({
   imports: [
@@ -72,6 +74,7 @@ import { MatCheckboxModule } from "@angular/material/checkbox";
     BuildingsListItemComponent,
     BuildingAddingListItemComponent,
     BuildingManagementDialogComponent,
+    PhaseBarComponent,
   ]
 })
 export class ProjectModule {

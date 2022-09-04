@@ -9,6 +9,6 @@ public enum ProjectStatus
 {
     NotStarted,
     InProcess,
-    Finished,
     Suspended,
+    Finished,
 }

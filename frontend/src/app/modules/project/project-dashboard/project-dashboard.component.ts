@@ -4,11 +4,11 @@ import { DomSanitizer } from "@angular/platform-browser";
 import { map } from 'rxjs';
 import { hideMenu, openMenu } from "../../../store/actions/menu.actions";
 import { UserRole } from "../../auth/resources/models/userRole";
-import { ProjectStatus } from "../resources/models/status";
 import { ActivatedRoute } from "@angular/router";
 import * as fromAuthSelectors from "../../../store/selectors/auth.selectors";
 import * as fromProjectSelectors from "../state/project.selectors";
 import * as fromProjectActions from "../state/project.actions";
+import * as fromRouteActions from "../../../store/actions/route.actions";
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { AppState } from 'src/app/store';
@@ -34,11 +34,11 @@ export class ProjectDashboardComponent implements OnInit {
 
   currentProjectId = 0;
 
-  statuses: { internalName: ProjectStatus, displayName: string }[] = [
-    { internalName: ProjectStatus.NotStarted, displayName: 'Not Started' },
-    { internalName: ProjectStatus.InProcess, displayName: 'In Progress' },
-    { internalName: ProjectStatus.Suspended, displayName: 'Suspended' },
-    { internalName: ProjectStatus.Finished, displayName: 'Finished' },
+  statuses = [
+    'Not Started',
+    'In Progress',
+    'Suspended',
+    'Finished',
   ];
 
   constructor(
@@ -66,4 +66,7 @@ export class ProjectDashboardComponent implements OnInit {
     this.store.dispatch(fromProjectActions.changeProjectStatus({ projectId: this.currentProjectId, newStatus }))
   }
 
+  goToProjects() {
+    this.store.dispatch(fromRouteActions.navigate({ commands: ['projects'] }));
+  }
 }

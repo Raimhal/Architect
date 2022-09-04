@@ -19,7 +19,8 @@ import { IProjectUpdate } from '../resources/models/project-update';
 import { AddProjectTeamComponent } from "../add-project-team/add-project-team.component";
 import * as fromProjectActions from '../state/project.actions';
 import * as fromProjectSelectors from '../state/project.selectors';
-import { map, tap } from "rxjs/operators";
+import { map } from "rxjs/operators";
+import { IPhaseOverviewDTO } from "../resources/models/phase-overview";
 
 @Component({
   selector: 'app-project-description[projectId]',
@@ -120,4 +121,15 @@ export class ProjectDescriptionComponent implements OnInit {
       })
     );
   }
+
+  mapPhases(phases: IPhaseOverviewDTO[]): { name: string, isFinished: boolean }[] {
+    return phases
+      .map(phase => {
+        return {
+          name: phase.phaseName,
+          isFinished: phase.isFinished,
+        }
+      });
+  }
+
 }
