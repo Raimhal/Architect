@@ -30,3 +30,16 @@ export const deleteNotifiSuccess = createAction(
 export const deleteNotifiFailure = createAction(
   '[Notifi] Delete Notifi Failure'
 );
+
+export const deleteAllNotifi = createAction(
+  '[Notifi] Delete All Notifi',
+  props<{ userId: number }>()
+)
+
+export const deleteAllNotifiSuccess = createAction(
+  '[Notifi] Delete All Notifi Success'
+);
+
+export const deleteAllNotifiFailure = createAction(
+  '[Notifi] Delete All Notifi Failure'
+);

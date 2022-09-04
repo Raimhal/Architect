@@ -1,6 +1,8 @@
 <div class="notif-container">
-  <div *ngIf="notifications$ | async as notifs; else loading" >
-    <div class="delete-all-button" (click)="deleteAllNotifi()">Delete all</div>
+  <div *ngIf="notifications$ | async as notifs;" >
+
+    <div class="delete-all-button" (click)="deleteAllNotifi()" *ngIf="(notifCount$ | async) != 0">Delete all</div>
+    <div *ngIf="(notifCount$ | async) == 0" class="empty-info">You have no new notification</div>
     <div *ngFor="let notifi of notifs">
       <div    [ngClass]="{'error-card': notifi.type === 'error',
                                           'success-card' : notifi.type === 'success',
@@ -14,13 +16,8 @@
         <div class="card-message">{{notifi.message}}</div>
       </div>
     </div>
-
+    <div class="separator"></div>
 
   </div>
-
-
-  <ng-template #loading>
-    You have no notifications...
-  </ng-template>
 </div>
 

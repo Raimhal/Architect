@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\app",
+    "\\src\\app\\core",
+    "\\src\\app\\core\\shell",
+    "\\src\\app\\core\\shell\\menu\\resources",
+    "\\src\\app\\modules\\notifications",
+    "\\src\\app\\shared",
+    "\\src\\app\\store",
+    "\\src\\app\\store\\effects"
+  ],
+  "SelectedNode": "\\src\\app\\store\\effects\\menu.effects.ts",
+  "PreviewInSolutionExplorer": false
+}

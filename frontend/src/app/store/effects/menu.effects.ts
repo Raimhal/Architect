@@ -28,7 +28,8 @@ export class MenuEffects {
         if (result.user.role == UserRole.OperationalManager) {
           return of(setMenuLinks({
             links: [
-              {displayName: "Projects", path: "/projects"},
+              { displayName: "Projects", path: "/projects" },
+              { displayName: "Notifications", path: "/notifications" },
               {displayName: "Profile", path: "/company-profile"}
             ]
           }));

@@ -23,4 +23,11 @@ public class NotificationsController : ApiControllerBase
         await Mediator.Send(new DeleteNotificationByIdCommand(id));
         return NoContent();
     }
+
+    [HttpDelete("deleteall/{id:long}")]
+    public async Task<IActionResult> DeleteAllNotificationForUser(long id)
+    {
+        await Mediator.Send(new DeleteAllNotificationByUserIdCommand(id));
+        return NoContent();
+    }
 }

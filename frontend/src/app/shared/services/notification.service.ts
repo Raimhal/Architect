@@ -80,4 +80,9 @@ export class NotificationService {
     if (this.UserId != undefined)
     this.store.dispatch(fromNotifiActions.deleteNotifi({ id: notiid, userId: this.UserId }));
   }
+
+  deleteAllNotifi() {
+    if (this.UserId != undefined)
+      this.store.dispatch(fromNotifiActions.deleteAllNotifi({ userId: this.UserId }));
+  }
 }

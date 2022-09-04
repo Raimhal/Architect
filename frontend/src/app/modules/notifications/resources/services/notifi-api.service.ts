@@ -22,4 +22,8 @@ export class NotifiApiService extends ApiService {
   deleteNotification(notifid: number) {
     return this.delete(`${this.apiUrl}/delete/${notifid}`);
   }
+
+  deleteAllNotifications(userId: number) {
+    return this.delete(`${this.apiUrl}/deleteall/${userId}`);
+  }
 }

@@ -39,7 +39,6 @@ import {MatDialogModule} from "@angular/material/dialog";
 import { MenuEffects } from './store/effects/menu.effects';
 import { AdministrationEffects } from './modules/administration/state/administration.effects';
 import { NotificationService } from './shared/services/notification.service';
-import { NotificationsComponent } from './modules/notifications/notifications.component';
 import { NotificationsEffects } from './store/effects/notifi.effects';
 import { NotificationsModule } from './modules/notifications/notifications.module';
 
@@ -48,8 +47,7 @@ import { NotificationsModule } from './modules/notifications/notifications.modul
     AppComponent,
     CreateCompany,
     MenuComponent,
-    LandingPageComponent,
-    NotificationsComponent
+    LandingPageComponent
   ],
   imports: [
     SharedModule,

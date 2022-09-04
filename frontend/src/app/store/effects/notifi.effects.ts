@@ -14,10 +14,10 @@ export class NotificationsEffects {
           this.notifiApiService.getNotificationsForUser(action.userId).pipe(
             map(
               (notifis) =>
-                 fromNotifiActions.loadNotifisSuccess({
+                fromNotifiActions.loadNotifisSuccess({
                   notifications: notifis
                 })
-            )
+            ), catchError(() => of(fromNotifiActions.loadNotifisFailure))
           )
         )
       ), 
@@ -34,6 +34,20 @@ export class NotificationsEffects {
             )
           )
           )
+      )
+  )
+
+  deleteAllNotif$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(fromNotifiActions.deleteAllNotifi),
+        mergeMap((action) =>
+          this.notifiApiService.deleteAllNotifications(action.userId).pipe(
+            map(() =>
+              fromNotifiActions.loadNotifis({ userId: action.userId })
+            ), catchError((err) => of(fromNotifiActions.deleteAllNotifiFailure))
+          )
+        )
       )
   )
 
