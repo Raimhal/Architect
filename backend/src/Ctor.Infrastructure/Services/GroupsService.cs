@@ -11,6 +11,8 @@ namespace Ctor.Infrastructure.Services;
  *  - {CompanyId}_OM    group for operational managers who belongs to
  *  company with id CompanyId
  *      *Example: 3_OM
+ *  - {ProjectId}_PM    group for project managers who belong to specific 
+ *  projects with id = ProjectId
  *  
  */
 
@@ -31,12 +33,20 @@ public class GroupsService : IGroupsService
         if(user == null) return roles;
 
         if (user.RoleId == 1) roles.Add("admin");
-        if(user.RoleId == 2) {
+        if(user.RoleId == 2) { // Operational Manager
             roles.Add(user.CompanyId + "_OM");
         }
-        if(user.RoleId == 3)
+        if(user.RoleId == 3) // Project Manager
         {
-            // !!!TODO There is no connection btw Project and Project Manager
+            List<Project>? projects = await _context.Projects.Get(el => el.UserId == id);
+            foreach (Project project in projects)
+            {
+                roles.Add(project.Id + "_PM");
+            }
+        }
+        if(user.RoleId == 4) // Main engeneer
+        {
+            // !TODO Thereisn`t connection btw mi and project
         }
         return roles;
     }
@@ -62,7 +72,14 @@ public class GroupsService : IGroupsService
                 var managers = await _context.Users.Get(user => user.CompanyId == CompanyId && user.RoleId == 2);
                 if (managers != null) foreach (User user in managers) { UsersId.Add(user.Id); }
             }
-            //!TODO add handler for other roles, when will be connection
+            if(partsOfname[1] == "PM")
+            {
+                long ProjectId = (long)Convert.ToDouble(partsOfname[0]);
+                var projects = await _context.Projects.Get(el => el.Id == ProjectId);
+                if (projects != null) foreach (Project project in projects) {
+                    if(project.UserId.HasValue) UsersId.Add(project.UserId.Value);
+                }
+            }
         }
         catch { }
         return UsersId;

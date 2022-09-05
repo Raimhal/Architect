@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Ctor.Application.Common.Exceptions;
 using Ctor.Application.Common.Interfaces;
-using Ctor.Application.Common.Models;
 using Ctor.Domain.Entities;
 using Ctor.Domain.Entities.Enums;
 using Ctor.Domain.Repositories;
