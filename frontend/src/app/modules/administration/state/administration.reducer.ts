@@ -21,6 +21,10 @@ export const administrationFeatureKey = 'administration';
 
 export interface State {
   currentUserDetails:UserDetailsDto| null;
+  companiesParams: {
+    filter: string,
+    sort: string,
+  },
   companies: ICompanyOverview[] | null;
   currentlyOpenCompany: ICompanyDetailed;
   companyInformationForm: FormGroupState<fromCompanyInformationForm.CompanyInformationFormValue>;
@@ -31,6 +35,10 @@ export interface State {
 
 export const initialState: State = {
   currentUserDetails:null,
+  companiesParams: {
+    filter: '',
+    sort: '',
+  },
   companies: null,
   currentlyOpenCompany: {
     members: [] as IMember[],
@@ -66,6 +74,19 @@ export const reducer = createReducer(
     ...state,
     error: action.error,
   })),
+  on(
+    AdministrationActions.getAllCompaniesWithParams,
+    (state, action) => {
+      return {
+        ...state,
+        companiesParams: {
+          filter: action.filter ?? state.companiesParams.filter,
+          sort: action.sort ?? state.companiesParams.sort,
+        },
+        error: null,
+      };
+    }
+  ),
   on(
     AdministrationActions.getAllCompaniesWithParamsSuccess,
     (state, action) => {

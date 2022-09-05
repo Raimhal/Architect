@@ -28,9 +28,10 @@ export class AdministrationEffects {
   getAllCompaniesWithParams$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(AdministrationActions.getAllCompaniesWithParams),
-      concatMap((action) =>
+      withLatestFrom(this.store.pipe(select(AdministrationSelectors.selectCompaniesParams))),
+      switchMap(([_, params]) =>
         this.service
-          .getAllCompaniesWithParameters(action.filter, action.sort)
+          .getAllCompaniesWithParameters(params.filter, params.sort)
           .pipe(
             map((companies) =>
               AdministrationActions.getAllCompaniesWithParamsSuccess({
@@ -111,7 +112,10 @@ export class AdministrationEffects {
       ofType(AdministrationActions.CreateCompany),
       mergeMap((action) =>
         this.service.createCompany(action.date).pipe(
-          map((response) => AdministrationActions.CreateCompanySuccess()),
+          map((response) => {
+            this.store.dispatch(AdministrationActions.getAllCompaniesWithParams({}));
+            return AdministrationActions.CreateCompanySuccess();
+          }),
           catchError((error) =>
             of(
               AdministrationActions.CreateCompanyFailure({

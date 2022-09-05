@@ -16,6 +16,11 @@ export const selectCompanies = createSelector(
   (state) => state.companies
 );
 
+export const selectCompaniesParams = createSelector(
+  selectAdministrationState,
+  (state) => state.companiesParams
+);
+
 export const selectRoles = createSelector(
   selectAdministrationState,
   (state) => state.roles
