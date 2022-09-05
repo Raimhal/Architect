@@ -11,11 +11,12 @@ import {
   updateBuilding,
   updateBuildingBlock
 } from "../state/project.actions";
-import {closeModalDialog} from "../../../store/actions/modal-dialog.action";
+import {closeModalDialog, openModalDialog} from "../../../store/actions/modal-dialog.action";
 import {selectProjectBuildings} from "../state/project.selectors";
 import {filter, first, Observable} from "rxjs";
 import {map} from "rxjs/operators";
 import {IBuildingBlock} from "../resources/models/building-block.model";
+import { ProjectDocumentAdditionComponent } from '../projectDocuments/project-document-addition/project-document-addition.component';
 
 class DialogData {
 }
@@ -91,5 +92,12 @@ export class BuildingManagementDialogComponent implements OnInit {
         isDone: checked
       }
     }))
+  }
+
+  onAddDocuments(buildingId: number){
+    this.store.dispatch(closeModalDialog());
+    this.store.dispatch(openModalDialog({component: ProjectDocumentAdditionComponent, config:{
+      data: buildingId
+    }}))
   }
 }

@@ -1,6 +1,6 @@
 <div *ngIf="project$ | async as project">
   <header class="header">
-    <mat-icon svgIcon="arrow-left"></mat-icon>
+    <mat-icon svgIcon="arrow-left" (click)="goToProjects()"></mat-icon>
     <h2> {{ project.projectName }}</h2>
 
     <ng-container *ngIf="currentStatus$ | async as currentStatus">
@@ -10,28 +10,41 @@
           <mat-select #statusSelector [(value)]="selectedStatus" (selectionChange)="changeStatus($event.value)"
                       style="visibility: hidden; height: 0; width: 0">
             <mat-option *ngFor="let status of statuses; let statusIndex = index" [value]="statusIndex">
-              {{status.displayName}}
+              {{status}}
             </mat-option>
           </mat-select>
-          {{statuses[selectedStatus].displayName}}
+          {{currentStatus}}
         </div>
       </ng-container>
 
       <ng-template #nonClickableStatus>
         <div class="project-status bar">
-          {{statuses[currentStatus].displayName}}
+          {{currentStatus}}
         </div>
       </ng-template>
 
     </ng-container>
   </header>
-  <mat-tab-group>
+  <div class="documentsFilter" *ngIf="matTabGroup.selectedIndex === 4">
+    <div mat-icon-button class="sortMenu" [matMenuTriggerFor]="sortMenu" aria-label="Example icon-button with a menu">
+        <mat-icon svgIcon="sort"></mat-icon>
+    </div>
+    <mat-menu #sortMenu="matMenu">
+      <button mat-menu-item (click)="sortDocumentsByNew(project.id)">New</button>
+      <button mat-menu-item (click)="sortDocumentsByOld(project.id)" >Old</button>
+    </mat-menu>
+    <app-filter-input (onSearchQuery)="onSearchQuery($event, project.id)"></app-filter-input>
+  </div>
+
+  <mat-tab-group #matTabGroup (selectedTabChange)="tabChanged($event, project)">
     <mat-tab label="Description">
       <app-project-description [projectId]="currentProjectId"></app-project-description>
     </mat-tab>
     <mat-tab label="Timeline">time</mat-tab>
     <mat-tab label="Recourses">Rec</mat-tab>
     <mat-tab label="Budget">Budg</mat-tab>
-    <mat-tab label="Document">docs</mat-tab>
+    <mat-tab label="Document">
+      <app-project-documents></app-project-documents>
+    </mat-tab>
   </mat-tab-group>
 </div>

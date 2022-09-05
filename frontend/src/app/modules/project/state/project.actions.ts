@@ -11,6 +11,9 @@ import { ProjectStatus } from '../resources/models/status';
 import { IBuilding } from "../resources/models/building.model";
 import { IBuildingBlock } from "../resources/models/building-block.model";
 import { GetProjectTeamDto } from "../resources/models/get-project-team-dto.model";
+import { IProjectDocument } from '../resources/models/project-documents/project-document.model';
+import { IProjectDocumentId } from '../resources/models/project-documents/project-document-id.model';
+import { IProjectDocumentUpdate } from '../resources/models/project-documents/project-document-update.model';
 
 
 export const getDetailedProject = createAction(
@@ -250,3 +253,54 @@ export const setProjectTeamFailure = createAction(
   '[Project] Set Project Team Failure',
   props<{ error: any }>()
 );
+export const loadProjectDocuments = createAction(
+  '[Project Documents Component] Get Project Documents',
+  props<{ projectId: number, query?: string, sort: 'created' | 'id', order?: 1 | 0 }>()
+);
+
+export const loadProjectDocumentsSuccess = createAction(
+  '[Project Documents Component] Get Project Documents Success',
+  props<{ response: IProjectDocument[] }>()
+);
+
+export const loadProjectDocumentsFailure = createAction(
+  '[Project Documents Component] Get Project Documents Failure',
+  props<{ error: any }>()
+);
+
+export const deleteProjectDocument = createAction(
+  '[Project Document Overview Component] Delete Project Document',
+  props<{ projectDocumentId: number }>()
+);
+
+export const deleteProjectDocumentSuccess = createAction(
+  '[Project Document Overview Component] Delete Project Document Success',
+  props<{ response: IProjectDocumentId }>()
+);
+
+export const deleteProjectDocumentFailure = createAction(
+  '[Project Document Overview Component] Delete Project Document Failure',
+  props<{ error: any }>()
+);
+
+
+export const updateProjectDocument = createAction(
+  '[Project Document Rename Component] Update Project Document',
+  props<{ model: IProjectDocumentUpdate }>()
+);
+
+export const updateProjectDocumentSuccess = createAction(
+  '[Project Document Rename Component] Update Project Document Success',
+  props<{ response: IProjectDocument }>()
+);
+
+export const updateProjectDocumentsFailure = createAction(
+  '[Project Document Rename Component] Update Project Document Failure',
+  props<{ error: any }>()
+);
+
+export const uploadProjectDocumentsFailure = createAction(
+  '[Project Document Addition Component] Upload Project Documents Failure',
+  props<{ error: any }>()
+);
+

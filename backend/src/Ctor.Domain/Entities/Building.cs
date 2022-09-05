@@ -6,6 +6,7 @@ public class Building : BaseEntity
 {
     public string BuildingName { get; set; }
     public virtual ICollection<BuildingBlock> BuildingBlocks { get; set; }
+    public virtual ICollection<ProjectDocument> ProjectDocuments { get; set; }
 
     public long? ProjectId { get; set; }
     public Project Project { get; set; }

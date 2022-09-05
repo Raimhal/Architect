@@ -36,7 +36,7 @@ export const loadAdministrationsFailure = createAction(
 
 export const getAllCompaniesWithParams = createAction(
   '[Company List Component] Get All Companies With Parameters',
-  props<{ filter: string; sort: string }>()
+  props<Partial<{ filter: string; sort: string }>>()
 );
 
 export const getAllCompaniesWithParamsSuccess = createAction(

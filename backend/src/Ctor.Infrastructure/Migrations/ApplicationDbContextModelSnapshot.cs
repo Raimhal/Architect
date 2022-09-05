@@ -201,6 +201,10 @@ namespace Ctor.Infrastructure.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
                     NpgsqlPropertyBuilderExtensions.HasIdentityOptions(b.Property<long>("Id"), 100L, null, null, null, null, null);
 
+                    b.Property<string>("Link")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
@@ -208,6 +212,9 @@ namespace Ctor.Infrastructure.Migrations
                     b.Property<string>("Path")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<long>("ProjectDocumentId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -393,17 +400,24 @@ namespace Ctor.Infrastructure.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
                     NpgsqlPropertyBuilderExtensions.HasIdentityOptions(b.Property<long>("Id"), 100L, null, null, null, null, null);
 
+                    b.Property<long>("BuildingId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<long?>("DocumentId")
-                        .IsRequired()
                         .HasColumnType("bigint");
 
                     b.Property<long?>("ProjectId")
-                        .IsRequired()
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DocumentId");
+                    b.HasIndex("BuildingId");
+
+                    b.HasIndex("DocumentId")
+                        .IsUnique();
 
                     b.HasIndex("Id")
                         .IsUnique();
@@ -702,21 +716,24 @@ namespace Ctor.Infrastructure.Migrations
 
             modelBuilder.Entity("Ctor.Domain.Entities.ProjectDocument", b =>
                 {
-                    b.HasOne("Ctor.Domain.Entities.Document", "Document")
-                        .WithMany("ProjectDocument")
-                        .HasForeignKey("DocumentId")
+                    b.HasOne("Ctor.Domain.Entities.Building", "Building")
+                        .WithMany("ProjectDocuments")
+                        .HasForeignKey("BuildingId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Ctor.Domain.Entities.Project", "Project")
+                    b.HasOne("Ctor.Domain.Entities.Document", "Document")
+                        .WithOne("ProjectDocument")
+                        .HasForeignKey("Ctor.Domain.Entities.ProjectDocument", "DocumentId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Ctor.Domain.Entities.Project", null)
                         .WithMany("ProjectDocument")
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProjectId");
+
+                    b.Navigation("Building");
 
                     b.Navigation("Document");
-
-                    b.Navigation("Project");
                 });
 
             modelBuilder.Entity("Ctor.Domain.Entities.ProjectNote", b =>
@@ -781,6 +798,8 @@ namespace Ctor.Infrastructure.Migrations
             modelBuilder.Entity("Ctor.Domain.Entities.Building", b =>
                 {
                     b.Navigation("BuildingBlocks");
+
+                    b.Navigation("ProjectDocuments");
                 });
 
             modelBuilder.Entity("Ctor.Domain.Entities.Company", b =>
@@ -798,7 +817,8 @@ namespace Ctor.Infrastructure.Migrations
 
             modelBuilder.Entity("Ctor.Domain.Entities.Document", b =>
                 {
-                    b.Navigation("ProjectDocument");
+                    b.Navigation("ProjectDocument")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Ctor.Domain.Entities.Project", b =>

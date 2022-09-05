@@ -15,7 +15,10 @@ import { IProjectUpdate } from "../models/project-update";
 import { ProjectStatus } from "../models/status";
 import { GetProjectTeamDto } from "../models/get-project-team-dto.model";
 import { GetCompanyUsersDto } from "../models/get-company-users-dto";
-
+import { NullLogger } from '@microsoft/signalr';
+import { IProjectDocument } from '../models/project-documents/project-document.model';
+import { IProjectDocumentId } from '../models/project-documents/project-document-id.model';
+import { IProjectDocumentUpdate } from '../models/project-documents/project-document-update.model';
 @Injectable({
   providedIn: 'root',
 })
@@ -82,5 +85,24 @@ export class ProjectService extends ApiService {
 
   getCompanyUsers(filter: string | null, sort: 'role' | 'firstName' | null): Observable<GetCompanyUsersDto> {
     return this.get<GetCompanyUsersDto>(`/users/?filter=${filter ?? ''}&sort=${sort ?? 'role'}`);
+  }
+
+  getProjectDocuments(id: number, sort: 'created' | 'id', query?: string, order?: 1|0): Observable<IProjectDocument[]>{
+    let request = `/projectDocuments/project/${id}?sort=${sort}`
+    if(query){
+      request+=`&query=${query}`
+    }
+    if(order){
+      request+=`&order=${order}`
+    }
+    return this.get<IProjectDocument[]>(request);
+  }
+
+  deleteProjectDocument(projectDocumentId: number): Observable<IProjectDocumentId>{
+    return this.delete<IProjectDocumentId>(`/projectDocuments/${projectDocumentId}`);
+  }
+
+  updateProjectDocument(model: IProjectDocumentUpdate){
+    return this.put<IProjectDocument>(`/projectDocuments`, model);
   }
 }

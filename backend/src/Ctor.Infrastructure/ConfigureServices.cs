@@ -62,6 +62,8 @@ public static class ConfigureServices
         services.AddScoped<IProjectPhotoRepository, ProjectPhotoRepository>();
         services.AddScoped<IBuildingBlockRepository, BuildingBlockRepository>();
         services.AddScoped<ICompanyLogoRepository, CompanyLogoRepository>();
+        services.AddScoped<IProjectDocumentRepository, ProjectDocumentRepository>();
+        services.AddScoped<IDocumentRepository, DocumentRepository>();
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
         services.AddScoped<ApplicationDbContextInitializer>();

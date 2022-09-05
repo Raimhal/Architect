@@ -15,6 +15,8 @@ public interface IApplicationDbContext
     IBuildingBlockRepository BuildingBlocks { get; }
     INotificationRepository Notifications { get; }
     IAssigneeRepository Assignees { get; }
+    IProjectDocumentRepository ProjectDocuments { get; }
+    IDocumentRepository Documents { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

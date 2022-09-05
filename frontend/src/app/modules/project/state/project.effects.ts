@@ -310,6 +310,56 @@ export class ProjectEffects {
     );
   });
 
+  loadProjectDocuments$ = createEffect(()=>{
+    return this.actions$.pipe(
+      ofType(ProjectActions.loadProjectDocuments),
+      concatMap((action)=>
+        this.projectService.getProjectDocuments(action.projectId, action.sort, action.query, action.order).pipe(
+          map(result=>
+            ProjectActions.loadProjectDocumentsSuccess({response: result})
+          ),
+          catchError((error:any)=>
+            of(ProjectActions.loadProjectDocumentsFailure({error: serializeError(error)}))
+          )
+        )
+      )
+    );
+  })
+
+  deleteProjectDocument$ = createEffect(()=>{
+    return this.actions$.pipe(
+      ofType(ProjectActions.deleteProjectDocument),
+      concatMap((action)=>
+        this.projectService.deleteProjectDocument(action.projectDocumentId).pipe(
+          map(result=>
+            ProjectActions.deleteProjectDocumentSuccess({response: result})
+          ),
+          catchError((error:any)=>
+            of(ProjectActions.deleteProjectDocumentFailure({error: serializeError(error)}))
+          )
+        )
+      )
+    );
+  })
+
+  updateProjectDocument$ = createEffect(()=>{
+    return this.actions$.pipe(
+      ofType(ProjectActions.updateProjectDocument),
+      concatMap((action)=>
+        this.projectService.updateProjectDocument(action.model).pipe(
+          switchMap(result=>of(
+            ProjectActions.updateProjectDocumentSuccess({response: result}),
+            ModalDialogAction.closeModalDialog()
+          )
+          ),
+          catchError((error:any)=>
+            of(ProjectActions.updateProjectDocumentsFailure({error: serializeError(error)}))
+          )
+        )
+      )
+    );
+  })
+  
   constructor(
     private actions$: Actions,
     private projectService: ProjectService,

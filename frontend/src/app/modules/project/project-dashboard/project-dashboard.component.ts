@@ -4,17 +4,18 @@ import { DomSanitizer } from "@angular/platform-browser";
 import { map } from 'rxjs';
 import { hideMenu, openMenu } from "../../../store/actions/menu.actions";
 import { UserRole } from "../../auth/resources/models/userRole";
-import { ProjectStatus } from "../resources/models/status";
 import { ActivatedRoute } from "@angular/router";
 import * as fromAuthSelectors from "../../../store/selectors/auth.selectors";
 import * as fromProjectSelectors from "../state/project.selectors";
 import * as fromProjectActions from "../state/project.actions";
+import * as fromRouteActions from "../../../store/actions/route.actions";
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { AppState } from 'src/app/store';
 import { IProjectDetailed } from '../resources/models/project-details';
 import { getDetailedProject } from '../state/project.actions';
 import { selectProjectInformation } from '../state/project.selectors';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-project-dashboard',
@@ -34,11 +35,11 @@ export class ProjectDashboardComponent implements OnInit {
 
   currentProjectId = 0;
 
-  statuses: { internalName: ProjectStatus, displayName: string }[] = [
-    { internalName: ProjectStatus.NotStarted, displayName: 'Not Started' },
-    { internalName: ProjectStatus.InProcess, displayName: 'In Progress' },
-    { internalName: ProjectStatus.Suspended, displayName: 'Suspended' },
-    { internalName: ProjectStatus.Finished, displayName: 'Finished' },
+  statuses = [
+    'Not Started',
+    'In Progress',
+    'Suspended',
+    'Finished',
   ];
 
   constructor(
@@ -53,6 +54,11 @@ export class ProjectDashboardComponent implements OnInit {
       'arrow-left',
       sanitizer.bypassSecurityTrustResourceUrl("assets/icons/arrow_left.svg")
     );
+
+    iconRegistry.addSvgIcon(
+      'sort',
+      sanitizer.bypassSecurityTrustResourceUrl("assets/icons/sort.svg")
+    );
   }
 
   ngOnInit(): void {
@@ -66,4 +72,25 @@ export class ProjectDashboardComponent implements OnInit {
     this.store.dispatch(fromProjectActions.changeProjectStatus({ projectId: this.currentProjectId, newStatus }))
   }
 
+  goToProjects() {
+    this.store.dispatch(fromRouteActions.navigate({ commands: ['projects'] }));
+  }
+  tabChanged(event: MatTabChangeEvent, project: IProjectDetailed){
+    if(event.index === 4){
+      this.store.dispatch(fromProjectActions.loadProjectDocuments({projectId: project.id, query:'', sort: 'created'}))
+    }
+  }
+
+  sortDocumentsByNew(projectId: number){
+    this.store.dispatch(fromProjectActions.loadProjectDocuments({projectId: projectId, sort: 'created', order: 0}))
+  }
+
+  sortDocumentsByOld(projectId: number){
+    this.store.dispatch(fromProjectActions.loadProjectDocuments({projectId: projectId, sort: 'created', order: 1}))
+  }
+
+  onSearchQuery(event:string, projectId: number){
+    this.store.dispatch(fromProjectActions.loadProjectDocuments({projectId: projectId, query: event, sort: 'created'}))
+
+  }
 }

@@ -19,6 +19,8 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     private readonly Lazy<IBuildingBlockRepository> _buildingBlockRepository;
     private readonly Lazy<IAssigneeRepository> _assigneeRepository;
     private readonly Lazy<INotificationRepository> _notificationRepositoryLazy;
+    private readonly Lazy<IProjectDocumentRepository> _projectDocumentRepository;
+    private readonly Lazy<IDocumentRepository> _documentRepository;
 
     public IUserRepository Users => _userRepositoryLazy.Value;
     public IRoleRepository Roles => _roleRepositoryLazy.Value;
@@ -31,6 +33,8 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     public IBuildingBlockRepository BuildingBlocks => _buildingBlockRepository.Value;
     public INotificationRepository Notifications => _notificationRepositoryLazy.Value;
     public IAssigneeRepository Assignees => _assigneeRepository.Value;
+    public IProjectDocumentRepository ProjectDocuments => _projectDocumentRepository.Value;
+    public IDocumentRepository Documents => _documentRepository.Value;
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IRepositoryFactory repositoryFactory)
         : base(options)
@@ -46,6 +50,9 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
         _buildingBlockRepository = repositoryFactory.GetInstanse<Lazy<IBuildingBlockRepository>>();
         _assigneeRepository = repositoryFactory.GetInstanse<Lazy<IAssigneeRepository>>();
         _notificationRepositoryLazy = repositoryFactory.GetInstanse<Lazy<INotificationRepository>>();
+        _projectDocumentRepository = repositoryFactory.GetInstanse<Lazy<IProjectDocumentRepository>>();
+        _documentRepository = repositoryFactory.GetInstanse<Lazy<IDocumentRepository>>();
+
     }
     protected override void OnModelCreating(ModelBuilder builder)
     {       

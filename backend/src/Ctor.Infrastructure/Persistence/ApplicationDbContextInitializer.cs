@@ -163,16 +163,22 @@ public class ApplicationDbContextInitializer
 
     private ICollection<Project> GenerateProjects(User owner)
     {
-        var status = _faker.Random.Enum<ProjectStatus>();
-
-        var endTime = status is ProjectStatus.Finished
-            ? _faker.Date.Past(yearsToGoBack: 4)
-            : _faker.Date.Future(yearsToGoForward: 4);
-
         return Enumerable.Range(0, _faker.Random.Int(1, 3))
             .Select(_ =>
             {
                 var project = _faker.Random.CollectionItem(_projects);
+                var phases = GeneratePhases();
+
+                var status = phases.All(p => p.EndTime <= DateTime.UtcNow)
+                    ? ProjectStatus.Finished
+                    : phases.All(p => p.StartTime >= DateTime.UtcNow)
+                        ? ProjectStatus.NotStarted
+                        : ProjectStatus.InProcess;
+
+                if (status == ProjectStatus.InProcess && _faker.Random.Bool(weight: 0.4f))
+                {
+                    status = ProjectStatus.Suspended;
+                }
 
                 return new Project
                 {
@@ -185,11 +191,11 @@ public class ApplicationDbContextInitializer
                     Budget = _faker.Random.Long(1_000, 1_000_000_000),
                     Status = status,
                     StartTime = _faker.Date.Past(yearsToGoBack: 5).ToUniversalTime(),
-                    EndTime = endTime.ToUniversalTime(),
+                    EndTime = phases.Last().EndTime,
                     User = owner,
                     Assignees = new List<Assignee> { new() { User = owner, } },
                     Building = GenerateBuildings(),
-                    Phases = GeneratePhases(),
+                    Phases = phases,
                 };
             })
             .ToArray();
@@ -197,44 +203,52 @@ public class ApplicationDbContextInitializer
 
     private record BuildingSeed(string BuildingName);
 
-    private ICollection<BuildingSeed> _buildings = new BuildingSeed[]
+    private readonly ICollection<BuildingSeed> _buildings = new BuildingSeed[]
     {
-        new("First floor"),
-        new("Parking"),
-        new("Park"),
-        new("Second floor"),
+        new("First floor"), //
+        new("Parking"), //
+        new("Park"), //
+        new("Second floor"), //
     };
 
     private ICollection<Building> GenerateBuildings()
     {
         return Enumerable.Range(0, _faker.Random.Int(1, 3))
-            .Select(_ => {
+            .Select(_ =>
+            {
                 var building = _faker.Random.CollectionItem(_buildings);
 
                 return new Building
                 {
-                    BuildingName = building.BuildingName,
+                    BuildingName = building.BuildingName, //
                 };
             })
             .ToArray();
     }
 
+    private readonly string[] _phaseNames = new[]
+    {
+        "Planning", //
+        "Pre-construction", //
+        "Procurement", //
+        "Construction", //
+        "Post-construction", //
+    };
+
     private ICollection<Phase> GeneratePhases()
     {
-        return Enumerable.Range(0, 5)
+        var currentPhase = _faker.Random.Int(0, _phaseNames.Length);
+
+        DateTime GenerateTime(int phaseStep) => phaseStep >= currentPhase
+            ? _faker.Date.Future(yearsToGoForward: 5)
+            : _faker.Date.Past(yearsToGoBack: 5);
+
+        return Enumerable.Range(0, _phaseNames.Length)
             .Select(phaseStep => new Phase
             {
-                PhaseName = phaseStep switch
-                {
-                    0 => "Planning",
-                    1 => "Pre-construction",
-                    2 => "Procurement",
-                    3 => "Construction",
-                    4 => "Post-construction",
-                    _ => throw new ArgumentOutOfRangeException(nameof(phaseStep), phaseStep, null),
-                },
-                StartTime = _faker.Date.Past(yearsToGoBack: 5).ToUniversalTime(),
-                EndTime = _faker.Date.Past(yearsToGoBack: 5).ToUniversalTime(),
+                PhaseName = _phaseNames[phaseStep],
+                StartTime = GenerateTime(phaseStep).ToUniversalTime(),
+                EndTime = GenerateTime(phaseStep).ToUniversalTime(),
                 PhaseStep = phaseStep,
             })
             .ToArray();

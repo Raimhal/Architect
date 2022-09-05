@@ -1,5 +1,5 @@
 <div class="container" *ngIf="project$ | async as project">
-  <div class="arrow-bar"></div>
+  <app-phase-bar *ngIf="!!project?.phases" [phases]="mapPhases(project.phases)"></app-phase-bar>
   <div class="cards-container">
 
     <div class="cards-container-column" *ngIf="projectInformationForm$ | async as projectForm">

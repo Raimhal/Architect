@@ -65,3 +65,8 @@ export const selectCurrentProjectTeam = createSelector(
   selectCurrentProject,
   (state) => state?.team ?? null
 );
+
+export const selectProjectDocuments = createSelector(
+  selectProjectState,
+  (state)=>state.currentlyOpenProjectDocuments
+)

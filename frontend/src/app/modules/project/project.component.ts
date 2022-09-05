@@ -10,7 +10,7 @@ import { IProjectOverview } from './resources/models/project-overview';
 import { ProjectStatus } from './resources/models/status';
 import { changeParams, getDetailedProject, getProjectsWithParams } from './state/project.actions';
 import { selectProjects } from './state/project.selectors';
-import {openMenu, revealMenu} from "../../store/actions/menu.actions";
+import { openMenu, revealMenu } from "../../store/actions/menu.actions";
 import { openModalDialog } from 'src/app/store/actions/modal-dialog.action';
 import { AddProjectComponent } from './add-project/add-project.component';
 import { Order } from './resources/models/order';
@@ -28,7 +28,7 @@ export class ProjectComponent implements OnInit {
   status = ProjectStatus
 
   constructor(public dialog: MatDialog, private matIconRegistry: MatIconRegistry,
-    private domSanitizer: DomSanitizer, private store: Store<AppState>) {
+              private domSanitizer: DomSanitizer, private store: Store<AppState>) {
     this.matIconRegistry.addSvgIcon(
       'sort',
       this.domSanitizer.bypassSecurityTrustResourceUrl("assets/icons/sort.svg")
@@ -36,7 +36,7 @@ export class ProjectComponent implements OnInit {
     this.projects$ = this.store.pipe(select(selectProjects));
     this.store.dispatch(openMenu());
     this.store.dispatch(revealMenu());
-   }
+  }
 
 
   ngOnInit() {
@@ -44,12 +44,20 @@ export class ProjectComponent implements OnInit {
   }
 
   changeStatus(event: MatTabChangeEvent) {
-    console.log(event.index)
-    this.store.dispatch(changeParams({
-      params: {
-        status: event.index + 1
-      }
-    }))
+    let index;
+    if (event.index === 0) {
+      index = 1;
+    } else if (event.index === 1) {
+      index = 0;
+    } else if (event.index === 2) {
+      index = 3;
+    } else if (event.index === 3) {
+      index = 2;
+    } else {
+      throw new Error("Unknown tab index");
+    }
+
+    this.store.dispatch(changeParams({ params: { status: index } }))
   }
 
   sortProjectsByName() {
@@ -87,17 +95,17 @@ export class ProjectComponent implements OnInit {
     }))
   }
 
-  getCardInformation(project: IProjectOverview): CardInformation{
-    var completedPhases = project.phases.filter(p => p.isFinished)
+  getCardInformation(project: IProjectOverview): CardInformation {
+    const completedPhases = project.phases.filter(p => p.isFinished)
     return {
       id: project.id,
       title: project.projectName,
       image: 'https://eitrawmaterials.eu/wp-content/uploads/2019/10/KAVA7.jpg',
       date: `${project.startTime}-${project.endTime}`,
-      subtitle: 'last stage title',
+      subtitle: `${project.country}, ${project.city}, ${project.address}`,
       status: project.status,
-      statusBarLabel: completedPhases[completedPhases.length - 1].phaseName,
-      statusBarProgress: completedPhases.length,
+      statusBarLabel: project.phases[completedPhases.length - 1]?.phaseName,
+      statusBarProgress: completedPhases?.length,
       statusBarFull: project.phases.length
     }
   }
@@ -105,9 +113,9 @@ export class ProjectComponent implements OnInit {
   add() {
     this.store.dispatch(openModalDialog({ component: AddProjectComponent }));
   }
-  
+
   redirectToProjectPage(id: number) {
-    this.store.dispatch(navigate({commands: [`/projects/${id}`]}))
+    this.store.dispatch(navigate({ commands: [`/projects/${id}`] }))
   }
 
 }
