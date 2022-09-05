@@ -166,3 +166,16 @@ export const uploadFileFailure = createAction(
 export const uploadFileSuccessWithoutError= createAction(
   '[Company-information Component] Members added successfully without error lines',
 )
+
+export const updateNewCompanyId = createAction(
+  '[Company List] Update New Company Id'
+)
+
+export const updateNewCompanyIdSuccess = createAction(
+  '[Company List] Update New Company Id Success',
+  props<{ newCompanyId: number }>()
+)
+
+export const updateNewCompanyIdFailure = createAction(
+  '[Company List] Update New Company Id Failure'
+)

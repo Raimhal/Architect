@@ -30,7 +30,8 @@ export interface State {
   companyInformationForm: FormGroupState<fromCompanyInformationForm.CompanyInformationFormValue>;
   error: any;
   roles: IRole[]|null;
-  failedLines: string[]|undefined;
+  failedLines: string[] | undefined;
+  newCompanyId: number;
 }
 
 export const initialState: State = {
@@ -47,6 +48,7 @@ export const initialState: State = {
   error: null,
   roles: null,
   failedLines: undefined,
+  newCompanyId: 0
 };
 
 export const reducer = createReducer(
@@ -230,4 +232,12 @@ export const reducer = createReducer(
      currentUserDetails:action.userDetails
     })
   ),
+  on(
+    AdministrationActions.updateNewCompanyIdSuccess,
+    (state, action) => (
+      {
+        ...state,
+        newCompanyId: action.newCompanyId
+      })
+  )
 );

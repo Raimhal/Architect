@@ -63,4 +63,7 @@ export class AdministrationApiService extends ApiService {
     return this.get<IMember[]>(`/users/byCompanyId/${companyId}`);
   }
 
+  getNewGeneratedCompanyId(): Observable<number> {
+    return this.get<number>(`/companies/newCompanyId`);
+  }
 }
