@@ -1,9 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../store';
 import * as AdminActions from '../state/administration.actions';
+import * as AdminSelectors from '../state/administration.selectors';
 import { MatDialogRef } from "@angular/material/dialog";
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'create-company',
@@ -12,7 +14,7 @@ import { MatDialogRef } from "@angular/material/dialog";
 })
 export class CreateCompany implements OnInit {
   @Input() NewCompanyId: number = 0;
-
+  newId$: Observable<number>;
   address = new FormControl('', [Validators.required]);
   city = new FormControl('', [Validators.required]);
   country = new FormControl('', [Validators.required]);
@@ -28,6 +30,8 @@ export class CreateCompany implements OnInit {
   });
 
   constructor(private state: Store<AppState>, public dialogRef: MatDialogRef<CreateCompany>) {
+    this.newId$ = this.state.pipe(select(AdminSelectors.selectNewCompanyId));
+    this.newId$.subscribe(el => this.NewCompanyId = el)
   }
 
   ngOnInit(): void {

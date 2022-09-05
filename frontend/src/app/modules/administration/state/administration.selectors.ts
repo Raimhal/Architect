@@ -50,3 +50,7 @@ export const selectCompanyId = createSelector(
   selectAdministrationState,
   (state)=> state.currentlyOpenCompany.id
 )
+export const selectNewCompanyId = createSelector(
+  selectAdministrationState,
+  (state) => state.newCompanyId
+)

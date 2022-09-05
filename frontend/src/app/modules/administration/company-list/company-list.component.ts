@@ -66,6 +66,7 @@ export class CompanyListComponent implements OnInit {
   }
 
   openModal() {
+    this.store.dispatch(fromAdministraionActions.updateNewCompanyId());
     this.dialog.open(CreateCompany, {
       maxWidth: '100vw',
       maxHeight: '100vh',

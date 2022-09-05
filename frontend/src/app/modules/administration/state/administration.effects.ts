@@ -280,6 +280,21 @@ export class AdministrationEffects {
     );
   });
 
+  updateNewCompanyId$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(AdministrationActions.updateNewCompanyId),
+      mergeMap((action) =>
+        this.service.getNewGeneratedCompanyId().pipe(
+          map((id) =>
+            AdministrationActions.updateNewCompanyIdSuccess({ newCompanyId: id })
+          ), catchError((err) => of(AdministrationActions.updateNewCompanyIdFailure))
+        )
+      )
+
+    )
+
+  })
+
   constructor(
     private actions$: Actions,
     private service: AdministrationApiService,

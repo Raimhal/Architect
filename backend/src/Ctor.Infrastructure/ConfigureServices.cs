@@ -80,6 +80,7 @@ public static class ConfigureServices
         services.AddScoped<IFileManipulatorService, FileManipulatorService>();
         services.AddScoped<IAddressParsingService, AddressParsingService>();
         services.AddScoped<IGroupsService, GroupsService>();
+        services.AddScoped<ICompanyIdGeneratorService, CompanyIdGeneratorService>();
 
         if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
         {

@@ -7,6 +7,7 @@ using Ctor.Application.Companies.Queries.GetCompanyByUserId;
 using Ctor.Application.Companies.Commands.UpdateCompanyProfile;
 using Ctor.Application.Companies.Queries.GetCompanyLogoByCompanyId;
 using Ctor.Infrastructure.Extensions;
+using Ctor.Application.Companies.Queries.GetNewCompanyId;
 
 namespace Ctor.Controllers;
 
@@ -55,7 +56,6 @@ public class CompanyController : ApiControllerBase
         {
             return BadRequest();
         }
-
         return await Mediator.Send(command);
     }
 
@@ -75,5 +75,11 @@ public class CompanyController : ApiControllerBase
     public async Task<ActionResult<PutCompanyLogoResponseDto>> PutCompanyLogo([FromForm]IFormFile data, long id)
     {
         return await Mediator.Send(new PutCompanyLogoCommand(await data.GetBytes(), id, Path.GetExtension(data.FileName)));
+    }
+
+    [HttpGet("newCompanyId")]
+    public async Task<ActionResult<long>> GetNewCompanyGeneratedId()
+    {
+        return await Mediator.Send(new GetNewCompanyIdQuery());
     }
 }
