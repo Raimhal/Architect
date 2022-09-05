@@ -13,11 +13,12 @@ public class ProjectDocumentConfiguration : IEntityTypeConfiguration<ProjectDocu
 
         builder.ToTable("ProjectDocument").HasKey(x => x.Id);
         builder.HasIndex(x => x.Id).IsUnique();
-        builder.HasOne(x => x.Project)
-               .WithMany(x=>x.ProjectDocument)
-            .HasForeignKey(p=>p.ProjectId);
+        builder.HasOne(x => x.Building)
+               .WithMany(x=>x.ProjectDocuments)
+               .HasForeignKey(p=>p.BuildingId);
         builder.HasOne(x => x.Document)
-               .WithMany(x => x.ProjectDocument)
-               .HasForeignKey(p => p.DocumentId);
+               .WithOne(x => x.ProjectDocument)
+               .HasForeignKey<ProjectDocument>(p => p.DocumentId)
+               .OnDelete(DeleteBehavior.Cascade);
     }
 }

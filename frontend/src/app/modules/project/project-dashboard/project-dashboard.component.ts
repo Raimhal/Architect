@@ -15,6 +15,7 @@ import { AppState } from 'src/app/store';
 import { IProjectDetailed } from '../resources/models/project-details';
 import { getDetailedProject } from '../state/project.actions';
 import { selectProjectInformation } from '../state/project.selectors';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-project-dashboard',
@@ -53,6 +54,11 @@ export class ProjectDashboardComponent implements OnInit {
       'arrow-left',
       sanitizer.bypassSecurityTrustResourceUrl("assets/icons/arrow_left.svg")
     );
+
+    iconRegistry.addSvgIcon(
+      'sort',
+      sanitizer.bypassSecurityTrustResourceUrl("assets/icons/sort.svg")
+    );
   }
 
   ngOnInit(): void {
@@ -68,5 +74,23 @@ export class ProjectDashboardComponent implements OnInit {
 
   goToProjects() {
     this.store.dispatch(fromRouteActions.navigate({ commands: ['projects'] }));
+  }
+  tabChanged(event: MatTabChangeEvent, project: IProjectDetailed){
+    if(event.index === 4){
+      this.store.dispatch(fromProjectActions.loadProjectDocuments({projectId: project.id, query:'', sort: 'created'}))
+    }
+  }
+
+  sortDocumentsByNew(projectId: number){
+    this.store.dispatch(fromProjectActions.loadProjectDocuments({projectId: projectId, sort: 'created', order: 0}))
+  }
+
+  sortDocumentsByOld(projectId: number){
+    this.store.dispatch(fromProjectActions.loadProjectDocuments({projectId: projectId, sort: 'created', order: 1}))
+  }
+
+  onSearchQuery(event:string, projectId: number){
+    this.store.dispatch(fromProjectActions.loadProjectDocuments({projectId: projectId, query: event, sort: 'created'}))
+
   }
 }

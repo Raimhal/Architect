@@ -216,7 +216,27 @@ export class AlertEffects {
               })
             ),
           { dispatch: false });
-  
+
+          deleteProjectDocumentFailure$ = createEffect(
+            () =>
+              this.actions$.pipe(
+                ofType(fromProjectActions.deleteProjectDocumentFailure),
+                tap(() => {
+                  this._alertService.showAlert("Project document delete failure", "OK", "error")
+                })
+              ),
+            { dispatch: false });
+
+            uploadProjectDocumentsFailure$ = createEffect(
+              () =>
+                this.actions$.pipe(
+                  ofType(fromProjectActions.uploadProjectDocumentsFailure),
+                  tap(() => {
+                    this._alertService.showAlert("Project document upload failure", "OK", "error")
+                  })
+                ),
+              { dispatch: false });
+                  
   constructor(private actions$: Actions, private _alertService: AlertService, private errorService: ErrorService) {
   }
 }

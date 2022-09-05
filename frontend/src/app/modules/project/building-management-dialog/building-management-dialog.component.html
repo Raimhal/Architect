@@ -19,7 +19,7 @@
     <div class="add-buttons">
       <button>Add services</button>
       <button>Add materials</button>
-      <button>Add documents</button>
+      <app-button (click)="onAddDocuments(building.id)">Add documents</app-button>
     </div>
     <div class="progress-bar">
       <span>{{building.buildingProgress}}%</span>

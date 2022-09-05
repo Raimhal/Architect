@@ -9,6 +9,8 @@ import * as ProjectActions from './project.actions';
 import * as fromProjectInformationForm from "../resources/forms/project-information-form"
 import { IProjectDetailed } from '../resources/models/project-details';
 import {IBuilding} from "../resources/models/building.model";
+import { IProjectDocument } from '../resources/models/project-documents/project-document.model';
+import { state } from '@angular/animations';
 
 export const projectFeatureKey = 'project';
 
@@ -33,6 +35,7 @@ export interface State {
     }[] | null,
   } | null,
   error: string,
+  currentlyOpenProjectDocuments: IProjectDocument[]
 }
 
 export const initialState: State = {
@@ -57,6 +60,7 @@ export const initialState: State = {
     status: ProjectStatus.InProcess,
     team: [],
   },
+  currentlyOpenProjectDocuments: []
 };
 
 export const reducer = createReducer(
@@ -193,6 +197,49 @@ export const reducer = createReducer(
       ...state,
       currentlyRevealedBuilding: state.currentlyRevealedBuilding == action.id ? null : action.id
     }
+  }),
+  on(ProjectActions.loadProjectDocumentsSuccess, (state, action)=>{
+    return{
+    ...state, 
+    currentlyOpenProjectDocuments: action.response
+    }
+  }),
+  on(ProjectActions.loadProjectDocumentsFailure, (state, action)=>{
+    return{
+      ...state,
+      error: action.error,
+      currentlyOpenProjectDocuments: []
+    }
+  }),
+  on(ProjectActions.deleteProjectDocumentSuccess, (state, action)=>{
+    return{
+    ...state, 
+    currentlyOpenProjectDocuments: state.currentlyOpenProjectDocuments.filter(document=>document.id != action.response.id)
+    }
+  }),
+  on(ProjectActions.deleteProjectDocumentFailure, (state, action)=>{
+    return{
+      ...state,
+      error: action.error
+    }
+  }),
+  on(ProjectActions.updateProjectDocumentSuccess, (state, action)=>{
+    return{
+    ...state, 
+    currentlyOpenProjectDocuments: state.currentlyOpenProjectDocuments.map(obj=>{
+      if(obj.id === action.response.id){
+        obj = action.response
+      }
+      return obj;
+    }
+    )
+    
+    }
+  }),
+  on(ProjectActions.updateProjectDocumentsFailure, (state, action)=>{
+    return{
+      ...state,
+      error: action.error
+    }
   })
-
 );

@@ -15,5 +15,6 @@ public class DocumentConfiguration : IEntityTypeConfiguration<Document>
         builder.HasIndex(x => x.Id).IsUnique();
         builder.Property(x => x.Name).IsRequired();
         builder.Property(x => x.Path).IsRequired();
+        builder.Property(x => x.Link).IsRequired();
     }
 }

@@ -35,7 +35,10 @@
 
 }
 
-
+.body{
+    display: flex;
+    justify-content: space-between;
+}
 :host ::ng-deep {
   .mat-ink-bar {
     display: none;
@@ -51,4 +54,17 @@
     border-bottom: 2px solid colors.$primary4;
   }
 
+}
+
+.documentsFilter{
+  display:flex;
+  position: absolute;
+  z-index: 1000;
+  left: 70%;
+  gap: 10px;
+  align-items: center;
+  *:hover {
+    cursor: pointer;
+  }
+  
 }
