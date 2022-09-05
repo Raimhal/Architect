@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Ctor.Application.Common.Exceptions;
 using Ctor.Application.Common.Interfaces;
-using Ctor.Application.Common.Models;
 using Ctor.Domain.Entities;
 using Ctor.Domain.Entities.Enums;
 using Ctor.Domain.Repositories;
@@ -54,14 +53,12 @@ public class CreateCompanyCommandHandler : IRequestHandler<CreateCompanyCommand>
 
         await this._notifService.SendNotificationToUser(new DTOs.NotificationDTO()
         {
-            Action = "Company created",
             Message = "Company succesfully created",
             type = NotificationTypes.Success
         }, _currentUserService.Id);
 
         await this._notifService.SendNotificationToGroup(new DTOs.NotificationDTO()
         {
-            Action = "Created company",
             Message = "Company " + newCompany.CompanyName +" was just created",
             type = NotificationTypes.Info
         }, "admin");

@@ -13,6 +13,7 @@ public interface IApplicationDbContext
     IProjectPhotoRepository ProjectsPhotos { get; }
     ICompanyLogoRepository CompanyLogos { get; }
     IBuildingBlockRepository BuildingBlocks { get; }
+    INotificationRepository Notifications { get; }
     IAssigneeRepository Assignees { get; }
     IProjectDocumentRepository ProjectDocuments { get; }
     IDocumentRepository Documents { get; }

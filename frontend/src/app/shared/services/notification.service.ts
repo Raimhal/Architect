@@ -9,6 +9,7 @@ import { selectUser } from "../../store/selectors/auth.selectors";
 import { connect, map, Observable, tap } from "rxjs";
 import { number } from "ngrx-forms/validation";
 import { AlertService } from "../../modules/alert/resources/services/alert.service";
+import * as fromNotifiActions from "../../store/actions/notifi.actions"
 
 @Injectable({
   providedIn: "root",
@@ -39,6 +40,9 @@ export class NotificationService {
     });
 
     this.addHendlers();
+    if (this.UserId != undefined) {
+      this.store.dispatch(fromNotifiActions.loadNotifis());
+    }
     this.started = true;
   }
 
@@ -47,6 +51,9 @@ export class NotificationService {
       this.connection.on("SendNotif", (notif: NotificationDto) => {
         console.log(notif.type);
         this.alertService.showAlert(notif.message, "OK", notif.type)
+        if (this.UserId != undefined) {
+          this.store.dispatch(fromNotifiActions.loadNotifis());
+        }
       }); 
     }
   }
@@ -67,5 +74,15 @@ export class NotificationService {
     }
     this.started = false;
     this.UserId = undefined;
+  }
+
+  deleteNotif(notiid: number) {
+    if (this.UserId != undefined)
+    this.store.dispatch(fromNotifiActions.deleteNotifi({ id: notiid, userId: this.UserId }));
+  }
+
+  deleteAllNotifi() {
+    if (this.UserId != undefined)
+      this.store.dispatch(fromNotifiActions.deleteAllNotifi({ userId: this.UserId }));
   }
 }

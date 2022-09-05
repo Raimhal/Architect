@@ -11,6 +11,7 @@ import * as fromAdministration from '../modules/administration/state/administrat
 import * as fromCompany from '../modules/company/state/company.reducer'
 import * as fromProject from '../modules/project/state/project.reducer';
 import * as fromMenu from './reducers/menu.reducer';
+import * as fromNotifi from './reducers/notifi.reducer'
 
   export interface AppState {
     router: fromRouter.RouterReducerState;
@@ -20,6 +21,7 @@ import * as fromMenu from './reducers/menu.reducer';
     [fromProject.projectFeatureKey]: fromProject.State;
     [fromCompany.companyFeatureKey]: fromCompany.State;
     [fromMenu.menuFeatureKey]: fromMenu.State;
+    [fromNotifi.notifiFeatureKey]: fromNotifi.State;
   }
 
   export const reducers: ActionReducerMap<AppState> = {
@@ -30,6 +32,7 @@ import * as fromMenu from './reducers/menu.reducer';
     [fromProject.projectFeatureKey]: fromProject.reducer,
     [fromCompany.companyFeatureKey]: fromCompany.reducer,
     [fromMenu.menuFeatureKey]: fromMenu.reducer,
+    [fromNotifi.notifiFeatureKey]: fromNotifi.reducer
   };
 
   export const metaReducers: MetaReducer<AppState>[] = !environment.production

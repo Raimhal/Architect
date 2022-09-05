@@ -24,20 +24,23 @@ public class CreateCompanyCommandHandler : IRequestHandler<CreateProjectCommand>
     private readonly IMapper _mapper;
     private readonly INumberGenerateService _numberGenerateService;
     private readonly ICurrentUserService _currentUserService;
+    private readonly INotificationService _notifService;
 
     public CreateCompanyCommandHandler(
         IApplicationDbContext context, 
         IMapper mapper, 
         INumberGenerateService numberGenerateService,
-        ICurrentUserService currentUserService)
+        ICurrentUserService currentUserService,
+        INotificationService notifService)
     {
         _context = context;
         _mapper = mapper;
         _numberGenerateService = numberGenerateService;
         _currentUserService = currentUserService;
+        _notifService = notifService; 
     }
 
-    public async Task<Unit> Handle(CreateProjectCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(CreateProjectCommand request, CancellationToken cancellationToken )
     {
         if (_currentUserService.Role!= UserRoles.OperationalManager) {
             return Unit.Value;
@@ -48,6 +51,18 @@ public class CreateCompanyCommandHandler : IRequestHandler<CreateProjectCommand>
         {
             project.ProjectId = _numberGenerateService.GetRandomNumberForId();
         }
+
+        await _notifService.SendNotificationToGroup(new DTOs.NotificationDTO
+        {
+            type = "info",
+            Message = "OM with id:" + _currentUserService.Id + " just created project: " + project.ProjectName
+        }, "admin");
+
+        await _notifService.SendNotificationToUser(new DTOs.NotificationDTO
+        {
+            type="success",
+            Message="You successfuly created project: " + project.ProjectName
+        }, _currentUserService.Id);
 
         await _context.Projects.Insert(project);
         await _context.SaveChangesAsync();

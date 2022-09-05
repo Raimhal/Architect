@@ -39,6 +39,8 @@ import {MatDialogModule} from "@angular/material/dialog";
 import { MenuEffects } from './store/effects/menu.effects';
 import { AdministrationEffects } from './modules/administration/state/administration.effects';
 import { NotificationService } from './shared/services/notification.service';
+import { NotificationsEffects } from './store/effects/notifi.effects';
+import { NotificationsModule } from './modules/notifications/notifications.module';
 
 @NgModule({
   declarations: [
@@ -76,7 +78,8 @@ import { NotificationService } from './shared/services/notification.service';
       AlertEffects,
       RouteEffects,
       ModalEffects,
-      AdministrationEffects
+      AdministrationEffects,
+      NotificationsEffects
     ]),
     AdministrationModule,
     ProjectModule,
@@ -94,7 +97,8 @@ import { NotificationService } from './shared/services/notification.service';
     MatTabsModule,
     ProjectModule,
     CompanyModule,
-    EffectsModule.forFeature([MenuEffects])
+    EffectsModule.forFeature([MenuEffects]),
+    NotificationsModule
   ],
   providers: [NotificationService],
   bootstrap: [AppComponent],

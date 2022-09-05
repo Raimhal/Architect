@@ -9,4 +9,6 @@ namespace Ctor.Application.Common.Interfaces;
 public interface IGroupsService
 {
     Task<List<string>> GetGroupsOfUserAsync(long? id);
+
+    Task<List<long>> GetUsersFromGroup(string group);
 }

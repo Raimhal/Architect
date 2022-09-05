@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Ctor.Application.Common.Models;
+namespace Ctor.Domain.Entities.Enums;
 public static class NotificationTypes
 {
     public const string Success = "success";

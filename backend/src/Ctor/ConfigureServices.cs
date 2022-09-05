@@ -13,7 +13,7 @@ public static class ConfigureServices
         services.AddDatabaseDeveloperPageExceptionFilter();
 
         services.AddSingleton<ICurrentUserService, CurrentUserService>();
-        services.AddSingleton<INotificationService, NotificationService>();
+        services.AddScoped<INotificationService, NotificationService>();
         services.AddHttpContextAccessor();
 
         services.AddSignalR();
