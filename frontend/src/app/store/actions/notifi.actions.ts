@@ -4,8 +4,7 @@ import { INotification } from "../../modules/notifications/resources/models/noti
 import { User } from "../reducers/auth.reducer";
 
 export const loadNotifis = createAction(
-  '[Notifi] Load Notifi',
-  props<{ userId: number }>()
+  '[Notifi] Load Notifi'
 );
 
 export const loadNotifisSuccess = createAction(

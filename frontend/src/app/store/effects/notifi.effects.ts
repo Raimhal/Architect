@@ -11,13 +11,13 @@ export class NotificationsEffects {
       this.actions$.pipe(
         ofType(fromNotifiActions.loadNotifis),
         mergeMap((action) =>
-          this.notifiApiService.getNotificationsForUser(action.userId).pipe(
+          this.notifiApiService.getNotificationsForUser().pipe(
             map(
               (notifis) =>
                 fromNotifiActions.loadNotifisSuccess({
                   notifications: notifis
                 })
-            ), catchError(() => of(fromNotifiActions.loadNotifisFailure))
+            ), catchError(() => of(fromNotifiActions.loadNotifisFailure({ error : "Not found"})))
           )
         )
       ), 
@@ -30,7 +30,7 @@ export class NotificationsEffects {
         mergeMap((action) =>
           this.notifiApiService.deleteNotification(action.id).pipe(
             map(() =>
-              fromNotifiActions.loadNotifis({ userId: action.userId })
+              fromNotifiActions.loadNotifis()
             )
           )
           )
@@ -44,7 +44,7 @@ export class NotificationsEffects {
         mergeMap((action) =>
           this.notifiApiService.deleteAllNotifications(action.userId).pipe(
             map(() =>
-              fromNotifiActions.loadNotifis({ userId: action.userId })
+              fromNotifiActions.loadNotifis()
             ), catchError((err) => of(fromNotifiActions.deleteAllNotifiFailure))
           )
         )

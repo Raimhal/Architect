@@ -15,8 +15,8 @@ export class NotifiApiService extends ApiService {
     super(http);
   }
 
-  getNotificationsForUser(userId: number): Observable<INotification[]> {
-    return this.get<INotification[]>(`${this.apiUrl}/${userId}`);
+  getNotificationsForUser(): Observable<INotification[]> {
+    return this.get<INotification[]>(`${this.apiUrl}/all`);
   }
 
   deleteNotification(notifid: number) {

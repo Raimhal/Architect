@@ -3,18 +3,21 @@ using Microsoft.AspNetCore.Mvc;
 using MediatR;
 using Ctor.Application.Projects.Queries.GetProjectsQuery;
 using Ctor.Application.Notifications.Commands;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Ctor.Controllers;
 
 [ApiController]
 [Route("api/notifi")]
+[Authorize(AuthenticationSchemes = "Bearer")]
+
 public class NotificationsController : ApiControllerBase
 {
     [HttpGet]
-    [Route("{userId}")]
-    public async Task<IActionResult> GetAllNotificationsForUser(long userId)
+    [Route("all")]
+    public async Task<IActionResult> GetAllNotificationsForUser()
     {
-        return Ok(await Mediator.Send(new GetNotifListByUserIdQuery(userId)));
+        return Ok(await Mediator.Send(new GetNotifListByUserIdQuery()));
     }
 
     [HttpDelete("delete/{id:long}")]

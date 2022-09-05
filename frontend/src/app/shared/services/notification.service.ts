@@ -41,7 +41,7 @@ export class NotificationService {
 
     this.addHendlers();
     if (this.UserId != undefined) {
-      this.store.dispatch(fromNotifiActions.loadNotifis({ userId: this.UserId }));
+      this.store.dispatch(fromNotifiActions.loadNotifis());
     }
     this.started = true;
   }
@@ -52,7 +52,7 @@ export class NotificationService {
         console.log(notif.type);
         this.alertService.showAlert(notif.message, "OK", notif.type)
         if (this.UserId != undefined) {
-          this.store.dispatch(fromNotifiActions.loadNotifis({ userId: this.UserId }));
+          this.store.dispatch(fromNotifiActions.loadNotifis());
         }
       }); 
     }
