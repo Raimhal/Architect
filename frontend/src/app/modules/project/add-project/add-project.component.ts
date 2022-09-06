@@ -1,11 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { NumberGenarateSevice } from 'src/app/shared/services/numberGenarate.services';
 import { AppState } from 'src/app/store';
 import { CreateProjectDTO } from '../resources/models/createProjectDTO';
 import { RangeDateValidators } from '../resources/validators/rangeDateValidators.directive';
-import {crateProject} from "../state/project.actions";
+import * as fromProjectActions  from "../state/project.actions";
+import { MAT_DIALOG_DATA } from "@angular/material/dialog";
+import { TokenService } from "../../auth/resources/services/token.service";
+
 
 @Component({
   selector: 'app-add-project',
@@ -23,11 +26,11 @@ export class AddProjectComponent implements OnInit {
     endDate: new FormControl<Date>(new Date(), []),
   }, { validators: RangeDateValidators });
 
-  constructor(private store: Store<AppState>, private numberGenarate: NumberGenarateSevice) {
+  constructor(private store: Store<AppState>,
+              private numberGenarate: NumberGenarateSevice) {
     this.projectId = numberGenarate.generateId()
   }
   ngOnInit(): void {
-
   }
 
   get name() {
@@ -37,10 +40,10 @@ export class AddProjectComponent implements OnInit {
     return this.form.controls.address as FormControl;
   }
   get startDate() {
-    return this.form.controls.startDate as FormControl;
+    return this.form.controls.startDate as FormControl<Date>;
   }
   get endDate() {
-    return this.form.controls.endDate as FormControl;
+    return this.form.controls.endDate as FormControl<Date>;
   }
 
   submit() {
@@ -52,16 +55,14 @@ export class AddProjectComponent implements OnInit {
     this.isSubmited = false;
 
     const project: CreateProjectDTO = {
-      userId:0,
-      companyId:0,
       projectId: this.projectId,
       name: this.name.value,
       address: this.address.value,
-      startDate: this.startDate.value,
-      endDate: this.endDate.value,
+      startDate: this.startDate.value.toJSON(),
+      endDate: this.endDate.value.toJSON(),
     }
 
-    this.store.dispatch(crateProject({ project }))
+    this.store.dispatch(fromProjectActions.createProject({ project }))
 
   }
 }

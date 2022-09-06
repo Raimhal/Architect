@@ -54,14 +54,14 @@ export const submitProjectInformationFormFailure = createAction(
 export const cancelEditProjectInformationForm = createAction(
   '[Project Information Component] Cancel Project Information Form'
 );
-export const crateProject = createAction(
+export const createProject = createAction(
   '[Project] Create Project',
   props<{ project: CreateProjectDTO }>()
 );
-export const crateProjectSuccess = createAction(
+export const createProjectSuccess = createAction(
   '[Project] Create Project Success'
 );
-export const crateProjectFailure = createAction(
+export const createProjectFailure = createAction(
   '[Project] Create Project Failure',
   props<{ error: HttError }>()
 );

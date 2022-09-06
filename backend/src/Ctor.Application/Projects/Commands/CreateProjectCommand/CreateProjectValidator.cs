@@ -14,8 +14,6 @@ public class CreateProjectValidator : AbstractValidator<CreateProjectDTO>
         RuleFor(c => c.StartDate).NotEmpty().LessThan(x=>x.EndDate);
         RuleFor(c => c.EndDate).NotEmpty().GreaterThan(x=>x.StartDate);
         RuleFor(c => c.Name).NotEmpty();
-        RuleFor(c => c.UserId).NotEmpty().GreaterThan(0);     
-        RuleFor(c => c.CompanyId).NotEmpty().GreaterThan(0);     
         RuleFor(c => c.ProjectId).NotEmpty().GreaterThan(10000000);     
         
     }

@@ -45,6 +45,32 @@ export class ProjectEffects {
     );
   });
 
+  createProject$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(ProjectActions.createProject),
+      concatMap((action) =>
+        this.projectService
+          .createProject(action.project)
+          .pipe(
+            map((data) => ProjectActions.createProjectSuccess()),
+            catchError((error) =>
+              of(ProjectActions.createProjectFailure({ error: error.error, }))
+            )
+          )
+      )
+    );
+  });
+
+  createProjectSuccess$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(ProjectActions.createProjectSuccess),
+      map(() => {
+        this.store.dispatch(ProjectActions.getProjectsWithParams());
+        return ModalDialogAction.closeModalDialog();
+      }),
+    );
+  });
+
   getProject$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(ProjectActions.getDetailedProject),
@@ -139,13 +165,6 @@ export class ProjectEffects {
             )
           )
       )
-    );
-  });
-
-  effectName$ = createEffect(() => {
-    return this.actions$.pipe(
-      ofType(ProjectActions.crateProjectSuccess),
-      map(() => ModalDialogAction.closeModalDialog()),
     );
   });
 
@@ -359,7 +378,7 @@ export class ProjectEffects {
       )
     );
   })
-  
+
   constructor(
     private actions$: Actions,
     private projectService: ProjectService,

@@ -1,9 +1,7 @@
-export interface CreateProjectDTO {  
-  companyId: number,
-  userId: number,
+export interface CreateProjectDTO {
   projectId: number,
   name: string,
   address: string,
-  startDate: Date
-  endDate: Date
+  startDate: string
+  endDate: string
 }

@@ -77,10 +77,11 @@ export class RouteEffects {
         tap((role) => this.postLoginNavigate(role))
       ), { dispatch: false }
   );
+
   crateProjectSuccess$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(fromProjectActions.crateProjectSuccess),
+        ofType(fromProjectActions.createProjectSuccess),
         map(()=>closeModalDialog()),
         tap(() => this.route.navigate(['/projects']))
       ), { dispatch: false }

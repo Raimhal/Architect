@@ -10,8 +10,6 @@ using Ctor.Domain.Entities;
 namespace Ctor.Application.Projects.Commands.CreateProjectCommand;
 public  class CreateProjectDTO: IMapFrom<Project>
 {
-    public long UserId { get; set; }
-    public long CompanyId { get; set; }
     public int ProjectId { get; set; }
     public string Name { get; set; }
     public string Address { get; set; }

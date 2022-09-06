@@ -4,20 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using Ctor.Application.Common.Exceptions;
 using Ctor.Application.Common.Interfaces;
 using Ctor.Domain.Entities;
 using Ctor.Domain.Entities.Enums;
 using MediatR;
 
 namespace Ctor.Application.Projects.Commands.CreateProjectCommand;
-public record CreateProjectCommand : IRequest
-{
-    public CreateProjectCommand(CreateProjectDTO project)
-    {
-        this.Project = project;
-    }
-    public CreateProjectDTO Project { get; }
-}
+
+public record CreateProjectCommand(CreateProjectDTO Project) : IRequest;
+
 public class CreateCompanyCommandHandler : IRequestHandler<CreateProjectCommand>
 {
     private readonly IApplicationDbContext _context;
@@ -27,8 +23,8 @@ public class CreateCompanyCommandHandler : IRequestHandler<CreateProjectCommand>
     private readonly INotificationService _notifService;
 
     public CreateCompanyCommandHandler(
-        IApplicationDbContext context, 
-        IMapper mapper, 
+        IApplicationDbContext context,
+        IMapper mapper,
         INumberGenerateService numberGenerateService,
         ICurrentUserService currentUserService,
         INotificationService notifService)
@@ -37,35 +33,41 @@ public class CreateCompanyCommandHandler : IRequestHandler<CreateProjectCommand>
         _mapper = mapper;
         _numberGenerateService = numberGenerateService;
         _currentUserService = currentUserService;
-        _notifService = notifService; 
+        _notifService = notifService;
     }
 
-    public async Task<Unit> Handle(CreateProjectCommand request, CancellationToken cancellationToken )
+    public async Task<Unit> Handle(CreateProjectCommand request, CancellationToken cancellationToken)
     {
-        if (_currentUserService.Role!= UserRoles.OperationalManager) {
-            return Unit.Value;
+        if (_currentUserService.Role != UserRoles.OperationalManager)
+        {
+            throw new ForbiddenAccessException();
         }
-        var project = _mapper.Map<Project>(request.Project);      
 
-        for (; await _context.Projects.AnyAsync(x => x.ProjectId == project.ProjectId);)
+        var project = _mapper.Map<Project>(request.Project);
+
+        project.UserId = _currentUserService.Id;
+        project.CompanyId = _currentUserService.CompanyId!.Value;
+
+        if (await _context.Projects.AnyAsync(x => x.ProjectId == project.ProjectId))
         {
             project.ProjectId = _numberGenerateService.GetRandomNumberForId();
         }
 
-        await _notifService.SendNotificationToGroup(new DTOs.NotificationDTO
-        {
-            type = "info",
-            Message = "OM with id:" + _currentUserService.Id + " just created project: " + project.ProjectName
-        }, "admin");
+        await _context.Projects.AddRangeAsync(project);
+        await _context.SaveChangesAsync(cancellationToken);
 
-        await _notifService.SendNotificationToUser(new DTOs.NotificationDTO
-        {
-            type="success",
-            Message="You successfuly created project: " + project.ProjectName
-        }, _currentUserService.Id);
+        await _notifService.SendNotificationToGroup(
+            new DTOs.NotificationDTO
+            {
+                type = "info",
+                Message = "OM with id:" + _currentUserService.Id + " just created project: " + project.ProjectName
+            }, "admin");
 
-        await _context.Projects.Insert(project);
-        await _context.SaveChangesAsync();
+        await _notifService.SendNotificationToUser(
+            new DTOs.NotificationDTO
+            {
+                type = "success", Message = "You successfully created project: " + project.ProjectName
+            }, _currentUserService.Id);
 
         return Unit.Value;
     }
