@@ -30,15 +30,15 @@ public class GetAvailableMaterialsForProjectQueryHandler : IRequestHandler<GetAv
         
         if (!materials.Any()) throw new NotFoundException("There is no available materials");
         
-        var required = await _context.RequiredMaterials.Get(el => el.CompanyId == _currentUserService.CompanyId);
+        var required = await _context.RequiredMaterials.Get(el => el.Building.Project.CompanyId == _currentUserService.CompanyId);
         foreach(var material in materials)
         {
             var sumUsed = required.Where(el => el.MaterialId == material.Id).Select(el => el.Amount).Sum();
             var diff = material.Amount - sumUsed;
             if(diff > 0)
             {
-                var type = await _context.MaterialType.FirstOrDefault(el => el.Id == material.MaterialTypeId);
-                var msr = await _context.Measurements.FirstOrDefault(el => el.Id == material.MeasurementId);
+                var type = await _context.MaterialType.FirstOrDefault(el => el.Id == material.MaterialTypeId, cancellationToken);
+                var msr = await _context.Measurements.FirstOrDefault(el => el.Id == material.MeasurementId, cancellationToken);
                 if (msr == null || type == null) continue;
                 if (request.Filter != null && !type.Name.ToLower().Contains(request.Filter.ToLower())) continue; 
                 result.Add(new GetAvailableMaterialsForProjectDto()

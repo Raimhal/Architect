@@ -29,16 +29,15 @@ public class CreateRequiredMaterialsForBuildingHandler : IRequestHandler<CreateR
         foreach (var material in request.materials)
         {
             if (!_currentUserService.CompanyId.HasValue) throw new ForbiddenAccessException();
-            var required = await _context.RequiredMaterials.Get(el => el.CompanyId == _currentUserService.CompanyId);
+            var required = await _context.RequiredMaterials.Get(el => el.Building.Project.CompanyId == _currentUserService.CompanyId);
             var sum = required.Where(el => el.MaterialId == material.Id).Select(el => el.Amount).Sum();
-            var maxAlowed = await _context.Materials.FirstOrDefault(el => el.Id == material.Id);
+            var maxAlowed = await _context.Materials.FirstOrDefault(el => el.Id == material.Id, cancellationToken);
             if (material.Amount + sum <= maxAlowed.Amount)
             {
                 RequiredMaterial newMaterial = new RequiredMaterial()
                 {
                     Amount = material.Amount,
                     BuildingId = material.BuildingId,
-                    CompanyId = _currentUserService.CompanyId.Value,
                     MaterialId = material.Id,
                 };
                 await this._context.RequiredMaterials.AddRangeAsync(newMaterial);
