@@ -14,6 +14,7 @@ import { GetProjectTeamDto } from "../resources/models/get-project-team-dto.mode
 import { IProjectDocument } from '../resources/models/project-documents/project-document.model';
 import { IProjectDocumentId } from '../resources/models/project-documents/project-document-id.model';
 import { IProjectDocumentUpdate } from '../resources/models/project-documents/project-document-update.model';
+import { RequiredMaterial } from "../resources/models/project-material/required-material.model";
 
 
 export const getDetailedProject = createAction(
@@ -341,3 +342,17 @@ export const deleteBuildingServiceFailure = createAction(
   '[Building Service] Delete Building Service Failure',
   props<{ error: any }>()
 );
+
+export const saveRequiredMaterials = createAction(
+  '[Add Building Material] Save Required Materials',
+  props<{ materials: RequiredMaterial[] }>()
+)
+
+export const saveRequiredMaterialsSuccess = createAction(
+  '[Add Building Material] Save Required Materials Success',
+)
+
+export const saveRequiredMaterialsFailure = createAction(
+  '[Add Building Material] Save Required Materials Failure',
+  props<{ error: any }>()
+)
