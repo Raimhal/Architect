@@ -29,6 +29,11 @@ public class ApplicationDbContextInitializer
     private readonly Role _foremanRole =
         new() { Name = "Foreman", Type = UserRoles.Foreman };
 
+    private readonly Measurement _itemMeasurement = new() { Name = "Item" };
+    private readonly Measurement _kiloMeasurement = new() { Name = "Kilo" };
+    private readonly Measurement _footMeasurement = new() { Name = "Foot" };
+    private readonly Measurement _tonsMeasurement = new() { Name = "Tons" };
+
     public ApplicationDbContextInitializer(
         ILogger<ApplicationDbContextInitializer> logger,
         ApplicationDbContext context,
@@ -83,6 +88,10 @@ public class ApplicationDbContextInitializer
         await _context.Roles.AddRangeAsync(_adminRole, _operationalManagerRole,
             _projectManagerRole, _mainEngineerRole, _foremanRole);
 
+
+        await _context.Measurements.AddRangeAsync(_itemMeasurement, _kiloMeasurement,
+            _footMeasurement, _tonsMeasurement);
+
         await _context.Users.AddRangeAsync(
             new User
             {
@@ -95,17 +104,20 @@ public class ApplicationDbContextInitializer
                 CompanyId = null,
             });
 
-        await _context.Companies.AddRangeAsync(GenerateCompanies());
+        var materialTypes = GeneraMaterialTypes();
+
+        await _context.Companies.AddRangeAsync(GenerateCompanies(materialTypes));
 
         await _context.SaveChangesAsync();
     }
 
-    private ICollection<Company> GenerateCompanies()
+    private ICollection<Company> GenerateCompanies(ICollection<MaterialType> materialTypes)
     {
         return Enumerable.Range(0, 4)
             .Select(i =>
             {
                 var users = GenerateUsers(((char)('a' + i)).ToString());
+                var materials = GenerateMaterials(materialTypes);
 
                 return new Company
                 {
@@ -119,7 +131,9 @@ public class ApplicationDbContextInitializer
                     JoinDate = _faker.Date.Past(yearsToGoBack: 5).ToUniversalTime(),
                     Website = _faker.Internet.DomainName(),
                     Users = users,
-                    Projects = GenerateProjects(users.First(u => u.Role.Type == UserRoles.OperationalManager)),
+                    Projects = GenerateProjects(users.First(u => u.Role.Type == UserRoles.OperationalManager),
+                        materials),
+                    Materials = materials,
                 };
             })
             .ToArray();
@@ -161,7 +175,7 @@ public class ApplicationDbContextInitializer
         new("Ropewalks", "Roads"), //
     };
 
-    private ICollection<Project> GenerateProjects(User owner)
+    private ICollection<Project> GenerateProjects(User owner, ICollection<Material> materials)
     {
         return Enumerable.Range(0, _faker.Random.Int(1, 3))
             .Select(_ =>
@@ -194,10 +208,44 @@ public class ApplicationDbContextInitializer
                     EndTime = phases.Last().EndTime,
                     User = owner,
                     Assignees = new List<Assignee> { new() { User = owner, } },
-                    Building = GenerateBuildings(),
+                    Building = GenerateBuildings(materials),
                     Phases = phases,
                 };
             })
+            .ToArray();
+    }
+
+    private ICollection<Material> GenerateMaterials(ICollection<MaterialType> materialTypes)
+    {
+        return Enumerable.Range(0, 3)
+            .Select(_ => new Material
+            {
+                Amount = _faker.Random.Int(10, 150),
+                Measurement = _tonsMeasurement,
+                CompanyName = _faker.Company.CompanyName(),
+                CompanyAddress = $"{_faker.Address.City()}, {_faker.Address.StreetAddress()}, {_faker.Address.Country()}",
+                Price = _faker.Random.Int(25, 45),
+                MaterialType = _faker.Random.CollectionItem(materialTypes),
+            })
+            .ToArray();
+    }
+
+    private readonly string[] _materialTypes = new[]
+    {
+        "Mud bricks", "Facing bricks", "Extruded bricks", "Engineering bricks", "Common bricks", "OPC", "PPC",
+        "White cement", "Colored cement", "Hydrographic cement", "High-alumina cement", "Portland slag cement",
+        "Float glass", "Shatterproof glass", "Laminated glass", "Extra clean glass", "Chromatic glass",
+        "Tinted glass", "Toughened glass", "Glass blocks", "Glass wool", "Insulated glazed units", "River sand",
+        "Concrete sand", "Coarse sand", "Utility sand", "Pit sand", "Fine sand", "Fill sand", "Desert sand",
+        "Beach sand", "Marine sand", "Basalt", "Granite", "Sandstone", "Slate", "Limestone", "Laterite", "Marble",
+        "Gneiss", "Quartzite", "Travertine", "Pinewood", "Cedarwood", "Firwood", "Hemlock timber", "Teak wood",
+        "Oakwood", "Maple wood", "Cherry wood", "Walnut wood", "Beechwood", "Mahogany", "Sal wood", "Plywood",
+    };
+
+    private ICollection<MaterialType> GeneraMaterialTypes()
+    {
+        return _materialTypes
+            .Select(t => new MaterialType { Name = t, })
             .ToArray();
     }
 
@@ -211,16 +259,34 @@ public class ApplicationDbContextInitializer
         new("Second floor"), //
     };
 
-    private ICollection<Building> GenerateBuildings()
+    private ICollection<Building> GenerateBuildings(ICollection<Material> materials)
     {
-        return Enumerable.Range(0, _faker.Random.Int(1, 3))
+        return Enumerable.Range(0, _faker.Random.Int(2, 4))
             .Select(_ =>
             {
+                _faker.Random.Int();
                 var building = _faker.Random.CollectionItem(_buildings);
 
                 return new Building
                 {
-                    BuildingName = building.BuildingName, //
+                    BuildingName = building.BuildingName,
+                    RequiredMaterials = GenerateRequiredMaterials(materials),
+                };
+            })
+            .ToArray();
+    }
+
+    private ICollection<RequiredMaterial> GenerateRequiredMaterials(ICollection<Material> materials)
+    {
+        return Enumerable.Range(0, 1)
+            .Select(_ =>
+            {
+                var material = _faker.Random.CollectionItem(materials);
+
+                return new RequiredMaterial
+                {
+                    Material = material, //
+                    Amount = _faker.Random.Long(Math.Min(1, material.Amount), material.Amount),
                 };
             })
             .ToArray();

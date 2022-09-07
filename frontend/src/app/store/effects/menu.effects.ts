@@ -16,7 +16,7 @@ export class MenuEffects {
     return this.actions$.pipe(
       ofType(refreshAccessTokenSuccess, loginSuccess),
       concatMap(result => {
-        if (result.user.role == UserRole.Admin){
+        if (result.user.role == UserRole.Admin) {
           return of(setMenuLinks({
             links: [
               {displayName: "Companies", path: "/company-list"},
@@ -28,8 +28,9 @@ export class MenuEffects {
         if (result.user.role == UserRole.OperationalManager) {
           return of(setMenuLinks({
             links: [
-              { displayName: "Projects", path: "/projects" },
-              { displayName: "Notifications", path: "/notifications" },
+              {displayName: "Projects", path: "/projects"},
+              {displayName: "Resources", path: "/manage-resources"},
+              {displayName: "Notifications", path: "/notifications"},
               {displayName: "Profile", path: "/company-profile"}
             ]
           }));
@@ -41,11 +42,12 @@ export class MenuEffects {
   });
 
 
-  private setDefaultMenuLinks(role : UserRole) {
+  private setDefaultMenuLinks(role: UserRole) {
 
 
   }
 
   constructor(private actions$: Actions,
-              private store : Store<AppState>) {}
+              private store: Store<AppState>) {
+  }
 }

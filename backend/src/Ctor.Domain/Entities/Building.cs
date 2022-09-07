@@ -10,4 +10,6 @@ public class Building : BaseEntity
 
     public long? ProjectId { get; set; }
     public Project Project { get; set; }
+    
+    public ICollection<RequiredMaterial> RequiredMaterials { get; set; }
 }

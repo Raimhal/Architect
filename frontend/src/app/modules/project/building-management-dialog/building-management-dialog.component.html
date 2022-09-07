@@ -47,7 +47,9 @@
 
     <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="materialsOverlayOrigin"
                  [cdkConnectedOverlayOpen]="isMaterialsOverlayOpen">
-      <!-- todo: add modal here -->
+      <add-building-material-overlay [buildingId]="building.id" [projectId]="building.projectId"
+                                  (cancel)="closeAllOverlays()" (submit)="closeAllOverlays()">
+      </add-building-material-overlay>
     </ng-template>
 
     <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="documentsOverlayOrigin"

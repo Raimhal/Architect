@@ -236,18 +236,29 @@ namespace Ctor.Infrastructure.Migrations
                     b.Property<int>("Amount")
                         .HasColumnType("integer");
 
+                    b.Property<string>("CompanyAddress")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<long?>("CompanyId")
                         .IsRequired()
                         .HasColumnType("bigint");
 
+                    b.Property<string>("CompanyName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long?>("MaterialTypeId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("MeasurementId")
+                        .HasColumnType("bigint");
+
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric");
-
-                    b.Property<int>("RecourceName")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("RecourceType")
-                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -256,7 +267,53 @@ namespace Ctor.Infrastructure.Migrations
                     b.HasIndex("Id")
                         .IsUnique();
 
+                    b.HasIndex("MaterialTypeId");
+
+                    b.HasIndex("MeasurementId");
+
                     b.ToTable("Material", (string)null);
+                });
+
+            modelBuilder.Entity("Ctor.Domain.Entities.MaterialType", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                    NpgsqlPropertyBuilderExtensions.HasIdentityOptions(b.Property<long>("Id"), 100L, null, null, null, null, null);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Id")
+                        .IsUnique();
+
+                    b.ToTable("MaterialType", (string)null);
+                });
+
+            modelBuilder.Entity("Ctor.Domain.Entities.Measurement", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                    NpgsqlPropertyBuilderExtensions.HasIdentityOptions(b.Property<long>("Id"), 100L, null, null, null, null, null);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Id")
+                        .IsUnique();
+
+                    b.ToTable("Measurement", (string)null);
                 });
 
             modelBuilder.Entity("Ctor.Domain.Entities.Notification", b =>
@@ -496,6 +553,36 @@ namespace Ctor.Infrastructure.Migrations
                     b.ToTable("ProjectPhoto", (string)null);
                 });
 
+            modelBuilder.Entity("Ctor.Domain.Entities.RequiredMaterial", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                    NpgsqlPropertyBuilderExtensions.HasIdentityOptions(b.Property<long>("Id"), 100L, null, null, null, null, null);
+
+                    b.Property<long>("Amount")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("BuildingId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("MaterialId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BuildingId");
+
+                    b.HasIndex("Id")
+                        .IsUnique();
+
+                    b.HasIndex("MaterialId");
+
+                    b.ToTable("RequiredMaterials", (string)null);
+                });
+
             modelBuilder.Entity("Ctor.Domain.Entities.Role", b =>
                 {
                     b.Property<long>("Id")
@@ -683,7 +770,19 @@ namespace Ctor.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Ctor.Domain.Entities.MaterialType", "MaterialType")
+                        .WithMany("Materials")
+                        .HasForeignKey("MaterialTypeId");
+
+                    b.HasOne("Ctor.Domain.Entities.Measurement", "Measurement")
+                        .WithMany("Materials")
+                        .HasForeignKey("MeasurementId");
+
                     b.Navigation("Company");
+
+                    b.Navigation("MaterialType");
+
+                    b.Navigation("Measurement");
                 });
 
             modelBuilder.Entity("Ctor.Domain.Entities.Phase", b =>
@@ -766,6 +865,25 @@ namespace Ctor.Infrastructure.Migrations
                     b.Navigation("Project");
                 });
 
+            modelBuilder.Entity("Ctor.Domain.Entities.RequiredMaterial", b =>
+                {
+                    b.HasOne("Ctor.Domain.Entities.Building", "Building")
+                        .WithMany("RequiredMaterials")
+                        .HasForeignKey("BuildingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Ctor.Domain.Entities.Material", "Material")
+                        .WithMany("RequiredMaterials")
+                        .HasForeignKey("MaterialId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Building");
+
+                    b.Navigation("Material");
+                });
+
             modelBuilder.Entity("Ctor.Domain.Entities.User", b =>
                 {
                     b.HasOne("Ctor.Domain.Entities.Company", "Company")
@@ -800,6 +918,8 @@ namespace Ctor.Infrastructure.Migrations
                     b.Navigation("BuildingBlocks");
 
                     b.Navigation("ProjectDocuments");
+
+                    b.Navigation("RequiredMaterials");
                 });
 
             modelBuilder.Entity("Ctor.Domain.Entities.Company", b =>
@@ -819,6 +939,21 @@ namespace Ctor.Infrastructure.Migrations
                 {
                     b.Navigation("ProjectDocument")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Ctor.Domain.Entities.Material", b =>
+                {
+                    b.Navigation("RequiredMaterials");
+                });
+
+            modelBuilder.Entity("Ctor.Domain.Entities.MaterialType", b =>
+                {
+                    b.Navigation("Materials");
+                });
+
+            modelBuilder.Entity("Ctor.Domain.Entities.Measurement", b =>
+                {
+                    b.Navigation("Materials");
                 });
 
             modelBuilder.Entity("Ctor.Domain.Entities.Project", b =>

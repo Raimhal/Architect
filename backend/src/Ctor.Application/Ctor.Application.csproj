@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Resources\Materials\NewFolder\**" />
+    <EmbeddedResource Remove="Resources\Materials\NewFolder\**" />
+    <None Remove="Resources\Materials\NewFolder\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Ctor.Domain\Ctor.Domain.csproj" />
   </ItemGroup>
 

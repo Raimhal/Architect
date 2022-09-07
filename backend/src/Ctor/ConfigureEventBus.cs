@@ -8,7 +8,10 @@ public static class ConfigureEventBus
 {
     public static void ConfigureBus(this IApplicationBuilder app)
     {
-        var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
-        eventBus.Subscribe<BusTestReceiveEvent, BusTestReceiveEventHandler>();
+        if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
+        {
+            var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
+            eventBus.Subscribe<BusTestReceiveEvent, BusTestReceiveEventHandler>();
+        }
     }
 }

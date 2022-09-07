@@ -39,6 +39,7 @@ import { ProjectDocumentRenameComponent } from './projectDocuments/project-docum
 import {
   AddBuildingDocumentOverlay
 } from "./building-management-dialog/add-building-document-overlay/add-building-document-overlay.component";
+import { AddBuildingMaterialOverlay } from "./building-management-dialog/add-building-material-overlay/add-building-material-overlay.component"
 
 @NgModule({
   imports: [
@@ -84,6 +85,7 @@ import {
     ProjectDocumentOverviewComponent,
     ProjectDocumentRenameComponent,
     AddBuildingDocumentOverlay,
+    AddBuildingMaterialOverlay,
   ]
 })
 export class ProjectModule {

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Ctor.Application.Common.Exceptions;
 using Ctor.Application.Common.Interfaces;
 using Ctor.Domain.Entities;
@@ -33,10 +28,10 @@ public class CreateCompanyCommandHandler : IRequestHandler<CreateProjectCommand>
         _mapper = mapper;
         _numberGenerateService = numberGenerateService;
         _currentUserService = currentUserService;
-        _notifService = notifService;
+        _notifService = notifService; 
     }
 
-    public async Task<Unit> Handle(CreateProjectCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(CreateProjectCommand request, CancellationToken cancellationToken )
     {
         if (_currentUserService.Role != UserRoles.OperationalManager)
         {
