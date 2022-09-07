@@ -15,5 +15,6 @@ public class Material: BaseEntity
 
     public long? CompanyId { get; set; }
     public Company Company { get; set; }
-
+    
+    public ICollection<RequiredMaterial> RequiredMaterials { get; set; }
 }
