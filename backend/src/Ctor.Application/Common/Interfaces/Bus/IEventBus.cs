@@ -4,9 +4,8 @@ namespace Ctor.Application.Common.Interfaces.Bus;
 
 public interface IEventBus
 {
-    void Publish<T>(T @event) where T : Event;
-
-    void Subscribe<T, TH>()
+    Task Publish<T>(T @event, CancellationToken cancellationToken = default) where T : Event;
+    Task Subscribe<T, TH>(CancellationToken cancellationToken = default)
         where T : Event
         where TH : IEventHandler<T>;
 }

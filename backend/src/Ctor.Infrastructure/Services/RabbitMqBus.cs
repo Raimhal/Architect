@@ -30,7 +30,7 @@ public class RabbitMqBus : IEventBus
         _messageBrokerSettings = brokerSettings;
     }
 
-    public void Publish<T>(T @event) where T : Event
+    public Task Publish<T>(T @event, CancellationToken cancellationToken = default) where T : Event
     {
         ConnectionFactory factory = new()
         {
@@ -46,9 +46,11 @@ public class RabbitMqBus : IEventBus
         var message = JsonConvert.SerializeObject(@event);
         var body = Encoding.UTF8.GetBytes(message);
         channel.BasicPublish("", eventName, null, body);
+
+        return Task.CompletedTask;
     }
 
-    public void Subscribe<T, TH>() where T : Event where TH : IEventHandler<T>
+    public Task Subscribe<T, TH>(CancellationToken cancellationToken = default) where T : Event where TH : IEventHandler<T>
     {
         var eventName = typeof(T).Name;
         var handlerType = typeof(TH);
@@ -74,6 +76,8 @@ public class RabbitMqBus : IEventBus
         _handlers[eventName].Add(handlerType);
 
         StartBasicConsumer<T>();
+
+        return Task.CompletedTask;
     }
 
     private void StartBasicConsumer<T>() where T : Event

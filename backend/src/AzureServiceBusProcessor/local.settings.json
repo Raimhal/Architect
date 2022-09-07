@@ -1,13 +1,8 @@
 {
-  "Logging": {
-    "LogLevel": {
-      "Default": "Debug",
-      "System": "Information",
-      "Microsoft": "Information"
-    }
-  },
-  "ConnectionStrings": {
+    "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet",
     "AzureServiceBusConnection": "Endpoint=sb://ctor-namespace.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=pprcRnFYEPg39dv9RI+MgA7NQY64cqEYH1DCsQuIPlo="
   }
 }
-  

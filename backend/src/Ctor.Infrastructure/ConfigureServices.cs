@@ -82,6 +82,8 @@ public static class ConfigureServices
         services.AddScoped<IGroupsService, GroupsService>();
         services.AddScoped<ICompanyIdGeneratorService, CompanyIdGeneratorService>();
 
+       
+
         if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
         {
             services.AddTransient<IEventBus, RabbitMqBus>(sp =>
@@ -98,7 +100,11 @@ public static class ConfigureServices
         }
         else
         {
-            services.AddTransient<IEventBus, TestBus>();
+            services.AddTransient<IEventBus, AzureServiceBus>(options =>
+            {
+                var scopeFactory = options.GetService<IServiceScopeFactory>();
+                return new AzureServiceBus(scopeFactory, configuration, options.GetService<ILogger<AzureServiceBus>>());
+            });
         }
 
         services.AddAuthentication(opt =>

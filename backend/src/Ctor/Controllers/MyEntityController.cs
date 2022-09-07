@@ -45,4 +45,11 @@ public class MyEntityController : ApiControllerBase
     {
         return await Mediator.Send(new BusTestCommand());
     }
+
+    [HttpPost]
+    [Route("SendAzureServiceBusMessage")]
+    public async Task<ActionResult<Unit>> SendAzureServiceBusMessage()
+    {
+        return await Mediator.Send(new AzureServiceBusCommand());
+    }
 }
