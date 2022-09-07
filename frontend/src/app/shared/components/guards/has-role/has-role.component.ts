@@ -6,6 +6,7 @@ import { TokenService } from "../../../../modules/auth/resources/services/token.
 import { combineLatest, Observable } from "rxjs";
 import { ActivatedRoute } from "@angular/router";
 import { map } from "rxjs/operators";
+import { refreshTokensIfNeeded } from 'src/app/store/actions/auth.actions';
 
 @Component({
   selector: 'has-role',
@@ -20,9 +21,8 @@ export class HasRoleComponent {
     map(([role, requiredRole]) => role === requiredRole['requiredRole'])
   );
 
-  constructor(private store: Store<AppState>, private tokenService: TokenService, private route: ActivatedRoute) {
-    tokenService.refreshIfNeeded()
-      .catch(error => console.error(error));
+  constructor(private store: Store<AppState>, private route: ActivatedRoute) {
+    this.store.dispatch(refreshTokensIfNeeded({requiredLogin: true}))
   }
 
 }

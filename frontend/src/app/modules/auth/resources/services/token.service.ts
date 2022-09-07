@@ -22,22 +22,26 @@ export class TokenService {
   ) {
   }
 
+  // here
   setTokens(access_token: string, refresh_token: string, refresh_token_expires_at: Date) {
     localStorage.setItem('access_token', access_token);
     localStorage.setItem('refresh_token', refresh_token);
     localStorage.setItem('refresh_token_expires_at', refresh_token_expires_at.toDateString());
   }
 
+  // here
   setAccessToken(access_token: string) {
     localStorage.setItem('access_token', access_token);
   }
 
+  // here 
   removeTokens() {
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
     localStorage.removeItem('refresh_token_expires_at');
   }
 
+  // here
   getAccessToken(): string {
     const token = this.getAccessTokenOrNull();
 
@@ -48,10 +52,12 @@ export class TokenService {
     return token;
   }
 
+  // here
   getAccessTokenOrNull(): string | null {
     return localStorage.getItem('access_token');
   }
 
+  // here
   getAccessTokenData(): { id: number, role: UserRole, expires: Date } {
     const token = this.getAccessToken();
     const tokenData = this.jwtHelper.decodeToken(token);
@@ -69,6 +75,7 @@ export class TokenService {
     };
   }
 
+  // here
   getRefreshToken(): { token: string, expires: Date } | null {
     const token = localStorage.getItem('refresh_token');
     const expires = localStorage.getItem('refresh_token_expires_at');
@@ -80,69 +87,15 @@ export class TokenService {
     return { token: token, expires: new Date(expires) };
   }
 
+  // here
   isAccessTokenExpired(): boolean {
     const token = this.getAccessTokenOrNull();
     return token !== null && this.jwtHelper.isTokenExpired(token);
   }
 
+  // here
   isRefreshTokenExpired(): boolean {
     const token = this.getRefreshToken();
     return token === null || token?.expires < new Date();
-  }
-
-  refreshIfNeeded(requireLogin: boolean = true): Promise<void> {
-
-    if (!this.getAccessTokenOrNull() || !this.getRefreshToken()) {
-
-      if (requireLogin) {
-        this.removeTokens();
-        return new Promise<void>((resolve, reject) =>
-          this.router.navigate(['/'])
-            .then(() => resolve())
-            .catch((error) => reject(error)));
-      }
-
-      return Promise.resolve();
-    }
-
-    if (!this.isAccessTokenExpired()) {
-
-      const tokenData = this.getAccessTokenData();
-
-      this.store.dispatch(fromAuthActions.refreshAccessTokenSuccess({
-        token: this.getRefreshToken()!.token!,
-        user: {
-          id: tokenData.id,
-          role: tokenData.role,
-        }
-      })
-      );
-
-      return Promise.resolve();
-    }
-
-    if (this.isRefreshTokenExpired()) {
-
-      this.store.dispatch(fromAuthActions.logout());
-      return new Promise<void>((resolve, reject) =>
-        this.router.navigate(['/login'])
-          .then(() => resolve())
-          .catch((error) => reject(error)));
-    }
-
-    this.store.dispatch(fromAuthActions.refreshAccessToken());
-
-    return new Promise<void>((resolve, reject) => {
-      const authEffects = this.injector.get(AuthEffects); // prevents circular dependency
-      return authEffects.refreshAccessToken$.pipe(
-        take(2),
-        tap((x) => resolve()),
-        catchError((error: any) => {
-          this.store.dispatch(fromAuthActions.logout());
-          return of(reject(error));
-        }),
-      );
-    }
-    );
   }
 }

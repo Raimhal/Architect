@@ -17,8 +17,8 @@ public class CompanyProjectDTO : IMapFrom<Project>
     public string Address { get; set; }
     public string Description { get; set; } = String.Empty;
     public string Status { get; set; }
-    public string ImageUrl { get; set; }
-    public int ImageAmount { get; set; }
+    public string? ImageUrl { get; set; }
+    public int? ImageAmount { get; set; }
     public void Mapping(Profile profile)
     {
         profile.CreateMap<Project, CompanyProjectDTO>()

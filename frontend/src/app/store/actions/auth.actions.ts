@@ -38,6 +38,11 @@ export const refreshAccessTokenFailure = createAction(
   props<{ error: any }>()
 );
 
+export const refreshTokensIfNeeded = createAction(
+  '[Auth] Refresh Tokens if needed',
+  props<{requiredLogin: boolean}>()
+)
+
 export const changeDefaultPassword = createAction(
   '[Auth] Change Default Password',
   props<{ newPassword: string }>()

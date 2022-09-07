@@ -5,7 +5,7 @@ import { catchError, switchMap } from "rxjs/operators";
 import { TokenService } from "../services/token.service";
 import { Store } from "@ngrx/store";
 import { AppState } from "../../../../store";
-import * as fromAuthActions  from "../../../../store/actions/auth.actions";
+import * as fromAuthActions from "../../../../store/actions/auth.actions";
 
 @Injectable()
 export class RefreshTokenInterceptor implements HttpInterceptor {
@@ -35,21 +35,21 @@ export class RefreshTokenInterceptor implements HttpInterceptor {
         filter(token => token != null),
         take(1),
         switchMap(token => {
-            this.isRefreshing = false;
-            return next.handle(this.addToken(request, token!));
-          }
+          this.isRefreshing = false;
+          return next.handle(this.addToken(request, token!));
+        }
         )
       );
     }
 
     this.isRefreshing = true;
+    this.store.dispatch(fromAuthActions.refreshTokensIfNeeded({ requiredLogin: true }))
 
-    return this.tokenService.refreshIfNeeded()
-      .then(() => {
-        const token = this.tokenService.getAccessToken();
-        this.refreshTokenSubject.next(token);
-        return this.addToken(request, token);
-      });
+    const token = this.tokenService.getAccessToken();
+    this.refreshTokenSubject.next(token);
+    request = this.addToken(request, token);
+
+    return Promise.resolve(request);
   }
 
   private addToken(request: HttpRequest<any>, token: string) {

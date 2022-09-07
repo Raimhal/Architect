@@ -1,19 +1,23 @@
 import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { act, Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, mergeMap, switchMap, tap } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { of, take } from 'rxjs';
 import * as AuthActions from '../actions/auth.actions';
 import { AuthService } from 'src/app/modules/auth/resources/services/auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import * as fromAuthActions from '../actions/auth.actions';
 import { TokenService } from "../../modules/auth/resources/services/token.service";
-import {serializeError} from "serialize-error";
-import {setMenuLinks} from "../actions/menu.actions";
-import {AppState} from "../index";
-import {Store} from "@ngrx/store";
+import { serializeError } from "serialize-error";
+import { setMenuLinks } from "../actions/menu.actions";
+import { AppState } from "../index";
+import { Store } from "@ngrx/store";
+import * as RouteActions from '../actions/route.actions';
+
 
 import * as AdministrationActions from "../../modules/administration/state/administration.actions"
 import { NotificationService } from '../../shared/services/notification.service';
+import { RouteEffects } from './route.effects';
+import { reject, resolve } from 'cypress/types/bluebird';
 @Injectable()
 export class AuthEffects {
 
@@ -106,6 +110,40 @@ export class AuthEffects {
     );
   });
 
+  refreshTokensIfNeeded$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(fromAuthActions.refreshTokensIfNeeded),
+      map((action) => {
+        var tokenData = this.tokenService.getAccessTokenData();
+        const isAuth = action.requiredLogin;
+
+          if (!tokenData) {
+            if (isAuth) {
+              this.tokenService.removeTokens()
+              RouteActions.navigate({ commands: ['/'] })
+            }
+          }
+  
+          if (!this.tokenService.isAccessTokenExpired()) {
+            fromAuthActions.refreshAccessTokenSuccess({
+              token: this.tokenService.getRefreshToken()!.token,
+              user: {
+                id: tokenData.id,
+                role: tokenData.role
+              }
+            })
+          }
+  
+          if (this.tokenService.isRefreshTokenExpired()) {
+            fromAuthActions.logout()
+            RouteActions.navigate({ commands: ['/login'] })
+          }
+  
+          return fromAuthActions.refreshAccessToken();
+      }))})
+
+
+
   changeDefaultPassword$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(fromAuthActions.changeDefaultPassword),
@@ -129,7 +167,7 @@ export class AuthEffects {
 
 
 
-    loginSucces$ = createEffect(() =>
+  loginSucces$ = createEffect(() =>
     this.actions$.pipe(
       ofType(fromAuthActions.loginSuccess),
       tap(() =>

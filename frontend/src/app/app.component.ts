@@ -4,6 +4,8 @@ import { AppState } from './store';
 import {selectIsLoggedIn, selectUserIsAdmin} from "./store/selectors/auth.selectors";
 import {TokenService} from "./modules/auth/resources/services/token.service";
 import {Observable} from "rxjs";
+import { ThisReceiver } from '@angular/compiler';
+import { refreshTokensIfNeeded } from './store/actions/auth.actions';
 
 @Component({
   selector: 'app-root',
@@ -13,9 +15,8 @@ import {Observable} from "rxjs";
 export class AppComponent {
   title = 'frontend';
 
-  constructor(private tokenService: TokenService) {
-    tokenService.refreshIfNeeded()
-      .catch(error => console.error(error));
+  constructor(private store: Store<AppState>) {
+    this.store.dispatch(refreshTokensIfNeeded({requiredLogin: true}))
   }
 
 }

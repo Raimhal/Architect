@@ -6,6 +6,7 @@ import * as MaterialAction from "./material.actions"
 import {ICompanyDetailed} from "../../../administration/resources/models/company-detailed.model";
 import {IMaterialType} from "../resources/models/material-type-dto";
 import {IMeasurement} from "../resources/models/measurement-dto";
+import { ICompanyProject } from "src/app/modules/administration/resources/models/company-project.model";
 
 export const manageResourceFeatureKey = "manageResource"
 
@@ -18,7 +19,7 @@ export interface State {
   materials: IMaterial[] | null,
   materialsTypes: IMaterialType[],
   measurement: IMeasurement[],
-  currentlyOpenCompany: ICompanyDetailed
+  currentlyOpenCompany: Partial<ICompanyDetailed>
 }
 
 export const initialState: State = {
@@ -34,8 +35,10 @@ export const initialState: State = {
   measurement: [] as IMeasurement[],
   currentlyOpenCompany: {
     materials: [] as IMaterial[],
-    materialTotalCount: 0
-  } as ICompanyDetailed,
+    materialTotalCount: 0,
+    projects: [] as ICompanyProject[],
+    projectsTotalCount: 0,
+  } as Partial<ICompanyDetailed>,
 }
 export const reducer = createReducer(
   initialState,
