@@ -10,6 +10,9 @@ import { ICompanyUpdate } from '../models/company-update.model';
 import { IRole } from "../models/role.model";
 import { IResultId } from '../models/result-id.model';
 import { UserDetailsDto } from '../models/userDetailsDto';
+import { Params } from '../models/params.model';
+import { PaginationModel } from 'src/app/shared/models/pagination-model';
+import { ICompanyProject } from '../models/company-project.model';
 
 @Injectable({
   providedIn: AdministrationApiService,
@@ -45,6 +48,10 @@ export class AdministrationApiService extends ApiService {
     return this.get<ICompanyDetailed>(
       `/companies/${id}`
     );
+  }
+
+  getCompanyProjects(id: number, params: Params) : Observable<PaginationModel<ICompanyProject>>{
+    return this.getWithOptions<PaginationModel<ICompanyProject>>(`/companies/${id}/projects`, {params: params})
   }
 
   postCompanyImage(id: Number, image: File): Observable<string> {

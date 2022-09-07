@@ -141,7 +141,27 @@
 
       <mat-card class="card-3">
         <mat-card-title>Projects</mat-card-title>
-        <mat-card-content></mat-card-content>
+        <mat-card-content class="projects">
+          <div *ngFor="let project of company.projects" class="company-projects">
+            <div class="company-project">
+              <div class="project-image">
+                <img [src]="getFullImageUrl(project.imageUrl)">
+                <div class="image-amount" *ngIf="project.imageAmount > 1">{{project.imageAmount}} images</div>
+              </div>
+              <div class="company-project-content">
+                <p>{{project.projectName}}</p>
+                <p>{{project.address}}</p>
+                <p>{{project.description}}</p>
+              </div>
+            </div>
+            <div class="company-project-status">
+              <span>
+                {{viewStatus(project.status)}}
+              </span>
+            </div>
+
+          </div>
+        </mat-card-content>
       </mat-card>
     </div>
   </div>

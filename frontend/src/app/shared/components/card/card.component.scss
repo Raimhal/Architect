@@ -11,6 +11,7 @@
   box-sizing: border-box;
 }
 
+
 .box:hover {
   cursor: pointer;
 }
@@ -59,6 +60,10 @@
 .large-box .name {
   font-weight: 500;
   font-size: 20px
+}
+
+.small-box {
+  width: min-content;
 }
 
 .box-desc {

@@ -17,6 +17,7 @@ import { Order } from './resources/models/order';
 import { navigate } from 'src/app/store/actions/route.actions';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-project',
@@ -100,7 +101,7 @@ export class ProjectComponent implements OnInit {
     return {
       id: project.id,
       title: project.projectName,
-      image: 'https://eitrawmaterials.eu/wp-content/uploads/2019/10/KAVA7.jpg',
+      image: `${environment.filesBaseUrl}/${project.imageUrl}`,
       date: `${project.startTime}-${project.endTime}`,
       subtitle: `${project.country}, ${project.city}, ${project.address}`,
       status: project.status,

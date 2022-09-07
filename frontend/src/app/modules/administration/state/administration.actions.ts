@@ -6,6 +6,7 @@ import { ICompanyDetailed } from '../resources/models/company-detailed.model';
 import { IRole } from '../resources/models/role.model';
 import { UserDetailsDto } from '../resources/models/userDetailsDto';
 import { HttError } from '../../error/resources/models/httpError';
+import { ICompanyProject } from '../resources/models/company-project.model';
 
 export const GetUserDetails = createAction(
   '[Administration] Get User Details',
@@ -114,6 +115,19 @@ export const loadRolesSuccess = createAction(
 );
 export const loadRolesFailure = createAction(
   '[Add new member component] Failed to load roles',
+  props<{ error: any }>()
+);
+
+export const getCompanyProjects = createAction(
+  '[Company-information Component] Get Company Projects',
+  props<{id: number}>()
+);
+export const getCompanyProjectsSuccess = createAction(
+  '[Company-information Component] Get Company Projects Successfully',
+  props<{ projects: ICompanyProject[], total: number }>()
+);
+export const getCompanyProjectsFailure = createAction(
+  '[Company-information Component] Failed To Get Company Projects',
   props<{ error: any }>()
 );
 

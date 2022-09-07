@@ -37,7 +37,7 @@ export class ProjectPhotosComponent implements OnInit {
 
   deleteProjectPhoto(id: number) {
     this.store.dispatch(
-      fromProjectActions.deleteProjectPhoto({ photoId: id, projectId: 1 })
+      fromProjectActions.deleteProjectPhoto({ photoId: id, projectId: this.projecId as number })
     );
   }
 

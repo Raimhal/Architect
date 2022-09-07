@@ -65,7 +65,7 @@ public class ProjectController : ApiControllerBase
     }
 
     [HttpDelete("{id:long}/photos/{photoId:long}")]
-    public async Task<ActionResult<DeleteProjectPhotoByIdResponseDto>> DeleteProjectPhotoById(long photoId, long id)
+    public async Task<ActionResult<DeleteProjectPhotoByIdResponseDto>> DeleteProjectPhotoById(long id, long photoId)
     {
         return await Mediator.Send(new DeleteProjectPhotoByIdCommand(id, photoId));
     }

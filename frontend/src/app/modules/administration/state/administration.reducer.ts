@@ -16,6 +16,10 @@ import {
 } from 'ngrx-forms';
 import { IRole } from '../resources/models/role.model';
 import { UserDetailsDto } from '../resources/models/userDetailsDto';
+import { ICompanyProject } from '../resources/models/company-project.model';
+import { selectCurrentlyOpenCompany } from './administration.selectors';
+import { Params } from '../resources/models/params.model';
+import { Order } from '../../project/resources/models/order';
 
 export const administrationFeatureKey = 'administration';
 
@@ -25,6 +29,7 @@ export interface State {
     filter: string,
     sort: string,
   },
+  companyProjectsParams: Params
   companies: ICompanyOverview[] | null;
   currentlyOpenCompany: ICompanyDetailed;
   companyInformationForm: FormGroupState<fromCompanyInformationForm.CompanyInformationFormValue>;
@@ -41,8 +46,16 @@ export const initialState: State = {
     sort: '',
   },
   companies: null,
+  companyProjectsParams: {
+    page: 1,
+    count: 10,
+    order: Order.ASC,
+    sort: "Id",
+  } as Params,
   currentlyOpenCompany: {
     members: [] as IMember[],
+    projects: [] as ICompanyProject[],
+    projectsTotalCount: 0
   } as ICompanyDetailed,
   companyInformationForm: fromCompanyInformationForm.initialFormState,
   error: null,
@@ -104,6 +117,14 @@ export const reducer = createReducer(
     roles: action.roles
   })),
   on(AdministrationActions.loadRolesFailure, (state,action)=>({
+    ...state,
+    error: action.error
+  })),
+  on(AdministrationActions.getCompanyProjectsSuccess, (state, action)=>({
+    ...state,
+    currentlyOpenCompany: {...state.currentlyOpenCompany, projects: action.projects, projectsTotalCount: action.total }
+  })),
+  on(AdministrationActions.getCompanyProjectsFailure, (state,action)=>({
     ...state,
     error: action.error
   })),

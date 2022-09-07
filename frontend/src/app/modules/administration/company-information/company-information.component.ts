@@ -24,6 +24,8 @@ import {
 } from "../state/administration.actions";
 import {AdministrationFileService} from "../resources/services/administration-file.service";
 import {MatDialog} from "@angular/material/dialog";
+import { navigate } from 'src/app/store/actions/route.actions';
+import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-company-information',
   templateUrl: './company-information.component.html',
@@ -53,6 +55,9 @@ export class CompanyInformationComponent implements OnInit {
       this.store.dispatch(
         fromAdministrationActions.loadDetailedCompany({ id: this.companyId })
       );
+      this.store.dispatch(
+        fromAdministrationActions.getCompanyProjects({ id: this.companyId })
+      );
     }
 
     this.companyDetailed$ = this.store.pipe(
@@ -70,6 +75,10 @@ export class CompanyInformationComponent implements OnInit {
   setId() {
     const id = this.activatedRoute.snapshot.paramMap.get('id');
     if (id !== null) this.companyId = parseInt(id);
+  }
+
+  getFullImageUrl(imageUrl: string) {
+    return `${environment.filesBaseUrl}/${imageUrl}`
   }
 
   onFormEdit() {
@@ -138,6 +147,10 @@ export class CompanyInformationComponent implements OnInit {
         },
       })
     );
+  }
+
+  viewStatus(status: string) {
+    return status.replace( /([A-Z])/g, " $1" )
   }
 
   @ViewChild('hiddenfileinput') hiddenFileInput?: ElementRef

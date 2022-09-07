@@ -8,6 +8,9 @@ using Ctor.Application.Companies.Commands.UpdateCompanyProfile;
 using Ctor.Application.Companies.Queries.GetCompanyLogoByCompanyId;
 using Ctor.Infrastructure.Extensions;
 using Ctor.Application.Companies.Queries.GetNewCompanyId;
+using Ctor.Application.DTOs;
+using Ctor.Application.Companies.Queries.GetCompanyProjects;
+using Ctor.Application.Common.Models;
 
 namespace Ctor.Controllers;
 
@@ -20,6 +23,13 @@ public class CompanyController : ApiControllerBase
                                                                                    [FromQuery(Name = "sort")] string sort)
     {
         return await Mediator.Send(new GetCompaniesOverviewQuery(filter, sort));
+    }
+
+    [HttpGet]
+    [Route("{id:long}/projects")]
+    public async Task<ActionResult<PaginationModel<CompanyProjectDTO>>> GetCompanyProjects(long id, [FromQuery] PaginationQueryModelDTO dto)
+    {
+        return await Mediator.Send(new GetCompanyProjectsQuery(id, dto));
     }
 
     [HttpPost]

@@ -28,10 +28,9 @@ export class AdministrationEffects {
   getAllCompaniesWithParams$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(AdministrationActions.getAllCompaniesWithParams),
-      withLatestFrom(this.store.pipe(select(AdministrationSelectors.selectCompaniesParams))),
-      switchMap(([_, params]) =>
+      concatMap((action) =>
         this.service
-          .getAllCompaniesWithParameters(params.filter, params.sort)
+          .getAllCompaniesWithParameters(action.filter as string, action.sort as string)
           .pipe(
             map((companies) =>
               AdministrationActions.getAllCompaniesWithParamsSuccess({
@@ -112,10 +111,7 @@ export class AdministrationEffects {
       ofType(AdministrationActions.CreateCompany),
       mergeMap((action) =>
         this.service.createCompany(action.date).pipe(
-          map((response) => {
-            this.store.dispatch(AdministrationActions.getAllCompaniesWithParams({}));
-            return AdministrationActions.CreateCompanySuccess();
-          }),
+          map((response) => AdministrationActions.CreateCompanySuccess()),
           catchError((error) =>
             of(
               AdministrationActions.CreateCompanyFailure({
@@ -141,6 +137,30 @@ export class AdministrationEffects {
           catchError((error) =>
             of(
               AdministrationActions.loadDetailedCompanyFailure({
+                error: serializeError(error),
+              })
+            )
+          )
+        )
+      )
+    );
+  });
+
+  getCompanyProjects$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(AdministrationActions.getCompanyProjects),
+      withLatestFrom(this.store.pipe(select(AdministrationSelectors.selectCompanyProjectsParams))),
+      mergeMap(([props, params]) =>
+        this.service.getCompanyProjects(props.id, params).pipe(
+          map((data) =>
+            AdministrationActions.getCompanyProjectsSuccess({
+              projects: data.list,
+              total: data.total
+            })
+          ),
+          catchError((error) =>
+            of(
+              AdministrationActions.getCompanyProjectsFailure({
                 error: serializeError(error),
               })
             )

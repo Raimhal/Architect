@@ -28,13 +28,13 @@ import { BuildingsListItemComponent } from './buildings-list-item/buildings-list
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import { BuildingAddingListItemComponent } from './building-adding-list-item/building-adding-list-item.component';
 import { BuildingManagementDialogComponent } from './building-management-dialog/building-management-dialog.component';
-import { ProjectDocumentsComponent } from './projectDocuments/project-documents/project-documents.component';
-import { ProjectDocumentOverviewComponent } from './projectDocuments/project-document-overview/project-document-overview.component';
 import { AddProjectTeamComponent } from "./add-project-team/add-project-team.component";
 import { ClipboardModule } from "@angular/cdk/clipboard";
 import { OverlayModule } from "@angular/cdk/overlay";
 import { MatCheckboxModule } from "@angular/material/checkbox";
-import { PhaseBarComponent } from "./phase-bar/phase-bar.component";
+import { PhaseBarComponent } from './phase-bar/phase-bar.component';
+import { ProjectDocumentsComponent } from './projectDocuments/project-documents/project-documents.component';
+import { ProjectDocumentOverviewComponent } from './projectDocuments/project-document-overview/project-document-overview.component';
 import { ProjectDocumentRenameComponent } from './projectDocuments/project-document-rename/project-document-rename.component';
 import {
   AddBuildingDocumentOverlay
