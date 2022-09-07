@@ -18,6 +18,6 @@ export class AdministrationFileService extends FileService {
     const formData = new FormData();
     formData.append('file', data.file, data.file.name);
     formData.append('companyId', data.companyId.toString())
-    return this.post<string[]>('/users/upload', formData);
+    return this.post<string[]>('/users/upload', formData).toPromise();
   }
 }

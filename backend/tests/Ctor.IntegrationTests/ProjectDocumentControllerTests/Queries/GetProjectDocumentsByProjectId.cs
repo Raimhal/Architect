@@ -45,7 +45,7 @@ public class GetProjectDocumentsByProjectId : ProjectDocumentControllerFixture
         await _testing.AddAsync(documents[0]);
         await _testing.AddAsync(documents[1]);
 
-        var query = new GetProjectDocumentsByProjectIdQuery(projectId, new QueryModelDTO { Sort = "created" });
+        var query = new GetProjectDocumentsByProjectIdQuery(projectId, 100, new QueryModelDTO { Sort = "created" });
 
         // Act
         var result = await _testing.SendAsync(query);

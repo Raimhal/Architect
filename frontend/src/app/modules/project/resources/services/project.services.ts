@@ -87,8 +87,11 @@ export class ProjectService extends ApiService {
     return this.get<GetCompanyUsersDto>(`/users/?filter=${filter ?? ''}&sort=${sort ?? 'role'}`);
   }
 
-  getProjectDocuments(id: number, sort: 'created' | 'id', query?: string, order?: 1|0): Observable<IProjectDocument[]>{
+  getProjectDocuments(id: number, buildingId: number | undefined, sort: 'created' | 'id', query?: string, order?: 1|0): Observable<IProjectDocument[]>{
     let request = `/projectDocuments/project/${id}?sort=${sort}`
+    if(buildingId){
+      request+=`&buildingId=${buildingId}`
+    }
     if(query){
       request+=`&query=${query}`
     }

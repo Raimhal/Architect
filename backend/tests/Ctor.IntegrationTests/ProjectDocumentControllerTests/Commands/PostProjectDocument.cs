@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -12,35 +13,34 @@ namespace Ctor.IntegrationTests.ProjectDocumentControllerTests.Commands;
 
 public class PostProjectDocument : ProjectDocumentControllerFixture
 {
-    
     private readonly Testing _testing;
 
     public PostProjectDocument(Testing testing)
     {
         _testing = testing;
     }
+
     [Fact]
     public async Task Delete_ProjectDocument()
     {
         // Arrange
-        int buildingId = 100;
-        var building = new Building() { Id = buildingId, BuildingName = "name", ProjectId = 100 };
+        var building = new Building { BuildingName = "name", ProjectId = 100 };
 
         await _testing.AddAsync(building);
-      
-        // Act
-        List<PostProjectDocumentResponseDto> postResult;
-        await using (FileStream file = File.OpenRead("TestPhotos/dummy.png"))
-        {
-            using (StreamContent content = new(file))
-            {
-                var postCommand = new PostProjectDocumentCommand(new[] {await content.ReadAsByteArrayAsync()},buildingId, new []{file.Name} );
-                postResult = await _testing.SendAsync(postCommand);
 
-            }
-        }
+        await using FileStream file = File.OpenRead("TestPhotos/dummy.png");
+        using StreamContent content = new(file);
+
+        var postCommand = new PostProjectDocumentCommand(
+            new[] { (await content.ReadAsByteArrayAsync(), file.Name) },
+            building.Id,
+            new[] { "https://icatcare.org/app/uploads/2018/07/Thinking-of-getting-a-cat.png" });
+
+        // Act
+        var postResult = await _testing.SendAsync(postCommand);
 
         // Assert
         postResult.Should().NotBeNullOrEmpty();
+        postResult.Should().HaveCount(2);
     }
 }

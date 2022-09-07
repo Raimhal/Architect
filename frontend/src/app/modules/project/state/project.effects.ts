@@ -1,22 +1,24 @@
-import {Injectable} from '@angular/core';
-import {Actions, createEffect, ofType} from '@ngrx/effects';
-import {catchError, map, concatMap, withLatestFrom, mergeMap, switchMap} from 'rxjs/operators';
-import {Observable, EMPTY, of, combineLatest} from 'rxjs';
+import { Injectable } from '@angular/core';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { catchError, map, concatMap, withLatestFrom, mergeMap, switchMap } from 'rxjs/operators';
+import { Observable, EMPTY, of, combineLatest } from 'rxjs';
 import * as ProjectActions from './project.actions';
-import {selectCurrentProjectId, selectParams, selectProjectInformation} from './project.selectors';
-import {serializeError} from 'serialize-error';
-import {IProjectUpdate} from '../resources/models/project-update';
+import { selectCurrentProjectId, selectParams, selectProjectInformation } from './project.selectors';
+import { serializeError } from 'serialize-error';
+import { IProjectUpdate } from '../resources/models/project-update';
 import * as ModalDialogAction from '../../../store/actions/modal-dialog.action';
-import {ProjectService} from '../resources/services/project.services';
-import {ErrorService} from '../../error/resources/services/error.services';
-import {HttpErrorResponse} from '@angular/common/http';
-import {AppState} from 'src/app/store';
-import {select, Store} from '@ngrx/store';
-import {selectUserId} from 'src/app/store/selectors/auth.selectors';
-import {selectUserDetailsCompanyId} from '../../administration/state/administration.selectors';
+import { ProjectService } from '../resources/services/project.services';
+import { ErrorService } from '../../error/resources/services/error.services';
+import { HttpErrorResponse } from '@angular/common/http';
+import { AppState } from 'src/app/store';
+import { select, Store } from '@ngrx/store';
+import { selectUserId } from 'src/app/store/selectors/auth.selectors';
+import { selectUserDetailsCompanyId } from '../../administration/state/administration.selectors';
 import * as fromProjectSelectors from './project.selectors';
-import {BuildingApiService} from "../resources/services/building-api.service";
-import {IBuilding} from "../resources/models/building.model";
+import { BuildingApiService } from "../resources/services/building-api.service";
+import { IBuilding } from "../resources/models/building.model";
+import { ProjectFileService } from "../resources/services/project-file.services";
+import * as fromProjectActions from "./project.actions";
 
 
 @Injectable()
@@ -171,7 +173,7 @@ export class ProjectEffects {
   uploadProjectPhotoSuccess$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(ProjectActions.uploadProjecPhotoSuccess),
-      map((action) => ProjectActions.loadProjectPhotos({projectId: action.id})),
+      map((action) => ProjectActions.loadProjectPhotos({ projectId: action.id })),
     );
   });
 
@@ -187,9 +189,9 @@ export class ProjectEffects {
       ofType(ProjectActions.changeProjectStatus),
       concatMap((action) =>
         this.projectService.changeStatus(action.projectId, action.newStatus).pipe(
-          map(() => ProjectActions.changeProjectStatusSuccess({newStatus: action.newStatus})),
+          map(() => ProjectActions.changeProjectStatusSuccess({ newStatus: action.newStatus })),
           catchError((error: any) =>
-            of(ProjectActions.changeProjectStatusFailure({error}))
+            of(ProjectActions.changeProjectStatusFailure({ error }))
           )
         )
       )
@@ -208,7 +210,7 @@ export class ProjectEffects {
   initiallyLoadBuildings$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ProjectActions.getDetailedProjectSuccess),
-      map((action) => ProjectActions.loadBuildingWithBuildingBlocks({projectId: action.data.id}))
+      map((action) => ProjectActions.loadBuildingWithBuildingBlocks({ projectId: action.data.id }))
     ))
 
   loadBuildings$ = createEffect(() =>
@@ -216,8 +218,8 @@ export class ProjectEffects {
       ofType(ProjectActions.loadBuildingWithBuildingBlocks),
       concatMap((action) =>
         this.buildingService.getBuildingsByProjectId(action.projectId).pipe(
-          map(result => ProjectActions.loadBuildingWithBuildingBlocksSuccess({result: result})),
-          catchError(error => of(ProjectActions.loadBuildingWithBuildingBlocksFailure({error: serializeError(error)})))
+          map(result => ProjectActions.loadBuildingWithBuildingBlocksSuccess({ result: result })),
+          catchError(error => of(ProjectActions.loadBuildingWithBuildingBlocksFailure({ error: serializeError(error) })))
         ))
     ))
 
@@ -226,10 +228,10 @@ export class ProjectEffects {
       ofType(ProjectActions.addNewBuilding),
       withLatestFrom(this.store.pipe(select(selectCurrentProjectId))),
       concatMap(([action, id]) =>
-        this.buildingService.addBuilding({buildingName: action.buildingName, projectId: id} as IBuilding)
+        this.buildingService.addBuilding({ buildingName: action.buildingName, projectId: id } as IBuilding)
           .pipe(
-            map(() => ProjectActions.loadBuildingWithBuildingBlocks({projectId: id!})),
-            catchError((error) => of(ProjectActions.addNewBuildingFailure({error: serializeError(error)})))
+            map(() => ProjectActions.loadBuildingWithBuildingBlocks({ projectId: id! })),
+            catchError((error) => of(ProjectActions.addNewBuildingFailure({ error: serializeError(error) })))
           ))
     ));
 
@@ -239,8 +241,8 @@ export class ProjectEffects {
       withLatestFrom(this.store.pipe(select(selectCurrentProjectId))),
       concatMap(([action, id]) =>
         this.buildingService.updateBuilding(action.building).pipe(
-          map(() => ProjectActions.loadBuildingWithBuildingBlocks({projectId: id!})),
-          catchError((error) => of(ProjectActions.updateBuildingFailure({error: serializeError(error)})))
+          map(() => ProjectActions.loadBuildingWithBuildingBlocks({ projectId: id! })),
+          catchError((error) => of(ProjectActions.updateBuildingFailure({ error: serializeError(error) })))
         )
       )
     )
@@ -252,8 +254,8 @@ export class ProjectEffects {
       withLatestFrom(this.store.pipe(select(selectCurrentProjectId))),
       concatMap(([action, projectId]) =>
         this.buildingService.deleteBuilding(action.id).pipe(
-          map(() => ProjectActions.loadBuildingWithBuildingBlocks({projectId: projectId!})),
-          catchError((error) => of(ProjectActions.deleteBuildingFailure({error: serializeError(error)})))
+          map(() => ProjectActions.loadBuildingWithBuildingBlocks({ projectId: projectId! })),
+          catchError((error) => of(ProjectActions.deleteBuildingFailure({ error: serializeError(error) })))
         )
       )
     )
@@ -265,8 +267,8 @@ export class ProjectEffects {
       withLatestFrom(this.store.pipe(select(selectCurrentProjectId))),
       concatMap(([action, id]) =>
         this.buildingService.addBuildingBlock(action.buildingBlock).pipe(
-          map(() => ProjectActions.loadBuildingWithBuildingBlocks({projectId: id!})),
-          catchError((error) => of(ProjectActions.addNewBuildingFailure({error: serializeError(error)})))
+          map(() => ProjectActions.loadBuildingWithBuildingBlocks({ projectId: id! })),
+          catchError((error) => of(ProjectActions.addNewBuildingFailure({ error: serializeError(error) })))
         )
       )
     )
@@ -278,8 +280,8 @@ export class ProjectEffects {
       withLatestFrom(this.store.pipe(select(selectCurrentProjectId))),
       concatMap(([action, id]) =>
         this.buildingService.deleteBuildingBlock(action.id).pipe(
-          map(() => ProjectActions.loadBuildingWithBuildingBlocks({projectId: id!})),
-          catchError((error) => of(ProjectActions.deleteBuildingBlockFailure({error: serializeError(error)})))
+          map(() => ProjectActions.loadBuildingWithBuildingBlocks({ projectId: id! })),
+          catchError((error) => of(ProjectActions.deleteBuildingBlockFailure({ error: serializeError(error) })))
         )
       )
     )
@@ -291,8 +293,8 @@ export class ProjectEffects {
       withLatestFrom(this.store.pipe(select(selectCurrentProjectId))),
       concatMap(([action, id]) =>
         this.buildingService.updateBuildingBlock(action.buildingBlock).pipe(
-          map(() => ProjectActions.loadBuildingWithBuildingBlocks({projectId: id!})),
-          catchError((error) => of(ProjectActions.updateBuildingBlockFailure({error: serializeError(error)})))
+          map(() => ProjectActions.loadBuildingWithBuildingBlocks({ projectId: id! })),
+          catchError((error) => of(ProjectActions.updateBuildingBlockFailure({ error: serializeError(error) })))
         )
       )
     )
@@ -303,7 +305,7 @@ export class ProjectEffects {
       ofType(ProjectActions.getProjectTeam),
       concatMap((action) =>
         this.projectService.getProjectTeam(action.projectId).pipe(
-          map(response => ProjectActions.getProjectTeamSuccess({ response  })),
+          map(response => ProjectActions.getProjectTeamSuccess({ response })),
           catchError((error: any) =>
             of(ProjectActions.getProjectTeamFailure({ error }))
           )
@@ -329,50 +331,72 @@ export class ProjectEffects {
     );
   });
 
-  loadProjectDocuments$ = createEffect(()=>{
+  loadProjectDocuments$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(ProjectActions.loadProjectDocuments),
-      concatMap((action)=>
-        this.projectService.getProjectDocuments(action.projectId, action.sort, action.query, action.order).pipe(
-          map(result=>
-            ProjectActions.loadProjectDocumentsSuccess({response: result})
+      concatMap((action) =>
+        this.projectService.getProjectDocuments(action.projectId, action.buildingId, action.sort, action.query, action.order).pipe(
+          map(result =>
+            ProjectActions.loadProjectDocumentsSuccess({ response: result })
           ),
-          catchError((error:any)=>
-            of(ProjectActions.loadProjectDocumentsFailure({error: serializeError(error)}))
+          catchError((error: any) =>
+            of(ProjectActions.loadProjectDocumentsFailure({ error: serializeError(error) }))
           )
         )
       )
     );
   })
 
-  deleteProjectDocument$ = createEffect(()=>{
+  uploadProjectDocuments$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(ProjectActions.uploadProjectDocuments),
+      concatMap((action) =>
+        this.projectFileService.postDocuments(action.buildingId, action.files, action.urls).pipe(
+          map(result => {
+              this.store.dispatch(fromProjectActions.loadProjectDocuments({
+                projectId: action.projectId,
+                buildingId: action.buildingId,
+                sort: 'created'
+              }));
+              return ProjectActions.uploadProjectDocumentsSuccess({ documents: result });
+            }
+          ),
+          catchError((error: any) =>
+            of(ProjectActions.uploadProjectDocumentsFailure({ error: serializeError(error) }))
+          )
+        )
+      )
+    );
+  });
+
+  deleteProjectDocument$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(ProjectActions.deleteProjectDocument),
-      concatMap((action)=>
+      concatMap((action) =>
         this.projectService.deleteProjectDocument(action.projectDocumentId).pipe(
-          map(result=>
-            ProjectActions.deleteProjectDocumentSuccess({response: result})
+          map(result =>
+            ProjectActions.deleteProjectDocumentSuccess({ response: result })
           ),
-          catchError((error:any)=>
-            of(ProjectActions.deleteProjectDocumentFailure({error: serializeError(error)}))
+          catchError((error: any) =>
+            of(ProjectActions.deleteProjectDocumentFailure({ error: serializeError(error) }))
           )
         )
       )
     );
   })
 
-  updateProjectDocument$ = createEffect(()=>{
+  updateProjectDocument$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(ProjectActions.updateProjectDocument),
-      concatMap((action)=>
+      concatMap((action) =>
         this.projectService.updateProjectDocument(action.model).pipe(
-          switchMap(result=>of(
-            ProjectActions.updateProjectDocumentSuccess({response: result}),
-            ModalDialogAction.closeModalDialog()
-          )
+          switchMap(result => of(
+              ProjectActions.updateProjectDocumentSuccess({ response: result }),
+              ModalDialogAction.closeModalDialog()
+            )
           ),
-          catchError((error:any)=>
-            of(ProjectActions.updateProjectDocumentsFailure({error: serializeError(error)}))
+          catchError((error: any) =>
+            of(ProjectActions.updateProjectDocumentsFailure({ error: serializeError(error) }))
           )
         )
       )
@@ -382,6 +406,7 @@ export class ProjectEffects {
   constructor(
     private actions$: Actions,
     private projectService: ProjectService,
+    private projectFileService: ProjectFileService,
     private errorService: ErrorService,
     private store: Store<AppState>,
     private buildingService: BuildingApiService

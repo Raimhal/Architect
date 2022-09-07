@@ -9,7 +9,7 @@ using MediatR;
 namespace Ctor.Application.ProjectDocuments.Queries.GetProjectDocumentByProjectId;
 
 public record GetProjectDocumentsByProjectIdQuery
-    (long ProjectId, QueryModelDTO QueryModel) : IRequest<List<GetProjectDocumentByProjectIdResponseDto>>;
+    (long ProjectId, long? BuildingId, QueryModelDTO? QueryModel) : IRequest<List<GetProjectDocumentByProjectIdResponseDto>>;
 
 public class
     GetProjectDocumentsByProjectIdQueryHandler : IRequestHandler<GetProjectDocumentsByProjectIdQuery,
@@ -29,7 +29,8 @@ public class
     {
         string query = request.QueryModel.Query;
         Expression<Func<ProjectDocument, bool>> queryPredicate = document =>
-            string.IsNullOrEmpty(query) || document.Document.Name.ToLower().Contains(query);
+            (string.IsNullOrEmpty(query) || document.Document.Name.ToLower().Contains(query))
+            && (!request.BuildingId.HasValue || document.BuildingId == request.BuildingId);
 
         var projectDocuments =
             await _context.ProjectDocuments.GetOrdered<GetProjectDocumentByProjectIdResponseDto>(

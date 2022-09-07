@@ -65,7 +65,7 @@ export class CompanyComponent implements OnInit {
     const target = event.target as HTMLInputElement;
     if (target.files !== null) {
       const file = target.files[0];
-      this.companyFileService.putLogo(companyId, file).then(() => {
+      this.companyFileService.putLogo(companyId, file).toPromise().then(() => {
         this.store.dispatch(fromCompanyActions.uploadCompanyLogoSuccess())
       }).catch(()=>
         this.store.dispatch(fromCompanyActions.uploadCompanyLogoFailure())

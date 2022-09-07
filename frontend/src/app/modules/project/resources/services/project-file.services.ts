@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FileService } from 'src/app/core/resources/services/file.service';
 import { IProjectDocumentId } from '../models/project-documents/project-document-id.model';
-import { IProjectPhotoId } from '../models/project-photo-id-response.model';
 
 @Injectable({
   providedIn: 'root',
@@ -25,11 +24,17 @@ export class ProjectFileService extends FileService {
     );
   }
 
-  postDocuments(buildingId: number, files: File[]) {
+  postDocuments(buildingId: number, files: File[], urls: string[]) {
     let formData = new FormData();
+
     Array.from(files).forEach((file) => {
       formData.append('file', file, file.name);
     });
+
+    Array.from(urls).forEach((url) => {
+      formData.append('url', url);
+    });
+
     return this.post<IProjectDocumentId[]>(
       `/projectDocuments/building/${buildingId}`,
       formData

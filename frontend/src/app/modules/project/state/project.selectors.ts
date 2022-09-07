@@ -70,3 +70,13 @@ export const selectProjectDocuments = createSelector(
   selectProjectState,
   (state)=>state.currentlyOpenProjectDocuments
 )
+
+export const selectBuildingMaterials = createSelector(
+  selectProjectState,
+  (state) => state.currentlyOpenBuildingMaterials
+)
+
+export const selectBuildingServices = createSelector(
+  selectProjectState,
+  (state) => state.currentlyOpenBuildingServices
+)

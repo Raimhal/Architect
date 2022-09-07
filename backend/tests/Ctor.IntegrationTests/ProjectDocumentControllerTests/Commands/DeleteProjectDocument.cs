@@ -30,19 +30,17 @@ public class DeleteProjectDocument : ProjectDocumentControllerFixture
         var building = new Building() { Id = buildingId, BuildingName = "name", ProjectId = 100 };
 
         await _testing.AddAsync(building);
-        List<PostProjectDocumentResponseDto> postResult;
-        await using (FileStream file = File.OpenRead("TestPhotos/dummy.png"))
-        {
-            using (StreamContent content = new(file))
-            {
-                var postCommand = new PostProjectDocumentCommand(new[] {await content.ReadAsByteArrayAsync()},buildingId, new []{file.Name} );
-                postResult = await _testing.SendAsync(postCommand);
+        await using FileStream file = File.OpenRead("TestPhotos/dummy.png");
+        using StreamContent content = new(file);
 
-            }
-        }
+        var postCommand = new PostProjectDocumentCommand(
+            new[] { (await content.ReadAsByteArrayAsync(), file.Name) },
+            buildingId,
+            Array.Empty<string>());
 
-        var query =
-            new DeleteProjectDocumentCommand(postResult[0].Id);
+        var postResult = await _testing.SendAsync(postCommand);
+
+        var query = new DeleteProjectDocumentCommand(postResult[0].Id);
 
         // Act
         var result = await _testing.SendAsync(query);

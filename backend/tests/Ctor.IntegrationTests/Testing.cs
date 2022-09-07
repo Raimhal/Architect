@@ -83,6 +83,17 @@ public partial class Testing : IDisposable
         await context.SaveChangesAsync();
     }
 
+    public async Task AddRangeAsync<TEntity>(params TEntity[] entities)
+        where TEntity : class
+    {
+        using var scope = _scopeFactory.CreateScope();
+
+        var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+        await context.AddRangeAsync(entities as object[]);
+        await context.SaveChangesAsync();
+    }
+
     public async Task<int> CountAsync<TEntity>() where TEntity : class
     {
         using var scope = _scopeFactory.CreateScope();

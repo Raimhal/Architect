@@ -29,7 +29,7 @@ export class AddProjectPhotosComponent implements OnInit {
 
   submit() {
     if (this.files.length !== 0) {
-      this.filesService.putPhotos(this.data, this.files).then((result) => {
+      this.filesService.putPhotos(this.data, this.files).toPromise().then((result) => {
         this.store.dispatch(
           fromProjectActions.uploadProjecPhotoSuccess({ id: this.data })
         );

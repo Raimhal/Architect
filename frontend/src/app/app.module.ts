@@ -93,9 +93,7 @@ import { NotificationsModule } from './modules/notifications/notifications.modul
     MatSidenavModule,
     MatDatepickerModule,
     MatMomentDateModule,
-    MatDialogModule,
     MatTabsModule,
-    ProjectModule,
     CompanyModule,
     EffectsModule.forFeature([MenuEffects]),
     NotificationsModule

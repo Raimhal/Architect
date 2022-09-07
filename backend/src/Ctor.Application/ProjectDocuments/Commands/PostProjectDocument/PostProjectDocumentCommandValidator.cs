@@ -7,6 +7,15 @@ public class PostProjectDocumentCommandValidator : AbstractValidator<PostProject
     public PostProjectDocumentCommandValidator()
     {
         RuleFor(x => x.BuildingId).GreaterThan(0);
-        RuleFor(x => x.Data).NotEmpty().WithMessage("Files must not be empty");
+
+        When(x => x.Files.Count == 0, () =>
+        {
+            RuleFor(x => x.Urls).NotEmpty();
+        });
+
+        When(x => x.Urls.Length == 0, () =>
+        {
+            RuleFor(x => x.Files).NotEmpty();
+        });
     }
 }

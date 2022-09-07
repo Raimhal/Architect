@@ -60,7 +60,9 @@ export class BuildingsListItemComponent implements OnInit {
 
   openDialog() {
     this.dialog.open(BuildingManagementDialogComponent, {
-        data: this.building?.id,
+        data: {
+          building: this.building,
+        },
       }
     );
   }

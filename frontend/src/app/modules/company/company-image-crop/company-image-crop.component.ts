@@ -37,7 +37,7 @@ export class CompanyImageCropComponent implements OnInit {
   submit() {
     if (this.companyId) {
       let file = this.blobToFile(base64ToFile(this.croppedImage));
-      this.fileService.putLogo(this.companyId, file).then(() => {
+      this.fileService.putLogo(this.companyId, file).toPromise().then(() => {
         this.store.dispatch(fromCompanyActions.uploadCompanyLogoSuccess())
       }).catch(()=>
         this.store.dispatch(fromCompanyActions.uploadCompanyLogoFailure())

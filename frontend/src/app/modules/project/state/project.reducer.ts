@@ -36,6 +36,8 @@ export interface State {
   } | null,
   error: string,
   currentlyOpenProjectDocuments: IProjectDocument[]
+  currentlyOpenBuildingMaterials: { id: number, name: string, amount: string, address: string, type: string, }[],
+  currentlyOpenBuildingServices: { id: 0, name: string, email: string, phoneNumber: string, website: string, type: string, }[],
 }
 
 export const initialState: State = {
@@ -60,7 +62,58 @@ export const initialState: State = {
     status: ProjectStatus.InProcess,
     team: [],
   },
-  currentlyOpenProjectDocuments: []
+  currentlyOpenProjectDocuments: [],
+  currentlyOpenBuildingMaterials: [
+    // todo: retrieve this from backend
+    {
+      id: 0,
+      name: 'Merchants Ltd',
+      amount: '28 Tons',
+      address: 'Graveland, 1217 EJ Hilversum, Netherlands',
+      type: 'Brick',
+    },
+    {
+      id: 1,
+      name: 'Merchants Ltd',
+      amount: '28 Tons',
+      address: 'Graveland, 1217 EJ Hilversum, Netherlands',
+      type: 'Brick',
+    },
+    {
+      id: 2,
+      name: 'Merchants Ltd',
+      amount: '28 Tons',
+      address: 'Graveland, 1217 EJ Hilversum, Netherlands',
+      type: 'Brick',
+    },
+  ],
+  currentlyOpenBuildingServices: [
+    // todo: retrieve this from backend
+    {
+      id: 0,
+      name: 'Dunedin Builders Merchants Ltd',
+      email: 'dunedin@gmail.com',
+      phoneNumber: '+380 98 745 23 61',
+      website: 'dunedin.com',
+      type: 'Internet',
+    },
+    {
+      id: 0,
+      name: 'Dunedin Builders Merchants Ltd',
+      email: 'dunedin@gmail.com',
+      phoneNumber: '+380 98 745 23 61',
+      website: 'dunedin.com',
+      type: 'Internet',
+    },
+    {
+      id: 0,
+      name: 'Dunedin Builders Merchants Ltd',
+      email: 'dunedin@gmail.com',
+      phoneNumber: '+380 98 745 23 61',
+      website: 'dunedin.com',
+      type: 'Internet',
+    },
+  ],
 };
 
 export const reducer = createReducer(
@@ -200,7 +253,7 @@ export const reducer = createReducer(
   }),
   on(ProjectActions.loadProjectDocumentsSuccess, (state, action)=>{
     return{
-    ...state, 
+    ...state,
     currentlyOpenProjectDocuments: action.response
     }
   }),
@@ -213,7 +266,7 @@ export const reducer = createReducer(
   }),
   on(ProjectActions.deleteProjectDocumentSuccess, (state, action)=>{
     return{
-    ...state, 
+    ...state,
     currentlyOpenProjectDocuments: state.currentlyOpenProjectDocuments.filter(document=>document.id != action.response.id)
     }
   }),
@@ -225,7 +278,7 @@ export const reducer = createReducer(
   }),
   on(ProjectActions.updateProjectDocumentSuccess, (state, action)=>{
     return{
-    ...state, 
+    ...state,
     currentlyOpenProjectDocuments: state.currentlyOpenProjectDocuments.map(obj=>{
       if(obj.id === action.response.id){
         obj = action.response
@@ -233,7 +286,7 @@ export const reducer = createReducer(
       return obj;
     }
     )
-    
+
     }
   }),
   on(ProjectActions.updateProjectDocumentsFailure, (state, action)=>{

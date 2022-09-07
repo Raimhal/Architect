@@ -249,13 +249,27 @@ export const setProjectTeamSuccess = createAction(
   '[Project] Set Project Team Success',
 );
 
+export const deleteBuildingMaterial = createAction(
+  '[Building Material] Delete Building Material',
+  props<{ buildingMaterialId: number }>()
+);
+
+export const deleteBuildingMaterialSuccess = createAction(
+  '[Building Material] Delete Building Material Success',
+);
+
+export const deleteBuildingMaterialFailure = createAction(
+  '[Building Material] Delete Building Material Failure',
+  props<{ error: any }>()
+);
+
 export const setProjectTeamFailure = createAction(
   '[Project] Set Project Team Failure',
   props<{ error: any }>()
 );
 export const loadProjectDocuments = createAction(
   '[Project Documents Component] Get Project Documents',
-  props<{ projectId: number, query?: string, sort: 'created' | 'id', order?: 1 | 0 }>()
+  props<{ projectId: number, buildingId?: number | undefined, query?: string, sort: 'created' | 'id', order?: 1 | 0 }>()
 );
 
 export const loadProjectDocumentsSuccess = createAction(
@@ -299,8 +313,31 @@ export const updateProjectDocumentsFailure = createAction(
   props<{ error: any }>()
 );
 
+export const uploadProjectDocuments = createAction(
+  '[Project Document Upload] Upload Project Documents',
+  props<{ buildingId: number, projectId: number, files: File[], urls: string[] }>()
+);
+
+export const uploadProjectDocumentsSuccess = createAction(
+  '[Project Document Upload] Upload Project Documents Success',
+  props<{ documents: IProjectDocumentId[] }>()
+);
+
 export const uploadProjectDocumentsFailure = createAction(
-  '[Project Document Addition Component] Upload Project Documents Failure',
+  '[Project Document Upload] Upload Project Documents Failure',
   props<{ error: any }>()
 );
 
+export const deleteBuildingService = createAction(
+  '[Building Service] Delete Building Service',
+  props<{ buildingServiceId: number }>()
+);
+
+export const deleteBuildingServiceSuccess = createAction(
+  '[Building Service] Delete Building Service Success',
+);
+
+export const deleteBuildingServiceFailure = createAction(
+  '[Building Service] Delete Building Service Failure',
+  props<{ error: any }>()
+);

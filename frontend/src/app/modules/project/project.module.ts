@@ -35,9 +35,10 @@ import { ClipboardModule } from "@angular/cdk/clipboard";
 import { OverlayModule } from "@angular/cdk/overlay";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { PhaseBarComponent } from "./phase-bar/phase-bar.component";
-
 import { ProjectDocumentRenameComponent } from './projectDocuments/project-document-rename/project-document-rename.component';
-import { ProjectDocumentAdditionComponent } from './projectDocuments/project-document-addition/project-document-addition.component';
+import {
+  AddBuildingDocumentOverlay
+} from "./building-management-dialog/add-building-document-overlay/add-building-document-overlay.component";
 
 @NgModule({
   imports: [
@@ -82,7 +83,7 @@ import { ProjectDocumentAdditionComponent } from './projectDocuments/project-doc
     ProjectDocumentsComponent,
     ProjectDocumentOverviewComponent,
     ProjectDocumentRenameComponent,
-    ProjectDocumentAdditionComponent,
+    AddBuildingDocumentOverlay,
   ]
 })
 export class ProjectModule {
