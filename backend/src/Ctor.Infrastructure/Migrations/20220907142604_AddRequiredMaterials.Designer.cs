@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Ctor.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220906184732_AddRequiredMaterials")]
+    [Migration("20220907142604_AddRequiredMaterials")]
     partial class AddRequiredMaterials
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -870,13 +870,13 @@ namespace Ctor.Infrastructure.Migrations
             modelBuilder.Entity("Ctor.Domain.Entities.RequiredMaterial", b =>
                 {
                     b.HasOne("Ctor.Domain.Entities.Building", "Building")
-                        .WithMany()
+                        .WithMany("RequiredMaterials")
                         .HasForeignKey("BuildingId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Ctor.Domain.Entities.Material", "Material")
-                        .WithMany()
+                        .WithMany("RequiredMaterials")
                         .HasForeignKey("MaterialId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -920,6 +920,8 @@ namespace Ctor.Infrastructure.Migrations
                     b.Navigation("BuildingBlocks");
 
                     b.Navigation("ProjectDocuments");
+
+                    b.Navigation("RequiredMaterials");
                 });
 
             modelBuilder.Entity("Ctor.Domain.Entities.Company", b =>
@@ -939,6 +941,11 @@ namespace Ctor.Infrastructure.Migrations
                 {
                     b.Navigation("ProjectDocument")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Ctor.Domain.Entities.Material", b =>
+                {
+                    b.Navigation("RequiredMaterials");
                 });
 
             modelBuilder.Entity("Ctor.Domain.Entities.MaterialType", b =>
