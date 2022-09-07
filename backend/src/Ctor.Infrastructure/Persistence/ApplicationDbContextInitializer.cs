@@ -278,7 +278,7 @@ public class ApplicationDbContextInitializer
 
     private ICollection<RequiredMaterial> GenerateRequiredMaterials(ICollection<Material> materials)
     {
-        return Enumerable.Range(0, _faker.Random.Int(3, 4))
+        return Enumerable.Range(0, 1)
             .Select(_ =>
             {
                 var material = _faker.Random.CollectionItem(materials);
