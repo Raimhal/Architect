@@ -116,7 +116,7 @@
       }
       .company-information-input:focus {
         outline: none;
-        
+
       }
       .company-information-input:disabled {
         padding-bottom: 2px;
@@ -134,12 +134,36 @@
       background-color: #fff7ee;
 
       .members-viewport {
-        height: 15vh;
+        height: 25vh;
         width: 100%;
       }
 
       .members-item {
         height: min-content;
+        background: #FFEBD3;
+        padding: 10px 0 5px 10px;
+        margin-bottom: 5px;
+      }
+
+      .member-role{
+        background: #FFBD93;
+        width: fit-content;
+        padding: 10px;
+      }
+
+      .member-info{
+        display: flex;
+        flex-direction: row;
+        gap: 15px;
+        align-items: center;
+        margin-bottom: 1em;
+      }
+
+      .member-name{
+        font-weight: 600;
+      }
+      .email{
+        color: gray;
       }
     }
     .card-3 {

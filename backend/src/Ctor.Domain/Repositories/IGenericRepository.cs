@@ -27,6 +27,7 @@ public interface IGenericRepository<T> where T : BaseEntity
     Task<(List<TResult> entities, int total)> GetFilteredWithTotalSumWithQuery<TResult>(IQueryable<T> query,
         Expression<Func<T, bool>> filter, int page = 0, int count = 0, string orderBy = null, Order order = Order.ASC);
     Task<List<T>> GetAll();
+    Task<List<TResult>> GetAll<TResult>();
     Task<T> GetById(long id, CancellationToken ct = default);
     Task<TProjectTo> GetById<TProjectTo>(long id, CancellationToken ct);
     Task<T?> FindById(long id, CancellationToken ct = default);

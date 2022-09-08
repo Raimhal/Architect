@@ -68,7 +68,7 @@ public class AddUserQueryHandler : IRequestHandler<AddUserCommand,bool>
         newUser.Password = _securityService.ComputeSha256Hash(password);        
         await _context.Users.Insert(newUser);
         await _context.SaveChangesAsync();
-        await _email.SendAsync(emailDTOs, "Password for your new account!", password, $"<h2>{password}</h2>");
+       // await _email.SendAsync(emailDTOs, "Password for your new account!", password, $"<h2>{password}</h2>");
         return true;
     }
 }

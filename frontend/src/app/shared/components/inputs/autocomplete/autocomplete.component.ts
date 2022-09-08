@@ -19,12 +19,13 @@ export class AutocompleteComponent implements OnInit {
   @Input() placeholder : string = '';
   @Input() options : string[] = [];
   @Input() label : string = '';
+  @Input() inputOptions: string[]=[];
 
   @ViewChild('optionsInput') optionsInput? : ElementRef<HTMLInputElement>;
 
   _outputOptions : string[] = [];
 
-  @Output() outputOptions = new EventEmitter<string[]>()
+  @Output() outputOptions = new EventEmitter<string[]>();
 
   filteredOptions : Observable<string[]>
   separatorKeysCodes: number[] = [ENTER, COMMA];
@@ -44,6 +45,7 @@ export class AutocompleteComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this._outputOptions=[...this.inputOptions];
   }
 
   add(event: MatChipInputEvent): void {
@@ -64,6 +66,7 @@ export class AutocompleteComponent implements OnInit {
     const index = this._outputOptions.indexOf(fruit);
 
     if (index >= 0) {
+      console.log(this._outputOptions)
       this._outputOptions.splice(index, 1);
       this.outputOptions.emit(this._outputOptions);
     }

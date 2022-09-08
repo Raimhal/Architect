@@ -93,7 +93,7 @@ public class AddSeveralUsersCommandHandler : IRequestHandler<AddSeveralUsersComm
         foreach(var email in emails.Keys)
         {
             string password = emails.GetValueOrDefault(email);
-            await _email.SendAsync(new List<EmailDTO>() {email}, "Password for your new account!", password, $"<h2>{password}</h2>");
+            //await _email.SendAsync(new List<EmailDTO>() {email}, "Password for your new account!", password, $"<h2>{password}</h2>");
         }
         return errorLines;
     }

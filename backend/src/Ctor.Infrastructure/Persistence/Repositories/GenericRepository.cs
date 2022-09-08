@@ -52,7 +52,10 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     {
         return table.ToListAsync();
     }
-
+    public Task<List<TResult>> GetAll<TResult>()
+    {
+        return table.ProjectTo<TResult>(_mapper.Value.ConfigurationProvider).ToListAsync();
+    }
     public async Task<T> GetById(long id, CancellationToken ct)
     {
         return await FirstOrDefault(e => e.Id == id, ct) 

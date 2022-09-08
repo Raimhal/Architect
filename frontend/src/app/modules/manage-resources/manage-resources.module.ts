@@ -8,20 +8,47 @@ import {StoreModule} from "@ngrx/store";
 import {EffectsModule} from "@ngrx/effects";
 import * as fromMaterials from './material/state/material.reducer'
 import {MaterialEffects} from "./material/state/material.effects";
+import {CommonModule} from '@angular/common';
+import {ServiceListComponent} from './service-list/service-list.component';
+import {MatTableModule} from '@angular/material/table';
+import {SharedModule} from "../../shared/shared.module";
+import {MatIconModule} from "@angular/material/icon";
+import {MatButtonModule} from "@angular/material/button";
+import {NgrxFormsModule} from "ngrx-forms";
+import {ReactiveFormsModule} from "@angular/forms";
+import * as fromManagment from "./state/manage-resources.reducer";
+import {ManageResourcesEffects} from "./state/manage-resources.effects";
+import {ClipboardModule} from "@angular/cdk/clipboard";
+import {NgxSpinnerModule} from "ngx-spinner";
 
 @NgModule({
   imports: [
     ManageResourcesRoutingModule,
-    MatTabsModule,
-    StoreModule.forFeature(
-      fromMaterials.manageResourceFeatureKey,
-      fromMaterials.reducer
-    ),
     EffectsModule.forFeature([MaterialEffects]),
+    CommonModule,
+    MatTabsModule,
+    MatTableModule,
+    SharedModule,
+    MatIconModule,
+    MatButtonModule,
+    NgrxFormsModule,
+    ReactiveFormsModule,
+    ClipboardModule,
+    StoreModule.forFeature(
+      fromManagment.manageResourcesFeatureKey,
+      fromManagment.reducer
+    ),
+    EffectsModule.forFeature([ManageResourcesEffects]),
+    NgxSpinnerModule
   ],
   declarations: [
     ManageResourcesComponent,
     MaterialComponent,
+    ServiceListComponent
+  ],
+  exports: [
+    ServiceListComponent,
+    ManageResourcesComponent
   ],
   providers: [MaterialApiService],
 

@@ -68,6 +68,8 @@ public static class ConfigureServices
         services.AddScoped<IMaterialTypeRepository, MaterialTypeRepository>();
         services.AddScoped<IMeasurementRepository, MeasurementRepository>();
         services.AddScoped<IRequiredMaterialRepository, RequiredMaterialRepository>();
+        services.AddScoped<IVendorTypeRepository, VendorTypeRepository>();
+        services.AddScoped<IVendorRepository, VendorRepository>();
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
         services.AddScoped<ApplicationDbContextInitializer>();

@@ -38,6 +38,7 @@ import {CompanyModule} from "./modules/company/company.module";
 import {MatDialogModule} from "@angular/material/dialog";
 import { MenuEffects } from './store/effects/menu.effects';
 import { AdministrationEffects } from './modules/administration/state/administration.effects';
+
 import { NotificationService } from './shared/services/notification.service';
 import { NotificationsEffects } from './store/effects/notifi.effects';
 import { NotificationsModule } from './modules/notifications/notifications.module';
@@ -98,7 +99,7 @@ import {ManageResourcesModule} from "./modules/manage-resources/manage-resources
     CompanyModule,
     EffectsModule.forFeature([MenuEffects]),
     NotificationsModule,
-    ManageResourcesModule,
+    ManageResourcesModule
   ],
   providers: [NotificationService],
   bootstrap: [AppComponent],

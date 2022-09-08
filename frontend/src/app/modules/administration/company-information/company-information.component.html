@@ -132,8 +132,11 @@
               *cdkVirtualFor="let member of company.members"
               class="members-item"
             >
-              {{ member.firstName }} {{ member.lastName }},
-              {{ member.roleName }}, {{ member.userEmail }}
+              <div class="member-info">
+                <div class="member-role">{{ member.roleName }}</div>
+                <div class="member-name">{{ member.firstName }} {{ member.lastName }}</div>
+              </div>
+              <p class="email">{{ member.userEmail }}</p>
             </div>
           </cdk-virtual-scroll-viewport>
         </mat-card-content>

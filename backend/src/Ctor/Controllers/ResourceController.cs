@@ -1,18 +1,54 @@
-﻿using Ctor.Application.Common.Models;
+﻿using Ctor.Application.Services;
+using Ctor.Application.Services.Commands;
+using Ctor.Application.Services.Queries;
+using Microsoft.AspNetCore.Mvc;
+using Ctor.Application.Common.Models;
 using Ctor.Application.Resources.Materials.Commands.CreateMaterialCommand;
 using Ctor.Application.Resources.Materials.Commands.CreateRequiredMaterialsForBuildingCommand;
 using Ctor.Application.Resources.Materials.Queries.GetAvailableMaterialsForProjectQuery;
 using Ctor.Application.Resources.Materials.Queries.GetMaterialTypeQuery;
 using Ctor.Application.Resources.Materials.Queries.GetMeasurementQuery;
 using Ctor.Application.Resources.Queries.GetMaterialQuery;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Ctor.Controllers;
-
-[ApiController]
-[Route("api/Resource")]
+[Route("api/resources")]
 public class ResourceController : ApiControllerBase
 {
+    [HttpPost]
+    [Route("service/add")]
+    public async Task<ActionResult<ServiceDto>> AddService([FromBody] AddServiceCommand command)
+    {
+        return await Mediator.Send(command);
+    }
+
+    [HttpDelete]
+    [Route("service/{id}/delete")]
+    public async Task<ActionResult<long>> DeleteService([FromRoute] long id)
+    {
+        return await Mediator.Send(new DeleteServiceCommand { Id = id });
+    }
+
+    [HttpPut]
+    [Route("service/edit")]
+    public async Task<ActionResult<ServiceDto>> EditService([FromBody] EditServiceCommand command)
+    {
+        return await Mediator.Send(command);
+    }
+
+    [HttpGet]
+    [Route("services")]
+    public async Task<ActionResult<IEnumerable<ServiceDto>>> GetCompanyWithParams([FromQuery(Name = "filter")] string? filter,
+                                                                                   [FromQuery(Name = "sort")] string sort)
+    {
+        return Ok(await Mediator.Send(new GetServicesQuery(filter, sort)));
+    }
+
+    [HttpGet]
+    [Route("types")]
+    public async Task<ActionResult<IEnumerable<ServiceDto>>> LoadTypes()
+    {
+        return Ok(await Mediator.Send(new GetTypesQuery()));
+    }
     [HttpGet("materials")]
     public async Task<ActionResult<PaginationModel<GetMaterialsQueryDto>>> GetListOfMaterials([FromQuery] MaterialPaginationQueryDto queryModel)
     {
@@ -39,7 +75,6 @@ public class ResourceController : ApiControllerBase
 
     [HttpGet]
     [Route("available-materials")]
-
     public async Task<IActionResult> GetAvailableMaterialsForProject([FromQuery] GetAvailableMaterialsForProjectQuery query)
     {
         return Ok(await Mediator.Send(query));
@@ -53,4 +88,3 @@ public class ResourceController : ApiControllerBase
         return StatusCode(201);
     }
 }
-

@@ -3,6 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import * as fromAuthActions from '../actions/auth.actions';
 import * as fromAdministrationActions from '../../modules/administration/state/administration.actions';
 import * as fromCompanyActions from '../../modules/company/state/company.actions';
+import * as fromServiceActions from '../../modules/manage-resources/state/manage-resources.actions';
 import { tap } from 'rxjs/operators';
 import {NgxSpinnerService} from "ngx-spinner";
 import * as fromProjectActions from '../../modules/project/state/project.actions';
@@ -19,6 +20,8 @@ export class SpinnerEffects {
           fromAdministrationActions.submitCompanyInformationForm,
           fromCompanyActions.submitEditingCompanyProfileForm,
           fromCompanyActions.loadCompany,
+          fromCompanyActions.loadCropImageStart,
+          fromServiceActions.loadServices,
           fromCompanyActions.loadCropImageStart,
           fromAdministrationActions.submitCompanyInformationForm,
           fromProjectActions.loadBuildingWithBuildingBlocks,
@@ -53,6 +56,8 @@ export class SpinnerEffects {
           fromCompanyActions.loadCompanyFailure,
           fromCompanyActions.loadCropImageFinish,
           fromCompanyActions.loadCropImageFailed,
+          fromServiceActions.loadServicesSuccess,
+          fromServiceActions.loadServicesFailure
         ),
         tap(() => {
           setTimeout(() => {

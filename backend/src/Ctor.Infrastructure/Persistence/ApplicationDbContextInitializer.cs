@@ -77,7 +77,32 @@ public class ApplicationDbContextInitializer
             throw;
         }
     }
-
+    ICollection<VendorType> VendorTypes = new List<VendorType>()
+    {
+            new VendorType(){Name="Architectural"},
+            new VendorType(){Name="Civil Engineering"},
+            new VendorType(){Name="Communications"},
+            new VendorType(){Name="Electrical Engineering"},
+            new VendorType(){Name="Energy Management"},
+            new VendorType(){Name="Fire Safety Engineering"},
+            new VendorType(){Name="Geotechnical"},
+            new VendorType(){Name="Building Surveyor"},
+            new VendorType(){Name="Quantity Surveyor"},
+            new VendorType(){Name="Acoustics"},
+            new VendorType(){Name="Lifts"},
+            new VendorType(){Name="Internet"},
+            new VendorType(){Name="Cleaning"},
+            new VendorType(){Name="Heating"},
+            new VendorType(){Name="Security "},
+            new VendorType(){Name="Adapters"},
+            new VendorType(){Name="Plumbing"},
+            new VendorType(){Name="Wiring"},
+            new VendorType(){Name="Design"},
+            new VendorType(){Name="Drywall"},
+            new VendorType(){Name="Deconstruction"},
+            new VendorType(){Name="Smart"},
+            new VendorType(){Name="CCTV"}
+    };
     private async Task SeedInternalAsync()
     {
         if (_context.Roles.Any() || _context.Companies.Any())
@@ -108,6 +133,8 @@ public class ApplicationDbContextInitializer
 
         await _context.Companies.AddRangeAsync(GenerateCompanies(materialTypes));
 
+        await _context.VendorTypes.AddRangeAsync(VendorTypes);
+
         await _context.SaveChangesAsync();
     }
 
@@ -121,7 +148,7 @@ public class ApplicationDbContextInitializer
 
                 return new Company
                 {
-                    CompanyId = _faker.Random.Long(),
+                    CompanyId = _faker.Random.Long(1000000, 10000000000),
                     CompanyName = _faker.Company.CompanyName(),
                     Description = _faker.Company.CatchPhrase(),
                     Country = _faker.Address.County(),
@@ -134,6 +161,39 @@ public class ApplicationDbContextInitializer
                     Projects = GenerateProjects(users.First(u => u.Role.Type == UserRoles.OperationalManager),
                         materials),
                     Materials = materials,
+                    Vendors = GenerateVendors()
+                };
+            })
+            .ToArray();
+    }
+
+    private record VendorSeed(string VendorName);
+
+    private readonly ICollection<VendorSeed> _vendors = new VendorSeed[]
+    {
+        new VendorSeed("Asrta"),
+        new VendorSeed("Hotline"),
+        new VendorSeed("Invisible"),
+        new VendorSeed("Heating"),
+        new VendorSeed("Briliant"),
+        new VendorSeed("Externum"),
+        new VendorSeed("Lotos")
+    };
+
+    private ICollection<Vendor> GenerateVendors()
+    {
+        return Enumerable.Range(0, _faker.Random.Int(1, 3))
+            .Select(_ =>
+            {
+                var vendor = _faker.Random.CollectionItem(_vendors);
+
+                return new Vendor
+                {
+                    VendorName = vendor.VendorName,
+                    Email = $"{vendor.VendorName.ToLower()}@{vendor.VendorName.Substring(0, 3).ToLower()}.ua",
+                    Website = $"https://{vendor.VendorName.ToLower()}.com",
+                    Phone = _faker.Phone.PhoneNumber("+380 9# ### ## ##"),
+                    VendorTypes = new List<VendorType>() { _faker.Random.CollectionItem(VendorTypes) }
                 };
             })
             .ToArray();

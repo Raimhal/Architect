@@ -7,6 +7,7 @@ import { AlertService } from 'src/app/modules/alert/resources/services/alert.ser
 import { ErrorService } from 'src/app/modules/error/resources/services/error.services';
 import * as fromProjectActions from '../../modules/project/state/project.actions';
 import * as fromCompanyActions from '../../modules/company/state/company.actions';
+import * as fromServiceActions from '../../modules/manage-resources/state/manage-resources.actions';
 
 @Injectable()
 export class AlertEffects {
@@ -236,7 +237,67 @@ export class AlertEffects {
                   })
                 ),
               { dispatch: false });
-                  
+
+
+        addServiceSuccess$ = createEffect(
+          () =>
+            this.actions$.pipe(
+              ofType(fromServiceActions.addSubmittedSuccessfully),
+              tap(() => {
+                this._alertService.showAlert("Service was added", "OK", "success")
+              })
+            ),
+          { dispatch: false });
+
+        editServiceSuccess$ = createEffect(
+          () =>
+            this.actions$.pipe(
+              ofType(fromServiceActions.editSubmittedSuccessfully),
+              tap(() => {
+                this._alertService.showAlert("Service was edited", "OK", "success")
+              })
+            ),
+          { dispatch: false });
+        deleteServiceSuccess$ = createEffect(
+          () =>
+            this.actions$.pipe(
+              ofType(fromServiceActions.deleteServiceSubmittedSuccess),
+              tap(() => {
+                this._alertService.showAlert("Service was deleted", "OK", "success")
+              })
+            ),
+          { dispatch: false });
+        loadServiceFailure$ = createEffect(
+          () =>
+            this.actions$.pipe(
+              ofType(fromServiceActions.loadServicesFailure),
+              tap(() => {
+                this._alertService.showAlert("Error. Cannot load services", "OK", "error")
+              })
+            ),
+          { dispatch: false }
+        )
+        invalidService$ = createEffect(
+          () =>
+            this.actions$.pipe(
+              ofType(fromServiceActions.serviceInvalid),
+              tap(() => {
+                this._alertService.showAlert("Error. Cannot add invalid services", "OK", "error")
+              })
+            ),
+          { dispatch: false }
+        )
+        addClickFailed = createEffect(
+          () =>
+            this.actions$.pipe(
+              ofType(fromServiceActions.addClickFailure),
+              tap((action) => {
+                this._alertService.showAlert(action.message, "OK", "error")
+              })
+            ),
+          { dispatch: false }
+        )
+
   constructor(private actions$: Actions, private _alertService: AlertService, private errorService: ErrorService) {
   }
 }

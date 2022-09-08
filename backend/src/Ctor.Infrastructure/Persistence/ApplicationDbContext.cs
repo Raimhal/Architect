@@ -25,6 +25,9 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     private readonly Lazy<IMaterialTypeRepository> _materialTypeRepository;
     private readonly Lazy<IMeasurementRepository> _measurementRepository;
     private readonly Lazy<IRequiredMaterialRepository> _requiredMaterialsRepository;
+    private readonly Lazy<IVendorRepository> _vendorRepositoryLazy;
+    private readonly Lazy<IVendorTypeRepository> _vendorTypeRepositoryLazy;
+
     public IUserRepository Users => _userRepositoryLazy.Value;
     public IRoleRepository Roles => _roleRepositoryLazy.Value;
     public ICompanyRepository Companies => _companyRepositoryLazy.Value;
@@ -42,6 +45,11 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     public IMaterialTypeRepository MaterialType => _materialTypeRepository.Value;
     public IMeasurementRepository Measurements => _measurementRepository.Value;
     public IRequiredMaterialRepository RequiredMaterials => _requiredMaterialsRepository.Value;
+
+    public IVendorRepository Vendors => _vendorRepositoryLazy.Value;
+
+    public IVendorTypeRepository VendorTypes => _vendorTypeRepositoryLazy.Value;
+
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IRepositoryFactory repositoryFactory)
         : base(options)
     {
@@ -62,6 +70,9 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
         _materialTypeRepository = repositoryFactory.GetInstanse<Lazy<IMaterialTypeRepository>>();
         _measurementRepository = repositoryFactory.GetInstanse<Lazy<IMeasurementRepository>>();
         _requiredMaterialsRepository = repositoryFactory.GetInstanse<Lazy<IRequiredMaterialRepository>>();
+
+        _vendorRepositoryLazy = repositoryFactory.GetInstanse<Lazy<IVendorRepository>>();
+        _vendorTypeRepositoryLazy = repositoryFactory.GetInstanse<Lazy<IVendorTypeRepository>>();
     }
     protected override void OnModelCreating(ModelBuilder builder)
     {       

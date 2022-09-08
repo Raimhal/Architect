@@ -11,6 +11,7 @@ import * as fromAdministration from '../modules/administration/state/administrat
 import * as fromCompany from '../modules/company/state/company.reducer'
 import * as fromProject from '../modules/project/state/project.reducer';
 import * as fromMenu from './reducers/menu.reducer';
+import * as fromManageResources from '../modules/manage-resources/state/manage-resources.reducer'
 import * as fromNotifi from './reducers/notifi.reducer'
 
   export interface AppState {
@@ -21,6 +22,7 @@ import * as fromNotifi from './reducers/notifi.reducer'
     [fromProject.projectFeatureKey]: fromProject.State;
     [fromCompany.companyFeatureKey]: fromCompany.State;
     [fromMenu.menuFeatureKey]: fromMenu.State;
+    [fromManageResources.manageResourcesFeatureKey]: fromManageResources.State;
     [fromNotifi.notifiFeatureKey]: fromNotifi.State;
   }
 
@@ -32,6 +34,7 @@ import * as fromNotifi from './reducers/notifi.reducer'
     [fromProject.projectFeatureKey]: fromProject.reducer,
     [fromCompany.companyFeatureKey]: fromCompany.reducer,
     [fromMenu.menuFeatureKey]: fromMenu.reducer,
+    [fromManageResources.manageResourcesFeatureKey]: fromManageResources.reducer,
     [fromNotifi.notifiFeatureKey]: fromNotifi.reducer
   };
 

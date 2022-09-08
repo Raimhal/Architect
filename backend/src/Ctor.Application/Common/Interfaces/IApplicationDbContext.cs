@@ -21,6 +21,9 @@ public interface IApplicationDbContext
     IMaterialTypeRepository MaterialType { get; }
     IMeasurementRepository Measurements { get; }
     IRequiredMaterialRepository RequiredMaterials { get; }
+    IVendorRepository Vendors { get; }
+    IVendorTypeRepository VendorTypes { get; }
+
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }
