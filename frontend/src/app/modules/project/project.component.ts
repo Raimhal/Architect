@@ -101,11 +101,11 @@ export class ProjectComponent implements OnInit {
     return {
       id: project.id,
       title: project.projectName,
-      image: `${environment.filesBaseUrl}/${project.imageUrl}`,
+      image: !project.imageUrl ? `/assets/images/placeholder.jpg` : `${environment.filesBaseUrl}/${project.imageUrl}`,
       date: `${project.startTime}-${project.endTime}`,
       subtitle: `${project.country}, ${project.city}, ${project.address}`,
       status: project.status,
-      statusBarLabel: project.phases[completedPhases.length - 1]?.phaseName,
+      statusBarLabel: project.phases[completedPhases.length - 1]?.phaseName ?? ' ',
       statusBarProgress: completedPhases?.length,
       statusBarFull: project.phases.length
     }

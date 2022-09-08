@@ -18,12 +18,12 @@ public class ProjectOverviewDto : IMapFrom<Domain.Entities.Project>
     public string EndTime { get; set; }
     public string Status { get; set; }
     public List<PhaseOverviewDto> Phases { get; set; }
-    public string ImageUrl { get; set; }
+    public string? ImageUrl { get; set; }
 
     public virtual void Mapping(Profile profile)
     {
         profile.CreateMap<Project, ProjectOverviewDto>()
-            .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => src.ProjectPhotos.First().Link))
+            .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => src.ProjectPhotos.FirstOrDefault()!.Link))
             .ForMember(dest => dest.StartTime, opt => opt.MapFrom(src => src.StartTime.ToString("dd.MM.yyyy")))
             .ForMember(dest => dest.EndTime, opt => opt.MapFrom(src => src.EndTime.ToString("dd.MM.yyyy")))
             .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()))

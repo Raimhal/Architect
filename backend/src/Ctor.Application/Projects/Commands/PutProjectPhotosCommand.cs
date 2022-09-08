@@ -25,7 +25,7 @@ public class PutProjectPhotoCommandHandler : IRequestHandler<PutProjectPhotosCom
         List<ProjectPhoto> projectPhotos = new List<ProjectPhoto>();
         foreach (var file in request.Data)
         {
-            var path = $"projectPhotos\\{Guid.NewGuid()}.png";
+            var path = Path.Combine("projectPhotos", $"{Guid.NewGuid()}.png");
             var link = path.Replace("\\", "/");
 
             var fileInfo = await _fileManipulatorService.Save(file, path);
