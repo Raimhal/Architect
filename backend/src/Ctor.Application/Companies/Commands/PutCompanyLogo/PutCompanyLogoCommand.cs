@@ -42,6 +42,8 @@ public class PutCompanyLogoCommandHandler : IRequestHandler<PutCompanyLogoComman
 
         await _context.CompanyLogos.AddRangeAsync(companyLogo);
         await _context.SaveChangesAsync(cancellationToken);
+        company.CompanyLogoId = companyLogo.Id;
+        await _context.SaveChangesAsync(cancellationToken);
 
         var response = _mapper.Map<CompanyLogo, PutCompanyLogoResponseDto>(companyLogo);
         return response;

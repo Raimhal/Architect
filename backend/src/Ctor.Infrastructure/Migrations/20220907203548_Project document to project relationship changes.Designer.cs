@@ -3,6 +3,7 @@ using System;
 using Ctor.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Ctor.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220907203548_Project document to project relationship changes")]
+    partial class Projectdocumenttoprojectrelationshipchanges
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -674,10 +676,15 @@ namespace Ctor.Infrastructure.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
                     NpgsqlPropertyBuilderExtensions.HasIdentityOptions(b.Property<long>("Id"), 100L, null, null, null, null, null);
 
-                    b.Property<long>("CompanyId")
+                    b.Property<long?>("CompanyId")
+                        .IsRequired()
                         .HasColumnType("bigint");
 
                     b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("EntityName")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -685,9 +692,11 @@ namespace Ctor.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("VendorName")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<decimal>("Price")
+                        .HasColumnType("numeric");
+
+                    b.Property<int>("VendorType")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Website")
                         .IsRequired()
@@ -701,42 +710,6 @@ namespace Ctor.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Vendor", (string)null);
-                });
-
-            modelBuilder.Entity("Ctor.Domain.Entities.VendorType", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-                    NpgsqlPropertyBuilderExtensions.HasIdentityOptions(b.Property<long>("Id"), 100L, null, null, null, null, null);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Id")
-                        .IsUnique();
-
-                    b.ToTable("VendorType", (string)null);
-                });
-
-            modelBuilder.Entity("VendorVendorType", b =>
-                {
-                    b.Property<long>("VendorTypesId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("VendorsId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("VendorTypesId", "VendorsId");
-
-                    b.HasIndex("VendorsId");
-
-                    b.ToTable("VendorVendorType");
                 });
 
             modelBuilder.Entity("Ctor.Domain.Entities.Assignee", b =>
@@ -941,21 +914,6 @@ namespace Ctor.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Company");
-                });
-
-            modelBuilder.Entity("VendorVendorType", b =>
-                {
-                    b.HasOne("Ctor.Domain.Entities.VendorType", null)
-                        .WithMany()
-                        .HasForeignKey("VendorTypesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Ctor.Domain.Entities.Vendor", null)
-                        .WithMany()
-                        .HasForeignKey("VendorsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Ctor.Domain.Entities.Building", b =>

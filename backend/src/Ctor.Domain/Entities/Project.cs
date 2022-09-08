@@ -19,7 +19,7 @@ public class Project : BaseEntity
 
     public virtual ICollection<Building> Building { get; set; }
     public virtual ICollection<Phase> Phases { get; set; }
-    public virtual ICollection<ProjectDocument> ProjectDocument { get; set; }
+    public virtual ICollection<ProjectDocument> ProjectDocuments { get; set; }
     public virtual ICollection<ProjectNote> ProjectNote { get; set; }
     public virtual ICollection<ProjectPhoto> ProjectPhotos { get; set; }
     public ICollection<Assignee> Assignees { get; set; }

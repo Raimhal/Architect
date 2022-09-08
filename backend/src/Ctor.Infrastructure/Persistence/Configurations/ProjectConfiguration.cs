@@ -32,5 +32,8 @@ public class ProjectConfiguration : IEntityTypeConfiguration<Project>
         builder.HasMany(x => x.ProjectPhotos)
             .WithOne(x => x.Project)
             .OnDelete(DeleteBehavior.Cascade);
+        builder.HasMany(x => x.ProjectDocuments)
+            .WithOne(x => x.Project)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }
