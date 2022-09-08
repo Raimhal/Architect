@@ -27,10 +27,9 @@ export class CompanyListComponent implements OnInit {
   companies$? : Observable<ICompanyOverview[] | null>
 
   sort : string = "companyName";
+  filter: string = "";
 
   filterInput = new FormControl("");
-
-  filter$? : Observable<string>;
 
   constructor(private matIconRegistry: MatIconRegistry,
               private domSanitizer: DomSanitizer,
@@ -62,7 +61,7 @@ export class CompanyListComponent implements OnInit {
   }
 
   updateList(){
-    this.store.dispatch(fromAdministraionActions.getAllCompaniesWithParams({filter: this.filterInput.value!, sort: this.sort}));
+    this.store.dispatch(fromAdministraionActions.getAllCompaniesWithParams({filter: this.filter, sort: this.sort}));
   }
 
   openModal() {
@@ -86,6 +85,7 @@ export class CompanyListComponent implements OnInit {
   }
 
   onSearchQuery($event: string) {
-    this.store.dispatch(fromAdministraionActions.getAllCompaniesWithParams({filter: $event, sort: this.sort}))
+    this.filter = $event;
+    this.store.dispatch(fromAdministraionActions.getAllCompaniesWithParams({filter: this.filter, sort: this.sort}))
   }
 }
