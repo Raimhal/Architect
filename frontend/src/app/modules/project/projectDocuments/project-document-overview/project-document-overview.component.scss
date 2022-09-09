@@ -9,8 +9,15 @@
   height: 96px;
   gap: 12px;
   width: 26vw;
-  img {
-    height: inherit;
+  .img {
+    background-color: white;
+    width: 87px;
+    height: 108px;
+
+    img {
+      width: inherit;
+      height: inherit;
+    }
   }
   .information {
     height: inherit;

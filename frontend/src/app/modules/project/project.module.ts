@@ -57,6 +57,7 @@ import {
 } from "./building-management-dialog/add-building-service/add-building-service.component";
 import { AddBuildingMaterialOverlay } from "./building-management-dialog/add-building-material-overlay/add-building-material-overlay.component"
 import { ProjectMaterialsComponent } from './project-materials/project-materials.component';
+import { ProjectDocumentViewComponent } from "./projectDocuments/project-document-view/project-document-view.component";
 
 @NgModule({
   imports: [
@@ -110,6 +111,7 @@ import { ProjectMaterialsComponent } from './project-materials/project-materials
     AddBuildingServiceComponent,
     AddPhaseDialogComponent,
     ProjectMaterialsComponent,
+    ProjectDocumentViewComponent,
   ],
   providers: [
     ResizeService,

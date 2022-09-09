@@ -8,6 +8,7 @@ import { IProjectDocumentUpdate } from '../../resources/models/project-documents
 import { IProjectDocument } from '../../resources/models/project-documents/project-document.model';
 import * as fromProjectActions from '../../state/project.actions'
 import { ProjectDocumentRenameComponent } from '../project-document-rename/project-document-rename.component';
+import { ProjectDocumentViewComponent } from "../project-document-view/project-document-view.component";
 @Component({
   selector: 'app-project-document-overview',
   templateUrl: './project-document-overview.component.html',
@@ -29,6 +30,12 @@ export class ProjectDocumentOverviewComponent implements OnInit {
   }
   onDelete(id: number){
     this.store.dispatch(fromProjectActions.deleteProjectDocument({projectDocumentId: id}))
+  }
+  onView(){
+    this.store.dispatch(openModalDialog({component: ProjectDocumentViewComponent, config: {
+        data: this.projectDocument,
+        panelClass: 'viewport-100'
+      }}));
   }
   onRename(fileName: string, id: number){
     this.store.dispatch(openModalDialog({component: ProjectDocumentRenameComponent, config:{
