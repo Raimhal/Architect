@@ -69,6 +69,11 @@ export const selectCurrentProjectTeam = createSelector(
 export const selectProjectDocuments = createSelector(
   selectProjectState,
   (state)=>state.currentlyOpenProjectDocuments
+);
+
+export const selectProjectPhases = createSelector(
+  selectProjectState,
+  (state) => state.phases
 )
 
 export const selectBuildingMaterials = createSelector(

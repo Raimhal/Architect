@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
-import { select, Store } from '@ngrx/store';
-import { AppState } from './store';
+import {Component} from '@angular/core';
+import {select, Store} from '@ngrx/store';
+import {AppState} from './store';
 import {selectIsLoggedIn, selectUserIsAdmin} from "./store/selectors/auth.selectors";
 import {TokenService} from "./modules/auth/resources/services/token.service";
 import {Observable} from "rxjs";

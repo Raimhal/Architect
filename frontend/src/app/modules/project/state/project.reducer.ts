@@ -11,6 +11,8 @@ import { IProjectDetailed } from '../resources/models/project-details';
 import {IBuilding} from "../resources/models/building.model";
 import { IProjectDocument } from '../resources/models/project-documents/project-document.model';
 import { state } from '@angular/animations';
+import {IPhase} from "../resources/models/phase.model";
+import {act} from "@ngrx/effects";
 import { Params } from '../resources/models/params';
 
 export const projectFeatureKey = 'project';
@@ -37,6 +39,7 @@ export interface State {
   currentlyOpenProjectDocuments: IProjectDocument[]
   currentlyOpenBuildingMaterials: { id: number, name: string, amount: string, address: string, type: string, }[],
   currentlyOpenBuildingServices: { id: 0, name: string, email: string, phoneNumber: string, website: string, type: string, }[],
+  phases: IPhase[]
 }
 
 export const initialState: State = {
@@ -60,6 +63,7 @@ export const initialState: State = {
     team: [],
   },
   currentlyOpenProjectDocuments: [],
+  phases: [],
   currentlyOpenBuildingMaterials: [
     // todo: retrieve this from backend
     {
@@ -288,6 +292,18 @@ export const reducer = createReducer(
   }),
   on(ProjectActions.updateProjectDocumentsFailure, (state, action)=>{
     return{
+      ...state,
+      error: action.error
+    }
+  }),
+  on(ProjectActions.loadPhasesForProjectSuccess, (state, action) => {
+    return {
+      ...state,
+      phases: action.phases
+    }
+  }),
+  on(ProjectActions.loadPhasesForProjectFailure, (state, action) => {
+    return {
       ...state,
       error: action.error
     }

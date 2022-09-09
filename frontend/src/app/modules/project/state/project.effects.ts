@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, concatMap, withLatestFrom, mergeMap, switchMap } from 'rxjs/operators';
-import { Observable, EMPTY, of, combineLatest } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {act, Actions, createEffect, ofType} from '@ngrx/effects';
+import {catchError, map, concatMap, withLatestFrom, mergeMap, switchMap} from 'rxjs/operators';
+import {Observable, EMPTY, of, combineLatest} from 'rxjs';
 import * as ProjectActions from './project.actions';
 import { selectCurrentProjectId, selectParams, selectProjectInformation } from './project.selectors';
 import { serializeError } from 'serialize-error';
@@ -17,6 +17,7 @@ import { IBuilding } from "../resources/models/building.model";
 import { ProjectFileService } from "../resources/services/project-file.services";
 import * as fromProjectActions from "./project.actions";
 import { ResourceApiService } from '../resources/services/resource-api.service';
+import {PhaseApiService} from "../resources/services/phase-api.service";
 
 
 @Injectable()
@@ -108,7 +109,7 @@ export class ProjectEffects {
             endTime: project.endTime
           } as IProjectUpdate)
           .pipe(
-            map((data) => ProjectActions.getDetailedProject({ id: data.id })),
+            map((data) => ProjectActions.getDetailedProject({id: data.id})),
             catchError((error) =>
               of(
                 ProjectActions.submitProjectInformationFormFailure({
@@ -305,7 +306,7 @@ export class ProjectEffects {
         this.projectService.getProjectTeam(action.projectId).pipe(
           map(response => ProjectActions.getProjectTeamSuccess({ response })),
           catchError((error: any) =>
-            of(ProjectActions.getProjectTeamFailure({ error }))
+            of(ProjectActions.getProjectTeamFailure({error}))
           )
         )
       )
@@ -318,11 +319,11 @@ export class ProjectEffects {
       concatMap((action) =>
         this.projectService.setProjectTeam(action.projectId, action.userIds).pipe(
           map(response => {
-            this.store.dispatch(ProjectActions.getProjectTeam({ projectId: action.projectId }));
+            this.store.dispatch(ProjectActions.getProjectTeam({projectId: action.projectId}));
             return ProjectActions.setProjectTeamSuccess();
           }),
           catchError((error: any) =>
-            of(ProjectActions.setProjectTeamFailure({ error }))
+            of(ProjectActions.setProjectTeamFailure({error}))
           )
         )
       )
@@ -399,7 +400,7 @@ export class ProjectEffects {
         )
       )
     );
-  })
+  });
 
   saveRequiredMaterial$ = createEffect(() => {
     return this.actions$.pipe(
@@ -413,7 +414,80 @@ export class ProjectEffects {
         )
       )
     )
-  })
+  });
+
+  loadPhasesForProjectOnInit$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ProjectActions.getDetailedProjectSuccess),
+      concatMap((action) =>
+        this.phaseService.getPhasesByProjectId(action.data.id).pipe(
+          map((result) => ProjectActions.loadPhasesForProjectSuccess({phases: result})),
+          catchError((error) => of(ProjectActions.loadPhasesForProjectFailure({error: serializeError(error)})))
+        ))
+    ));
+
+  loadPhasesForProjectUpdate$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ProjectActions.loadPhasesForProject),
+      withLatestFrom(this.store.pipe(select(selectCurrentProjectId))),
+      concatMap(([_, projectId]) =>
+        this.phaseService.getPhasesByProjectId(projectId!).pipe(
+          map((result) => ProjectActions.loadPhasesForProjectSuccess({phases: result})),
+          catchError(error => of(ProjectActions.loadPhasesForProjectFailure({error: serializeError(error)})))
+        ))
+    ))
+
+  addPhase$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ProjectActions.addPhaseToProject),
+      withLatestFrom(this.store.pipe(select(selectCurrentProjectId))),
+      concatMap(([action, projectId]) =>
+        this.phaseService.addPhaseToProject(action.phase, projectId!).pipe(
+          map(() => ProjectActions.loadPhasesForProject()),
+          catchError(error => of(ProjectActions.addPhaseToProjectFailure({error: serializeError(error)})))
+        ))
+    ));
+
+  editPhase$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ProjectActions.editPhase),
+      concatMap((action) =>
+        this.phaseService.editPhase(action.phase).pipe(
+          map(() => ProjectActions.loadPhasesForProject()),
+          catchError(error => of(ProjectActions.editPhaseFailure({error: serializeError(error)})))
+        ))
+    ));
+
+  editPhaseSteps$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ProjectActions.editPhase),
+      concatMap((action) =>
+        this.phaseService.editPhaseSteps(action.phase.id, action.phase.phaseSteps).pipe(
+          map(() => ProjectActions.loadPhasesForProject()),
+          catchError(error => of(ProjectActions.editPhaseFailure({error: serializeError(error)})))
+        ))
+    ))
+
+  deletePhase = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ProjectActions.deletePhase),
+      concatMap((action) =>
+        this.phaseService.deletePhase(action.id).pipe(
+          map(() => ProjectActions.loadPhasesForProject()),
+          catchError(error => of(ProjectActions.deletePhaseFailure({error: serializeError(error)})))
+        ))
+    ));
+
+  editPhaseStep$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ProjectActions.updatePhaseStep),
+      concatMap((action) =>
+        this.phaseService.editPhaseStep(action.phaseStep).pipe(
+          map(() => ProjectActions.loadPhasesForProject()),
+          catchError(error => of(ProjectActions.updatePhaseStepFailure({error: serializeError(error)})))
+        ))
+    ));
+
 
   createReport$ = createEffect(() => {
     return this.actions$.pipe(
@@ -436,7 +510,8 @@ export class ProjectEffects {
     private errorService: ErrorService,
     private store: Store<AppState>,
     private buildingService: BuildingApiService,
-    private resourcesService: ResourceApiService
+    private resourcesService: ResourceApiService,
+    private phaseService: PhaseApiService
   ) {
   }
 }

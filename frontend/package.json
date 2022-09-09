@@ -27,6 +27,7 @@
     "@ngrx/router-store": "^14.1.0",
     "@ngrx/store": "^14.1.0",
     "@ngrx/store-devtools": "^14.1.0",
+    "@syncfusion/ej2-angular-gantt": "^20.2.46",
     "angular-responsive-carousel2": "^0.0.6",
     "ngrx-forms": "^7.0.0",
     "ngx-dropzone": "^3.1.0",

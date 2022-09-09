@@ -14,6 +14,8 @@ import { GetProjectTeamDto } from "../resources/models/get-project-team-dto.mode
 import { IProjectDocument } from '../resources/models/project-documents/project-document.model';
 import { IProjectDocumentId } from '../resources/models/project-documents/project-document-id.model';
 import { IProjectDocumentUpdate } from '../resources/models/project-documents/project-document-update.model';
+import {IPhase} from "../resources/models/phase.model";
+import {IPhaseStep} from "../resources/models/phase-step.model";
 import { RequiredMaterial } from "../resources/models/project-material/required-material.model";
 
 
@@ -356,6 +358,60 @@ export const saveRequiredMaterialsFailure = createAction(
   '[Add Building Material] Save Required Materials Failure',
   props<{ error: any }>()
 )
+
+export const loadPhasesForProject = createAction(
+  '[Gantt Chart Component] Load Phases For Project'
+);
+
+export const loadPhasesForProjectSuccess = createAction(
+  '[Project Effect] Load Phases For Project Success',
+  props<{phases: IPhase[]}>()
+);
+
+export const loadPhasesForProjectFailure = createAction(
+  '[Project Effect] Load Phases For Project Failure',
+  props<{error: any}>()
+);
+
+export const addPhaseToProject = createAction(
+  '[Add Phase Dialog] Add Phase To Project',
+  props<{phase: IPhase}>()
+);
+
+export const addPhaseToProjectFailure = createAction(
+  '[Project Effect] Add Phase To Project Failure',
+  props<{error : any}>()
+);
+
+export const editPhase = createAction(
+  '[Add Phase Dialog] Edit Phase',
+  props<{phase:IPhase}>()
+);
+
+export const editPhaseFailure = createAction(
+  '[Project Effect] Edit Phase Failure',
+  props<{error: any}>()
+);
+
+export const deletePhase = createAction(
+  '[Add Phase Dialog] Delete Phase',
+  props<{id: number}>()
+);
+
+export const deletePhaseFailure = createAction(
+  '[Project Effect] Delete Phase Failure',
+  props<{error: any}>()
+);
+
+export const updatePhaseStep = createAction(
+  '[Gantt Chart] Update Phase Step',
+  props<{phaseStep: IPhaseStep}>()
+);
+
+export const updatePhaseStepFailure = createAction(
+  '[Project Effect] Update Phase Step Failure',
+  props<{error : any}>()
+);
 
 export const createReport = createAction(
   '[Project Dashboard] Create Project Report',

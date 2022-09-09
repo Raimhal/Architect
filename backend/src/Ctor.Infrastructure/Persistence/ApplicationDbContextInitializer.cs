@@ -369,14 +369,48 @@ public class ApplicationDbContextInitializer
             ? _faker.Date.Future(yearsToGoForward: 5)
             : _faker.Date.Past(yearsToGoBack: 5);
 
+        
+
         return Enumerable.Range(0, _phaseNames.Length)
-            .Select(phaseStep => new Phase
+            .Select(phaseStep =>
             {
-                PhaseName = _phaseNames[phaseStep],
-                StartTime = GenerateTime(phaseStep).ToUniversalTime(),
-                EndTime = GenerateTime(phaseStep).ToUniversalTime(),
-                PhaseStep = phaseStep,
+                var start = GenerateTime(phaseStep).ToUniversalTime();
+                var end = GenerateTime(phaseStep).ToUniversalTime();
+                var steps = GeneratePhaseSteps(start, end);
+                return new Phase
+                {
+                    PhaseName = _phaseNames[phaseStep],
+                    StartTime = start,
+                    EndTime = end,
+                    PhaseStep = phaseStep,
+                    PhaseSteps = steps
+                };
             })
             .ToArray();
+    }
+
+    private readonly string[] _phaseStepNames = new[]
+    {
+        "Build first floor",
+        "Bring Cement",
+        "Place a playground"
+    };
+
+    private ICollection<PhaseStep> GeneratePhaseSteps(DateTime start, DateTime end)
+    {
+        return Enumerable.Range(0, _phaseStepNames.Length)
+            .Select(i =>
+            {
+                var startDate = _faker.Date.Between(start, end);
+                var endDate = _faker.Date.Between(startDate, end);
+                return new PhaseStep
+                {
+                    PhaseStepName = _phaseStepNames[i],
+                    StartDate = startDate.ToUniversalTime(),
+                    EndDate = endDate.ToUniversalTime(),
+                    IsDone = false
+                };
+            }).ToArray();
+
     }
 }
