@@ -127,7 +127,6 @@ public class AzureServiceBus : IEventBus
     {
         var messageBody = Encoding.UTF8.GetString(args.Message.Body);
         await ProcessEvent(messageBody).ConfigureAwait(false);
-        await args.CompleteMessageAsync(args.Message).ConfigureAwait(false);
     }
 
     private Task ProcessErrorAsync(ProcessErrorEventArgs arg)

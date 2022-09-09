@@ -22,18 +22,20 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-
-    // Initialise and seed database
-    using (var scope = app.Services.CreateScope())
-    {
-        var initialiser = scope.ServiceProvider.GetRequiredService<ApplicationDbContextInitializer>();
-        await initialiser.InitialiseAsync();
-        await initialiser.SeedAsync();
-    }
 }
 else
 {
     app.UseHsts();
+}
+
+// Initialise and seed database
+using (var scope = app.Services.CreateScope())
+{
+    var initialiser = scope.ServiceProvider.GetRequiredService<ApplicationDbContextInitializer>();
+    await initialiser.InitialiseAsync();
+
+    if(app.Environment.IsDevelopment())
+        await initialiser.SeedAsync();
 }
 
 app.UseHealthChecks("/health");
