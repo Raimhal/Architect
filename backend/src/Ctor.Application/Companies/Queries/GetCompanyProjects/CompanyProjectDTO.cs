@@ -22,7 +22,7 @@ public class CompanyProjectDTO : IMapFrom<Project>
     public void Mapping(Profile profile)
     {
         profile.CreateMap<Project, CompanyProjectDTO>()
-            .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => src.ProjectPhotos.First().Link))
+            .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => src.ProjectPhotos.Count() > 0 ? src.ProjectPhotos.First().Link : null))
             .ForMember(dest => dest.ImageAmount, opt => opt.MapFrom(src => src.ProjectPhotos.Count()))
             .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()))
             .ForMember(dest => dest.Address, opt => opt.MapFrom(src => $"{src.Country}, {src.City}, {src.Address}"));

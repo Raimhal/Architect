@@ -79,7 +79,8 @@ export class CompanyInformationComponent implements OnInit {
   }
 
   getFullImageUrl(imageUrl: string) {
-    return environment.production ? imageUrl : `${environment.filesBaseUrl}/${imageUrl}`
+    return !imageUrl ?  `assets/images/placeholder.jpg` : imageUrl.includes("http") ? imageUrl : `${environment.filesBaseUrl}/${imageUrl}`
+
   }
 
   onFormEdit() {

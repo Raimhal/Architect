@@ -19,7 +19,7 @@ export class IsInRoleGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     return this.store.pipe(
       select(selectUserRole),
-      map(role => route.data['roles'].includes(role))
+      map(role => route.data['roles']?.includes(role))
     );
   }
 

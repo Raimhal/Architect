@@ -101,7 +101,6 @@ export class ProjectComponent implements OnInit {
     return {
       id: project.id,
       title: project.projectName,
-
       image: !project.imageUrl ? `/assets/images/placeholder.jpg` : (project.imageUrl.includes("http") ? project.imageUrl : `${environment.filesBaseUrl}/${project.imageUrl}`),
       date: `${project.startTime}-${project.endTime}`,
       subtitle: `${project.country}, ${project.city}, ${project.address}`,

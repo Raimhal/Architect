@@ -11,7 +11,7 @@ public class CompanyDetailedResponseDto : IMapFrom<Company>
     public string Country { get; set; } = string.Empty;
     public string City { get; set; } = string.Empty;
     public string Address { get; set; } = string.Empty;
-    public string Image { get; set; } = string.Empty;
+    public string? Image { get; set; } = string.Empty;
     public string JoinDate { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
 
@@ -19,7 +19,7 @@ public class CompanyDetailedResponseDto : IMapFrom<Company>
     {
         profile.CreateMap<Company, CompanyDetailedResponseDto>()
             .ForMember(dest => dest.JoinDate, opt => opt.MapFrom(src => src.JoinDate.ToString("dd.MM.yyyy")))
-            .ForMember(dest=>dest.Image, opt => opt.MapFrom(src => src.CompanyLogo == null ? "" : src.CompanyLogo.Link));
+            .ForMember(dest=>dest.Image, opt => opt.MapFrom(src => src.CompanyLogo.Link));
 
     }
 }
