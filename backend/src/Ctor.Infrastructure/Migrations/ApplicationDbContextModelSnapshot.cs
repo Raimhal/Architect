@@ -1041,6 +1041,16 @@ namespace Ctor.Infrastructure.Migrations
                 {
                     b.Navigation("RequiredMaterials");
                 });
+                
+            modelBuilder.Entity("Ctor.Domain.Entities.MaterialType", b =>
+                {
+                    b.Navigation("Materials");
+                });
+
+            modelBuilder.Entity("Ctor.Domain.Entities.Measurement", b =>
+                {
+                    b.Navigation("Materials");
+                });
 
             modelBuilder.Entity("Ctor.Domain.Entities.MaterialType", b =>
                 {

@@ -1,4 +1,4 @@
-export interface IMaterial{
+export interface IMaterial {
   id: number,
   materialType: string,
   companyName: string,
@@ -8,4 +8,5 @@ export interface IMaterial{
   measurement: string,
   date: string,
   totalAmount: number,
+  companyId: number
 }

@@ -1,38 +1,127 @@
-import {Injectable} from '@angular/core';
-import {Actions, createEffect, ofType} from '@ngrx/effects';
-
-import {catchError, concatMap, map, mergeMap, switchMap, withLatestFrom} from 'rxjs/operators';
-import {Observable, EMPTY, of} from 'rxjs';
-import {select, Store} from "@ngrx/store";
-import {AppState} from "../../../store";
+import {Injectable} from "@angular/core";
+import {Actions, createEffect, ofType} from "@ngrx/effects";
+import * as ResourceAction from "./manage-resources.actions"
+import {catchError, concatMap, map, switchMap, withLatestFrom} from "rxjs/operators";
+import {mergeMap, of} from "rxjs";
 import {ManageResourcesApiService} from "../resources/services/manage-resources-api.service";
+import {AppState} from "../../../store";
+import {select, Store} from "@ngrx/store";
+import * as MaterialSelector from "./manage-resources.selectors"
 import {serializeError} from "serialize-error";
 import {selectUserId} from "../../../store/selectors/auth.selectors";
-import * as AdministrationActions from "../../administration/state/administration.actions";
-import * as AdministrationSelectors from "../../administration/state/administration.selectors";
 import {selectServicesParams} from "./manage-resources.selectors";
-import * as ManageResourceActions from "./manage-resources.actions";
 
 @Injectable()
 export class ManageResourcesEffects {
+  getMaterials$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(ResourceAction.getMaterials),
+      withLatestFrom(this.store.pipe(select(MaterialSelector.selectMaterialsByParams))),
+      mergeMap(([props, params]) =>
+        this.services.getMaterial(params).pipe(
+          map((data) =>
+              ResourceAction.getMaterialsWithSuccess({
+              materials: data.list,
+              total: data.total
+              })
+            ),
+            catchError((error) =>
+              of(
+                ResourceAction.getMaterialFailure({
+                  error: serializeError(error),
+                })
+              )
+            )
+          )
+      )
+    );
+  });
+  loadMaterialTypes$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(ResourceAction.loadMaterialTypes),
+      mergeMap(() =>
+        this.services.getMaterialType().pipe(
+          map((types) =>
+            ResourceAction.loadMaterialTypesSuccessfully({materialTypes: types})
+          ),
+          catchError((error) =>
+            of(ResourceAction.loadMaterialTypesFailure(error)))
+          )
+        )
+      )
+  });
 
+  loadMeasurement$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(ResourceAction.loadMeasurement),
+      mergeMap((action) =>
+        this.services.getMeasurement().pipe(
+          map((data) =>
+            ResourceAction.loadMeasurementSuccessfully({measurement: data})
+          ),
+          catchError((error) =>
+            of(ResourceAction.loadMeasurementFailure({error: serializeError(error)})))
+        ))
+    )
+  });
 
+  deleteMaterial$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(ResourceAction.deleteMaterialSubmitted),
+      mergeMap((action) =>
+        this.services.deleteMaterial(action.id).pipe(
+          map(() => ResourceAction.getMaterials()),
+          catchError((error) => of(ResourceAction.deleteMaterialSubmittedFailure({error: serializeError(error)})
+          ))
+        ))
+    )
+  });
+  createMaterial$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(ResourceAction.addMaterialSubmitted),
+      mergeMap((action) =>
+        this.services.createMaterial(action.material).pipe(
+          map(() =>
+              ResourceAction.getMaterials(),
+            catchError((error) => of(ResourceAction.addSubmittedFailure({error: serializeError(error)})
+          ),
+            )
+          )
+        )
+      )
+    )
+  });
+  editMaterial$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(ResourceAction.editMaterialSubmitted),
+      mergeMap((action) =>
+        this.services.editMaterial(action.material).pipe(
+          map(() =>
+              ResourceAction.getMaterials(),
+            catchError((error) => of(ResourceAction.editSubmittedFailure({error: serializeError(error)})
+          ),
+            )
+          )
+        )
+      )
+    )
+  });
   getAllServicesWithParams$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(ManageResourceActions.getAllServicesWithParams),
+      ofType(ResourceAction.getAllServicesWithParams),
       withLatestFrom(this.store.pipe(select(selectServicesParams))),
       switchMap(([_, params]) =>
-        this.service
+        this.services
           .getAllServicesWithParameters(params.filter, params.sort)
           .pipe(
             map((services) =>
-              ManageResourceActions.getAllServicesWithParamsSuccess({
+              ResourceAction.getAllServicesWithParamsSuccess({
                 services: services,
               })
             ),
             catchError((error) =>
               of(
-                ManageResourceActions.getAllServicesWithParamsFailure({
+                ResourceAction.getAllServicesWithParamsFailure({
                   error: serializeError(error),
                 })
               )
@@ -43,16 +132,16 @@ export class ManageResourcesEffects {
   });
   loadServices$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(ManageResourceActions.loadServices),
+      ofType(ResourceAction.loadServices),
       withLatestFrom(this.store.pipe(select(selectUserId))),
       mergeMap(([_,userId]) =>
-        this.service.loadServices(userId!).pipe(
+        this.services.loadServices(userId!).pipe(
           map((data) => {
-              return ManageResourceActions.loadServicesSuccess({services: data});
+              return ResourceAction.loadServicesSuccess({services: data});
             }
           ),
           catchError((error) =>
-            of(ManageResourceActions.loadServicesFailure({error: serializeError(error)}))
+            of(ResourceAction.loadServicesFailure({error: serializeError(error)}))
           )
         )
       )
@@ -61,16 +150,16 @@ export class ManageResourcesEffects {
 
   addService$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(ManageResourceActions.addSubmitted),
+      ofType(ResourceAction.addSubmitted),
       mergeMap((action) =>
-        this.service.addService(action.service).pipe(
+        this.services.addService(action.service).pipe(
           map((service) =>
-            ManageResourceActions.addSubmittedSuccessfully({service: service})
+            ResourceAction.addSubmittedSuccessfully({service: service})
           ),
           catchError(
             (error) =>
               of(
-                ManageResourceActions.addSubmittedFailure({
+                ResourceAction.addSubmittedFailure({
                   error: serializeError(error),
                 })
               )
@@ -82,16 +171,16 @@ export class ManageResourcesEffects {
 
   editService$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(ManageResourceActions.editSubmitted),
+      ofType(ResourceAction.editSubmitted),
       mergeMap((action) =>
-        this.service.editService(action.service).pipe(
+        this.services.editService(action.service).pipe(
           map((service) =>
-            ManageResourceActions.editSubmittedSuccessfully({service: service})
+            ResourceAction.editSubmittedSuccessfully({service: service})
           ),
           catchError(
             (error) =>
               of(
-                ManageResourceActions.editSubmittedFailure({
+                ResourceAction.editSubmittedFailure({
                   error: serializeError(error),
                 })
               )
@@ -103,15 +192,15 @@ export class ManageResourcesEffects {
 
   deleteService$ = createEffect(()=>{
     return this.actions$.pipe(
-      ofType(ManageResourceActions.deleteServiceSubmitted),
+      ofType(ResourceAction.deleteServiceSubmitted),
       mergeMap((action)=>
-        this.service.deleteService(action.id).pipe(
+        this.services.deleteService(action.id).pipe(
           map((id)=>
-            ManageResourceActions.deleteServiceSubmittedSuccess({service:id})
+            ResourceAction.deleteServiceSubmittedSuccess({service:id})
           ),
           catchError((error) =>
             of(
-              ManageResourceActions.editSubmittedFailure({
+              ResourceAction.editSubmittedFailure({
                 error: serializeError(error),
               })
             )
@@ -123,15 +212,15 @@ export class ManageResourcesEffects {
 
   loadTypes$ = createEffect(()=>{
     return this.actions$.pipe(
-      ofType(ManageResourceActions.loadTypes),
+      ofType(ResourceAction.loadTypes),
       mergeMap((action)=>
-        this.service.loadTypes().pipe(
+        this.services.loadTypes().pipe(
           map((types)=>
-            ManageResourceActions.loadTypesSuccessfully({types:types})
+            ResourceAction.loadTypesSuccessfully({types:types})
           ),
           catchError((error)=>
             of(
-              ManageResourceActions.editSubmittedFailure({
+              ResourceAction.editSubmittedFailure({
                 error: serializeError(error),
               })
             )
@@ -140,10 +229,9 @@ export class ManageResourcesEffects {
       )
     )
   });
-
-
   constructor(private actions$: Actions,
               private store: Store<AppState>,
-              private service: ManageResourcesApiService) {
+              private services: ManageResourcesApiService) {
   }
 }
+

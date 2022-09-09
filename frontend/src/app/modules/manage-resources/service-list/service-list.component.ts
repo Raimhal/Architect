@@ -1,16 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import {MatIconRegistry} from "@angular/material/icon";
 import {DomSanitizer} from "@angular/platform-browser";
-import {Observable, of} from "rxjs";
+import {Observable} from "rxjs";
 import {IService} from "../resources/models/service";
-import {FormGroupState} from "ngrx-forms";
 import {select, Store} from "@ngrx/store";
 import {AppState} from "../../../store";
 import * as ServiceActions from '../state/manage-resources.actions';
-import {selectService, selectServices, selectTypes} from "../state/manage-resources.selectors";
-import {tap} from "rxjs/operators";
+import { selectServices, selectTypes} from "../state/manage-resources.selectors";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {addClickFailure} from "../state/manage-resources.actions";
 
 
 @Component({
@@ -97,11 +94,6 @@ export class ServiceListComponent implements OnInit {
 
 
   ngOnInit(): void {
-
-  }
-
-
-  toEditChange() {
 
   }
 

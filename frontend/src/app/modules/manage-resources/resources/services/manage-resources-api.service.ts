@@ -3,7 +3,11 @@ import {ApiService} from "../../../../core/resources/services/api.service";
 import {HttpClient} from "@angular/common/http";
 import {IService} from "../models/service";
 import {Observable, of, tap} from "rxjs";
-import {ICompanyOverview} from "../../../administration/resources/models/company-overview.model";
+import {Params} from "@angular/router";
+import {PaginationModel} from "../../../../shared/models/pagination-model";
+import {IMaterial} from "../models/material-dto";
+import {IMaterialType} from "../models/material-type-dto";
+import {IMeasurement} from "../models/measurement-dto";
 
 @Injectable({
   providedIn: 'root'
@@ -42,6 +46,26 @@ export class ManageResourcesApiService extends ApiService {
       query += `&filter=${filter}`;
     }
     return this.get<IService[]>(query);
+  }
+  getMaterial(params: Params): Observable<PaginationModel<IMaterial>> {
+    return this.getWithOptions<PaginationModel<IMaterial>>(`${this.apiUrl}/materials`, {params: params});
+  }
+
+  getMaterialType(): Observable<IMaterialType[]> {
+    return this.get<IMaterialType[]>(`${this.apiUrl}/material/get-material-type`);
+  }
+
+  getMeasurement(): Observable<IMeasurement[]> {
+    return this.get<IMeasurement[]>(`${this.apiUrl}/material/get-measurement`);
+  }
+  deleteMaterial(id: number): Observable<number> {
+    return this.delete<number>(`${this.apiUrl}/material/${id}`)
+  }
+  createMaterial(material: IMaterial): Observable<IMaterial> {
+    return this.post<IMaterial>(`${this.apiUrl}/material/create`, material);
+  }
+  editMaterial(material: IMaterial): Observable<IMaterial> {
+    return this.put<IMaterial>(`${this.apiUrl}/material/edit`, material);
   }
 }
 

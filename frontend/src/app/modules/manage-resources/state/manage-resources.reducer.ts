@@ -1,36 +1,152 @@
-import { Action, createReducer, on } from '@ngrx/store';
-import * as ManageResourceActions from './manage-resources.actions';
+import {Params} from "../resources/models/params";
+import {IMaterial} from "../resources/models/material-dto";
+import {createReducer, on} from "@ngrx/store";
+import {onNgrxForms} from "ngrx-forms";
+import * as ManageResourceActions from "./manage-resources.actions"
+import {ICompanyDetailed} from "../../administration/resources/models/company-detailed.model";
+import {IMeasurement} from "../resources/models/measurement-dto";
+import {IMaterialType} from "../resources/models/material-type-dto";
 import {IService} from "../resources/models/service";
 
-
-export const manageResourcesFeatureKey = 'manageResource';
+export const manageResourceFeatureKey = "manageResource"
 
 export interface State {
+  resourceParams: {
+    filter: string,
+    sort: string,
+  }
+  materialParams: Partial<Params>,
+  materialsTypes: IMaterialType[],
+  measurement: IMeasurement[],
+  currentlyOpenCompany: ICompanyDetailed,
   services: IService[],
   types: string[],
   error:any,
   selectedService: IService,
-  serviceParams: {
-    filter: string,
-    sort: string,
-  },
-
 }
 
 export const initialState: State = {
+  resourceParams: {
+    filter: '',
+    sort: '',
+  },
+  materialParams: {
+    sort: "id",
+    order: 1
+  },
+  materialsTypes: [] as IMaterialType[],
+  measurement: [] as IMeasurement[],
+  currentlyOpenCompany: {
+    materials: [] as IMaterial[],
+    materialTotalCount: 0
+  } as ICompanyDetailed,
   services: [],
   types: [],
   error:null,
   selectedService: {} as IService,
-  serviceParams: {
-    filter: "",
-    sort: "",
-  },
-};
-
+}
 export const reducer = createReducer(
   initialState,
+  onNgrxForms(),
+
+  on(ManageResourceActions.getMaterialsWithSuccess, (state, action) => ({
+    ...state,
+    currentlyOpenCompany: {
+      ...state.currentlyOpenCompany,
+      materials: action.materials,
+      materialTotalCount: action.total
+    }
+  })),
+
+  on(ManageResourceActions.getMaterialFailure, (state, action) => ({
+    ...state,
+    error: action.error
+  })),
   on(
+    ManageResourceActions.loadMaterialTypesSuccessfully,
+    (state, action) => {
+      return {
+        ...state,
+        materialsTypes: action.materialTypes
+      }
+    }
+  ),
+  on(
+    ManageResourceActions.loadMeasurementSuccessfully,
+    (state, action) => {
+      return {
+        ...state,
+        measurement: action.measurement
+      }
+    }
+  ),
+  on(
+    ManageResourceActions.deleteMaterialSubmittedSuccess,
+    (state, action)=>{
+      let index = state.currentlyOpenCompany.materials.findIndex(s=>s.id==action.material);
+      let arr = [...state.currentlyOpenCompany.materials];
+      arr.splice(index,1);
+      return{
+        ...state,
+        materials:arr
+      }
+    }
+  ),
+  on(
+    ManageResourceActions.deleteServiceSubmittedSuccess,
+    (state, action)=>{
+      let index = state.services.findIndex(s=>s.id==action.service);
+      let arr = [...state.services];
+      arr.splice(index,1);
+      return{
+        ...state,
+        services:arr
+      }
+    }
+  ),
+  on(
+    ManageResourceActions.cancelAddClicked,
+    (state) => {
+      return {
+        ...state,
+        materials: state.currentlyOpenCompany.materials.slice(1)
+      }
+    }
+  ),
+  on(
+    ManageResourceActions.plusMaterialClicked,
+    (state) => {
+      return {
+        ...state,
+        currentlyOpenCompany: {
+          ...state.currentlyOpenCompany,
+          materials: [{} as IMaterial, ...state.currentlyOpenCompany.materials]
+        }
+      }
+    }
+  ),
+  on(
+    ManageResourceActions.editMaterialSubmittedSuccessfully,
+    (state, action) => {
+      let arr = [action.material, ...state.currentlyOpenCompany.materials.slice(1)]
+      return {
+        ...state,
+        materials: arr
+      }
+    }
+  ),
+  on(
+    ManageResourceActions.editMaterialSubmitted,
+    (state, action) => {
+      let index = state.currentlyOpenCompany.materials.findIndex(s => s.id == action.material.id);
+      let arr = [...state.currentlyOpenCompany.materials];
+      arr[index] = action.material;
+      return {
+        ...state,
+        materials: arr
+      }
+    }
+  ), on(
     ManageResourceActions.loadServicesSuccess,
     (state, action) => {
       return {
@@ -79,18 +195,7 @@ export const reducer = createReducer(
       }
     }
   ),
-  on(
-    ManageResourceActions.deleteServiceSubmittedSuccess,
-    (state, action)=>{
-      let index = state.services.findIndex(s=>s.id==action.service);
-      let arr = [...state.services];
-      arr.splice(index,1);
-      return{
-        ...state,
-        services:arr
-      }
-    }
-  ),
+
   on(
     ManageResourceActions.loadTypesSuccessfully,
     (state, action)=>{
@@ -105,9 +210,9 @@ export const reducer = createReducer(
     (state, action) => {
       return {
         ...state,
-        serviceParams: {
-          filter: action.filter ?? state.serviceParams.filter,
-          sort: action.sort ?? state.serviceParams.sort,
+        resourceParams: {
+          filter: action.filter ?? state.resourceParams.filter,
+          sort: action.sort ?? state.resourceParams.sort,
         },
         error: null,
       };

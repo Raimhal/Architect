@@ -32,7 +32,7 @@ public class UpdateCompanyProfileCommandHandler : IRequestHandler<UpdateCompanyP
 
     public async Task<CompanyProfileUpdatedDto> Handle(UpdateCompanyProfileCommand request, CancellationToken cancellationToken)
     {
-        var company = await _context.Companies.GetById(request.Id, cancellationToken);
+        var company = await _context.Companies.FirstOrDefault(x=>x.Id==request.Id, cancellationToken);
         if (company == null)
         {
             throw new NotFoundException();

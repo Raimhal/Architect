@@ -1,17 +1,21 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import {RouterModule, Routes} from "@angular/router";
-import {ProjectComponent} from "../project/project.component";
-import {ProjectDashboardComponent} from "../project/project-dashboard/project-dashboard.component";
-import {ServiceListComponent} from "./service-list/service-list.component";
 import {ManageResourcesComponent} from "./manage-resources.component";
+import {MaterialComponent} from "./material/material.component";
 
-const routes : Routes = [
-  {path: 'resources', component : ManageResourcesComponent}
+const routes: Routes = [
+  {
+    path: 'manage-resources',
+    component: ManageResourcesComponent
+  },
+  {
+    path: 'material',
+    component: MaterialComponent
+  }
 ]
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class ManageResourcesRoutingModule { }
+export class ManageResourcesRoutingModule{}

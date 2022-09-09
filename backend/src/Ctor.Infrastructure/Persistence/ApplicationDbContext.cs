@@ -44,6 +44,7 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     public IMaterialRepository Materials => _materialRepository.Value;
     public IMaterialTypeRepository MaterialType => _materialTypeRepository.Value;
     public IMeasurementRepository Measurements => _measurementRepository.Value;
+
     public IRequiredMaterialRepository RequiredMaterials => _requiredMaterialsRepository.Value;
     public IPhaseStepRepository PhaseSteps => _phaseStepRepository.Value;
 

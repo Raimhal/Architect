@@ -5,6 +5,7 @@ using Ctor.Domain.Entities;
 namespace Ctor.Application.Resources.Materials.Commands.CreateMaterialCommand;
 public class CreateMaterialCommandDto : IMapFrom<Material>
 {
+    public long? Id { get; set; }
     public string MaterialType { get; set; } = string.Empty;
     public string CompanyName { get; set; } = string.Empty;
     public string CompanyAddress { get; set; } = string.Empty;

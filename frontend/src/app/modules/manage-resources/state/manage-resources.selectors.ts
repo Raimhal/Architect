@@ -1,26 +1,37 @@
-import { createFeatureSelector, createSelector } from '@ngrx/store';
-import * as fromService from './manage-resources.reducer';
-import {selectCompaniesParams} from "../../administration/state/administration.selectors";
+import {createFeatureSelector, createSelector} from "@ngrx/store";
+import * as fromMaterials from './manage-resources.reducer'
 
-export const selectServiceState = createFeatureSelector<fromService.State>(
-  fromService.manageResourcesFeatureKey
+export const selectResourceState =
+  createFeatureSelector<fromMaterials.State>(
+    fromMaterials.manageResourceFeatureKey
 );
-
-export const selectService=createSelector(
-  selectServiceState,
-  (state)=>state.selectedService
-);
+export const selectMaterials = createSelector(
+  selectResourceState,
+  (state) => state.currentlyOpenCompany.materials
+)
+export const selectMaterialsByParams = createSelector(
+  selectResourceState,
+  (state)=>state.materialParams
+)
+export const selectMaterialTypes = createSelector(
+  selectResourceState,
+  (state) => state.materialsTypes
+)
+export const selectMeasurement = createSelector(
+  selectResourceState,
+  (state) => state.measurement
+)
 
 export const selectServices = createSelector(
-  selectServiceState,
+  selectResourceState,
   (state)=>state.services
 );
 
 export const selectTypes = createSelector(
-  selectServiceState,
+  selectResourceState,
   (state)=>state.types
 );
 export const selectServicesParams = createSelector(
-  selectServiceState,
-  (state)=>state.serviceParams
+  selectResourceState,
+  (state)=>state.resourceParams
 )

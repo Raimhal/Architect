@@ -1,6 +1,4 @@
 ﻿using System.Linq.Expressions;
-using AutoMapper;
-using Ctor.Application.Common.Exceptions;
 using Ctor.Application.Common.Interfaces;
 using Ctor.Application.Common.Models;
 using Ctor.Domain.Entities;
@@ -24,8 +22,8 @@ public class GetMaterialsQueryHandler : IRequestHandler<GetMaterialsQuery, Pagin
         var query = request.QueryModel.Query;
 
         Expression<Func<Material, bool>> filterPrecicate = material
-            => (string.IsNullOrEmpty(query) || material.CompanyName.ToLower().Contains(query.ToLower()))
-            && material.CompanyId == _currentUserService.CompanyId;
+            => (string.IsNullOrEmpty(query)
+            && material.CompanyId == _currentUserService.CompanyId);
 
         var sort = request.QueryModel.Sort;
         var order = request.QueryModel.Order;
@@ -33,12 +31,6 @@ public class GetMaterialsQueryHandler : IRequestHandler<GetMaterialsQuery, Pagin
         var count = request.QueryModel.Count;
 
         (var material, var total) = await _context.Materials.GetFilteredWithTotalSum<GetMaterialsQueryDto>(filterPrecicate, page, count, sort, order);
-
-        //var material = list.Where(x => x.CompanyId == request.companyId).ToList();
-        //if (material == null)
-        //    throw new NotFoundException("Such materials exist");
-
-        //total = material.Count();
 
         return new() { List = material, Total = total };
     }

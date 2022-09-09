@@ -45,6 +45,7 @@ import {NumberGenarateSevice} from "./services/numberGenarate.services";
 import { AlertComponent } from "./components/misc/alert/alert.component";
 import {NgrxFormsModule} from "ngrx-forms";
 import { FilterInputComponent } from "./components/inputs/filter-input/filter-input.component";
+import { DefaultAutocompleteComponent } from './components/inputs/default-autocomplete/default-autocomplete.component';
 
 
 @NgModule({
@@ -71,7 +72,8 @@ import { FilterInputComponent } from "./components/inputs/filter-input/filter-in
     ModalDialogSaveCancelComponent,
     ModalDialogConfirmationComponent,
     BlockWithIdComponent,
-    AlertComponent
+    AlertComponent,
+    DefaultAutocompleteComponent
   ],
   imports: [
     CommonModule,
@@ -114,6 +116,7 @@ import { FilterInputComponent } from "./components/inputs/filter-input/filter-in
     ModalDialogSaveCancelComponent,
     ModalDialogConfirmationComponent,
     AlertComponent,
+    DefaultAutocompleteComponent,
   ],
   providers: [
     NumberGenarateSevice,

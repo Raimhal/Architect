@@ -22,8 +22,9 @@ import * as fromNotifi from './reducers/notifi.reducer'
     [fromProject.projectFeatureKey]: fromProject.State;
     [fromCompany.companyFeatureKey]: fromCompany.State;
     [fromMenu.menuFeatureKey]: fromMenu.State;
-    [fromManageResources.manageResourcesFeatureKey]: fromManageResources.State;
+    [fromManageResources.manageResourceFeatureKey]: fromManageResources.State;
     [fromNotifi.notifiFeatureKey]: fromNotifi.State;
+
   }
 
   export const reducers: ActionReducerMap<AppState> = {
@@ -34,7 +35,7 @@ import * as fromNotifi from './reducers/notifi.reducer'
     [fromProject.projectFeatureKey]: fromProject.reducer,
     [fromCompany.companyFeatureKey]: fromCompany.reducer,
     [fromMenu.menuFeatureKey]: fromMenu.reducer,
-    [fromManageResources.manageResourcesFeatureKey]: fromManageResources.reducer,
+    [fromManageResources.manageResourceFeatureKey]: fromManageResources.reducer,
     [fromNotifi.notifiFeatureKey]: fromNotifi.reducer
   };
 

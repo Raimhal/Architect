@@ -2,6 +2,8 @@
 using Ctor.Application.Resources.Commands.DeleteRequiredMaterial;
 using Ctor.Application.Resources.Materials.Commands.CreateMaterialCommand;
 using Ctor.Application.Resources.Materials.Commands.CreateMaterialReport;
+using Ctor.Application.Resources.Materials.Commands.DeleteMaterialCommand;
+using Ctor.Application.Resources.Materials.Commands.PutMaterialCommand;
 using Ctor.Application.Resources.Materials.Commands.CreateRequiredMaterialsForBuildingCommand;
 using Ctor.Application.Resources.Materials.Queries.GetAvailableMaterialsForProjectQuery;
 using Ctor.Application.Resources.Materials.Queries.GetMaterialTypeQuery;
@@ -64,28 +66,38 @@ public class ResourceController : ApiControllerBase
     {
         return await Mediator.Send(new GetMaterialsQuery(queryModel));
     }
-
-    [HttpGet("get-material-type")]
+    [HttpGet("material/get-material-type")]
     public async Task<ActionResult> GetListOfMaterialType()
     {
         return Ok(await Mediator.Send(new GetMaterialTypeQuery()));
     }
-
-    [HttpGet("get-measurement")]
+    [HttpGet("material/get-measurement")]
     public async Task<ActionResult> GetListOfMeasurement()
     {
         return Ok(await Mediator.Send(new GetMeasurementQuery()));
     }
 
     [HttpPost]
-    [Route("create")]
-    public async Task<IActionResult> CreateMaterial(CreateMaterialCommandDto model)
+    [Route("material/create")]
+    public async Task<IActionResult> CreateMatial(CreateMaterialCommandDto model)
     {
         if (!ModelState.IsValid) return BadRequest("Model is not valid");
         await Mediator.Send(new CreateMaterialCommand(model));
         return StatusCode(201);
     }
+    [HttpDelete("material/{id:long}")]
+    public async Task<ActionResult<DeleteMaterialByIdCommandDto>> DeleteMaterialById(long id)
+    {
+        if (!ModelState.IsValid) return BadRequest("Model is not valid");
 
+        return await Mediator.Send(new DeleteMaterialByIdCommand(id));
+    }
+    [HttpPut("material/edit")]
+    public async Task<ActionResult> PutMaterial([FromBody] PutMaterialCommand command)
+    {
+        return Ok(await Mediator.Send(command));
+
+    }
     [HttpGet]
     [Route("available-materials")]
     public async Task<IActionResult> GetAvailableMaterialsForProject(
@@ -113,6 +125,7 @@ public class ResourceController : ApiControllerBase
     {
         await Mediator.Send(new CreateRequiredMaterialsForBuildingCommand(materials));
         return StatusCode(201);
+
     }
 
     [HttpPost("create-report/{projectId:long}")]
