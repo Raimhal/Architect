@@ -13,7 +13,7 @@
 
         <div class="search-results">
           <div *ngFor="let user of (searchCompanyUsers$ | async)?.users" class="search-result">
-            <mat-checkbox (change)="selectionChange($event, user)" [checked]="isSelected(user.id)">
+            <mat-checkbox (change)="selectionChange($event, user)">
               <span class="name">{{user.firstName}} {{user.lastName}}</span><br>
               <span class="role">{{user.role}}</span>
             </mat-checkbox>

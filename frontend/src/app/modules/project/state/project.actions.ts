@@ -17,6 +17,8 @@ import { IProjectDocumentUpdate } from '../resources/models/project-documents/pr
 import {IPhase} from "../resources/models/phase.model";
 import {IPhaseStep} from "../resources/models/phase-step.model";
 import { RequiredMaterial } from "../resources/models/project-material/required-material.model";
+import {IService} from "../resources/models/service";
+
 import { UsedByProjectMaterial } from '../resources/models/project-material/project-used-material.model';
 import { GetRequiredMaterialsDtoModel } from "../resources/models/get-required-materials-dto.model";
 
@@ -350,7 +352,7 @@ export const uploadProjectDocumentsFailure = createAction(
 
 export const deleteBuildingService = createAction(
   '[Building Service] Delete Building Service',
-  props<{ buildingServiceId: number }>()
+  props<{ buildingId: number, serviceId: number }>()
 );
 
 export const deleteBuildingServiceSuccess = createAction(
@@ -360,6 +362,42 @@ export const deleteBuildingServiceSuccess = createAction(
 export const deleteBuildingServiceFailure = createAction(
   '[Building Service] Delete Building Service Failure',
   props<{ error: any }>()
+);
+export const loadUncheckedBuildingServices = createAction(
+  '[Building Service] Load Services',
+  props<{filter:string, buildingId: number}>()
+);
+export const loadUncheckedBuildingServicesFailure = createAction(
+  '[Building Service] Load Services Failure',
+  props<{error: any}>()
+);
+export const loadUncheckedBuildingServicesSuccess = createAction(
+  '[Building Service] Load Services Success',
+  props<{services: IService[]}>()
+);
+export const loadCheckedServices = createAction(
+  '[Building Service] Load checked services',
+  props<{buildingId: number}>()
+);
+export const loadCheckedServicesSuccess = createAction(
+  '[Building Service] Load checked services success',
+  props<{services: IService[]}>()
+);
+export const loadCheckedServicesFailure = createAction(
+  '[Building Service] Load checked services failure',
+  props<{error:any}>()
+);
+export const submitCheckedServices = createAction(
+  '[Building Service] Trying to add services',
+  props<{services: IService[], buildingId: number}>()
+);
+export const submitCheckedServicesSuccess = createAction(
+  '[Building Service] Services added successfully',
+  props<{services: IService[]}>()
+);
+export const submitCheckedServicesFailure = createAction(
+  '[Building Service] Failed to add services',
+  props<{error: any}>()
 );
 
 export const saveRequiredMaterials = createAction(

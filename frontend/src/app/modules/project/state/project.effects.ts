@@ -434,6 +434,67 @@ export class ProjectEffects {
     );
   });
 
+  postBuildingServices$ = createEffect(() => {
+      return this.actions$.pipe(
+        ofType(ProjectActions.submitCheckedServices),
+        mergeMap((action)=>
+          this.resourcesService.postBuildingServices(action.services, action.buildingId).pipe(
+            map((services)=> ProjectActions.submitCheckedServicesSuccess({services:services})),
+            catchError((error)=>
+              of(ProjectActions.submitCheckedServicesFailure({error: serializeError(error)}))
+            )
+          )
+        )
+      );
+    }
+  );
+
+  getSelectedServices$ = createEffect(() => {
+      return this.actions$.pipe(
+        ofType(ProjectActions.loadCheckedServices),
+        mergeMap((action)=>
+          this.resourcesService.getSelectedBuildingServices(action.buildingId).pipe(
+            map((services)=> ProjectActions.loadCheckedServicesSuccess({services:services})),
+            catchError((error)=>
+              of(ProjectActions.loadCheckedServicesFailure({error: serializeError(error)}))
+            )
+          )
+        )
+      );
+    }
+  );
+  getUnselectedServices$ = createEffect(() => {
+      return this.actions$.pipe(
+        ofType(ProjectActions.loadUncheckedBuildingServices),
+        mergeMap((action)=>
+          this.resourcesService.getUnselectedBuildingServices(action.buildingId, action.filter).pipe(
+            map((services)=> ProjectActions.loadUncheckedBuildingServicesSuccess(
+              {services:services})),
+            catchError((error)=>
+              of(ProjectActions.loadUncheckedBuildingServicesFailure({error: serializeError(error)}))
+            )
+          )
+        )
+      );
+    }
+  );
+  deleteBuildingService$ = createEffect(() => {
+      return this.actions$.pipe(
+        ofType(ProjectActions.deleteBuildingService),
+        mergeMap((action)=>
+          this.resourcesService.deleteSelectedService(action.buildingId, action.serviceId).pipe(
+            map(()=> {
+              return ProjectActions.loadCheckedServices({buildingId: action.buildingId})
+            }),
+            catchError((error)=>
+              of(ProjectActions.deleteBuildingServiceFailure({error: serializeError(error)}))
+            )
+          )
+        )
+      );
+    }
+  );
+
   saveRequiredMaterial$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(ProjectActions.saveRequiredMaterials),
@@ -547,7 +608,7 @@ export class ProjectEffects {
   loadingUsedMaterials$ = createEffect(() =>
       this.actions$.pipe(
         ofType(ProjectActions.loadUsedForProjectResources),
-        mergeMap((action) => 
+        mergeMap((action) =>
           this.resourcesService.getAllUsedMaterials( action.projectId , action.filter, action.sort).pipe(
             map((res) => ProjectActions.loadUsedForProjectResourcesSuccess({ materials: res })),
             catchError(error => of(ProjectActions.loadUsedForProjectResourcesFailure({ error: serializeError(error) })))

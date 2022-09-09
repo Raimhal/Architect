@@ -8,6 +8,9 @@
   width: 100%;
   justify-items: right;
 }
+.load{
+  margin-left: 3em;
+}
 :host ::ng-deep {
   .mat-ink-bar {
     display: none;

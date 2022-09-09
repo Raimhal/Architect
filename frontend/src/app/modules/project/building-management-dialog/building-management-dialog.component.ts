@@ -110,6 +110,7 @@ export class BuildingManagementDialogComponent implements OnInit {
   ngOnInit(): void {
     this.loadMaterials();
     this.loadDocuments();
+    this.loadServices();
   }
 
   loadMaterials() {
@@ -124,6 +125,10 @@ export class BuildingManagementDialogComponent implements OnInit {
       buildingId: this.data.building.id,
       sort: 'created'
     }));
+  }
+
+  loadServices() {
+    this.store.dispatch(fromProjectActions.loadCheckedServices({buildingId: this.data.building.id}))
   }
 
   onSubmit(building: IBuilding) {
@@ -184,8 +189,8 @@ export class BuildingManagementDialogComponent implements OnInit {
     return this.showAllDocuments ? this.documents$ : this.singleDocument$;
   }
 
-  removeService(id: number) {
-    this.store.dispatch(fromProjectActions.deleteBuildingService({ buildingServiceId: id }));
+  removeService(buildingId: number, serviceId: number) {
+    this.store.dispatch(fromProjectActions.deleteBuildingService({ buildingId: buildingId, serviceId: serviceId }));
   }
 
   removeMaterial(id: number) {

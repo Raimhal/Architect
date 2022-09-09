@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Params } from "@angular/router";
-import { Observable } from "rxjs";
+import {Observable, of} from "rxjs";
 import { ApiService } from 'src/app/core/resources/services/api.service';
 import { IProjectPhotoId } from '../models/project-photo-id-response.model';
 import { IProjectPhoto } from '../models/project-photo.model';
@@ -19,6 +19,7 @@ import { NullLogger } from '@microsoft/signalr';
 import { IProjectDocument } from '../models/project-documents/project-document.model';
 import { IProjectDocumentId } from '../models/project-documents/project-document-id.model';
 import { IProjectDocumentUpdate } from '../models/project-documents/project-document-update.model';
+import {IService} from "../models/service";
 @Injectable({
   providedIn: 'root',
 })
@@ -108,4 +109,6 @@ export class ProjectService extends ApiService {
   updateProjectDocument(model: IProjectDocumentUpdate){
     return this.put<IProjectDocument>(`/projectDocuments`, model);
   }
+
+
 }

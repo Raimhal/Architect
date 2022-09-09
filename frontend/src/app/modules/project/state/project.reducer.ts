@@ -1,6 +1,7 @@
 import { createReducer, on } from '@ngrx/store';
 import { Order } from '../resources/models/order';
 import { IProjectOverview } from '../resources/models/project-overview';
+import { IProjectPhoto } from '../resources/models/project-photo.model';
 import { createFormGroupState, disable, enable, FormGroupState, onNgrxForms, onNgrxFormsAction, SetValueAction } from 'ngrx-forms';
 import { ProjectStatus } from '../resources/models/status';
 import * as ProjectActions from './project.actions';
@@ -12,6 +13,8 @@ import {IPhase} from "../resources/models/phase.model";
 import { Params } from '../resources/models/params';
 import { UsedByProjectMaterial } from '../resources/models/project-material/project-used-material.model';
 import { GetRequiredMaterialDtoModel } from "../resources/models/get-required-materials-dto.model";
+import { state } from '@angular/animations';
+import {IService} from "../resources/models/service";
 
 export const projectFeatureKey = 'project';
 
@@ -36,7 +39,9 @@ export interface State {
   error: string,
   currentlyOpenProjectDocuments: IProjectDocument[]
   currentlyOpenBuildingMaterials: GetRequiredMaterialDtoModel[],
-  currentlyOpenBuildingServices: { id: 0, name: string, email: string, phoneNumber: string, website: string, type: string, }[],
+  currentlyOpenBuildingServices: IService[],
+  selectedServices: IService[],
+  buildingServices: IService[],
   phases: IPhase[],
   curentlyOpenProjectMaterials: UsedByProjectMaterial[]
 }
@@ -64,34 +69,10 @@ export const initialState: State = {
   currentlyOpenProjectDocuments: [],
   phases: [],
   currentlyOpenBuildingMaterials: [],
-  currentlyOpenBuildingServices: [
-    // todo: retrieve this from backend
-    {
-      id: 0,
-      name: 'Dunedin Builders Merchants Ltd',
-      email: 'dunedin@gmail.com',
-      phoneNumber: '+380 98 745 23 61',
-      website: 'dunedin.com',
-      type: 'Internet',
-    },
-    {
-      id: 0,
-      name: 'Dunedin Builders Merchants Ltd',
-      email: 'dunedin@gmail.com',
-      phoneNumber: '+380 98 745 23 61',
-      website: 'dunedin.com',
-      type: 'Internet',
-    },
-    {
-      id: 0,
-      name: 'Dunedin Builders Merchants Ltd',
-      email: 'dunedin@gmail.com',
-      phoneNumber: '+380 98 745 23 61',
-      website: 'dunedin.com',
-      type: 'Internet',
-    },
-  ],
-  curentlyOpenProjectMaterials: []
+  currentlyOpenBuildingServices: [],
+  curentlyOpenProjectMaterials: [],
+  selectedServices: [],
+  buildingServices: [],
 };
 
 export const reducer = createReducer(
@@ -268,6 +249,42 @@ export const reducer = createReducer(
     }
   }),
   on(ProjectActions.updateProjectDocumentsFailure, (state, action)=>{
+    return{
+      ...state,
+      error: action.error
+    }
+  }),
+  on(ProjectActions.submitCheckedServicesSuccess, (state, action)=>{
+    return{
+      ...state,
+      currentlyOpenBuildingServices: action.services
+    }
+  }),
+  on(ProjectActions.submitCheckedServicesFailure, (state, action)=>{
+    return{
+      ...state,
+      error: action.error
+    }
+  }),
+  on(ProjectActions.loadCheckedServicesSuccess, (state, action)=>{
+    return{
+      ...state,
+      currentlyOpenBuildingServices: action.services
+    }
+  }),
+  on(ProjectActions.loadCheckedServicesFailure, (state, action)=>{
+    return{
+      ...state,
+      error: action.error
+    }
+  }),
+  on(ProjectActions.loadUncheckedBuildingServicesSuccess, (state, action)=>{
+    return{
+      ...state,
+      buildingServices: action.services
+    }
+  }),
+  on(ProjectActions.loadUncheckedBuildingServicesFailure, (state, action)=>{
     return{
       ...state,
       error: action.error

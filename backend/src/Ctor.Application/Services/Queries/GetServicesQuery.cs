@@ -42,7 +42,7 @@ public class GetServicesQueryHandler : IRequestHandler<GetServicesQuery, IEnumer
             filterPredicate = service => service.VendorName.ToLower().StartsWith(request.Filter.ToLower()) 
             && service.CompanyId == _currentUserService.CompanyId;
         }
-
+        //return await _context.RequiredServices.
         return await _context.Vendors.GetOrdered<ServiceDto>(request.Sort, Order.ASC, filterPredicate);
     }
 }

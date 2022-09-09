@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import {ApiService} from "../../../../core/resources/services/api.service";
 import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs";
+import {Observable, of} from "rxjs";
 import {IBuilding} from "../models/building.model";
 import {IBuildingBlock} from "../models/building-block.model";
+import {IService} from "../models/service";
 
 @Injectable({
   providedIn: 'root'
@@ -55,4 +56,6 @@ export class BuildingApiService extends ApiService {
       isDone: buildingBlock.isDone
     });
   }
+
+
 }

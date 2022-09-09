@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
+import {HttpClient} from "@angular/common/http";
+import {Observable, of} from "rxjs";
+import {IBuilding} from "../models/building.model";
 import { ApiService } from "../../../../core/resources/services/api.service";
-import { HttpClient } from "@angular/common/http";
-import { Observable } from "rxjs";
 import { GetRequiredMaterialsDtoModel } from "../models/get-required-materials-dto.model";
 import { AvailableMaterial } from '../models/project-material/available-material.model';
 import { RequiredMaterial } from '../models/project-material/required-material.model';
+import {IService} from "../models/service";
 import { UsedByProjectMaterial } from '../models/project-material/project-used-material.model'
 
 @Injectable({
@@ -40,5 +42,24 @@ export class ResourceApiService extends ApiService {
 
   deleteRequiredMaterial(requiredMaterialId: number): Observable<void> {
     return this.delete(`${this.apiPath}/required-materials/${requiredMaterialId}`);
+  }
+  postBuildingServices(services: IService[], buildingId: number): Observable<IService[]>{
+    return this.post<IService[]>(`${this.apiPath}/add/services`, {
+      buildingId: buildingId,
+      serviceIds: services.map(x=>x.id)
+    });
+  }
+  getUnselectedBuildingServices(buildingId: number, filter: string): Observable<IService[]>{
+    let query = `${this.apiPath}/available-services/${buildingId}`;
+    if (filter != "") {
+      query += `?filter=${filter}`;
+    }
+    return this.get<IService[]>(query);
+  }
+  deleteSelectedService(buildingId:number, serviceId:number){
+    return this.delete(`${this.apiPath}/building/${buildingId}/delete-service/${serviceId}`)
+  }
+  getSelectedBuildingServices(buildingId: number): Observable<IService[]>{
+    return this.get<IService[]>(`${this.apiPath}/selected-services/${buildingId}`);
   }
 }

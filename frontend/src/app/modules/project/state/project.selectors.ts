@@ -84,7 +84,14 @@ export const selectBuildingMaterials = createSelector(
 export const selectBuildingServices = createSelector(
   selectProjectState,
   (state) => state.currentlyOpenBuildingServices
-)
+);
+export const selectUncheckedBuildingServices = createSelector(
+  selectProjectState,
+  (state) => {
+    console.log(state.buildingServices)
+    return state.buildingServices
+  }
+);
 
 export const selectUsedForProjectMaterials = createSelector(
   selectProjectState,

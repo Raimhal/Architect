@@ -24,6 +24,7 @@ public interface IApplicationDbContext
     IVendorRepository Vendors { get; }
     IVendorTypeRepository VendorTypes { get; }
     IPhaseStepRepository PhaseSteps { get; }
+    IRequiredServiceRepository RequiredServices { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

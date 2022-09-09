@@ -26,6 +26,7 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     private readonly Lazy<IRequiredMaterialRepository> _requiredMaterialsRepository;
     private readonly Lazy<IVendorRepository> _vendorRepositoryLazy;
     private readonly Lazy<IVendorTypeRepository> _vendorTypeRepositoryLazy;
+    private readonly Lazy<IRequiredServiceRepository> _requiredService;
     private readonly Lazy<IPhaseStepRepository> _phaseStepRepository;
 
     public IUserRepository Users => _userRepositoryLazy.Value;
@@ -46,6 +47,7 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     public IMeasurementRepository Measurements => _measurementRepository.Value;
 
     public IRequiredMaterialRepository RequiredMaterials => _requiredMaterialsRepository.Value;
+    public IRequiredServiceRepository RequiredServices => _requiredService.Value;
     public IPhaseStepRepository PhaseSteps => _phaseStepRepository.Value;
 
     public IVendorRepository Vendors => _vendorRepositoryLazy.Value;
@@ -71,6 +73,7 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
         _materialTypeRepository = repositoryFactory.GetInstanse<Lazy<IMaterialTypeRepository>>();
         _measurementRepository = repositoryFactory.GetInstanse<Lazy<IMeasurementRepository>>();
         _requiredMaterialsRepository = repositoryFactory.GetInstanse<Lazy<IRequiredMaterialRepository>>();
+        _requiredService = repositoryFactory.GetInstanse<Lazy<IRequiredServiceRepository>>();
 
         _vendorRepositoryLazy = repositoryFactory.GetInstanse<Lazy<IVendorRepository>>();
         _vendorTypeRepositoryLazy = repositoryFactory.GetInstanse<Lazy<IVendorTypeRepository>>();

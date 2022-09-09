@@ -42,7 +42,10 @@
 
     <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="servicesOverlayOrigin"
                  [cdkConnectedOverlayOpen]="isServicesOverlayOpen">
-      <!-- todo: add modal here -->
+     <app-add-building-service [buildingId]="building.id" [projectId]="building.projectId"
+                               (cancel)="closeAllOverlays()" (submit)="closeAllOverlays()">
+
+     </app-add-building-service>
     </ng-template>
 
     <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="materialsOverlayOrigin"
@@ -71,9 +74,9 @@
 
         <div class="services-row" *ngFor="let service of servicesToShow | async">
           <div>
-            <span class="service-type">{{service.type}}</span>
-            <span class="service-name">{{service.name}}</span>
-            <span class="remove-btn" *ngIf="canEdit$ | async" (click)="removeService(service.id)">
+            <span class="service-type">{{service.types}}</span>
+            <span class="service-name">{{service.company}}</span>
+            <span class="remove-btn" *ngIf="canEdit$ | async" (click)="removeService(building.id, service.id)">
             <mat-icon class="hover-icon" svgIcon="trash"></mat-icon>
           </span>
           </div>
@@ -82,7 +85,7 @@
               <span>{{service.email}}</span>
             </div>
             <span>
-              <span>{{service.phoneNumber}}</span>
+              <span>{{service.phone}}</span>
             </span>
             <span>
               <span>{{service.website}}</span>

@@ -140,4 +140,31 @@ public class ResourceController : ApiControllerBase
     {
         return Ok(await Mediator.Send(query));
     }
+
+    [HttpGet]
+    [Route("available-services/{buildingId:long}")]
+    public async Task<ActionResult<IEnumerable<ServiceDto>>> GetServices(long buildingId, [FromQuery(Name = "filter")] string? filter )
+    {
+        return await Mediator.Send(new GetRequiredServicesQuery(filter,buildingId));
+    }
+    [HttpGet]
+    [Route("selected-services/{buildingId:long}")]
+    public async Task<ActionResult<IEnumerable<ServiceDto>>> GetSelectedServices(long buildingId)
+    {
+        return await Mediator.Send(new GetSelectedServicesQuery(buildingId));
+    }
+    [HttpPost]
+    [Route("add/services")]
+    public async Task<ActionResult<List<ServiceDto>>> AddRequiredServices([FromBody]AddServiceToBuildingCommand command)
+    {
+        return await Mediator.Send(command);
+    }
+
+    [HttpDelete]
+    [Route("building/{buildingId:long}/delete-service/{serviceId:long}")]
+    public async Task<IActionResult> DeleteRequiredService(long serviceId, long buildingId)
+    {
+        await Mediator.Send(new DeleteRequiredServiceCommand(buildingId, serviceId));
+        return Ok();
+    }
 }

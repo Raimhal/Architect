@@ -52,6 +52,9 @@ import { AddPhaseDialogComponent } from './add-phase-dialog/add-phase-dialog.com
 import {
   AddBuildingDocumentOverlay
 } from "./building-management-dialog/add-building-document-overlay/add-building-document-overlay.component";
+import {
+    AddBuildingServiceComponent
+} from "./building-management-dialog/add-building-service/add-building-service.component";
 import { AddBuildingMaterialOverlay } from "./building-management-dialog/add-building-material-overlay/add-building-material-overlay.component"
 import { ProjectMaterialsComponent } from './project-materials/project-materials.component';
 
@@ -104,6 +107,7 @@ import { ProjectMaterialsComponent } from './project-materials/project-materials
     ProjectDocumentRenameComponent,
     AddBuildingDocumentOverlay,
     AddBuildingMaterialOverlay,
+    AddBuildingServiceComponent,
     AddPhaseDialogComponent,
     ProjectMaterialsComponent,
   ],

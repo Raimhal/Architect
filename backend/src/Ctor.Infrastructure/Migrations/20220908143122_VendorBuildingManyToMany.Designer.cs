@@ -3,6 +3,7 @@ using System;
 using Ctor.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Ctor.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220908143122_VendorBuildingManyToMany")]
+    partial class VendorBuildingManyToMany
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,7 +36,7 @@ namespace Ctor.Infrastructure.Migrations
 
                     b.HasIndex("VendorsId");
 
-                    b.ToTable("BuildingVendor", (string)null);
+                    b.ToTable("BuildingVendor");
                 });
 
             modelBuilder.Entity("Ctor.Domain.Entities.Assignee", b =>
@@ -57,7 +59,7 @@ namespace Ctor.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Assignee", (string)null);
+                    b.ToTable("Assignee");
                 });
 
             modelBuilder.Entity("Ctor.Domain.Entities.Building", b =>
@@ -204,7 +206,7 @@ namespace Ctor.Infrastructure.Migrations
                     b.HasIndex("Id")
                         .IsUnique();
 
-                    b.ToTable("CompanyLogo", (string)null);
+                    b.ToTable("CompanyLogo");
                 });
 
             modelBuilder.Entity("Ctor.Domain.Entities.Document", b =>
@@ -378,7 +380,8 @@ namespace Ctor.Infrastructure.Migrations
                     b.Property<int>("PhaseStep")
                         .HasColumnType("integer");
 
-                    b.Property<long>("ProjectId")
+                    b.Property<long?>("ProjectId")
+                        .IsRequired()
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("StartTime")
@@ -392,42 +395,6 @@ namespace Ctor.Infrastructure.Migrations
                     b.HasIndex("ProjectId");
 
                     b.ToTable("Phase", (string)null);
-                });
-
-            modelBuilder.Entity("Ctor.Domain.Entities.PhaseStep", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<long?>("BuildingId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<bool>("IsDone")
-                        .HasColumnType("boolean");
-
-                    b.Property<long>("PhaseId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("PhaseStepName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BuildingId");
-
-                    b.HasIndex("PhaseId");
-
-                    b.ToTable("PhaseStep");
                 });
 
             modelBuilder.Entity("Ctor.Domain.Entities.Project", b =>
@@ -633,29 +600,6 @@ namespace Ctor.Infrastructure.Migrations
                     b.ToTable("RequiredMaterials", (string)null);
                 });
 
-            modelBuilder.Entity("Ctor.Domain.Entities.RequiredService", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<long>("BuildingId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("VendorId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BuildingId");
-
-                    b.HasIndex("VendorId");
-
-                    b.ToTable("RequiredService");
-                });
-
             modelBuilder.Entity("Ctor.Domain.Entities.Role", b =>
                 {
                     b.Property<long>("Id")
@@ -810,7 +754,7 @@ namespace Ctor.Infrastructure.Migrations
 
                     b.HasIndex("VendorsId");
 
-                    b.ToTable("VendorVendorType", (string)null);
+                    b.ToTable("VendorVendorType");
                 });
 
             modelBuilder.Entity("BuildingVendor", b =>
@@ -914,23 +858,6 @@ namespace Ctor.Infrastructure.Migrations
                     b.Navigation("Project");
                 });
 
-            modelBuilder.Entity("Ctor.Domain.Entities.PhaseStep", b =>
-                {
-                    b.HasOne("Ctor.Domain.Entities.Building", "Building")
-                        .WithMany()
-                        .HasForeignKey("BuildingId");
-
-                    b.HasOne("Ctor.Domain.Entities.Phase", "Phase")
-                        .WithMany("PhaseSteps")
-                        .HasForeignKey("PhaseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Building");
-
-                    b.Navigation("Phase");
-                });
-
             modelBuilder.Entity("Ctor.Domain.Entities.Project", b =>
                 {
                     b.HasOne("Ctor.Domain.Entities.Company", "Company")
@@ -1020,25 +947,6 @@ namespace Ctor.Infrastructure.Migrations
                     b.Navigation("Material");
                 });
 
-            modelBuilder.Entity("Ctor.Domain.Entities.RequiredService", b =>
-                {
-                    b.HasOne("Ctor.Domain.Entities.Building", "Building")
-                        .WithMany("RequiredServices")
-                        .HasForeignKey("BuildingId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Ctor.Domain.Entities.Vendor", "Vendor")
-                        .WithMany("RequiredServices")
-                        .HasForeignKey("VendorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Building");
-
-                    b.Navigation("Vendor");
-                });
-
             modelBuilder.Entity("Ctor.Domain.Entities.User", b =>
                 {
                     b.HasOne("Ctor.Domain.Entities.Company", "Company")
@@ -1090,8 +998,6 @@ namespace Ctor.Infrastructure.Migrations
                     b.Navigation("ProjectDocuments");
 
                     b.Navigation("RequiredMaterials");
-
-                    b.Navigation("RequiredServices");
                 });
 
             modelBuilder.Entity("Ctor.Domain.Entities.Company", b =>
@@ -1116,16 +1022,6 @@ namespace Ctor.Infrastructure.Migrations
                 {
                     b.Navigation("RequiredMaterials");
                 });
-                
-            modelBuilder.Entity("Ctor.Domain.Entities.MaterialType", b =>
-                {
-                    b.Navigation("Materials");
-                });
-
-            modelBuilder.Entity("Ctor.Domain.Entities.Measurement", b =>
-                {
-                    b.Navigation("Materials");
-                });
 
             modelBuilder.Entity("Ctor.Domain.Entities.MaterialType", b =>
                 {
@@ -1135,11 +1031,6 @@ namespace Ctor.Infrastructure.Migrations
             modelBuilder.Entity("Ctor.Domain.Entities.Measurement", b =>
                 {
                     b.Navigation("Materials");
-                });
-
-            modelBuilder.Entity("Ctor.Domain.Entities.Phase", b =>
-                {
-                    b.Navigation("PhaseSteps");
                 });
 
             modelBuilder.Entity("Ctor.Domain.Entities.Project", b =>
@@ -1167,11 +1058,6 @@ namespace Ctor.Infrastructure.Migrations
                     b.Navigation("Assignees");
 
                     b.Navigation("ProjectNote");
-                });
-
-            modelBuilder.Entity("Ctor.Domain.Entities.Vendor", b =>
-                {
-                    b.Navigation("RequiredServices");
                 });
 #pragma warning restore 612, 618
         }
