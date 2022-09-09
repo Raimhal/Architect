@@ -3,11 +3,11 @@ name: Ctor Frontend Build
 on:
   push:
     branches:
-      - test-github-actions
+      - dev
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
-      - test-github-actions
+      - dev
 
 jobs:
   build_and_deploy_job:

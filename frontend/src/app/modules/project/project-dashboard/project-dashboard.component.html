@@ -3,23 +3,23 @@
     <mat-icon svgIcon="arrow-left" (click)="goToProjects()"></mat-icon>
     <h2> {{ project.projectName }}</h2>
 
-    <ng-container *ngIf="currentStatus$ | async as currentStatus">
+    <ng-container>
 
       <ng-container *ngIf="canChangeStatus$ | async; else nonClickableStatus">
         <div class="project-status bar project-status-clickable" (click)="statusSelector.open()">
-          <mat-select #statusSelector [(value)]="selectedStatus" (selectionChange)="changeStatus($event.value)"
+          <mat-select #statusSelector (selectionChange)="changeStatus($event.value)"
                       style="visibility: hidden; height: 0; width: 0">
             <mat-option *ngFor="let status of statuses; let statusIndex = index" [value]="statusIndex">
               {{status}}
             </mat-option>
           </mat-select>
-          {{currentStatus}}
+          {{getStatus(project.status)}}
         </div>
       </ng-container>
 
       <ng-template #nonClickableStatus>
         <div class="project-status bar">
-          {{currentStatus}}
+          {{getStatus(project.status)}}
         </div>
       </ng-template>
 

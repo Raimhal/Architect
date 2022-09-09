@@ -31,11 +31,8 @@ public class
             await _context.ProjectDocuments.FirstOrDefault<DeleteProjectDocumentPathDto>(
                 exp =>  exp.Id == request.ProjectDocumentId, cancellationToken);
 
-        var fileInfo = await _fileManipulatorService.Delete(projectDocumentWithPath.Path);
-        if (fileInfo.Exists)
-        {
-            throw new IOException();
-        }
+        await _fileManipulatorService.Delete(projectDocumentWithPath.Path);
+
         // delete temporary fix
         await _context.Documents.DeleteById(projectDocumentWithPath.DocumentId);
 

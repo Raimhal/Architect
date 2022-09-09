@@ -3,11 +3,11 @@ name: "Ctor Backend Build"
 on:
   push:
     branches:
-      - test-github-actions
+      - dev
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
-      - test-github-actions
+      - dev
 
 env:
   AZURE_WEBAPP_NAME: ctor-backend
@@ -16,26 +16,26 @@ env:
   DOTNET_VESION: '6.0.x'
 
 jobs:
-  test_job:
-    name: Test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
+  # test_job:
+  #   name: Test
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
 
-      - name: Setup ASP.NET Core SDK
-        uses: actions/setup-dotnet@v2
-        with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
-          include-prerelease: true
+  #     - name: Setup ASP.NET Core SDK
+  #       uses: actions/setup-dotnet@v2
+  #       with:
+  #         dotnet-version: ${{ env.DOTNET_VERSION }}
+  #         include-prerelease: true
 
-      - name: Restore
-        run: dotnet restore ${{ env.WEBAPP_SOURCE_PATH }}
+  #     - name: Restore
+  #       run: dotnet restore ${{ env.WEBAPP_SOURCE_PATH }}
         
-      - name: Test
-        run: dotnet test ${{ env.WEBAPP_SOURCE_PATH }} --no-restore --verbosity normal
+  #     - name: Test
+  #       run: dotnet test ${{ env.WEBAPP_SOURCE_PATH }} --no-restore --verbosity normal
 
   build_job:
-    needs: test_job
+    # needs: test_job
     runs-on: ubuntu-latest
     name: Build And Deploy
     steps:

@@ -43,13 +43,6 @@ public static class ConfigureServices
             mailSetting.FromEmail = configuration["Email:FromEmail"];
             mailSetting.DiplayName = configuration["Email:DiplayName"];
         });
-
-        services.Configure<FileManipulatorSettings>((fileManipulatorSettings) =>
-        {
-            var filesFolderPath = Path.GetFullPath(configuration["FilesFolder"]);
-
-            fileManipulatorSettings.FolderPath = filesFolderPath;
-        });
         
         services.AddScoped<IRepositoryFactory, RepositoryFactory>();
         services.AddScoped<IUserRepository, UserRepository>();
@@ -83,13 +76,22 @@ public static class ConfigureServices
         services.AddSingleton<ITokenProvider, TokenProvider>();
         services.AddScoped<IUserManager, UserManager>();
         services.AddTransient<ICsvFileService, CsvFileService>();
-        services.AddScoped<IFileManipulatorService, FileManipulatorService>();
+        
         services.AddScoped<IAddressParsingService, AddressParsingService>();
         services.AddScoped<IGroupsService, GroupsService>();
         services.AddScoped<ICompanyIdGeneratorService, CompanyIdGeneratorService>();
 
         if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
         {
+            var filesFolderPath = Path.GetFullPath(configuration["FilesFolder"]);
+
+            services.AddScoped<IFileManipulatorService, FileManipulatorService>(options =>
+            {
+                return new FileManipulatorService(
+                    new FileManipulatorSettings() { FolderPath = filesFolderPath },
+                    options.GetService<ILogger<FileManipulatorService>>());
+            });
+
             services.AddTransient<IEventBus, RabbitMqBus>(sp =>
             {
                 IServiceScopeFactory scopeFactory = sp.GetRequiredService<IServiceScopeFactory>();
@@ -104,6 +106,12 @@ public static class ConfigureServices
         }
         else
         {
+
+            services.AddScoped<IFileManipulatorService, AzureStorageService>(options =>
+            {
+                return new AzureStorageService(configuration, options.GetService<ILogger<AzureStorageService>>());
+            });
+
             services.AddTransient<IEventBus, AzureServiceBus>(options =>
             {
                 var scopeFactory = options.GetService<IServiceScopeFactory>();

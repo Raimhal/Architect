@@ -1,4 +1,4 @@
-import { Params } from '@angular/router';
+
 import { createReducer, on } from '@ngrx/store';
 import { Order } from '../resources/models/order';
 import { IProjectOverview } from '../resources/models/project-overview';
@@ -11,6 +11,7 @@ import { IProjectDetailed } from '../resources/models/project-details';
 import {IBuilding} from "../resources/models/building.model";
 import { IProjectDocument } from '../resources/models/project-documents/project-document.model';
 import { state } from '@angular/animations';
+import { Params } from '../resources/models/params';
 
 export const projectFeatureKey = 'project';
 
@@ -18,14 +19,12 @@ export interface State {
   projects: IProjectOverview[],
   params: Params,
   total: number,
-  currentlyOpenProjectPhotos: IProjectPhoto[],
   project: IProjectDetailed,
   projectInformationForm: FormGroupState<fromProjectInformationForm.ProjectInformationFormValue>,
   buildings : IBuilding[],
   currentlyRevealedBuilding : number | null,
   currentProject: {
     id: number,
-    status: ProjectStatus,
     team: {
       id: number,
       name: string,
@@ -53,13 +52,11 @@ export const initialState: State = {
   total: 0,
   error: "",
   project: {} as IProjectDetailed,
-  currentlyOpenProjectPhotos: [],
   projectInformationForm: fromProjectInformationForm.initialFormState,
   buildings: [],
   currentlyRevealedBuilding: null,
   currentProject: {
     id: 1,
-    status: ProjectStatus.InProcess,
     team: [],
   },
   currentlyOpenProjectDocuments: [],
@@ -183,17 +180,17 @@ export const reducer = createReducer(
   on(ProjectActions.loadProjectPhotosSuccess, (state, action) => {
     return {
       ...state,
-      currentlyOpenProjectPhotos: action.data,
+      project: {...state.project, currentlyOpenProjectPhotos: action.data},
     };
   }),
   on(ProjectActions.deleteProjectPhotoSuccess, (state, action) => {
     return {
       ...state,
-      currentlyOpenProjectPhotos: state.currentlyOpenProjectPhotos.filter(
+      project: {...state.project, currentlyOpenProjectPhotos: state.project.currentlyOpenProjectPhotos.filter(
         (p) => p.id != action.id
       ),
-    };
-  }),
+    }
+  }}),
   on(ProjectActions.getProjectssWithParamsSuccess, (state, action) => {
     return { ...state, projects: action.data.list, total: action.data.total }
   }),
@@ -203,8 +200,8 @@ export const reducer = createReducer(
   on(ProjectActions.changeProjectStatusSuccess, (state, action) => {
     return {
       ...state,
-      currentProject: {
-        ...state.currentProject!,
+      project: {
+        ...state.project,
         status: action.newStatus,
       },
     }

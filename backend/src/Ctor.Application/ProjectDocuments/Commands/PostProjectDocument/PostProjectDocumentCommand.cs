@@ -64,14 +64,11 @@ public class PostProjectDocumentCommandHandler
         {
             var fileType = Path.GetExtension(file.FileName);
             var path = Path.Combine("projectDocuments", $"{Guid.NewGuid()}{fileType}");
-            var link = path.Replace("\\", "/");
 
-            var fileInfo = await _fileManipulatorService.Save(file.Data, path);
+            var link = await _fileManipulatorService.Save(file.Data, path);
 
-            if (!fileInfo.Exists)
-            {
+            if (link == null)
                 throw new IOException();
-            }
 
             var projectDocument = new ProjectDocument
             {

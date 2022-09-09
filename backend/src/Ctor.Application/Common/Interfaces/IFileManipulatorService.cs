@@ -2,6 +2,6 @@
 
 public interface IFileManipulatorService
 {
-    public Task<FileInfo> Save(byte[] fileData, string fileName);
-    public Task<FileInfo> Delete(string fileName);
+    public Task<string?> Save(byte[] fileData, string fileName);
+    public Task Delete(string fileName);
 }

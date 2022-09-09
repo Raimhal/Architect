@@ -26,10 +26,12 @@ public class PutProjectPhotoCommandHandler : IRequestHandler<PutProjectPhotosCom
         foreach (var file in request.Data)
         {
             var path = Path.Combine("projectPhotos", $"{Guid.NewGuid()}.png");
-            var link = path.Replace("\\", "/");
 
-            var fileInfo = await _fileManipulatorService.Save(file, path);
-            if (!fileInfo.Exists) throw new IOException();
+            var link = await _fileManipulatorService.Save(file, path);
+
+            if (link == null)
+                throw new IOException();
+            
             var projectPhoto = new ProjectPhoto()
             {
                 Path = path, ProjectId = request.ProjectId, Link = link, Type = FileProviderType.Local

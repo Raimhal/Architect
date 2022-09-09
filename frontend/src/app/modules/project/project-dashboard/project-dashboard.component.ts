@@ -16,6 +16,9 @@ import { IProjectDetailed } from '../resources/models/project-details';
 import { getDetailedProject } from '../state/project.actions';
 import { selectProjectInformation } from '../state/project.selectors';
 import { MatTabChangeEvent } from '@angular/material/tabs';
+import { ProjectStatus } from '../resources/models/status';
+import { state } from '@angular/animations';
+import { number } from 'ngrx-forms/validation';
 
 @Component({
   selector: 'app-project-dashboard',
@@ -30,8 +33,7 @@ export class ProjectDashboardComponent implements OnInit {
 
   project$?: Observable<IProjectDetailed>
 
-  currentStatus$ = this.store.select(fromProjectSelectors.selectCurrentProjectStatus);
-  selectedStatus: number = 0;
+  currentStatus$?: Observable<ProjectStatus>
 
   currentProjectId = 0;
 
@@ -68,8 +70,16 @@ export class ProjectDashboardComponent implements OnInit {
     this.store.dispatch(hideMenu());
   }
 
+  getStatus(status: ProjectStatus){
+    if(typeof(status) == "number")
+      return this.statuses[status]
+    else
+     return (status as string).replace(/([A-Z])/g, " $1")
+
+  }
+
   changeStatus(newStatus: number) {
-    this.store.dispatch(fromProjectActions.changeProjectStatus({ projectId: this.currentProjectId, newStatus }))
+    this.store.dispatch(fromProjectActions.changeProjectStatus({ projectId: this.currentProjectId, newStatus: newStatus as ProjectStatus }))
   }
 
   goToProjects() {

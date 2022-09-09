@@ -28,10 +28,12 @@ public class PutCompanyLogoCommandHandler : IRequestHandler<PutCompanyLogoComman
         }
 
         var path = $"companyLogos\\{Guid.NewGuid()}{request.FileType}";
-        var link = path.Replace("\\", "/");
 
-        var fileInfo = await _fileManipulatorService.Save(request.Data, path);
-        if (!fileInfo.Exists) throw new IOException();
+        var link = await _fileManipulatorService.Save(request.Data, path);
+
+        if (link == null)
+            throw new IOException();
+
         companyLogo = new CompanyLogo()
         {
             Path = path,

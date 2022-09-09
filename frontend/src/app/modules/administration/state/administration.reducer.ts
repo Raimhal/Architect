@@ -140,7 +140,7 @@ export const reducer = createReducer(
   ),
   on(AdministrationActions.loadDetailedCompanySuccess, (_state, action) => ({
     ..._state,
-    currentlyOpenCompany: action.result,
+    currentlyOpenCompany: {..._state.currentlyOpenCompany, ...action.result},
     error: null,
   })),
   on(AdministrationActions.loadDetailedCompanyFailure, (state, action) => ({
