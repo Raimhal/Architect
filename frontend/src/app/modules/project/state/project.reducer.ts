@@ -85,7 +85,7 @@ export const reducer = createReducer(
     return { ...state, params: { ...state.params, ...action.params } }
   }),
   on(ProjectActions.getDetailedProjectSuccess, (state, action) => {
-    return { ...state, project: action.data }
+    return { ...state, project: {...state.project, ...action.data} }
   }),
   on(ProjectActions.getDetailedProjectFailure, (state, action) => {
       return { ...state, error: action.error };

@@ -36,7 +36,7 @@
     <app-filter-input (onSearchQuery)="onSearchQuery($event, project.id)"></app-filter-input>
   </div>
 
-  <app-button class="tab-lvl" *ngIf="matTabGroup.selectedIndex===2" (click)="onCreateReport(project.id)">Create report for project</app-button>
+  <app-button class="tab-lvl" *ngIf="matTabGroup.selectedIndex===2" (click)="onCreateReport(project.id)">Create report</app-button>
 
   <mat-tab-group #matTabGroup (selectedTabChange)="tabChanged($event, project)">
     <mat-tab label="Description">
