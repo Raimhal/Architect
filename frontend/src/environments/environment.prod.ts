@@ -1,10 +1,11 @@
-const baseApiHost = "https://ctor-backend.azurewebsites.net"
+const baseHost = "https://ctor-backend.azurewebsites.net"
 
 export const environment = {
   production: true,
-  apiHost: baseApiHost,
-  apiBaseUrl: `${baseApiHost}/api`,
-  filesBaseUrl: `${baseApiHost}/files`
+  apiHost: baseHost.replace("https://", ""),
+  apiHostWithHttp: baseHost,
+  apiBaseUrl: `${baseHost}/api`,
+  filesBaseUrl: `${baseHost}/files`
 };
 
 
