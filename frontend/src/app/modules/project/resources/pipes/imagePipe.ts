@@ -7,7 +7,7 @@ export class ImagePipe implements PipeTransform {
   transform(input: IProjectPhoto[]): IImage[] {
     return input.map((f) => {
       return {
-        path: f.link.includes("http") ? f.link : `${environment.filesBaseUrl}/${f.link}`,
+        path: environment.production ? f.link : `${environment.filesBaseUrl}/${f.link}`,
       };
     });
   }
