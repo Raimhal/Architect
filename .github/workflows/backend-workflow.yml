@@ -56,12 +56,12 @@ jobs:
       - name: Publish
         run: dotnet publish ${{ env.WEBAPP_SOURCE_PATH }} --configuration Release --no-build --output ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
 
-      - name: Upload Build Artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: ctor-artifact
-          path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
-          if-no-files-found: error
+      # - name: Upload Build Artifacts
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: ctor-artifact
+      #     path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+      #     if-no-files-found: error
           
       - name: Deploy
         id: deploy-to-webapp
