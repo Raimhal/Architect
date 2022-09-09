@@ -1,8 +1,5 @@
-﻿using Ctor.Application.Services;
-using Ctor.Application.Services.Commands;
-using Ctor.Application.Services.Queries;
-using Microsoft.AspNetCore.Mvc;
-using Ctor.Application.Common.Models;
+﻿using Ctor.Application.Common.Models;
+using Ctor.Application.Resources.Commands.DeleteRequiredMaterial;
 using Ctor.Application.Resources.Materials.Commands.CreateMaterialCommand;
 using Ctor.Application.Resources.Materials.Commands.CreateMaterialReport;
 using Ctor.Application.Resources.Materials.Commands.CreateRequiredMaterialsForBuildingCommand;
@@ -11,8 +8,18 @@ using Ctor.Application.Resources.Materials.Queries.GetMaterialTypeQuery;
 using Ctor.Application.Resources.Materials.Queries.GetMeasurementQuery;
 using Ctor.Application.Resources.Queries.GetMaterialQuery;
 using Ctor.Application.Resources.Materials.Queries.GetAllRequiredMaterialsForProject;
+using Ctor.Application.Resources.Queries.GetRequiredMaterials;
+using Ctor.Application.Services;
+using Ctor.Application.Services.Commands;
+using Ctor.Application.Services.Queries;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Ctor.Controllers;
+
+[ApiController]
+[Authorize]
 [Route("api/resources")]
 public class ResourceController : ApiControllerBase
 {
@@ -52,23 +59,27 @@ public class ResourceController : ApiControllerBase
         return Ok(await Mediator.Send(new GetTypesQuery()));
     }
     [HttpGet("materials")]
-    public async Task<ActionResult<PaginationModel<GetMaterialsQueryDto>>> GetListOfMaterials([FromQuery] MaterialPaginationQueryDto queryModel)
+    public async Task<ActionResult<PaginationModel<GetMaterialsQueryDto>>> GetListOfMaterials(
+        [FromQuery] MaterialPaginationQueryDto queryModel)
     {
         return await Mediator.Send(new GetMaterialsQuery(queryModel));
     }
+
     [HttpGet("get-material-type")]
     public async Task<ActionResult> GetListOfMaterialType()
     {
         return Ok(await Mediator.Send(new GetMaterialTypeQuery()));
     }
+
     [HttpGet("get-measurement")]
     public async Task<ActionResult> GetListOfMeasurement()
     {
         return Ok(await Mediator.Send(new GetMeasurementQuery()));
     }
+
     [HttpPost]
     [Route("create")]
-    public async Task<IActionResult> CreateMatial(CreateMaterialCommandDto model)
+    public async Task<IActionResult> CreateMaterial(CreateMaterialCommandDto model)
     {
         if (!ModelState.IsValid) return BadRequest("Model is not valid");
         await Mediator.Send(new CreateMaterialCommand(model));
@@ -77,9 +88,23 @@ public class ResourceController : ApiControllerBase
 
     [HttpGet]
     [Route("available-materials")]
-    public async Task<IActionResult> GetAvailableMaterialsForProject([FromQuery] GetAvailableMaterialsForProjectQuery query)
+    public async Task<IActionResult> GetAvailableMaterialsForProject(
+        [FromQuery] GetAvailableMaterialsForProjectQuery query)
     {
         return Ok(await Mediator.Send(query));
+    }
+
+    [HttpGet("required-materials")]
+    public async Task<ActionResult<GetRequiredMaterialDto>> GetRequiredMaterials(
+        [FromQuery] GetRequiredMaterialsQuery query)
+    {
+        return Ok(await Mediator.Send(query));
+    }
+
+    [HttpDelete("required-materials/{id}")]
+    public async Task<ActionResult<Unit>> DeleteRequiredMaterial([FromRoute] long id)
+    {
+        return Ok(await Mediator.Send(new DeleteRequiredMaterialCommand(id)));
     }
 
     [HttpPost]

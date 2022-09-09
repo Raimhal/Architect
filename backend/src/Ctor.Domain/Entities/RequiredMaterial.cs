@@ -1,6 +1,7 @@
-﻿using Ctor.Domain.Common;
+using Ctor.Domain.Common;
 
 namespace Ctor.Domain.Entities;
+
 public class RequiredMaterial : BaseEntity
 {
     public long BuildingId { get; set; }

@@ -14,8 +14,6 @@ import * as fromAuthSelectors from "../../../store/selectors/auth.selectors";
 import { UserRole } from "../../auth/resources/models/userRole";
 import { MatIconRegistry } from "@angular/material/icon";
 import { DomSanitizer } from "@angular/platform-browser";
-import { environment } from "../../../../environments/environment";
-import { FileService } from 'src/app/core/resources/services/file.service';
 import { ProjectFileService } from "../resources/services/project-file.services";
 
 interface DialogData {
@@ -110,7 +108,14 @@ export class BuildingManagementDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loadMaterials();
     this.loadDocuments();
+  }
+
+  loadMaterials() {
+    this.store.dispatch(fromProjectActions.loadRequiredMaterials({
+      buildingId: this.data.building.id
+    }));
   }
 
   loadDocuments() {
@@ -184,7 +189,7 @@ export class BuildingManagementDialogComponent implements OnInit {
   }
 
   removeMaterial(id: number) {
-    this.store.dispatch(fromProjectActions.deleteBuildingMaterial({ buildingMaterialId: id }));
+    this.store.dispatch(fromProjectActions.deleteRequiredMaterial({ requiredMaterialId: id }));
   }
 
   removeDocument(id: number) {

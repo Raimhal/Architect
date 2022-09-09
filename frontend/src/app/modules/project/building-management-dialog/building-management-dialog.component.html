@@ -103,17 +103,17 @@
         <div class="materials-row" *ngFor="let material of materialsToShow | async">
           <div>
             <span class="material-type">{{material.type}}</span>
-            <span class="material-name">{{material.name}}</span>
+            <span class="material-name">{{material.companyName}}</span>
             <span class="remove-btn" *ngIf="canEdit$ | async" (click)="removeMaterial(material.id)">
             <mat-icon class="hover-icon" svgIcon="trash"></mat-icon>
           </span>
           </div>
           <div class="material-content">
             <span>
-              <span>{{material.amount}}</span>
+              <span>{{material.amount}} {{material.measurement}}</span>
             </span>
             <span class="material-address">
-              <span>{{material.address}}</span>
+              <span>{{material.companyAddress}}</span>
             </span>
           </div>
         </div>

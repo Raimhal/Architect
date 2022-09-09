@@ -330,6 +330,38 @@ export class ProjectEffects {
     );
   });
 
+  loadRequiredBuildingMaterials$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(ProjectActions.loadRequiredMaterials),
+      concatMap((action) =>
+        this.resourceService.getRequiredMaterials(action.buildingId).pipe(
+          map(result =>
+            ProjectActions.loadRequiredMaterialsSuccess({ result: result })
+          ),
+          catchError((error: any) =>
+            of(ProjectActions.loadRequiredMaterialsFailure({ error: serializeError(error) }))
+          )
+        )
+      )
+    );
+  })
+
+  deleteRequiredMaterial$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(ProjectActions.deleteRequiredMaterial),
+      concatMap((action) =>
+        this.resourceService.deleteRequiredMaterial(action.requiredMaterialId).pipe(
+          map(result =>
+            ProjectActions.deleteRequiredMaterialSuccess({ requiredMaterialId: action.requiredMaterialId })
+          ),
+          catchError((error: any) =>
+            of(ProjectActions.deleteRequiredMaterialFailure({ error: serializeError(error) }))
+          )
+        )
+      )
+    );
+  })
+
   loadProjectDocuments$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(ProjectActions.loadProjectDocuments),
@@ -407,7 +439,10 @@ export class ProjectEffects {
       ofType(ProjectActions.saveRequiredMaterials),
       concatMap((action) =>
         this.resourcesService.saveRequiredMaterials(action.materials).pipe(
-            switchMap(res => of(ProjectActions.saveRequiredMaterialsSuccess()) ),
+            switchMap(res => {
+              this.store.dispatch(ProjectActions.loadRequiredMaterials({ buildingId: action.materials[0].buildingId }));
+              return of(ProjectActions.saveRequiredMaterialsSuccess());
+            }),
             catchError((error: any) =>
             of(ProjectActions.saveRequiredMaterialsFailure({ error: serializeError(error) }))
           )
@@ -525,6 +560,7 @@ export class ProjectEffects {
     private actions$: Actions,
     private projectService: ProjectService,
     private projectFileService: ProjectFileService,
+    private resourceService: ResourceApiService,
     private errorService: ErrorService,
     private store: Store<AppState>,
     private buildingService: BuildingApiService,

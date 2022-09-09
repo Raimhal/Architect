@@ -1,6 +1,5 @@
 using System.Reflection;
 using Ctor.Application.Common.Interfaces;
-using Ctor.Domain.Entities;
 using Ctor.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 
@@ -49,7 +48,6 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     public IPhaseStepRepository PhaseSteps => _phaseStepRepository.Value;
 
     public IVendorRepository Vendors => _vendorRepositoryLazy.Value;
-
     public IVendorTypeRepository VendorTypes => _vendorTypeRepositoryLazy.Value;
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IRepositoryFactory repositoryFactory)

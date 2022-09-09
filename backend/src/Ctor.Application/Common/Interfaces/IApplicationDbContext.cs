@@ -13,6 +13,7 @@ public interface IApplicationDbContext
     IProjectPhotoRepository ProjectsPhotos { get; }
     ICompanyLogoRepository CompanyLogos { get; }
     IBuildingBlockRepository BuildingBlocks { get; }
+    IRequiredMaterialRepository RequiredMaterials { get; }
     INotificationRepository Notifications { get; }
     IAssigneeRepository Assignees { get; }
     IProjectDocumentRepository ProjectDocuments { get; }
@@ -20,10 +21,8 @@ public interface IApplicationDbContext
     IMaterialRepository Materials { get; }
     IMaterialTypeRepository MaterialType { get; }
     IMeasurementRepository Measurements { get; }
-    IRequiredMaterialRepository RequiredMaterials { get; }
     IVendorRepository Vendors { get; }
     IVendorTypeRepository VendorTypes { get; }
-
     IPhaseStepRepository PhaseSteps { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);

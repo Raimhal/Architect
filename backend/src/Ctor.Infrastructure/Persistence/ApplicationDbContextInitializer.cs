@@ -280,7 +280,7 @@ public class ApplicationDbContextInitializer
         return Enumerable.Range(0, 3)
             .Select(_ => new Material
             {
-                Amount = _faker.Random.Int(10, 150),
+                Amount = _faker.Random.Int(250, 550),
                 Measurement = _tonsMeasurement,
                 CompanyName = _faker.Company.CompanyName(),
                 CompanyAddress = $"{_faker.Address.City()}, {_faker.Address.StreetAddress()}, {_faker.Address.Country()}",
@@ -329,7 +329,7 @@ public class ApplicationDbContextInitializer
 
                 return new Building
                 {
-                    BuildingName = building.BuildingName,
+                    BuildingName = building.BuildingName, //
                     RequiredMaterials = GenerateRequiredMaterials(materials),
                 };
             })
@@ -346,7 +346,7 @@ public class ApplicationDbContextInitializer
                 return new RequiredMaterial
                 {
                     Material = material, //
-                    Amount = _faker.Random.Long(Math.Min(1, material.Amount), material.Amount),
+                    Amount = _faker.Random.Long(1, 5),
                 };
             })
             .ToArray();

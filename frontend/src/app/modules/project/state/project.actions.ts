@@ -18,6 +18,7 @@ import {IPhase} from "../resources/models/phase.model";
 import {IPhaseStep} from "../resources/models/phase-step.model";
 import { RequiredMaterial } from "../resources/models/project-material/required-material.model";
 import { UsedByProjectMaterial } from '../resources/models/project-material/project-used-material.model';
+import { GetRequiredMaterialsDtoModel } from "../resources/models/get-required-materials-dto.model";
 
 export const getDetailedProject = createAction(
   '[Project Information Component] Load Detailed Project',
@@ -252,17 +253,33 @@ export const setProjectTeamSuccess = createAction(
   '[Project] Set Project Team Success',
 );
 
-export const deleteBuildingMaterial = createAction(
-  '[Building Material] Delete Building Material',
-  props<{ buildingMaterialId: number }>()
+export const loadRequiredMaterials = createAction(
+  '[Building Material] Load Required Materials',
+  props<{ buildingId: number }>()
 );
 
-export const deleteBuildingMaterialSuccess = createAction(
-  '[Building Material] Delete Building Material Success',
+export const loadRequiredMaterialsSuccess = createAction(
+  '[Building Material] Load Required Materials Success',
+  props<{ result: GetRequiredMaterialsDtoModel }>()
 );
 
-export const deleteBuildingMaterialFailure = createAction(
-  '[Building Material] Delete Building Material Failure',
+export const loadRequiredMaterialsFailure = createAction(
+  '[Building Material] Load Required Materials Failure',
+  props<{ error: any }>()
+);
+
+export const deleteRequiredMaterial = createAction(
+  '[Building Material] Delete Required Material',
+  props<{ requiredMaterialId: number }>()
+);
+
+export const deleteRequiredMaterialSuccess = createAction(
+  '[Building Material] Delete Required Material Success',
+  props<{ requiredMaterialId: number }>()
+);
+
+export const deleteRequiredMaterialFailure = createAction(
+  '[Building Material] Delete Required Material Failure',
   props<{ error: any }>()
 );
 

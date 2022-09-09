@@ -1,8 +1,6 @@
-
 import { createReducer, on } from '@ngrx/store';
 import { Order } from '../resources/models/order';
 import { IProjectOverview } from '../resources/models/project-overview';
-import { IProjectPhoto } from '../resources/models/project-photo.model';
 import { createFormGroupState, disable, enable, FormGroupState, onNgrxForms, onNgrxFormsAction, SetValueAction } from 'ngrx-forms';
 import { ProjectStatus } from '../resources/models/status';
 import * as ProjectActions from './project.actions';
@@ -10,11 +8,10 @@ import * as fromProjectInformationForm from "../resources/forms/project-informat
 import { IProjectDetailed } from '../resources/models/project-details';
 import {IBuilding} from "../resources/models/building.model";
 import { IProjectDocument } from '../resources/models/project-documents/project-document.model';
-import { state } from '@angular/animations';
 import {IPhase} from "../resources/models/phase.model";
-import {act} from "@ngrx/effects";
 import { Params } from '../resources/models/params';
 import { UsedByProjectMaterial } from '../resources/models/project-material/project-used-material.model';
+import { GetRequiredMaterialDtoModel } from "../resources/models/get-required-materials-dto.model";
 
 export const projectFeatureKey = 'project';
 
@@ -38,7 +35,7 @@ export interface State {
   } | null,
   error: string,
   currentlyOpenProjectDocuments: IProjectDocument[]
-  currentlyOpenBuildingMaterials: { id: number, name: string, amount: string, address: string, type: string, }[],
+  currentlyOpenBuildingMaterials: GetRequiredMaterialDtoModel[],
   currentlyOpenBuildingServices: { id: 0, name: string, email: string, phoneNumber: string, website: string, type: string, }[],
   phases: IPhase[],
   curentlyOpenProjectMaterials: UsedByProjectMaterial[]
@@ -66,30 +63,7 @@ export const initialState: State = {
   },
   currentlyOpenProjectDocuments: [],
   phases: [],
-  currentlyOpenBuildingMaterials: [
-    // todo: retrieve this from backend
-    {
-      id: 0,
-      name: 'Merchants Ltd',
-      amount: '28 Tons',
-      address: 'Graveland, 1217 EJ Hilversum, Netherlands',
-      type: 'Brick',
-    },
-    {
-      id: 1,
-      name: 'Merchants Ltd',
-      amount: '28 Tons',
-      address: 'Graveland, 1217 EJ Hilversum, Netherlands',
-      type: 'Brick',
-    },
-    {
-      id: 2,
-      name: 'Merchants Ltd',
-      amount: '28 Tons',
-      address: 'Graveland, 1217 EJ Hilversum, Netherlands',
-      type: 'Brick',
-    },
-  ],
+  currentlyOpenBuildingMaterials: [],
   currentlyOpenBuildingServices: [
     // todo: retrieve this from backend
     {
@@ -321,6 +295,24 @@ export const reducer = createReducer(
     return{
       ...state,
       curentlyOpenProjectMaterials: action.materials
+    }
+  }),
+  on(ProjectActions.loadRequiredMaterialsSuccess, (state, action) => {
+    return {
+      ...state,
+      currentlyOpenBuildingMaterials: action.result.requiredMaterials,
+    }
+  }),
+  on(ProjectActions.loadRequiredMaterialsFailure, (state, action) => {
+    return {
+      ...state,
+      currentlyOpenBuildingMaterials: [],
+    }
+  }),
+  on(ProjectActions.deleteRequiredMaterialSuccess, (state, action) => {
+    return{
+      ...state,
+      currentlyOpenBuildingMaterials: state.currentlyOpenBuildingMaterials.filter(m => m.id != action.requiredMaterialId)
     }
   }),
 );
