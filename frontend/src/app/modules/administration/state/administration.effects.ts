@@ -23,6 +23,7 @@ import {AddMemberFailureComponent} from "../add-member-failure/add-member-failur
 import {AdministrationFileService} from "../resources/services/administration-file.service";
 import {selectCompanyId} from "./administration.selectors";
 import { HttpErrorResponse } from '@angular/common/http';
+import { NotificationService } from 'src/app/shared/services/notification.service';
 @Injectable()
 export class AdministrationEffects {
   getAllCompaniesWithParams$ = createEffect(() => {
@@ -287,6 +288,16 @@ export class AdministrationEffects {
     )
   });
 
+
+  initStart$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AdministrationActions.GetUserDetailsSuccess),
+      tap(() =>
+        this.notifService.startService()
+      )
+    ),
+    { dispatch: false });
+
   getUserDetails$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(AuthorizationActions.loginSuccess,
@@ -319,7 +330,8 @@ export class AdministrationEffects {
     private actions$: Actions,
     private service: AdministrationApiService,
     private fileService: AdministrationFileService,
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private notifService: NotificationService
   ) {
   }
 }
