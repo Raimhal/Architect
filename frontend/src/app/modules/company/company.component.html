@@ -3,10 +3,10 @@
   <div class="columns">
     <div class="company-info" *ngIf="company$ | async as company">
       <div class="logo-container">
-        <img [src]="company.image">
+        <img [src]="getImage(company.image)">
         <div class="logo-controls">
           <button *ngIf="!isLogoEmpty(company.image)" mat-icon-button
-                  (click)="this.editLogo(company.image, company.id)">
+                  (click)="this.editLogo(getImage(company.image), company.id)">
             <mat-icon svgIcon="pencil"></mat-icon>
           </button>
           <input

@@ -13,15 +13,7 @@
         <img
           class="logo-img"
           alt="Logo"
-          src="../../../../assets/dummy.png"
-          (click)="selectImage.click()"
-        />
-        <input
-          class="logo-input"
-          type="file"
-          accept="image/png, image/jpeg"
-          (change)="uploadImage(company.id, $event)"
-          #selectImage
+          [src]="getImage(company.image)"
         />
       </div>
 

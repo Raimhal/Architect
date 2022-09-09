@@ -28,9 +28,8 @@ public class GetCompanyByIdQueryHandler : IRequestHandler<GetCompanyByIdQuery, C
     public async Task<CompanyDetailedResponseDto> Handle(GetCompanyByIdQuery request,
         CancellationToken cancellationToken)
     {
-        var company = await _context.Companies.GetById(request.Id);
+        var company = await _context.Companies.GetById<CompanyDetailedResponseDto>(request.Id, cancellationToken);
         if (company == null) throw new NotFoundException("No such company was found");
-        var companyResult = _mapper.Map<Company, CompanyDetailedResponseDto>(company);
-        return companyResult;
+        return company;
     }
 }

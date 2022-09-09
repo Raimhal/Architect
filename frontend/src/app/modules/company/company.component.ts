@@ -14,6 +14,7 @@ import {CompanyProfileFormValue} from "./recources/forms/company-profile-form";
 import { openModalDialog } from 'src/app/store/actions/modal-dialog.action';
 import { CompanyImageCropComponent } from './company-image-crop/company-image-crop.component';
 import { CompanyFileService } from './recources/services/company-file.service';
+import { getImageLink } from '../administration/resources/utils';
 
 @Component({
   selector: 'app-company',
@@ -88,5 +89,9 @@ export class CompanyComponent implements OnInit {
 
   isLogoEmpty(logo: string){
     return logo === '';
+  }
+
+  getImage(image: string){
+    return getImageLink(image);
   }
 }

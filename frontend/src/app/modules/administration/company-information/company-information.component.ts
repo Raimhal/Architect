@@ -26,6 +26,7 @@ import {AdministrationFileService} from "../resources/services/administration-fi
 import {MatDialog} from "@angular/material/dialog";
 import { navigate } from 'src/app/store/actions/route.actions';
 import { environment } from 'src/environments/environment';
+import { getImageLink } from '../resources/utils';
 @Component({
   selector: 'app-company-information',
   templateUrl: './company-information.component.html',
@@ -100,16 +101,6 @@ export class CompanyInformationComponent implements OnInit {
     );
   }
 
-  uploadImage(id: number, event: Event) {
-    // const target = event.target as HTMLInputElement;
-    // if (target.files !== null) {
-    // 	const file = target.files[0];
-    // 	this.store.dispatch(
-    // 		fromAdministrationActions.UploadCompanyImage({ id: id, image: file })
-    // 	);
-    // }
-  }
-
   addSvgIcons() {
     this.matIconRegistry.addSvgIcon(
       'arrow_left',
@@ -153,6 +144,9 @@ export class CompanyInformationComponent implements OnInit {
     return status.replace( /([A-Z])/g, " $1" )
   }
 
+  getImage(image: string){
+    return getImageLink(image)
+  }
   @ViewChild('hiddenfileinput') hiddenFileInput?: ElementRef
   async onFileSelect(files:FileList|null, companyId: number) {
     if (files) {

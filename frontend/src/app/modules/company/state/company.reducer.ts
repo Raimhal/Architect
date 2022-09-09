@@ -95,7 +95,7 @@ export const reducer = createReducer(
       ...state,
       company: {
         ...state.company,
-        image:`${environment.filesBaseUrl}/${action.logo.link}` 
+        image: action.logo.link 
       }
     }
   }),

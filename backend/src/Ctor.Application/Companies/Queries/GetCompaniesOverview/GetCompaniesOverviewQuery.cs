@@ -32,8 +32,8 @@ public class GetCompaniesOverviewQueryHandler : IRequestHandler<GetCompaniesOver
             filterPredicate = company => company.CompanyName.ToLower().StartsWith(request.Filter.ToLower());
         }
 
-        var companies = await _context.Companies.GetOrdered(request.Sort, Order.ASC, filterPredicate);
+        var companies = await _context.Companies.GetOrdered<CompanyOverviewDto>(request.Sort, Order.ASC, filterPredicate);
 
-        return _mapper.Map<List<CompanyOverviewDto>>(companies);
+        return companies;
     }
 }

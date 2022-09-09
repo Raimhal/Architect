@@ -14,6 +14,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {CardInformation} from "../../../shared/components/card/card.component";
 import {CreateCompany} from "../create-company/create-company.component";
 import {openMenu, revealMenu, setMenuLinks} from "../../../store/actions/menu.actions";
+import { getImageLink } from '../resources/utils';
 
 @Component({
   selector: 'app-company-list',
@@ -79,7 +80,7 @@ export class CompanyListComponent implements OnInit {
     return {
       title: company.companyName,
       subtitle: `${company.country}, ${company.city}, ${company.address}`,
-      image: company.image,
+      image: getImageLink(company.image),
       date: company.joinDate,
     } as CardInformation;
   }

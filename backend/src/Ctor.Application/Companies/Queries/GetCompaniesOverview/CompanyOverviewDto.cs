@@ -17,11 +17,12 @@ public class CompanyOverviewDto : IMapFrom<Company>
     public string Address { get; set; } = string.Empty;
     public string Image { get; set; } = string.Empty;
     public string JoinDate { get; set; } = string.Empty;
-
+    
     public void Mapping(Profile profile) 
     {
         profile.CreateMap<Company, CompanyOverviewDto>()
-            .ForMember(dest => dest.JoinDate, opt => opt.MapFrom(src => src.JoinDate.ToString("dd.MM.yyyy")));
+            .ForMember(dest => dest.JoinDate, opt => opt.MapFrom(src => src.JoinDate.ToString("dd.MM.yyyy")))
+            .ForMember(dest=>dest.Image, opt => opt.MapFrom(src => src.CompanyLogo == null ? "" : src.CompanyLogo.Link));
     }
 
 }
