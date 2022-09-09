@@ -56,11 +56,11 @@ class Receiver : IReceiver {
                 data["materials"] = materials
                 data["company"] = company
                 data["companyImage"] = image
-                val pdfName = "${UUID.randomUUID()}.pdf"
+                val pdfName = "report_${UUID.randomUUID()}.pdf"
                 val path = pdfCreator.generatePdfFile("report", data, pdfName)
                 dataService.addReport(pdfName, path
                     .replace("\\", "\\\\"), path.replace("\\", "/"), message.ProjectId)
-                bus.push(ReportCreatedEvent(message.ProjectId))
+                bus.push(ReportCreatedEvent(message.ProjectId, message.UserId))
             } else {
                 throw IllegalArgumentException("No company for this projectId exists")
             }

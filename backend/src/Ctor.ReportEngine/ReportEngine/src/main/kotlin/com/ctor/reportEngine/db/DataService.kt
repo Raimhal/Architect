@@ -29,7 +29,7 @@ class DataService :IDataService {
     }
 
     override fun addReport(pdfName: String, Path: String, Link: String, ProjectId: Long) {
-        val document = Document(pdfName, Path.replace("\\", "\\\\"), path.replace("\\", "/"))
+        val document = Document(pdfName, Path, Link)
         projectDocumentInsertRepository.insertDocumentWithEntityManager(document)
         val projectDocument =  ProjectDocument(
             ProjectId,

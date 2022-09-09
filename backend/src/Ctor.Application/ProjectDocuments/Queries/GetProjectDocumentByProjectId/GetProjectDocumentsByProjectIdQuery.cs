@@ -30,7 +30,7 @@ public class
         string query = request.QueryModel.Query;
         Expression<Func<ProjectDocument, bool>> queryPredicate = document =>
             (string.IsNullOrEmpty(query) || document.Document.Name.ToLower().Contains(query))
-            && (!request.BuildingId.HasValue || document.BuildingId == request.BuildingId);
+            && ((!request.BuildingId.HasValue || document.BuildingId == request.BuildingId) && (!document.ProjectId.HasValue || request.ProjectId == document.ProjectId));
 
         var projectDocuments =
             await _context.ProjectDocuments.GetOrdered<GetProjectDocumentByProjectIdResponseDto>(

@@ -294,5 +294,11 @@ export const reducer = createReducer(
       ...state,
       error: action.error
     }
+  }),
+  on(ProjectActions.createReportFailure, (state, action)=>{
+    return{
+      ...state,
+      erro:action.error
+    }
   })
 );

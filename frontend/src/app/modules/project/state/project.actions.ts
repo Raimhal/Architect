@@ -356,3 +356,17 @@ export const saveRequiredMaterialsFailure = createAction(
   '[Add Building Material] Save Required Materials Failure',
   props<{ error: any }>()
 )
+
+export const createReport = createAction(
+  '[Project Dashboard] Create Project Report',
+  props<{ projectId: number }>()
+)
+
+export const createReportSuccess = createAction(
+  '[Project Dashboard] Create Project Report Success',
+)
+
+export const createReportFailure = createAction(
+  '[Project Dashboard] Create Project Report Failure',
+  props<{ error: any }>()
+)

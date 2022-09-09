@@ -4,6 +4,7 @@ using Ctor.Application.Services.Queries;
 using Microsoft.AspNetCore.Mvc;
 using Ctor.Application.Common.Models;
 using Ctor.Application.Resources.Materials.Commands.CreateMaterialCommand;
+using Ctor.Application.Resources.Materials.Commands.CreateMaterialReport;
 using Ctor.Application.Resources.Materials.Commands.CreateRequiredMaterialsForBuildingCommand;
 using Ctor.Application.Resources.Materials.Queries.GetAvailableMaterialsForProjectQuery;
 using Ctor.Application.Resources.Materials.Queries.GetMaterialTypeQuery;
@@ -86,5 +87,11 @@ public class ResourceController : ApiControllerBase
     {
         await Mediator.Send(new CreateRequiredMaterialsForBuildingCommand(materials));
         return StatusCode(201);
+    }
+
+    [HttpPost("create-report/{projectId:long}")]
+    public async Task<ActionResult> CreateReportForProject(long projectId)
+    {
+        return Ok(await Mediator.Send(new CreateMaterialReportCommand(projectId)));
     }
 }

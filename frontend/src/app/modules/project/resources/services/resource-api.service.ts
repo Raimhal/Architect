@@ -11,7 +11,7 @@ import { RequiredMaterial } from '../models/project-material/required-material.m
 })
 export class ResourceApiService extends ApiService {
 
-  apiPath = '/Resource'
+  apiPath = '/resources'
 
   constructor(http: HttpClient) {
     super(http);
@@ -23,5 +23,9 @@ export class ResourceApiService extends ApiService {
 
   saveRequiredMaterials(materials: RequiredMaterial[]) : Observable<void> {
     return this.post<void>(`${this.apiPath}/save-required`, materials);
+  }
+
+  createReport(projectId: number) : Observable<void>{
+    return this.post<void>(`${this.apiPath}/create-report/${projectId}`, null)
   }
 }

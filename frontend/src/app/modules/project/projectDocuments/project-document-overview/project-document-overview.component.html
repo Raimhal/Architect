@@ -1,5 +1,5 @@
 <div [ngClass]="menuClicked ? 'clicked' : ''"class="container" *ngIf="projectDocument">
-  <img class="img"  src='{{ "../../../../../assets/images/" + this.getFileExtension(projectDocument.link) + "File.png" }}'/>
+  <img class="img"  src='{{ "../../../../../assets/images/" + getFileExtension(projectDocument.link) + "File.png" }}'/>
   <div class="information">
     <h4 class="information_header">{{projectDocument.buildingName}}</h4>  
     <p>{{projectDocument.fileName}}</p>

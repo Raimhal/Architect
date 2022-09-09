@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
+  apiHostWithHttp: 'https://localhost:7271',
   apiHost: 'localhost:7271',
   apiBaseUrl: 'https://localhost:7271/api',
   filesBaseUrl: 'https://localhost:7271/files',

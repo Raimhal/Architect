@@ -298,6 +298,16 @@ export class AlertEffects {
           { dispatch: false }
         )
 
+        createReportFail = createEffect(
+          () =>
+            this.actions$.pipe(
+              ofType(fromProjectActions.createReportFailure),
+              tap(() => {
+                this._alertService.showAlert("Failed to create report", "OK", "error")
+              })
+            ),
+          { dispatch: false }
+        )
   constructor(private actions$: Actions, private _alertService: AlertService, private errorService: ErrorService) {
   }
 }

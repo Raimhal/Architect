@@ -91,6 +91,9 @@ export class ProjectDashboardComponent implements OnInit {
 
   onSearchQuery(event:string, projectId: number){
     this.store.dispatch(fromProjectActions.loadProjectDocuments({projectId: projectId, query: event, sort: 'created'}))
+  }
 
+  onCreateReport(projectId: number){
+    this.store.dispatch(fromProjectActions.createReport({projectId: projectId}))
   }
 }

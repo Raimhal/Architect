@@ -41,8 +41,8 @@ class RabbitMqBus(
     @PostConstruct
     fun declareQueues() {
         val ampqAdmin = amqpAdmin()
-        ampqAdmin.declareQueue(Queue(subscribeQueueName, true))
-        ampqAdmin.declareQueue(Queue(pushQueueName, true))
+        ampqAdmin.declareQueue(Queue(subscribeQueueName, false))
+        ampqAdmin.declareQueue(Queue(pushQueueName, false))
     }
 
     override fun push(report: ReportCreatedEvent) {

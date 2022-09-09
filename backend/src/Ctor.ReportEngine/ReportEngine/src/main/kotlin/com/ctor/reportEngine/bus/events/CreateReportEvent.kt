@@ -1,4 +1,4 @@
 package com.ctor.reportEngine.bus.events
 
-class CreateReportEvent(var CompanyId: Long, var ProjectId: Long): Event(CreateReportEvent::class.java.simpleName) {
+class CreateReportEvent(var ProjectId: Long, var UserId: Long): Event(CreateReportEvent::class.java.simpleName) {
 }

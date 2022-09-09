@@ -25,7 +25,7 @@
 
     </ng-container>
   </header>
-  <div class="documentsFilter" *ngIf="matTabGroup.selectedIndex === 4">
+  <div class="documentsFilter tab-lvl" *ngIf="matTabGroup.selectedIndex === 4">
     <div mat-icon-button class="sortMenu" [matMenuTriggerFor]="sortMenu" aria-label="Example icon-button with a menu">
         <mat-icon svgIcon="sort"></mat-icon>
     </div>
@@ -36,12 +36,15 @@
     <app-filter-input (onSearchQuery)="onSearchQuery($event, project.id)"></app-filter-input>
   </div>
 
+  <app-button class="tab-lvl" *ngIf="matTabGroup.selectedIndex===2" (click)="onCreateReport(project.id)">Create report for project</app-button>
+
   <mat-tab-group #matTabGroup (selectedTabChange)="tabChanged($event, project)">
     <mat-tab label="Description">
       <app-project-description [projectId]="currentProjectId"></app-project-description>
     </mat-tab>
     <mat-tab label="Timeline">time</mat-tab>
-    <mat-tab label="Recourses">Rec</mat-tab>
+    <mat-tab label="Recourses">
+    </mat-tab>
     <mat-tab label="Budget">Budg</mat-tab>
     <mat-tab label="Document">
       <app-project-documents></app-project-documents>

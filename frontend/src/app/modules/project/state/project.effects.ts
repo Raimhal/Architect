@@ -415,6 +415,20 @@ export class ProjectEffects {
     )
   })
 
+  createReport$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(ProjectActions.createReport),
+      concatMap((action) =>
+        this.resourcesService.createReport(action.projectId).pipe(
+          map(() => ProjectActions.createReportSuccess()),
+          catchError((error: any) =>
+            of(ProjectActions.createReportFailure({ error: serializeError(error) }))
+          )
+        )
+      )
+    );
+  });
+
   constructor(
     private actions$: Actions,
     private projectService: ProjectService,

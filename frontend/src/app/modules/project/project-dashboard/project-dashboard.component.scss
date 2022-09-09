@@ -55,12 +55,13 @@
   }
 
 }
-
-.documentsFilter{
-  display:flex;
+.tab-lvl{
   position: absolute;
   z-index: 1000;
   left: 70%;
+}
+.documentsFilter{
+  display:flex;
   gap: 10px;
   align-items: center;
   *:hover {
