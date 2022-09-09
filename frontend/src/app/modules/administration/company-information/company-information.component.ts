@@ -79,7 +79,7 @@ export class CompanyInformationComponent implements OnInit {
   }
 
   getFullImageUrl(imageUrl: string) {
-    return `${environment.filesBaseUrl}/${imageUrl}`
+    return imageUrl.includes("http") ? imageUrl : `${environment.filesBaseUrl}/${imageUrl}`
   }
 
   onFormEdit() {
