@@ -85,3 +85,8 @@ export const selectBuildingServices = createSelector(
   selectProjectState,
   (state) => state.currentlyOpenBuildingServices
 )
+
+export const selectUsedForProjectMaterials = createSelector(
+  selectProjectState,
+  (state) => state.curentlyOpenProjectMaterials
+)

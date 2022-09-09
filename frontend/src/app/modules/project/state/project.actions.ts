@@ -17,7 +17,7 @@ import { IProjectDocumentUpdate } from '../resources/models/project-documents/pr
 import {IPhase} from "../resources/models/phase.model";
 import {IPhaseStep} from "../resources/models/phase-step.model";
 import { RequiredMaterial } from "../resources/models/project-material/required-material.model";
-
+import { UsedByProjectMaterial } from '../resources/models/project-material/project-used-material.model';
 
 export const getDetailedProject = createAction(
   '[Project Information Component] Load Detailed Project',
@@ -424,5 +424,20 @@ export const createReportSuccess = createAction(
 
 export const createReportFailure = createAction(
   '[Project Dashboard] Create Project Report Failure',
+  props<{ error: any }>()
+)
+
+export const loadUsedForProjectResources = createAction(
+  '[Project Materials] Load Used For Project Resources',
+  props<{ projectId: number, sort: string, filter: string }>()
+)
+
+export const loadUsedForProjectResourcesSuccess = createAction(
+  '[Project Materials] Load Used For Project Resources Success',
+  props<{ materials: UsedByProjectMaterial[] }>()
+)
+
+export const loadUsedForProjectResourcesFailure = createAction(
+  '[Project Materials] Load Used For Project Resources Failure',
   props<{ error: any }>()
 )

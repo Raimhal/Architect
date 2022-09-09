@@ -89,6 +89,9 @@ export class ProjectDashboardComponent implements OnInit {
     if(event.index === 4){
       this.store.dispatch(fromProjectActions.loadProjectDocuments({projectId: project.id, query:'', sort: 'created'}))
     }
+    if(event.index == 2){
+      this.store.dispatch(fromProjectActions.loadUsedForProjectResources({projectId: project.id, sort:'', filter:''}))
+    }
   }
 
   sortDocumentsByNew(projectId: number){

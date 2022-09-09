@@ -53,6 +53,7 @@ import {
   AddBuildingDocumentOverlay
 } from "./building-management-dialog/add-building-document-overlay/add-building-document-overlay.component";
 import { AddBuildingMaterialOverlay } from "./building-management-dialog/add-building-material-overlay/add-building-material-overlay.component"
+import { ProjectMaterialsComponent } from './project-materials/project-materials.component';
 
 @NgModule({
   imports: [
@@ -104,6 +105,7 @@ import { AddBuildingMaterialOverlay } from "./building-management-dialog/add-bui
     AddBuildingDocumentOverlay,
     AddBuildingMaterialOverlay,
     AddPhaseDialogComponent,
+    ProjectMaterialsComponent,
   ],
   providers: [
     ResizeService,

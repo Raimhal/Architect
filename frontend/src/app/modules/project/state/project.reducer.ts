@@ -14,6 +14,7 @@ import { state } from '@angular/animations';
 import {IPhase} from "../resources/models/phase.model";
 import {act} from "@ngrx/effects";
 import { Params } from '../resources/models/params';
+import { UsedByProjectMaterial } from '../resources/models/project-material/project-used-material.model';
 
 export const projectFeatureKey = 'project';
 
@@ -39,7 +40,8 @@ export interface State {
   currentlyOpenProjectDocuments: IProjectDocument[]
   currentlyOpenBuildingMaterials: { id: number, name: string, amount: string, address: string, type: string, }[],
   currentlyOpenBuildingServices: { id: 0, name: string, email: string, phoneNumber: string, website: string, type: string, }[],
-  phases: IPhase[]
+  phases: IPhase[],
+  curentlyOpenProjectMaterials: UsedByProjectMaterial[]
 }
 
 export const initialState: State = {
@@ -115,6 +117,7 @@ export const initialState: State = {
       type: 'Internet',
     },
   ],
+  curentlyOpenProjectMaterials: []
 };
 
 export const reducer = createReducer(
@@ -313,5 +316,11 @@ export const reducer = createReducer(
       ...state,
       erro:action.error
     }
-  })
+  }),
+  on(ProjectActions.loadUsedForProjectResourcesSuccess, (state, action) => {
+    return{
+      ...state,
+      curentlyOpenProjectMaterials: action.materials
+    }
+  }),
 );

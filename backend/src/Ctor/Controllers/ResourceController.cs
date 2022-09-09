@@ -10,6 +10,7 @@ using Ctor.Application.Resources.Materials.Queries.GetAvailableMaterialsForProje
 using Ctor.Application.Resources.Materials.Queries.GetMaterialTypeQuery;
 using Ctor.Application.Resources.Materials.Queries.GetMeasurementQuery;
 using Ctor.Application.Resources.Queries.GetMaterialQuery;
+using Ctor.Application.Resources.Materials.Queries.GetAllRequiredMaterialsForProject;
 
 namespace Ctor.Controllers;
 [Route("api/resources")]
@@ -93,5 +94,12 @@ public class ResourceController : ApiControllerBase
     public async Task<ActionResult> CreateReportForProject(long projectId)
     {
         return Ok(await Mediator.Send(new CreateMaterialReportCommand(projectId)));
+    }
+
+    [HttpGet]
+    [Route("materials-of-project")]
+    public async Task<ActionResult<List<GetAllRequiredMaterialsForProjectDto>>> GetAllRequiredMaterialsForProject([FromQuery] GetAllRequiredMaterialsForProjectQuery query)
+    {
+        return Ok(await Mediator.Send(query));
     }
 }

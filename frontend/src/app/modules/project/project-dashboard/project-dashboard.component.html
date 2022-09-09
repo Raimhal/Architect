@@ -45,7 +45,9 @@
     <mat-tab label="Timeline">
       <app-timeline></app-timeline>
     </mat-tab>
-    <mat-tab label="Recourses">Rec</mat-tab>
+    <mat-tab label="Recourses">
+      <app-project-materials [projectId]="currentProjectId"></app-project-materials>
+    </mat-tab>
     <mat-tab label="Budget">Budg</mat-tab>
     <mat-tab label="Document">
       <app-project-documents></app-project-documents>

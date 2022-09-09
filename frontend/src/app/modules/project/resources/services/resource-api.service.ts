@@ -5,6 +5,7 @@ import {Observable} from "rxjs";
 import {IBuilding} from "../models/building.model";
 import { AvailableMaterial } from '../models/project-material/available-material.model';
 import { RequiredMaterial } from '../models/project-material/required-material.model';
+import { UsedByProjectMaterial } from '../models/project-material/project-used-material.model'
 
 @Injectable({
   providedIn: 'root'
@@ -27,5 +28,9 @@ export class ResourceApiService extends ApiService {
 
   createReport(projectId: number) : Observable<void>{
     return this.post<void>(`${this.apiPath}/create-report/${projectId}`, null)
+  }
+
+  getAllUsedMaterials(projectid: number, filter: string | null, sort: string | null): Observable<UsedByProjectMaterial[]>{
+    return this.get<UsedByProjectMaterial[]>(`${this.apiPath}/materials-of-project?&projectid=${projectid}&filter=${filter ?? ''}&sort=${sort ?? 'role'}`);
   }
 }

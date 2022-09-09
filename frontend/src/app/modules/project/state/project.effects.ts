@@ -503,6 +503,24 @@ export class ProjectEffects {
     );
   });
 
+  initiallyLoadResources$ = createEffect(() =>
+  this.actions$.pipe(
+    ofType(ProjectActions.getDetailedProjectSuccess),
+    map((action) => ProjectActions.loadUsedForProjectResources({projectId: action.data.id , sort: "", filter: ""}))
+  ));
+
+  loadingUsedMaterials$ = createEffect(() =>
+      this.actions$.pipe(
+        ofType(ProjectActions.loadUsedForProjectResources),
+        mergeMap((action) => 
+          this.resourcesService.getAllUsedMaterials( action.projectId , action.filter, action.sort).pipe(
+            map((res) => ProjectActions.loadUsedForProjectResourcesSuccess({ materials: res })),
+            catchError(error => of(ProjectActions.loadUsedForProjectResourcesFailure({ error: serializeError(error) })))
+          )
+        )
+      )
+  );
+
   constructor(
     private actions$: Actions,
     private projectService: ProjectService,
