@@ -5,13 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using Ctor.Application.Common.Interfaces;
+using Ctor.Application.Projects.Queries.GetProjectsQuery;
 using MediatR;
 
 namespace Ctor.Application.Projects.Queries.GetProjectsByCompanyId;
-public record GetProjectsByCompanyIdQuery(long Id) : IRequest<List<ProjectBriefDto>>;
+public record GetProjectsByCompanyIdQuery(long Id) : IRequest<List<ProjectOverviewDto>>;
 
 
-public class GetProjectsByCompanyIdQueryHandler : IRequestHandler<GetProjectsByCompanyIdQuery, List<ProjectBriefDto>>
+public class GetProjectsByCompanyIdQueryHandler : IRequestHandler<GetProjectsByCompanyIdQuery, List<ProjectOverviewDto>>
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
@@ -22,9 +23,8 @@ public class GetProjectsByCompanyIdQueryHandler : IRequestHandler<GetProjectsByC
         _mapper = mapper;
     }
 
-    public async Task<List<ProjectBriefDto>> Handle(GetProjectsByCompanyIdQuery request, CancellationToken cancellationToken)
+    public async Task<List<ProjectOverviewDto>> Handle(GetProjectsByCompanyIdQuery request, CancellationToken cancellationToken)
     {
-        var projects = await _context.Projects.Get(p => p.CompanyId == request.Id);
-        return _mapper.Map<List<ProjectBriefDto>>(projects);
+        return await _context.Projects.Get<ProjectOverviewDto>(p => p.CompanyId == request.Id);
     }
 }

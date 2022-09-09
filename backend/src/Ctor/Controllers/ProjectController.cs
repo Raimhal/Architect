@@ -43,7 +43,7 @@ public class ProjectController : ApiControllerBase
     }
 
     [HttpGet("company/{id}")]
-    public async Task<ActionResult<List<ProjectBriefDto>>> GetProjectsByCompanyId([FromRoute] long id)
+    public async Task<ActionResult<List<ProjectOverviewDto>>> GetProjectsByCompanyId([FromRoute] long id)
     {
         return await Mediator.Send(new GetProjectsByCompanyIdQuery(id));
     }

@@ -16,7 +16,6 @@ public class ProjectBriefDto : IMapFrom<Project>
     public string Description { get; set; } = string.Empty;
     public string Status { get; set; } = string.Empty;
 
-
     public void Mapping(Profile profile)
     {
         profile.CreateMap<Project, ProjectBriefDto>()

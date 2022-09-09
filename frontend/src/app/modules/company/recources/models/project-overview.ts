@@ -3,5 +3,6 @@ export interface IProjectOverview {
   projectName: string,
   address: string,
   status: string,
-  description: string
+  description: string,
+  imageUrl: string
 }

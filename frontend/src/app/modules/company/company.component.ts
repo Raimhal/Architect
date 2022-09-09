@@ -15,6 +15,7 @@ import { openModalDialog } from 'src/app/store/actions/modal-dialog.action';
 import { CompanyImageCropComponent } from './company-image-crop/company-image-crop.component';
 import { CompanyFileService } from './recources/services/company-file.service';
 import { getImageLink } from '../administration/resources/utils';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-company',
@@ -49,6 +50,10 @@ export class CompanyComponent implements OnInit {
 
   enableEditing() {
     this.store.dispatch(fromCompanyActions.enableEditingCompanyProfileForm());
+  }
+
+  getFullImageUrl(imageUrl: string) {
+    return !imageUrl ?  `assets/images/placeholder.jpg` : imageUrl.includes("http") ? imageUrl : `${environment.filesBaseUrl}/${imageUrl}`
   }
 
   disableEditing() {

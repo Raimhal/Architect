@@ -85,7 +85,7 @@
         <span class="selected-text1">Projects</span>
       </div>
       <div class="project-info" *ngFor="let project of projects$ | async">
-        <img>
+        <img [src]="getFullImageUrl(project.imageUrl)">
         <div class="project-info-container">
           <h3>{{project.projectName}}</h3>
           <div class="project-info-container-subheader">{{project.address}}</div>
