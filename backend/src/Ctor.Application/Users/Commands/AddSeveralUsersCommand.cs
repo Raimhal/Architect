@@ -76,7 +76,7 @@ public class AddSeveralUsersCommandHandler : IRequestHandler<AddSeveralUsersComm
                     Email = member.UserEmail,
                     Name = string.Format("{0} {1}", member.FirstName, member.LastName)
                 }, password);
-            string hashedPassword = _securityService.ComputeSha256Hash(password);            
+            string hashedPassword = password;//_securityService.ComputeSha256Hash(password);            
             users.Add(new User
             {
                 FirstName = member.FirstName,
@@ -93,7 +93,7 @@ public class AddSeveralUsersCommandHandler : IRequestHandler<AddSeveralUsersComm
         foreach(var email in emails.Keys)
         {
             string password = emails.GetValueOrDefault(email);
-            //await _email.SendAsync(new List<EmailDTO>() {email}, "Password for your new account!", password, $"<h2>{password}</h2>");
+            await _email.SendAsync(new List<EmailDTO>() {email}, "Password for your new account!", password, $"<h2>{password}</h2>");
         }
         return errorLines;
     }
