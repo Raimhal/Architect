@@ -40,7 +40,7 @@ using (var scope = app.Services.CreateScope())
 
 app.UseHealthChecks("/health");
 
-string[] origins = {"http://localhost:4200", "https://thankful-sand-0d354de03.1.azurestaticapps.net"};
+string[] origins = {"http://localhost:4200", "http://localhost:3000", "https://thankful-sand-0d354de03.1.azurestaticapps.net"};
 
 app.UseCors(builder => builder
     .AllowAnyOrigin()

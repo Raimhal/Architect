@@ -23,7 +23,14 @@ export class AuthService extends ApiService {
   }
 
   refreshToken(accessToken: string, refreshToken: string): Observable<RefreshTokenDto | null> {
-    return this.post<RefreshTokenDto>('/auth/refresh-token', { accessToken, refreshToken });
+    try{
+      return this.post<RefreshTokenDto>('/auth/refresh-token', { accessToken, refreshToken });
+    }
+    catch(error: any){
+      console.log(error)
+      return new Observable<null>
+    }
+    
   }
 
   keepDefaultPassword(): Observable<{} | null> {

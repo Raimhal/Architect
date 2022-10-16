@@ -60,8 +60,8 @@ import {ManageResourcesModule} from "./modules/manage-resources/manage-resources
       runtimeChecks: {
         strictStateImmutability: true,
         strictActionImmutability: false,
-        strictStateSerializability: true,
-        strictActionSerializability: true,
+        strictStateSerializability: false,
+        strictActionSerializability: false,
         strictActionWithinNgZone: true,
         strictActionTypeUniqueness: true,
       }

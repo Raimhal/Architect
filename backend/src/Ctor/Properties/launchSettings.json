@@ -25,6 +25,13 @@
         "ApiKey": "3eb0973e41ecf8616b393bed6d864984",
         "ApiSecret": "14f82d013b1112eae05dd21932819581"
       }
+    },
+    "Docker": {
+      "commandName": "Docker",
+      "launchBrowser": true,
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
+      "publishAllPorts": true,
+      "useSSL": true
     }
   },
   "iisSettings": {

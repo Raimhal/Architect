@@ -45,11 +45,7 @@ export class TokenService {
   getAccessToken(): string {
     const token = this.getAccessTokenOrNull();
 
-    if (!token) {
-      throw new Error('No access token found');
-    }
-
-    return token;
+    return token as string;
   }
 
   // here
@@ -60,6 +56,10 @@ export class TokenService {
   // here
   getAccessTokenData(): { id: number, role: UserRole, expires: Date } {
     const token = this.getAccessToken();
+    
+    if (!token) 
+      throw new Error('No access token found');
+    
     const tokenData = this.jwtHelper.decodeToken(token);
 
     const userRoleKeyEnum = tokenData.role as keyof typeof UserRole;    
@@ -90,7 +90,9 @@ export class TokenService {
   // here
   isAccessTokenExpired(): boolean {
     const token = this.getAccessTokenOrNull();
-    return token !== null && this.jwtHelper.isTokenExpired(token);
+    if (!token)
+      return true
+    return this.jwtHelper.isTokenExpired(token);
   }
 
   // here

@@ -35,6 +35,7 @@ export class AuthEffects {
             );
 
             const tokenData = this.tokenService.getAccessTokenData();
+            console.log("without error")
 
             return fromAuthActions.loginSuccess({
               user: {
@@ -92,7 +93,7 @@ export class AuthEffects {
 
             this.tokenService.setAccessToken(response!.token);
             const tokenData = this.tokenService.getAccessTokenData();
-            const expires = response!.expires.toString();
+            console.log(tokenData)
 
             return fromAuthActions.refreshAccessTokenSuccess({
               token: response!.token,
@@ -114,32 +115,29 @@ export class AuthEffects {
     return this.actions$.pipe(
       ofType(fromAuthActions.refreshTokensIfNeeded),
       map((action) => {
-        var tokenData = this.tokenService.getAccessTokenData();
+        var tokenData = null;
+        try{
+          tokenData = this.tokenService.getAccessTokenData()
+        }
+        catch{
+          return RouteActions.navigate({ commands: ['/login'] })
+        }
+        
         const isAuth = action.requiredLogin;
 
-          if (!tokenData) {
-            if (isAuth) {
-              this.tokenService.removeTokens()
-              RouteActions.navigate({ commands: ['/'] })
-            }
+        if (!tokenData) {
+          if (isAuth) {
+            this.tokenService.removeTokens()
+            return RouteActions.navigate({ commands: ['/'] })
           }
-  
-          if (!this.tokenService.isAccessTokenExpired()) {
-            fromAuthActions.refreshAccessTokenSuccess({
-              token: this.tokenService.getRefreshToken()!.token,
-              user: {
-                id: tokenData.id,
-                role: tokenData.role
-              }
-            })
-          }
-  
-          if (this.tokenService.isRefreshTokenExpired()) {
-            fromAuthActions.logout()
-            RouteActions.navigate({ commands: ['/login'] })
-          }
-  
-          return fromAuthActions.refreshAccessToken();
+        }
+
+        if (this.tokenService.isRefreshTokenExpired()) {
+          fromAuthActions.logout()
+          return RouteActions.navigate({ commands: ['/login'] })
+        }
+
+        return fromAuthActions.refreshAccessToken();
       }))})
 
 
