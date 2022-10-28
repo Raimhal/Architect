@@ -1,5 +1,5 @@
-# Ctor
-Ctor is a web-based software for construction companies. The platform allows planning and managing constructions. It is supposed to store all project documentation, the information about materials and vendors. At the same time Ctor provides roadmap development and workflow management for the architects and managers.Ctor shows current state of the building via dashboards and reports. Ctor is a B2B multi-tenant system and provides custom configuration per client.
+# Architector
+Architector is a web-based software for construction companies. The platform allows planning and managing constructions. It is supposed to store all project documentation, the information about materials and vendors. At the same time Architector provides roadmap development and workflow management for the architects and managers. Architector shows current state of the building via dashboards and reports. Architector is a B2B multi-tenant system and provides custom configuration per client.
 
 ## Navigation
 
